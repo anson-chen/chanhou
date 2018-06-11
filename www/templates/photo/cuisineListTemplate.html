@@ -1,0 +1,33 @@
+<div class="food-bg" style="padding-bottom:20px;">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>菜系列表</h3>
+	</nav>
+</div>
+<div class="rest-list-wrap">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix" style="padding-top:0; position:relative;">
+		<a href="#restaurantList2/<%=newChihuo.city%>/<%=d.cuisine_type%>">
+			<div class="swiper-container rest-list-swiper">
+		        <div class="swiper-wrapper">
+		            <div class="swiper-slide"><img src="<%if(d.cuisine_profile_purl){%><%=d.cuisine_profile_purl%><%}else{%>imgs/rest-list-img.jpg<%}%>" class="banner-img"></div>
+		        </div>
+		        <!-- Add Pagination -->
+		         <div class="swiper-pagination"></div>
+		    </div>
+			<div class="radius-like">
+				<div class="radius-num-show">
+					<span><%=parseInt(d.total_likes_perc || 50)%></span>%<br>喜欢
+				</div>	
+			</div>
+			<h3 class="rest-name-title"><%=d.cuisine_type%></h3>
+			<p class="rest-info-show">餐馆总数:<%=d.total_rests_cnt%><br>评价总数:<%=d.total_reviews_cnt%></p>
+			</a>
+		</div>
+	<%})%>	
+</div>
+<div class="loading-wrap" id='specialLoad'>
+	    <p class="loading-step1" style="display:none;">加载更多</p>
+		<p class="loading-step2">加载中</p>
+		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+</div>

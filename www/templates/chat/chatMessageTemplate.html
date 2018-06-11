@@ -1,0 +1,16 @@
+<div class="set-bg">
+	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
+	    <nav class="common-title">
+	        <a href="javascript:history.go(-1);" class="common-return"></a>
+	        <h3>我的好友</h3>
+	    </nav>
+	</div>  
+	<div class="wrap-border clearfix" style="margin:80px 12px 20px; padding:15px;"> 
+    	<img src="<%if(data.src){%><%=data.src%><%}else{%>imgs/map-img.jpg<%}%>" style="border-radius: 50%; height:160px;" class="position-img profile-img">
+       <div class="login-wrap" style="margin-top:-70px; text-align:center;">
+         <p style="font-size:18px;"><%=data.name%></p>
+       </div>
+        <a href="#chatContent/<%=data.id%>/<%=data.name%>"><div class="quit-setting" style="background: #fb6700; margin:0 0 20px;">Message</div></a>
+    </div>
+	
+</div>

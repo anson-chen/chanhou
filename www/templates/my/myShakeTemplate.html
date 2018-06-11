@@ -1,0 +1,171 @@
+<div class="set-bg">
+<div class="food-bg" style="padding-bottom:20px;">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return" style="position:relative; z-index:1000;"></a>
+		<h3><%=newChihuo.localize('shake_header')%></h3>
+	</nav>
+</div>
+<div class="rest-list-wrap" style="padding-bottom:0;">
+		<div class="wrap-border clearfix" style="position:relative;">
+			<div class="table-head clearfix">
+				<p><%=newChihuo.localize('shake_cuisine')%></p>
+				<p><%=newChihuo.localize('global_var_price')%></p>
+				<p style="width:40%;"><%=newChihuo.localize('global_var_distance')%></p>
+			</div>
+			<div class="table-cont">
+			<div class="slot1" id="slot1">
+				<ul id="slotMachine1">
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'cuisine'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+				</ul>
+			</div>
+			<div class="slot2" id="slot2">
+				<ul id="slotMachine2">
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+				</ul>
+			</div>
+			<div class="slot3" id="slot3">
+				<ul id="slotMachine3">
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+				</ul>
+			</div>
+			</div>
+			<a href="javascript:;" class="lock-icon unlock-icon shake1" style="left:18%"></a>
+			<a href="javascript:;" class="lock-icon unlock-icon shake2" style="left:47%"></a>
+			<a href="javascript:;" class="lock-icon unlock-icon shake3" style="left:77%"></a>
+		</div>
+</div>
+<div class="big-shake">
+	<img src="imgs/shake-icon.png">
+</div>
+<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li class="message-remind">
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>	
+<div class="mask-shake">
+	<div class="shake-info" style="display:none;">
+		<!-- <a href="#restaurant">
+			<img src="imgs/rest-list-img.jpg">
+			<h3>全聚德加拿大总店-没有比这好吃</h3>
+			<p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>10公里  89%喜欢
+		<br>1000cals 盐：100mg</p>
+		</a> -->
+	</div>
+	<div class="shake-info" style="display:none;">
+		<p class="shake-para-show">Not lucky! Restaurant not fund,please shake again.</p>
+	</div>
+	<img src="imgs/mask-shake.png" class="shake-img">
+</div>
+<%if(data.length){%>
+<script>
+	// var machine1 = $("#slotMachine1").slotMachine({
+	// 	active	: 0
+	// });
+	// var machine2 = $("#slotMachine2").slotMachine({
+	// 	active	: 0,
+	// 	delay	: 0
+	// });
+	// var machine3 = $("#slotMachine3").slotMachine({
+	// 	active	: 0,
+	// 	delay	: 0
+	// });
+	
+	function onComplete($el, active){
+		switch($el[0].id){
+			case 'slotMachine1':
+				$("#slotMachine1").addClass('completed');
+				break;
+			case 'slotMachine2':
+				$("#slotMachine2").addClass('completed');
+				break;
+			case 'slotMachine3':
+				$("#slotMachine3").addClass('completed');
+				break;
+		}
+		if($(".completed").length == $(".unlock-icon").length){
+			$('.mask-shake').show();
+			newChihuo.shakeTrigger = 1;
+			$("#slotMachine1").removeClass('completed');
+			$("#slotMachine2").removeClass('completed');
+			$("#slotMachine3").removeClass('completed');
+	}
+}
+	
+
+
+</script> 
+<%}%>

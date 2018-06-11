@@ -1,0 +1,31 @@
+<div class="set-bg">
+<div class="food-bg" style="padding-bottom:15px;">
+    <nav class="common-title">
+        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <h3><%=decodeURI(name)%></h3>
+    </nav>
+</div>  
+<div class="rest-list-wrap" style="padding-bottom:0px;">
+  <%_.each(hisData,function(d,i){%>
+  <div class="chat-time-set"><%=chihuo.getDate(d.created_datetime)%></div>
+  <%if(d.from_customer_id == custId){%>
+   <div class="other-say">
+  	<img src="imgs/photo.png">
+  	<div class="other-info">
+  		<p><%=d.chat_msg_detail%></p>
+  	</div>
+  	</div>
+    <%}else{%>
+  <div class="myself-say">
+  	<img src="imgs/photo.png">
+  	<div class="myself-info">
+  		<p><%=d.chat_msg_detail%></p>
+  	</div>
+  </div>
+  <%}})%>
+</div>      
+</div>
+<div class="fix-comment-bottom">
+		<a href="#" class="bottom-left"><img src="imgs/face-icon.png"></a>
+		<div class="chat-input-wrap"><form id='chatForm' to=<%=custId%>><input type="text" name="" class="chat-input" id='chatValue'></form></div>
+	</div>

@@ -1,0 +1,222 @@
+<div class="rest-bg comment-effect2" style="padding-bottom:80px;">
+	<nav class="common-title">
+		<a href="javascript:;" class="share"></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>美食详情</h3>
+	</nav>
+	<%_.each(data,function(d,i){%>
+	<div class="rest-wrap">
+		<div class="rest-banner" style="position:relative;">
+		  <!-- Swiper -->
+		    <div class="swiper-container" id="rest-banner">
+		        <div class="swiper-wrapper">
+		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
+		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
+		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
+		        </div>
+		        <!-- Add Pagination -->
+		        <div class="swiper-pagination"></div>
+		    </div>
+		    <i class="fav-rest <%if(d.mi_favorite_flg == 'Y'){%>fav-rest-add<%}%>" style="z-index:10;" id='addFav'></i>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="right-like">
+				76%<br>喜欢
+			</div>
+			<h3 class="rest-name-title" style="height:28px;"><%=d.rest_mi_name%></h3>
+			<p class="rest-info-show" style="padding-top:10px;"><span style="color:#ff8b4c;font-size:15px;"><%=d.mi_price_lvl%></span><span style="color:#0bbc13; padding:0 10px;">20%off</span><br><%=d.cuisine_type%> <%=d.city_name%> 10km<br>100cals 盐:800mg</p>
+		</div>
+		<div class="wrap-border clearfix">
+			<ul class="rest-social clearfix">
+				<li class="rest-icon1"><img src="imgs/detail-icon28.png" style="width:40px; margin-top:10px;"><p>1人</p></li>
+				<li class="rest-icon2"><img src="imgs/round-icon2.png" style="width:50px"><p>1</p></li>
+				<li class="rest-icon3"><img src="imgs/detail-icon20.png" style="width:40px;margin-top:10px;"><p>1人</p></li>			
+			</ul>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+				<div class="detail-border">
+					<p style="font-size:20px;"><i class="detail-icon-common detail-icon29"></i><%=d.rest_name%></p>
+				</div>
+				<div class="detail-border">
+					<p class="detail-open"><i class="detail-icon-common detail-icon1"></i>营业到11Pm</p>
+					<div class="week-time">
+						<p>周一：11AM-14PM 16PM-23PM</p>
+					</div>
+				</div>
+				<div class="detail-border">
+					<i class="detail-icon-common detail-icon2"></i><p class="address-detail" id="addressMore2"><%=d.addr%></p>
+				</div>
+				<div class="detail-border clearfix">
+					<span class="connect-info" style="padding-right:30px;"><i class="detail-icon-common detail-icon3"></i><%=d.contact_phone_no%></span>
+					<span class="connect-info"><i class="detail-icon-common detail-icon4"></i>028-67899876</span>
+					<span class="connect-info"><i class="detail-icon-common detail-icon5"></i>028-67899876</span>
+				</div>
+				<a href="javascript:;" class="more-btn">更多信息</a>
+			</div>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+				<div class="detail-border">
+					<h3 class="detail-block-title title-icon2">餐厅地图</h3>
+				</div>
+			</div>	
+			<div class="food-map-wrap"><img src="imgs/food-map.jpg"></div>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+				<div class="detail-border">
+					<a href="#photoList" class="title-more-link">更多照片</a>
+					<h3 class="detail-block-title title-icon2">餐厅照片</h3>
+				</div>
+			</div>	
+			<div class="swiper-container" id="rest-photo">
+			    <div class="swiper-wrapper">
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i></i></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i class="detail-approve"></i></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i></i></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i></i></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i></i></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#photoDetail"><img src="imgs/pt2.png"><i></i></a>
+			            </div>
+			    </div>
+    		</div>
+    		<a href="#photoList" class="more-btn">添加照片</a>
+		</div>
+		<div class="wrap-border clearfix" style="position:relative;">
+			<div class="rest-detail">
+				<div class="detail-border" style="border:none;">
+					<a href="#userComments" class="title-more-link">更多评论</a>
+					<h3 class="detail-block-title title-icon3">用户评论<span style="color:#999;">(87)</span></h3>
+				</div>
+			</div>	
+			<ul class="rest-comment">
+				<li>
+					<div class="rest-comment-head clearfix">
+						<img src="imgs/photo.png" class="comment-left-img"> 
+						<div class="comment-right-info">
+							<h3>一枚吃货</h3>
+							<p><span class="comment-time">5小时前</span><span class="comment-location">加拿大 蒙特利尔市</span></p>
+						</div>
+					</div>
+					<p class="comment-cont"><%=newChihuo.showMorePara('因为是孕妇，吃，然后就吃的这个然后就吃的这个然后就吃的这个，在大坪，味道很好，小哥还问我要不要加热，环境还行，在大123因为是孕妇，吃，然后就吃的这个然后就吃的这个然后就吃的这个，在大坪，味道很好，小哥还问我要不要加热，环境还行，在大门处，')%><i></i></p>
+					<div class="rest-comment-bottom">
+						<span class="wechat-icon" style="margin-right:20px;">2.5k</span>
+						<span class="good-icon">2.5k</span>
+					</div>
+				</li>
+				<li>
+					<div class="rest-comment-head clearfix">
+						<img src="imgs/photo.png" class="comment-left-img"> 
+						<div class="comment-right-info">
+							<h3>一枚吃货</h3>
+							<p><span class="comment-time">5小时前</span><span class="comment-location">加拿大 蒙特利尔市</span></p>
+						</div>
+					</div>
+					<p class="comment-cont"><%=newChihuo.showMorePara('因为是孕妇，吃，然后就吃的这个然后就吃的这个然后就吃的这个，在大坪，味道很好，小哥还问我要不要加热，环境还行，在大123因为是孕妇，吃，然后就吃的这个然后就吃的这个然后就吃的这个，在大坪，味道很好，小哥还问我要不要加热，环境还行，在大门处，')%><i></i></p>
+					<div class="rest-comment-bottom">
+						<span class="wechat-icon" style="margin-right:20px;">2.5k</span>
+						<span class="good-icon">2.5k</span>
+					</div>
+				</li>
+			</ul>
+			<a href="#submitComment" class="comment-edit">发布评论</a>
+		</div>
+	</div>
+	<div class="rest-bottom">
+		<div class="rest-detail">
+				<div class="detail-border">
+					<a href="#restaurantList" class="title-more-link">查看全部</a>
+					<h3 class="detail-block-title" style="padding-left:0;">猜您喜欢</h3>
+				</div>
+			</div>	
+			<div class="swiper-container" id="rest-like">
+			    <div class="swiper-wrapper">
+			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p>
+			            	<div class="like-para">川菜<span style="color:#ff8b4c;padding:0 10px;">50加元以下</span><span style="color:#0bbc13; padding:0;">20%off</span><br>10km 89%喜欢<br>100cals 盐:800mg</div>
+			            	</div>
+			            	</a>
+			            </div>
+			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">川菜<span style="color:#ff8b4c;padding:0 10px;">50加元以下</span><span style="color:#0bbc13; padding:0;">20%off</span><br>10km 89%喜欢<br>100cals 盐:800mg</div>
+			            	</div>
+			            </a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">川菜<span style="color:#ff8b4c;padding:0 10px;">50加元以下</span><span style="color:#0bbc13; padding:0;">20%off</span><br>10km 89%喜欢<br>100cals 盐:800mg</div>
+			            	</div>
+			            </a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">川菜<span style="color:#ff8b4c;padding:0 10px;">50加元以下</span><span style="color:#0bbc13; padding:0;">20%off</span><br>10km 89%喜欢<br>100cals 盐:800mg</div>
+			            	</div>
+			            </a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">川菜<span style="color:#ff8b4c;padding:0 10px;">50加元以下</span><span style="color:#0bbc13; padding:0;">20%off</span><br>10km 89%喜欢<br>100cals 盐:800mg</div>
+			            	</div>
+			            </a>
+			            </div>
+			        
+			    </div>
+    		</div>
+    	</div>		
+	</div>
+	<%})%>
+</div>
+<div class="rest-fix-bottom">
+		<ul class="clearfix">
+             <li class="cur">
+                <a href="#"><img src="imgs/bottom-red1.png">
+                <p>首页</p>
+                </a>
+              </li>
+              <li>
+                <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+                <p>聊天</p>
+                </a>
+              </li>
+              <li style="width:24%; position:relative;">
+                <a href="#restaurantWishes">
+                <div class="rest-bottom-middle"></div>
+                </a>
+              </li>
+              <li class="message-remind">
+                <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+                <p>动态</p>
+                </a>
+              </li>
+              <li id="msgRemind">
+                <a href="#myIndex"><img src="imgs/bottom-h4.png">
+                <p>我的</p>
+                </a>
+              </li>
+        </ul>
+	</div>
+<script>
+ 	var width=window.innerWidth; 
+    var swiperRest1 = new Swiper('#rest-banner', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+     var swiperRest2 = new Swiper('#rest-food', {
+     	initialSlide:1,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.12*width,
+    });
+   
+    var swiperRest3 = new Swiper('#rest-photo', {
+      	initialSlide:2,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.1*width,
+        
+    });
+
+    var swiperRest4 = new Swiper('#rest-like', {
+      	initialSlide:2,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.1*width,     
+    });
+
+</script>    

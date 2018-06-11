@@ -1,0 +1,216 @@
+<div class="rest-bg comment-effect3">
+	<nav class="common-title">
+		<a href="javascript:;" class="share"></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3><%=newChihuo.localize('restaurant_info')%></h3>
+	</nav>
+	<div class="rest-wrap">
+	<%_.each(data,function(d,i){%>
+		<%if(i==0){%>
+		<div class="rest-banner" style="position:relative;">
+		  <!-- Swiper -->
+		    <div class="swiper-container" id="rest-banner">
+		        <div class="swiper-wrapper">
+		        <%if(d.concat_prof_photo_url_keyval){%>
+		         	<%_.each(d.concat_prof_photo_url_keyval.split(','),function(d,i){%>
+		        		<div class="swiper-slide"><img src="<%=d%>" class="banner-img"></div>
+		        	<%})%>
+		        <%}else{%>
+		        	<div class="swiper-slide"><img src="imgs/rest-pt.jpg" class="banner-img"></div>
+		        <%}%>  
+		        </div>
+		        <!-- Add Pagination -->
+		        <div class="swiper-pagination"></div>
+		    </div>
+		    <i class="fav-rest<%if(d.favorite_flg){%> fav-rest-add<%}%>" style="z-index:10;" rest=<%=d.rest_id%> id='addFav'></i>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="radius-like">
+				<div class="radius-num-show">
+					<span><%=parseInt(d.total_rest_compliments_perc)%></span>%<br><%=newChihuo.localize('global_var_like_percentage')%>
+				</div>	
+			</div>
+			<div style="position:relative;">
+			<h3 class="rest-name-title"><%=d.rest_name%></h3><img src="imgs/pass-icon.png" class="rest-pass-icon">
+			</div>
+			<p class="rest-info-show"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;">20%off</span><br><%=d.city_name%><span style="padding-left:10px;"><%=d.chihuo_distance%><%=newChihuo.localize('global_var_km')%></span></p>
+		</div>
+		<div class="wrap-border clearfix">
+			<ul class="rest-social clearfix">
+				<li class="rest-icon1"><div class="rest-status <%if(d.checkin_flg){%>done<%}%>"><img src="<%=staticSource.restIcon1%>"></div>
+				<p><span><%=(d.total_rest_checkins || 0)%></span><%=newChihuo.localize('restaurant_checkin')%><%if(d.total_rest_checkins > 1){%>s<%}%></p></li>
+				<li class="rest-icon2"><div class="rest-status <%if(d.compliment_flg != 'n'){%>done<%}%>"><img src="<%=staticSource.restIcon2%>"></div>
+				<p><span><%=d.total_rest_compliments%></span></p></li>
+				<li class="rest-icon3"><img src=<%if(d.following_flg == 'n'){%><%=staticSource.restIcon4%><%}else{%><%=staticSource.restIcon3%><%}%> style="width:40px;margin-top:10px;" class="<%if(d.following_flg != 'n'){%>done<%}%>"><p><span><%=d.total_rest_followers%></span><%=newChihuo.localize('restaurant_follower')%><%if(d.total_rest_followers > 1){%>s<%}%></p></li>			
+			</ul>
+		</div>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+			<%if(d.mon_open_hrs){%>
+				<div class="detail-border">
+					<p class="detail-open"><i class="detail-icon-common detail-icon1"></i><%=newChihuo.localize('restaurant_hours')%></p>
+					<div class="week-time">
+						<p>周一：<%=d.mon_open_hrs%></p>
+						<p>周二：<%=d.tue_open_hrs%></p>
+						<p>周三：<%=d.wed_open_hrs%></p>
+						<p>周四：<%=d.thu_open_hrs%></p>
+						<p>周五：<%=d.fri_open_hrs%></p>
+						<p>周六：<%=d.sat_open_hrs%></p>
+						<p>周日：<%=d.sun_open_hrs%></p>
+					</div>
+				</div>
+				<%}%>
+				<div class="detail-border">
+					<i class="detail-icon-common detail-icon2"></i><a href="#restaurantMaps"><p class="address-detail" id="addressMore"><%=d.addr%></p></a>
+				</div>
+				<div class="detail-border clearfix">
+				    <%if(d.contact_phone_no){%>
+					<span class="connect-info" style="padding-right:30px;"><i class="detail-icon-common detail-icon3"></i><a href="tel:<%=d.contact_phone_no%>"><%=d.contact_phone_no%></a></span>
+					<%}%>
+					<span class="connect-info"><i class="detail-icon-common detail-icon4"></i>028-67899876</span>
+					<span class="connect-info"><i class="detail-icon-common detail-icon5"></i><%=d.weburl%></span>
+				</div>
+				<%if(d.feature_tags){%>
+				<div class="detail-border" style="padding-bottom:0;">
+					<%_.each(d.feature_tags.split(','),function(d,i){%>
+						<span class="feature-tags"><%=d%></span>
+					<%})%>
+				</div>
+				<%}%>
+				<a href="#" class="more-btn"><%=newChihuo.localize('restaurant_more_info')%></a>
+			</div>
+		</div>
+		<%if(d.concat_menu_keyval){%>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+				<div class="detail-border">
+					<a href="#foodMenu/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('')%>更多美食</a>
+					<h3 class="detail-block-title title-icon1"><%=newChihuo.localize('global_var_dishes')%></h3>
+				</div>
+			</div>	
+			<div class="swiper-container" id="rest-food">
+			    <div class="swiper-wrapper">
+			   		 <%_.each(d.concat_menu_keyval.split(','),function(k,i){%>
+			            <div class="swiper-slide index-dish-img"><a href="#foodMenu/<%=d.rest_id%>/<%=k.split(';')[0]%>"><img src="imgs/zfx-pt.jpg"><p class="para-set" style="height:auto;"><%=k.split(';')[0]%> (<%=k.split(';')[1]%>)</p></a></div>
+			    	<%})%>        
+			    </div>
+    		</div>
+		</div>
+		<%}%>
+		<div class="wrap-border clearfix">
+			<div class="rest-detail">
+				<div class="detail-border">
+					<a href="#photoList" class="title-more-link"><%=newChihuo.localize('restaurant_more_picutres')%></a>
+					<h3 class="detail-block-title title-icon2"><%=newChihuo.localize('restaurant_pictures')%></h3>
+				</div>
+			</div>
+			<%if(d.rest_photo_urls){%>	
+			<div class="swiper-container" id="rest-photo">
+			    <div class="swiper-wrapper">
+			    	<%_.each(d.rest_photo_urls.split(','),function(d,i){%>
+			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i></i></div>
+			        <%})%>
+			    </div>
+    		</div>
+    		<%}%>
+    		<div class="comment-photo-wrap img-rest-photo clearfix" rest="<%=d.rest_id%>">
+    			
+    		</div>	
+    		<a href="javascript:;" class="more-btn add-rest-photo" style="width:6em;"><%=newChihuo.localize('restaurant_addphoto')%></a>
+		</div>
+		<div class="wrap-border clearfix" style="position:relative;">
+			<div class="rest-detail">
+				<div class="detail-border" style="border:none;">
+					<a href="#userComments/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('restaurant_more_reviews')%></a>
+					<h3 class="detail-block-title title-icon3"><%=newChihuo.localize('restaurant_reviews')%><span style="color:#999;">(<%=d.total_rest_reviews%>)</span></h3>
+				</div>
+			</div>	
+			<ul class="rest-comment">
+			<%_.each(data,function(d,i){%>
+				<li>
+					<div class="rest-comment-head clearfix">
+						<a href="#myIndex">
+						  <%if(d.reviewer_profile_url){%>
+							<img src="<%=d.reviewer_profile_url.split(',')[0]%>" class="comment-left-img"> 
+						  <%}else{%>
+						  	<img src="imgs/photo.png" class="comment-left-img"> 
+						  <%}%>
+						</a>
+						<div class="comment-right-info">
+							<h3><%=d.reviewer_name%></h3>
+							<p><span class="comment-time"><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.reviewer_city%> <%=d.reviewer_country%></span></p>
+						</div>
+					</div>
+					<p class="comment-cont"><%=newChihuo.showMorePara(d.last_review_details)%><i></i></p>
+					<%if(d.review_photo_urls){%>
+						<div class="review-photo-urls clearfix">
+							<%_.each(d.review_photo_urls.split(','),function(d,i){%>
+								<img src="<%=d%>">
+							<%})%>
+						</div>
+					<%}%>
+					<div class="rest-comment-bottom">
+						<span class="wechat-icon" style="margin-right:20px;">2.5k</span>
+						<span class="good-icon">2.5k</span>
+					</div>
+				</li>
+			<%})%>
+			</ul>
+			<a href="<%if(newChihuo.getLocalStorage('customer_id')){%>#submitComment/<%=d.rest_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
+		</div>
+	</div>
+	<div class="rest-bottom">
+		<div class="rest-detail">
+				<div class="detail-border">
+					<a href="#restaurantList" class="title-more-link"><%=newChihuo.localize('restaurant_seeall')%></a>
+					<h3 class="detail-block-title" style="padding-left:0;"><%=newChihuo.localize('restaurant_recommended')%></h3>
+				</div>
+			</div>	
+			<div class="swiper-container" id="rest-like">
+			    <div class="swiper-wrapper">
+			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
+			            	</a>
+			            </div>
+			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
+			            </a>
+			            </div>
+			           
+			             <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
+			            </a>
+			            </div>
+			        
+			    </div>
+    		</div>
+    	</div>	
+    	<%}})%>	
+	</div>
+</div>
+<script>
+ 	var width=window.innerWidth; 
+    var swiperRest1 = new Swiper('#rest-banner', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+     var swiperRest2 = new Swiper('#rest-food', {
+     	initialSlide:1,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.05*width,
+    });
+   
+    var swiperRest3 = new Swiper('#rest-photo', {
+      	initialSlide:2,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.1*width,
+        
+    });
+
+    var swiperRest4 = new Swiper('#rest-like', {
+      	initialSlide:2,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.1*width,     
+    });
+
+</script>    

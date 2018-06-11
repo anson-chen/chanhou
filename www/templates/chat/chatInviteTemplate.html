@@ -1,0 +1,65 @@
+<div class="set-bg">
+	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
+	    <nav class="common-title">
+	        <a href="javascript:history.go(-1);" class="common-return"></a>
+	        <h3>添加好友</h3>
+	    </nav>
+	</div>  
+	<div class="chat-apply-wrap" style="padding:15px 0;">
+		<div class="search-set-input" style="background: #f2f6f9; position:relative;">
+		    <img src="imgs/search-index.png" class="chat-search-icon">
+			<i></i>
+			<div style="margin:0 30px;">
+				<form id="chihuoSearch">
+					<input type="text" name="" class="invite-input" value="" placeholder="搜索吃友">
+				</form>
+			</div>		
+		</div>
+	</div>
+	<div class="fix-name-list" style="display:none;">
+		<span>#</span>
+		<span>A</span>
+		<span>B</span>
+		<span>C</span>
+		<span>D</span>
+		<span>E</span>
+		<span>F</span>
+		<span>G</span>
+		<span>H</span>
+		<span>I</span>
+		<span>J</span>
+		<span>K</span>
+		<span>L</span>
+		<span>M</span>
+		<span>N</span>
+		<span>O</span>
+		<span>P</span>
+		<span>Q</span>
+		<span>R</span>
+		<span>S</span>
+		<span>T</span>
+		<span>U</span>
+		<span>V</span>
+		<span>W</span>
+		<span>X</span>
+		<span>Y</span>
+		<span>Z</span>
+	</div>
+	<p style="padding:15px;"><a href="#chatRequest">我的好友请求</a></p>
+	<div class="search-chihuo-list">
+		
+	</div>
+	<%_.each(data,function(d,i){%>
+	<%if(d.reg_flag){%>
+	<div class="chat-people-list <%if(d.friend_flag){%>added-this<%}%>" style="margin:5px 12px;" name='<%=d.display_name%>' id='<%=d.customer_id%>' src='<%=d.profile_photo_url%>'>
+		<div class="rest-comment-head clearfix">
+		    <%if(d.friend_flag){%><span class="chat-add-word" customer="<%=d.customer_id%>">added</span><%}else{%><a href="#chatApply/<%=d.customer_id%>/<%=encodeURIComponent(d.display_name)%>"><button class="chat-add-button">invite</button></a><%}%>
+			<img src="<%if(d.profile_photo_url){%><%=d.profile_photo_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+				<div class="comment-right-info">
+					<h3 style="background:none;"><%=d.display_name%></h3>
+					<p><%=(d.email_address || d.socail_media_id)%></p>
+				</div>
+		</div>
+	</div>
+	<%}})%>
+</div>

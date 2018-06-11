@@ -1,0 +1,93 @@
+<div class="map-bg">
+	<nav class="common-title">
+		<a href="javascript:;" class="head-rest-icon"></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>美食地图</h3>
+	</nav>
+</div>
+<div class="map-wrap">
+	<div id="googleMap5" style="height:100%;">
+		<img src="imgs/map-init.jpg">
+	</div>
+</div>
+<div class="map-fix-rest">
+<div class="swiper-container" id="foodMaps-swiper">
+   <div class="swiper-wrapper" >
+	    <div class="swiper-slide">
+	    	<div class="tab-swiper-wrap" style="padding-top:10px;">
+				<div class="wrap-border clearfix" style="position:relative; padding-bottom:0;">
+				    <div class="rest-fav-this4"></div>
+					<div class="right-like" style="transform:scale(0.6); margin-right:0;">
+						76%<br>喜欢
+					</div>
+					<div class="map-rest-img">
+						<img src="imgs/map-img.jpg">
+						<i></i>
+					</div>
+					<div style="margin-left:110px;">
+					<h3 class="rest-name-title">重庆回锅肉</h3>
+					<p class="rest-info-show" style="padding-top:5px;">全聚德店<span style="color:#ff8b4c; padding:0 10px;">小于20加元</span><span style="color:#0bbc13;">20%off</span><br>10公里<br>800cals 盐:100mg</p>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="swiper-slide">
+	    	<div class="tab-swiper-wrap" style="padding-top:10px;">
+				<div class="wrap-border clearfix" style="position:relative; padding-bottom:0;">
+				    <div class="rest-fav-this4"></div>
+					<div class="right-like" style="transform:scale(0.6); margin-right:0;">
+						76%<br>喜欢
+					</div>
+					<div class="map-rest-img">
+						<img src="imgs/map-img.jpg">
+						<i></i>
+					</div>
+					<div style="margin-left:110px;">
+					<h3 class="rest-name-title">重庆回锅肉</h3>
+					<p class="rest-info-show" style="padding-top:5px;">全聚德店<span style="color:#ff8b4c; padding:0 10px;">小于20加元</span><span style="color:#0bbc13;">20%off</span><br>10公里<br>800cals 盐:100mg</p>
+					</div>
+				</div>
+			</div>
+		</div>		
+		</div>
+		</div>	
+</div>
+
+    <div class="rest-fix-bottom">
+		<ul class="clearfix">
+             <li class="cur">
+                <a href="#"><img src="imgs/bottom-red1.png">
+                <p>首页</p>
+                </a>
+              </li>
+              <li>
+                <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+                <p>聊天</p>
+                </a>
+              </li>
+              <li style="width:24%; position:relative;">
+                <a href="#restaurantWishes">
+                <div class="rest-bottom-middle"></div>
+                </a>
+              </li>
+              <li class="message-remind">
+                <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+                <p>动态</p>
+                </a>
+              </li>
+              <li id="msgRemind">
+                <a href="#myIndex"><img src="imgs/bottom-h4.png">
+                <p>我的</p>
+                </a>
+              </li>
+        </ul>
+	</div>
+	<script type="text/javascript">
+	var swiperFoodMaps =  new Swiper('#foodMaps-swiper', {
+        slidesPerView: 'auto',
+        onSlideChangeEnd: function(swiper){
+        	
+        }
+
+    });
+</script>	

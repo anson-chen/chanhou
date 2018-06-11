@@ -1,0 +1,107 @@
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="javascript:;" class="share"></a>
+		<div class="top-location discount-city" style="float:right; margin:5px 10px 0 0;"><%=newChihuo.city%></div>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3 style="margin-left:100px;"><%=newChihuo.localize('main_promotionwheel')%></h3>
+	</nav>
+	<div class="food-list-nav clearfix" >
+		<div class="swiper-container" id='discountMenuTab'>
+		   	<div class="swiper-wrapper">
+				<%_.each(discountData, function(d,i) {%>
+					<div class="swiper-slide">
+						<span class="<%if(i==0){%>cur<%}%>"><%=d[0].promodaytp%></span>
+					</div>
+				<%})%>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="rest-list-wrap">
+<div class="swiper-container" id="discountMenu-swiper">
+   <div class="swiper-wrapper">
+    <%_.each(discountData, function(d,i) {%>
+        <div class="swiper-slide" style="background:none;">
+            <div class="tab-swiper-wrap">
+            <%_.each(d, function(d,i) {%>
+				<div class="wrap-border">
+          <a href="#restaurant/<%=d.rest_id%>">
+  					<div class="discount-top">
+  						<div class="rest-comment-head clearfix">
+  						    <p class="discount-time"><%=chihuo.getLastTime(d.created_timestamp)%></p>
+  							<img src="<%if(d.rest_prof_photo_urls){%><%=d.rest_prof_photo_urls.split(',')[0]%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+  							<div class="comment-right-info" style="margin-right:50px;">
+  								<h3 style="background:none;"><%=d.rest_name%></h3>
+  								<p><span class="comment-location"><%=d.city_name%></span></p>
+  							</div>
+  						</div>	
+  					</div>
+  					<div class="discount-bottom clearfix">
+  						<b><%=d.cuisine_type%></b>
+  						<p><%=d.promo_details%></p>
+  						<span><%=newChihuo.localize('promotion_expires')%>:<%=d.promo_hours%></span>
+  					</div>
+          </a>
+				</div>
+			<%})%>
+			</div>
+		</div>
+	<%})%>		
+	</div>
+</div>
+</div>		
+<div class="search-mask">
+    <div class="city-mask-list" id="discountCity">
+    <%_.each(cityData, function(d,i) {%>
+      <p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p>
+    <%})%>
+    </div>
+</div>
+ <div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li class="message-remind">
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+<p class='whoops'>whoops,there is no data!</p>
+<%if(discountData.length){%>
+<script type="text/javascript">
+    var swiperDiscountMenu = new Swiper('#discountMenu-swiper', {
+        slidesPerView: 'auto',
+        onSlideChangeEnd: function(swiper){
+            $("#discountMenuTab span").removeClass('cur').eq(swiper.activeIndex).addClass('cur');
+            swiperDiscountTab.slideTo(swiper.activeIndex);
+        }
+
+    });
+
+    var swiperDiscountTab = new Swiper('#discountMenuTab', {
+        slidesPerView: 'auto'
+    });
+</script>	
+<%}%>
+
+

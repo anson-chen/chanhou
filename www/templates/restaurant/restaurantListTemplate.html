@@ -1,0 +1,84 @@
+<div class="set-bg">
+	<div class="food-bg">
+		<nav class="common-title">
+			<a href="#map2" class="head-rest-icon"></a>
+			<a href="javascript:history.go(-1);" class="common-return"></a>
+			<h3>餐馆列表</h3>
+		</nav>
+		<ul class="rank-ul clearfix">
+			<li><p><%=newChihuo.localize('global_var_like_percentage')%><i></i><i></i></p></li>
+    		<li><p><%=newChihuo.localize('global_var_price')%><i></i><i></i></p></li>
+    		<li class="cur toggle"><p><%=newChihuo.localize('global_var_distance')%><i></i><i></i></p></li>
+		</ul>
+	</div>
+	<div class="rest-list-wrap">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix" style="padding-top:0; position:relative;">
+		<%if(newChihuo.wishSearch){%>
+		<a href="javascript:;" class="add-wishlist" rest="<%=d.rest_id%>">
+		<%}else{%>
+		<a href="#restaurant/<%=d.rest_id%>">
+		<%}%>
+			<div class="swiper-container rest-list-swiper">
+		        <div class="swiper-wrapper">
+		        <%if(d.rest_profile_photo_url){%>
+		         	<%_.each(d.rest_profile_photo_url.split(','),function(d,i){%>
+		        		<div class="swiper-slide"><img src="<%=d%>" class="banner-img"></div>
+		        	<%})%>
+		        <%}else{%>
+		        	<div class="swiper-slide"><img src="imgs/rest-list-img.jpg" class="banner-img"></div>
+		        <%}%>  
+		        </div>
+		        <!-- Add Pagination -->
+		         <div class="swiper-pagination"></div>
+		         <i class="fav-rest <%if(d.favorite_flg){%>fav-rest-add<%}%>" style="z-index:100;"></i>
+		    </div>
+		    <div class="<%if(d.following_flg){%>rest-fav-this<%}else{%>rest-fav-this2<%}%>" style="top:180px;"></div>
+			<div class="radius-like">
+				<div class="radius-num-show">
+					<span><%=parseInt(d.total_likes_perc * 100)%></span>%<br>喜欢
+				</div>	
+			</div>
+			<h3 class="rest-name-title"><%=d.rest_name%></h3>
+			<p class="rest-info-show"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;">20%off</span><br><%=d.cityname%> <%=d.cust_distance%>公里<br><%if(d.last_review_details){%>"<%=d.last_review_details.substring(0,50)%>"<br><%}%>10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
+			</a>
+		</div>
+	<%})%>	
+	</div>
+	<div class="rest-fix-right"></div>
+	<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-red1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<script>
+    var swiper1 = new Swiper('.rest-list-swiper', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+</script>    	

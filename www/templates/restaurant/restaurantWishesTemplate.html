@@ -1,0 +1,101 @@
+<div class="set-bg">
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="javascript:;" class="head-wish-icon"></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3><%=newChihuo.localize('wishes_mywishlist')%></h3>
+	</nav>
+	<ul class="rank-ul clearfix">
+		<li><p><%=newChihuo.localize('global_var_like_percentage')%><i></i><i></i></p></li>
+		<li><p><%=newChihuo.localize('global_var_price')%><i></i><i></i></p></li>
+		<li class="cur toggle"><p><%=newChihuo.localize('global_var_distance')%><i></i><i></i></p></li>
+	</ul>
+</div>	
+	<div class="rest-list-wrap" style="padding-bottom:0px;">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix">
+			<div class="wish-right">
+				<img src="imgs/fav-rest.png">
+				<img src="imgs/detail-icon25.png">
+				<div style="padding:5px 3px 0 0;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></div>
+			</div>
+			<div class="food-img" style="width:70px;">
+			<%if(d.concat_prof_photo_url){%>
+				<img src="<%=d.concat_prof_photo_url.split(',')[0]%>">
+			<%}else{%>
+				<img src="imgs/map-img.jpg">
+			<%}%>
+			</div>
+			<div style="margin-left:80px;">
+			<h3 class="rest-name-title"><%=d.rest_name%><img src="imgs/pass-icon.png"/></h3>
+			<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%=d.rest_discount_save%>off</span><br><%=d.city_name%>  <%=d.cust_distance%>
+<br><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%></p>
+			</div>
+		</div>
+	<%})%>
+		<div class="loading-wrap" id='specialLoad'>
+		    <p class="loading-step1" style="display:none;">加载更多</p>
+			<p class="loading-step2">加载中</p>
+			<p class="loading-step3" style="display:none;">没有更多了~~</p>
+		</div>
+		<div class="detail-border">
+			<a href="#" class="title-more-link"><%=newChihuo.localize('wishes_seeall')%></a>
+			<h3 class="detail-block-title" style="padding-left:0;"><%=newChihuo.localize('wishes_recommended')%></h3>
+		</div>
+		<div class="swiper-container" id="wish-like">
+			    <div class="swiper-wrapper">
+			            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
+			            	</a>
+			            </div>
+			           <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大餐意<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
+			            	</a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
+			            	<div class="rest-like"><p class="para-set">意大利餐意大餐意<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
+			            	</a>
+			            </div>
+			    </div>
+	 	</div>
+	</div>
+	<a href="#searchInit2/wish"><div class="wish-fix-right"></div></a>
+	<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li class="message-remind">
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+<script>
+    var width=window.innerWidth; 
+    var swiperWish = new Swiper('#wish-like', {
+      	initialSlide:0,
+        slidesPerView: 'auto',
+        slidesOffsetBefore :0,     
+    });
+</script>    	

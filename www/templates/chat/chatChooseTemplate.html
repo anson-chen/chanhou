@@ -1,0 +1,30 @@
+<div class="set-bg">
+	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
+	    <nav class="common-title">
+	        <a href="javascript:history.go(-1);" class="common-return"></a>
+	        <h3>添加聊天信息</h3>
+	    </nav>
+	</div>  
+	<div class="chat-apply-wrap" style="padding:15px 0;">
+		<div class="search-set-input" style="background: #f2f6f9; position:relative;">
+		    <img src="imgs/search-index.png" class="chat-search-icon">
+			<i></i>
+			<div style="margin:0 30px;">
+				<input type="text" name="" value="" placeholder="搜索吃友">
+			</div>		
+		</div>
+	</div>
+	<div class="chat-people-list">
+	<%_.each(data,function(d,i){%>
+		<div class="rest-comment-head clearfix">
+			<a href="javascript:;" class="go-message" id="<%=d.friend_cust_id%>" name=<%=d.friend_cust_name%> src=<%=(d.cust_url || '')%>>
+				<img src="<%if(d.cust_url){%><%=d.cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+					<div class="comment-right-info">
+						<h3 style="background:none;"><%=d.friend_cust_name%></h3>
+						<p></p>
+					</div>
+			</a>
+		</div>
+	<%})%>	
+	</div>      
+</div>

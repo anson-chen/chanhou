@@ -1,0 +1,155 @@
+<div class="set-bg">
+	<div class="food-bg" style="padding-bottom:20px;">
+		<nav class="common-title">
+				<a href="javascript:;" class="head-search-icon">阿拉伯特色</a>
+				<a href="javascript:history.go(-1);" class="common-return"></a>
+				<h3 style="margin:0 80px;"><%=newChihuo.localize('main_hotspotwheel')%></h3>
+		</nav>
+	</div>	
+	<div class="index-new-wrap">
+<%if(detailData !== null){%>
+<%_.each(detailData, function(d,i) {%>
+<%if(d[0].categoryid == 1){%>
+<div class="wrap-border">
+  <div class="floor-title">
+    <a href="#" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>
+    <%_.each(d, function(d,i) {%>
+    <%if(d.categoryid == 1 && i==0){%>
+    <h3 class="index-title-bg1"><%=d.categoryname%></h3>
+    <%}})%>
+  </div>
+  <div class="floor-wrap">
+    <div class="swiper-container" id="index-dish">
+        <div class="swiper-wrapper">
+        <%_.each(d, function(d,i) {%>
+            <%if(d.categoryid == 1){%>
+            <div class="swiper-slide index-dish-img"><a href="#restaurantList"><img src="imgs/pt2.png" alt='加载失败'><p><%=d.restcuisinetype%></p><span>城市餐厅数：<%=d.totrestcnt%></span></a></div>
+        <%}})%>
+        </div>
+    </div>
+  </div>
+</div> 
+<%}})%>
+<%_.each(detailData, function(d,i) {%>
+<%if(d[0].categoryid > 1){%>
+<div class="wrap-border">
+  <div class="floor-title">
+    <a href="#restaurantList" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>
+    <%_.each(d, function(d,i) {%>
+    <%if(i==0){%>
+    <h3 class="<%if(d.categoryid < 25){%>index-title-bg1<%}else{%>index-title-bg5<%}%>"><%=d.categoryname%></h3>
+    <%}})%>
+  </div>
+  <div class="floor-wrap">
+    <!-- Swiper -->
+    <div class="swiper-container hot-set-swiper index-swiper-query" id="query<%=i%>">
+        <div class="swiper-wrapper">
+        <%_.each(d, function(d,i) {%>
+             <%if(d.categoryid < 25){%>        
+                  <div class="swiper-slide index-dish-img"><a href="#restaurant/<%=d.facilityid%>"><img src="imgs/pt2.png">
+                    <div class="rest-like"><p class="para-set"><%=d.facilityname%><%if(d.restpermitpassflg=='Y'){%><i class="pass-icon"></i><%}%></p><div class="like-para"><%=d.restcuisinetype%> <%=d.restdistance%>公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.restavgprice%></span><span style="color:#0bbc13;"><%=d.restdiscountpct%>%off</span><br><%=d.totlikespct%>% <%=newChihuo.localize('<%=newChihuo.localize('global_var_like')%>')%><img src="<%if(d.restfollowingflg == 'Y'){%><%=staticSource.restIcon3%><%}else{%><%=staticSource.restIcon4%><%}%>" class="hot-set-img"/></div></div>
+                    </a>
+                  </div>
+        <%}else{%>
+        <div class="swiper-slide index-dish-img"><a href="#restaurantList"><img src="imgs/zfx-pt.jpg"><p class="para-set"><%=d.facilityname%></p><div class="renew-para"><b><%=d.restavgprice%></b><br><%=d.micalsamt%> <%=newChihuo.localize('global_var_cals')%>  <%=newChihuo.localize('global_var_sodium')%> <%=d.misodiumamt%> <%=newChihuo.localize('global_var_mg')%></div></a></div>
+        <%}})%>
+        </div>
+    </div>
+  </div>
+</div>
+ <%}})%>
+<div class="wrap-border" style="display:none;">
+  <div class="floor-title">
+    <a href="#" class="more-link">更多</a>
+    <h3 class="index-title-bg3">热门城市</h3>
+  </div>
+  <div class="floor-wrap">
+    <!-- Swiper -->
+    <div class="swiper-container" id="index-city">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>纽约/New York</p><span>城市餐厅数：18190</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>日餐</p><span>餐馆总数：18</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>中餐</p><span>餐馆总数：18</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>中餐</p><span>餐馆总数：18</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>中餐</p><span>餐馆总数：18</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt3.png"><p>中餐</p><span>餐馆总数：18</span></a></div>
+        </div>
+    </div>
+  </div>
+</div>
+<%}%>
+</div>
+	<div class="rest-list-wrap" style="padding: 0;">
+	 	<div class="detail-border" style="margin:15px 15px 0;">
+			<a href="#" class="title-more-link">查看更多</a>
+			<h3 class="detail-block-title" style="padding-left:0;">2017热门城市</h3>
+		</div>
+		<div class="swiper-container hot-set-swiper">
+			    <div class="swiper-wrapper">
+			            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png"><i class="hot-fav-icon"></i>
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利<i class="pass-icon"></i></p><div class="like-para">北京菜 10公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;">$$$</span><span style="color:#0bbc13;">20%off</span><br>85%喜欢<img src="imgs/fav-rest.png" class="hot-set-img"/></div></div>
+			            	</a>
+			            </div>
+			           <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png"><i class="hot-fav-icon"></i>
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐<i class="pass-icon"></i></p><div class="like-para">北京菜 10公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;">$$$</span><span style="color:#0bbc13;">20%off</span><br>85%喜欢<img src="imgs/fav-rest.png" class="hot-set-img"/></div></div>
+			            	</a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png"><i class="hot-fav-icon"></i>
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大<i class="pass-icon"></i></p><div class="like-para">北京菜 10公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;">$$$</span><span style="color:#0bbc13;">20%off</span><br>85%喜欢<img src="imgs/fav-rest2.png" class="hot-set-img"/></div></div>
+			            	</a>
+			            </div>
+			            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png"><i class="hot-fav-icon"></i>
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意<i class="pass-icon"></i></p><div class="like-para">北京菜 10公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;">$$$</span><span style="color:#0bbc13;">20%off</span><br>85%喜欢<img src="imgs/fav-rest.png" class="hot-set-img"/></div></div>
+			            	</a>
+			            </div>
+			             <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png"><i class="hot-fav-icon"></i>
+			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐<i class="pass-icon"></i></p><div class="like-para">北京菜 10公里<br><span style="color:#ff8b4c; padding:0 10px 0 0;">$$$</span><span style="color:#0bbc13;">20%off</span><br>85%喜欢<img src="imgs/fav-rest2.png" class="hot-set-img"/></div></div>
+			            	</a>
+			            </div>
+			    </div>
+	 	</div>
+	</div>
+	<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li class="message-remind cur">
+        <a href="javascript:;"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="search-mask">
+    <div class="city-mask-list">
+    	<p>阿富汗</p>
+    </div>
+ </div>
+</div>
+<script>
+    var width=window.innerWidth; 
+    var swiperHot = new Swiper('.hot-set-swiper', {
+      	initialSlide:2,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 0.1*width,     
+    });
+</script>    	

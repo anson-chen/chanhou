@@ -1,0 +1,131 @@
+<div class="set-bg">
+<div class="food-bg" style="padding-bottom:15px;">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3><%=newChihuo.localize('profile_me')%></h3>
+	</nav>
+</div>	
+	<div class="rest-list-wrap" style="padding-bottom:0px;">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix">
+			 <div class="food-img">
+			 	<a href="#myProfile">
+                <img src="<%if(d.profile_photo_url){%><%=d.profile_photo_url%><%}else{%>map-img.jpg<%}%>" style="border-radius: 50%; height:90px;">
+                </a>
+            </div>
+            <div style="margin-left:100px;">
+                <h3 class="rest-name-title" style="margin-right:0;"><%=d.display_name%><img src="imgs/detail-icon12.png" style="height:22px; padding-top:0;" /></h3>
+                <p class="rest-info-show" style="padding-top:5px;"><%=newChihuo.localize('profile_create_date ')%><%=d.join_date%> <br><%=newChihuo.localize('profile_points')%>:<%=d.points_needed_to_next_level%><span class="six-angle"><%=newChihuo.localize('profile_rank')%>:150</span></p>
+                <div class="vip-level">
+                	<img src="imgs/vip6.png">
+                	<p><span style="width:<%=d.achieved_perc_to_next_level%>;"></span></p>
+                </div>
+                <p class="rest-info-show" style="padding-top:5px;"><%=newChihuo.localize('profile_next_level')%> <%=d.points_needed_to_next_level%> <%=newChihuo.localize('profile_points_needed')%></p>        
+            </div>
+		</div>
+		<div class="wrap-border clearfix">
+			<ul class="my-index clearfix">
+				<li style="border:none;">
+				    <a href="#">
+						<img src="imgs/my-icon1.png">
+						<p><%=newChihuo.localize('profile_follower')%><br><span><%=d.total_beenhere_cnt%></span></p>
+					</a>
+				</li>
+				<li class="index-focus">
+						<img src="imgs/my-icon2.png">
+						<p><%=newChihuo.localize('profile_following')%><br><span><%=d.total_cfollowings_cnt%></span></p>
+				</li>
+				<li>
+					<a href="#">
+						<img src="imgs/my-icon3.png">
+						<p><%=newChihuo.localize('profile_review')%><br><span><%=d.total_reviews_cnt%></span></p>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<img src="imgs/my-icon4.png">
+						<p><%=newChihuo.localize('profile_photo')%><br><span><%=d.total_photos_cnt%></span></p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<%})%>
+		<div class="wrap-border clearfix">
+			<a href="#myProfile"><img src="imgs/invite.png" class="invite-img"></a>
+		</div>
+		<div class="wrap-border clearfix" style="padding:0 15px;">   
+	        <div class="setting-li clearfix">
+	        	<a href="#login">
+		            <i class="my-index-icon index-icon1"></i><span class="set-floor-title" style="color:#333;width: 6em;"><%=newChihuo.localize('profile_login')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div>
+	        <div class="setting-li clearfix">
+	        	<a href="#myFootprint">
+		            <i class="my-index-icon index-icon2"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_footprint')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div>  
+	        <div class="setting-li clearfix">
+	        	<a href="#myMessage">
+		            <i class="my-index-icon index-icon3"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_followings')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div> 
+	        <div class="setting-li clearfix" style="display:none;">
+	        	<a href="#chatAdd">
+		            <i class="my-index-icon index-icon4"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('main_chatbutton')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div> 
+	        <div class="setting-li clearfix">
+	        	<a href="#chatIndex">
+		            <i class="my-index-icon index-icon5"></i><span class="set-floor-title" style="color:#333; width:7em;"><%=newChihuo.localize('profile_invite')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div> 
+	        <div class="setting-li clearfix">
+	        	<a href="#chatInvite">
+		            <i class="my-index-icon index-icon6"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_contacts')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div> 
+	        <div class="setting-li clearfix" style="border:none;">
+	        <a href="#mySettings">
+	            <i class="my-index-icon index-icon7"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_settings')%></span>
+	            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+	            </a>
+	        </div>        
+    	</div>
+	</div>
+	<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li class="message-remind">
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" class="cur">
+        <a href="javascript:;"><img src="imgs/bottom-red4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>

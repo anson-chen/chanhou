@@ -1,0 +1,227 @@
+<nav class="top-nav clearfix">
+  <span class="voice-icon"></span>
+  <div class="index-search">
+    <input type="text" name="" placeholder="<%=newChihuo.localize('main_searchbutton')%>">
+    <i></i>
+  </div>
+  <img src="imgs/index-logo.png" class="index-logo">
+  <div class="top-location home-top-location"><%=cityData[0].cityname%></div>
+</nav>
+<div class="index-banner" style="position:relative;"> 
+  <div class="welcome-tips">
+    <%=newChihuo.welcome(newChihuo.customer)%>
+  </div>
+  <!-- Swiper -->
+    <div class="swiper-container" id="index-banner">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><a href="#restaurant"><img src="imgs/banner-new.jpg" class="banner-img"></a></div>
+            <div class="swiper-slide"><a href="#restaurant"><img src="imgs/banner-new.jpg" class="banner-img"></a></div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination banner-pagination"></div>
+    </div>
+</div>
+<div class="index-round">
+  <div class="index-nav-round">
+        <ul>
+            <li class="mover"><a href="#searchSet"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a></li>
+            <li class="mover"><a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a></li>
+            <li class="mover"><a href="#map"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a></li>
+            <li class="mover"><a href="#searchHot"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_hotspotwheel')%></span></a></li>
+            <li class="mover"><a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantNear"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a></li>
+            <li class="mover"><a href="#myWish"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_todowheel')%></span></a></li>
+            <li class="mover"><a href="#searchHot"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_hotspotwheel')%></span></a></li>
+            <li class="mover"><a href="#searchSet"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a></li>
+            <li class="mover"><a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a></li>
+            <li class="mover"><a href="#map"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a></li>
+            <li class="mover"><a href="#searchHot"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_hotspotwheel')%></span></a></li>
+            <li class="mover"><a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantNear"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a></li>
+            <li class="mover"><a href="#myWish"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_todowheel')%></span></a></li>
+            <li class="mover"><a href="#searchHot"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_hotspotwheel')%></span></a></li>
+            <li class="mover"><a href="#searchSet"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a></li>
+            <li class="mover"><a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a></li>
+            <li class="mover"><a href="#map"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a></li>
+            <li class="mover"><a href="#searchHot"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_hotspotwheel')%></span></a></li>
+            <li class="mover"><a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a></li>
+            <li class="mover"><a href="#restaurantNear"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a></li> 
+        </ul>
+        <audio src="swiperplugin/sound.mp3" controls="controls" preload id="bottomAudio" loop hidden>
+    </div>
+</div>
+<div class="index-new-wrap">
+<%if(detailData !== null){%>
+<%_.each(detailData, function(d,i) {%>
+<%if(d[0].categoryid == 1){%>
+<div class="wrap-border">
+  <div class="floor-title">
+    <a href="#cuisineList/<%=newChihuo.city%>" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>  
+    <h3 class="index-title-bg1"><%=d[0].categoryname%></h3>
+  </div>
+  <div class="floor-wrap">
+    <div class="swiper-container" id="index-dish">
+        <div class="swiper-wrapper">
+        <%_.each(d, function(d,i) {%>
+            <%if(d.categoryid == 1){%>
+            <div class="swiper-slide index-dish-img"><a href="#restaurantList2/<%=newChihuo.city%>/<%=d.restcuisinetype%>"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt2.png<%}%>" alt='加载失败'><p><%=d.restcuisinetype%></p><span>（<%=d.totrestcnt%>）</span></a></div>
+        <%}})%>
+        </div>
+    </div>
+  </div>
+</div> 
+<%}})%>
+<%_.each(detailData, function(d,i) {%>
+<%if(d[0].categoryid == 5){%>
+<div class="wrap-border">
+  <div class="floor-title">
+    <a href="#cityList/<%=newChihuo.city%>" class="more-link"><%=newChihuo.localize('restaurant_more')%></a> 
+    <h3 class="index-title-bg3"><%=d[0].categoryname%></h3>
+  </div>
+  <div class="floor-wrap">
+    <!-- Swiper -->
+    <div class="swiper-container" id="index-city">
+        <div class="swiper-wrapper">
+        <%_.each(d, function(d,i) {%>
+            <div class="swiper-slide index-dish-img"><a href="#restaurantList2/<%=d.cityname%>/null"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt3.png<%}%>"><p><%=d.cityname%></p><span>（<%=d.totrestcnt%>）</span></a></div>
+            <%})%>
+        </div>
+    </div>
+  </div>
+</div>
+<%}})%>
+<%_.each(detailData, function(d,i) {%>
+<%if(d[0].categoryid > 5){%>
+<div class="wrap-border">
+  <div class="floor-title">
+    <a href="#restaurantList" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>
+    <h3 class="<%if(d[0].categoryid < 25){%>index-title-bg1<%}else{%>index-title-bg5<%}%>"><%=d[0].categoryname%></h3>
+  </div>
+  <div class="floor-wrap">
+    <!-- Swiper -->
+    <div class="swiper-container hot-set-swiper index-swiper-query" id="query<%=i%>">
+        <div class="swiper-wrapper">
+        <%_.each(d, function(d,i) {%>
+             <%if(d.categoryid < 25){%>        
+                  <div class="swiper-slide index-dish-img">
+                  <div class="father-wrap">
+                    <a href="#restaurant/<%=d.facilityid%>"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt2.png<%}%>"></a>
+                    <div class="rest-like">
+                      <p class="para-set"><%=d.facilityname%><%if(d.restpermitpassflg=='Y'){%><i class="pass-icon"></i><%}%></p>
+                      <div class="like-para"><%=d.restcuisinetype%> <%=d.restdistance%><%=newChihuo.localize('global_var_km')%><br>
+                        <span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.restavgprice%></span>
+                        <span style="color:#0bbc13;"><%=d.restdiscountpct%>%off</span><br><%=d.totlikespct%>% <%=newChihuo.localize('global_var_like')%>
+                        <img src="<%if(d.restfollowingflg == 'Y'){%><%=staticSource.restIcon3%><%}else{%><%=staticSource.restIcon4%><%}%>" class="hot-set-img <%if(d.restfollowingflg == 'Y'){%>hot-follow-done<%}else{%>hot-follow<%}%>" rest=<%=d.facilityid%> />
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+        <%}else{%>
+        <div class="swiper-slide index-dish-img">
+          <a href="#restaurantList">
+            <img src="imgs/zfx-pt.jpg"><p class="para-set"><%=d.facilityname%></p>
+              <div class="renew-para">
+                <b><%=d.restavgprice%></b><br><%=d.micalsamt%>Clas <%=newChihuo.localize('global_var_sodium')%><%=d.misodiumamt%>mg
+              </div>
+          </a>
+        </div>
+        <%}})%>
+        </div>
+    </div>
+  </div>
+</div>
+ <%}})%>
+<%}%>
+</div>
+<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li class="cur">
+        <a href="#"><img src="imgs/bottom-red1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+<div class="search-mask">
+    <div class="city-mask-list" id="homeCity">
+    <%_.each(cityData, function(d,i) {%>
+      <p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p>
+    <%})%>
+    </div>
+</div>
+<%if(detailData && detailData.length){%>
+<script>  
+    var width=window.innerWidth; 
+    var swiper1 = new Swiper('#index-banner', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+    var swiper2 = new Swiper('#index-dish', {
+        slidesPerView: 'auto',
+        paginationClickable: true
+    });
+    var swiper3 = new Swiper('#index-hot', {
+        initialSlide:0,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 15
+    });
+    var swiper4 = new Swiper('#index-city', {
+        initialSlide:0,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 10
+    });
+    var swiper5 = new Swiper('#index-rest', {
+        initialSlide:0,
+        slidesPerView: 'auto',
+        slidesOffsetBefore : 15,
+    });
+    
+      $(".index-swiper-query").each(function(i){
+          var obj = '#query'+i;
+          var k = i>=15 ? 0.05 : 0.1;
+          var swiper = new Swiper(obj, {
+            initialSlide:0,
+            slidesPerView: 'auto',
+            slidesOffsetBefore : 15,
+        });
+      });
+</script>
+<%}%>
+<script type="text/javascript">
+   // init
+    $('.index-nav-round ul').roundabout({
+        minOpacity: 1,
+        minScale: 1,
+        childSelector: '.mover',
+        tilt: -7,
+        enableDrag: true,
+        minZ: 200,
+        maxZ: 200,
+        startingChild: 0,
+        audio:true, //add audio
+        clickToFocus: false
+    });
+</script>

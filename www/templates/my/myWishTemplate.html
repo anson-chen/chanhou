@@ -1,0 +1,69 @@
+<div class="food-bg">
+    <nav class="common-title">
+        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <h3><%=newChihuo.localize('profile_footprint_wishes_header')%></h3>
+    </nav>
+    <div class="food-list-nav clearfix" id="wishTab">
+        <a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+        <a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
+    </div>
+</div>
+<div class="rest-list-wrap">
+<div class="swiper-container" id="wish-swiper">
+   <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="tab-swiper-wrap">
+            <%_.each(restData,function(d,i){%>
+                <div class="wrap-border clearfix">
+                    <a href="#restaurant/<%=d.rest_id%>">
+                        <div class="food-list-icon<%if(d.favorite_flg == 'Y'){%>6<%}else{%>7<%}%>" style="margin-top:0;">
+                        <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
+                        </div>
+                        <div class="food-img">
+                            <img src="imgs/map-img.jpg">
+                        </div>
+                        <div style="margin-left:100px;">
+                        <h3 class="rest-name-title"><%=d.rest_name%></h3>
+                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;">20%off</span><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+                        </div>
+                    </a>
+                </div>
+                <%})%>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="tab-swiper-wrap">
+            <%_.each(miData,function(d,i){%>
+            <div class="wrap-border clearfix">
+                <a href="#food">
+                    <div class="food-list-icon4">
+                    半小时 <%=newChihuo.localize('global_var_ago')%>
+                    </div>
+                    <div class="food-img">
+                        <img src="imgs/map-img.jpg">
+                    </div>
+                    <div style="margin-left:100px;">
+                    <h3 class="rest-name-title"><%=d.mi_name%></h3>
+                    <p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;"><%=d.mi_unit_price%></span><br>800cals  100mg
+                    <br>89% <%=newChihuo.localize('global_var_like')%></p>
+                    </div>
+                </a>
+            </div>
+            <%})%>
+            </div>
+        </div>      
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    var swiperWish = new Swiper('#wish-swiper', {
+        slidesPerView: 'auto',
+        onSlideChangeEnd: function(swiper){
+            $("#wishTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
+        }
+
+    });
+</script>
+    
+
+

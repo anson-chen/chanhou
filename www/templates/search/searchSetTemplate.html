@@ -1,0 +1,147 @@
+<div class="food-bg">
+		<nav class="common-title">
+			<a href="javascript:;" class="head-search-icon">阿拉伯特色</a>
+			<a href="javascript:history.go(-1);" class="common-return"></a>
+			<h3 style="margin:0 80px;"><%=newChihuo.localize('customize_filter')%></h3>
+		</nav>
+		<div class="food-list-nav clearfix" id="searchSetTab">
+			 <a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+        <a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
+		</div>
+</div>
+<div class="search-set-wrap" style="padding-bottom:80px;">
+<div class="swiper-container" id="searchSet-swiper">
+   <div class="swiper-wrapper">
+	    <div class="swiper-slide">
+	    	<div class="tab-swiper-wrap">
+			<div class="search-set-input">
+				<i></i>
+				<div style="margin:0 30px 0 20px;">
+					<input type="text" name="" value="" placeholder="<%=newChihuo.localize('customize_address')%>" class="set-address">
+				</div>		
+			</div>
+			<div class="set-floor clearfix">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_distance')%></span>
+				<div class="right-set-info clearfix" id='distance'>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'distance'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div style=" height: 15px;"></div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_rest_type')%></span>
+				<div class="right-set-info clearfix" id='resttype'>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'facilitytp'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_price')%></span>
+				<div class="right-set-info clearfix" id='price'>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'price'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div class="set-floor clearfix select-dish-mask" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;" query='1'>
+				<span class="set-floor-title"><%=newChihuo.localize('customize_cuisine')%></span>
+				<p class="set-floor-select" id='cuisine'>All</p>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_open')%></span>
+				<p class="set-floor-select"><input class="time-demo" placeholder="选择时间"/></p>
+				<div class="set-time"><img src="imgs/open-icon.png"><img src="imgs/notopen-icon.png"></div>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('')%>餐馆特性</span>
+				<div class="right-set-info set-feature clearfix" id='feature'>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'feature'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			</div>
+		</div>
+	<div class="swiper-slide">
+	    <div class="tab-swiper-wrap">
+			<div class="search-set-input">
+				<i></i>
+				<div style="margin:0 30px 0 20px;">
+					<input type="text" name="" value="" placeholder="<%=newChihuo.localize('customize_address')%>">
+				</div>		
+			</div>
+			<div class="set-floor clearfix">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_distance')%></span>
+				<div class="right-set-info clearfix">
+					<span>1千米</span><span>3千米</span><span>5千米</span><span>10千米</span><span>全城</span>
+				</div>
+			</div>
+			<div style="background:#f4f8fb; height: 15px; "></div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_price')%></span>
+				<div class="right-set-info clearfix">
+					<span>$</span><span>$$</span><span>$$$</span><span>$$$$</span>
+				</div>
+			</div>
+			<div class="set-floor clearfix select-dish-mask" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;" query=2>
+				<span class="set-floor-title"><%=newChihuo.localize('customize_cuisine')%></span>
+				<p class="set-floor-select"><%=newChihuo.localize('customize_type')%></p>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_open')%></span>
+				<p class="set-floor-select"><input class="time-demo" placeholder="<%=newChihuo.localize('customize_open')%>选择时间"/></p>
+				<div class="set-time"><img src="imgs/open-icon.png"></div>
+				
+			</div>
+		</div>
+	</div>	
+</div> 
+</div>
+<div class="search-set-fix">
+	<button class="clear-option"><%=newChihuo.localize('customize_clear')%></button>
+	<button class="set-sure" id='setSure'><%=newChihuo.localize('customize_search')%></button>
+</div>
+<div class="search-mask">
+    <div class="city-mask-list">
+    	<p>阿富汗</p>
+    	<p>美国</p>
+    	<p>亚洲</p>
+    	<p>加拿大</p>
+    	<p>多伦多</p>
+    	<p>北京</p>
+    	<p>上海</p>
+    	<p>香港</p>
+    	<p>天津</p>
+    	<p>渥太华</p>
+    </div>
+    <div class="dish-mask-list">
+    	<%_.each(data,function(d,i){%>
+			<%if(d.custom_category == 'cuisine'){%>
+				<p><%=d.name%></p>
+		<%}})%>
+
+    </div>	
+</div>
+<%if(data.length){%> 
+<script>
+    var setTime = $('.time-demo').mobiscroll().time({
+        theme: 'ios',
+        display: 'bottom',
+        headerText: false,
+        maxWidth: 90
+    });
+
+	var swiperSearchSet = new Swiper('#searchSet-swiper', {
+        slidesPerView: 'auto',
+        onSlideChangeEnd: function(swiper){
+        	$("#searchSetTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
+        }
+    });
+</script>
+<%}%>

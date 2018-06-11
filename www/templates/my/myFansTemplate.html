@@ -1,0 +1,33 @@
+<div class="food-bg" style="padding-bottom:20px;">
+    <nav class="common-title">
+        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <h3><%=newChihuo.localize('profile_footprint_followers_header')%></h3>
+    </nav>
+</div>
+<div class="rest-list-wrap">
+<%_.each(data,function(d,i){%>
+        <div class="wrap-border clearfix">
+        <%if(d.following_flg == 'N'){%>
+         <div class="food-list-icon11">
+            <%=newChihuo.localize('profile_footprint_followers_follow')%>
+            </div>
+        <%}else{%>
+            <div class="food-list-icon10">
+            已关注
+            </div>
+        <%}%>    
+            <div class="food-img" style="width:70px;">
+                <img src="<%if(d.myfollower_photo_url){%><%=d.myfollower_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" style="border-radius: 50%; height:70px;">
+            </div>
+            <div style="margin-left:80px;">
+                <h3 class="rest-name-title"><%=d.myfollower_display_name%></h3>
+                <p class="rest-info-show" style="padding-top:5px;"><%if(d.myfollower_city_name){%><%=d.myfollower_city_name%><%}%> <%=chihuo.getLastTime(d.myfollower_registered_datetime)%> 前加入</p>
+                <div class="fans-info">
+                    <%if(d.myfollower_total_reviews){%><img src="imgs/fans-icon1.png"><span><%=d.myfollower_total_reviews%></span><%}%>
+                    <%if(d.myfollower_total_photos){%><img src="imgs/fans-icon2.png"><span><%=d.myfollower_total_photos%></span><%}%>
+                    <%if(d.myfollower_total_friends){%><img src="imgs/fans-icon3.png"><span><%=d.myfollower_total_friends%></span><%}%>
+                </div>
+            </div>
+        </div>
+ <%})%>      
+</div>

@@ -1,0 +1,63 @@
+<div class="rest-bg" style="padding-bottom:70px;">
+	<nav class="common-title">
+		<a href="javascript:;" class="sub-comment" restId="<%=restId%>"><%=newChihuo.localize('review_submit')%></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3 style="margin:0 60px;"><%=newChihuo.localize('review_header')%></h3>
+	</nav>
+	<div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">
+		<div class="comment-select"><p><%=newChihuo.localize('review_overall ')%></p><span class="like-up like-comment-icon"><img src="imgs/like-up.png"></span><span class="like-word like-comment-word"><%=newChihuo.localize('global_var_like')%></span><span class="like-comment-icon"><img src="imgs/like-down.png" style="margin-top:2px"></span><span class="like-comment-word"><%=newChihuo.localize('review_dislike')%></span></div>
+		<ul class="comment-select-list clearfix">
+			<li> 
+				<p class="comment-service cur" attr="service">服务好</p>
+			</li>
+			<li>
+				<p class="comment-service" attr="service">服务一般</p>
+			</li>
+			<li>
+				<p class="comment-service" attr="service">服务差</p>
+			</li>
+			<li>
+				<p class="comment-taste cur" attr="taste">味道好</p>
+			</li>
+			<li>
+				<p class="comment-taste" attr="taste">味道一般</p>
+			</li>
+			<li>
+				<p class="comment-taste" attr="taste">味道差</p>
+			</li>
+			<li>
+				<p class="comment-environment cur" attr="environment">环境好</p>
+			</li>
+			<li>
+				<p class="comment-environment" attr="environment">环境一般</p>
+			</li>
+			<li>
+				<p class="comment-environment" attr="environment">环境差</p>
+			</li>
+			<li>
+				<p class="comment-clean cur" attr="clean">卫生好</p>
+			</li>
+			<li>
+				<p class="comment-clean" attr="clean">卫生一般</p>
+			</li>
+			<li>
+				<p class="comment-clean" attr="clean">卫生差</p>
+			</li>
+		</ul>
+		<textarea class="user-textarea" placeholder="<%=newChihuo.localize('review_tooltips')%>"></textarea>
+		<div class="comment-photo-wrap clearfix">
+			<!-- <div class="comment-photo-show">
+				<img src="imgs/map-img.jpg">
+				<b>+</b>
+			</div> -->
+			<a href="#photoList">
+			<div class="add-comment-photo">
+			</div></a>
+		</div>
+	</div>
+	<div class="fix-comment-bottom">
+		<a href="#" class="bottom-rihgt"><img src="imgs/upload.png"></a>
+		<a href="#" class="bottom-left"><img src="imgs/face-icon.png"></a>
+		<a href="javascript:;" class="bottom-middle" id="capture"><img src="imgs/photo-go.png"></a>
+	</div>
+</div>	
