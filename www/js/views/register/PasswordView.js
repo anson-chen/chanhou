@@ -81,12 +81,9 @@ define([
         },
         success: function (data) {
           if (data.status == 0) {
-            if(data.data.status_code == 0){
+            if(data.data[0].status_code == 0){
               newChihuo.showPopInfo("修改密码成功");
-              newChihuo.customerId = data.data.customer_id;
-              // app_router.navigate('Index',{
-              //     trigger: true
-              // });
+            
             }else{
                newChihuo.showPopInfo("修改密码失败");
             }

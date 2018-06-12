@@ -41,7 +41,7 @@ define([
                   type: 'GET',
                   url: chihuo.getApiUri('findRestDetailByName2.json'),
                   data: {
-                     restname: name,
+                     restname: decodeURIComponent(name),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
