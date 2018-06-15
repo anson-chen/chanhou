@@ -1062,7 +1062,7 @@ a:hover {
     height: 28px;
 }
 .rest-bottom-middle {
-    background: url(../imgs/communication.png) #f0f0f0  center center no-repeat;
+    background: url(../imgs/buddies.jpg) #f0f0f0  center center no-repeat;
     background-size: 70%;
     width: 66px;
     height: 66px;
@@ -1073,19 +1073,23 @@ a:hover {
     margin-left: -33px;
     z-index: 200;
 }
-.message-remind {
+.message-remind,.chat-red-point {
     position: relative;
 }
-.message-remind:after{
+.message-remind:after,.chat-red-point:after{
     position: absolute;
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: red;
     margin-left: 10px;
     left: 50%;
-    top: 8px;
+    top: 7px;
+}
+.chat-red-point:after{
+    left: -20px;
+    top: 0;
 }
 .map-fix-rest {
     position: fixed;

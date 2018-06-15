@@ -34,8 +34,9 @@ var newChihuo = {
            func && func();
        });
     },
-    windowInit: function(){
-      window && window.scrollTo(0,0) && $(window).off('scroll');
+    windowInit: function(distance){
+      var distance = distance || 0;
+      window && window.scrollTo(0,distance) && $(window).off('scroll');
     },
     returnToTop: function(){
       $('.return-top-icon').off('click').on('click',function(){
@@ -117,7 +118,8 @@ var newChihuo = {
     positionTime: null,
     positionChanged: false,
     customerId: null,
-    customer: '' || 'friend'
+    customer: '' || 'friend',
+    msgList:{}
 };
 //静态资源路径
 var staticSource = {
@@ -274,6 +276,27 @@ var chihuo = {
       return newChihuo.address+'/wkfdmk/'+ api;
   },
 
+  timestampToTime: function(timestamp) {
+        var now = new Date();
+        var date = new Date(timestamp);
+        var y = new Date(timestamp+3600*1000*24);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        if(now.valueOf() > timestamp){
+           if(date.getDate() == now.getDate()){
+              return 'Today';
+           }
+           if(y.getDate() == now.getDate()){
+               return 'Yesterday';
+           }
+        }
+        return Y+M+D;
+    },
+
   getDate: function(time){
       var d = new Date(time);
       return (d.getHours() >=10 ? d.getHours() : '0'+d.getHours()) +':'+ (d.getMinutes()>=10 ? d.getMinutes() : '0'+d.getMinutes());
@@ -355,6 +378,28 @@ var chihuo = {
 
   wkAjax: function(option){
       return $.ajax(option);
+  },
+
+  wkLoginPermission: function(){
+      if(newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
+         return true;
+
+      }else{
+       var pop = $('#popInfo');
+       var info ='<p>please login in first</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           app_router.navigate('login',{
+                  trigger: true
+                });
+          //发送邮件api (todo)
+       });
+       return false;
+      }
   },
 
   positionChange: function(newLat, newLon,lastLat,lastLon){
@@ -490,25 +535,39 @@ var chihuo = {
                         });
   },
   getMsgNum: function(){
-            newChihuo.customerId && chihuo.wkAjax({
+            (newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) 
+            && chihuo.wkAjax({
                             type: 'GET',
                             url: chihuo.getApiUri2('msgver.json'),
                             data: {
-                               custId: newChihuo.customerId
+                               custId: newChihuo.customerId || newChihuo.getLocalStorage('customer_id')
                             },
                             beforeSend: function (xhr) {},
                            //完成请求后触发。即在success或error触发后触发
                             complete: function (xhr, status) {},
                             success: function(data){
+                              
                                if(data.pp){
                                  var msg = data.pp['1'];
                                  msg && msg.length && $.each( msg, function(index,value){
                                      newChihuo.msg += parseInt(value['v']);
+                                     if(newChihuo.msgList.hasOwnProperty(value['s'])){
+                                      newChihuo.msgList[value['s']] += parseInt(value['v']);
+                                     }else{
+                                      newChihuo.msgList[value['s']] = parseInt(value['v']);
+                                     }
+                                
+
                                  });
                                  if(newChihuo.msg > 0){
-                                  $('#msgRemind').addClass('message-remind');
+                                  $('#msgRemind').addClass('message-remind').click(function(){
+                                         $('#msgRemind').removeClass('message-remind');
+                                         newChihuo.msg = 0;
+                                    });
+                                  }
+
                                  }
-                               }
+                              
                             },
                             error: function(xhr){
                                 // newChihuo.errorPopInfo();
@@ -516,6 +575,21 @@ var chihuo = {
 
                         });
 
+  },
+  setMsgRemind: function(id){
+    if(newChihuo.msgList.hasOwnProperty(id)){
+       return true;
+    }else{
+      return false;
+    } 
+  },
+
+  deleteMsgRemind: function(id){
+    if(newChihuo.msgList.hasOwnProperty(id) && newChihuo.getPage('chatContent')){
+       delete newChihuo.msgList[id];
+    }else{
+       return;
+    } 
   },
 
   dealData: function(data,status){

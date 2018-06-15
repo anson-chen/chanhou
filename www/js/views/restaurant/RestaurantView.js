@@ -32,7 +32,7 @@ define([
     },
 
     checkPermission: function(){
-      newChihuo.checkPermission();
+      chihuo.wkLoginPermission();
     },
 
     findRestDetailById: function(id){
@@ -74,7 +74,7 @@ define([
         if($(this).find('.rest-status').hasClass('done')){
           return;
         }
-            chihuo.wkAjax({
+         chihuo.wkLoginPermission() && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestCheckin.json'),
                   data: {
@@ -99,7 +99,7 @@ define([
         if($(this).find('.rest-status').hasClass('done')){
           return;
         }
-              chihuo.wkAjax({
+          chihuo.wkLoginPermission() && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestCompliment.json'),
                   data: {
@@ -125,7 +125,7 @@ define([
         if($(this).find('img').hasClass('done')){
           return;
         }
-              chihuo.wkAjax({
+         chihuo.wkLoginPermission() && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestFollow.json'),
                   data: {
@@ -153,7 +153,7 @@ define([
         }
         var restId = $(this).attr('rest');
         var _this = this;
-              chihuo.wkAjax({
+          chihuo.wkLoginPermission() && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestFavor.json'),
                   data: {
@@ -195,7 +195,7 @@ define([
     },
 
     photoInterface: function(){
-       chihuo.wkAjax({
+      chihuo.wkLoginPermission() && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestPhoto.json'),
                   data: {
@@ -218,7 +218,7 @@ define([
     },
 
     addPhoto: function(){
-      newChihuo.checkPermission() && photoUse.init(this.photoInterface);
+      chihuo.wkLoginPermission() && photoUse.init(this.photoInterface);
     }
 
   });

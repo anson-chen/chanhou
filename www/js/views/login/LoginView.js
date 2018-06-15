@@ -90,6 +90,10 @@ define([
                 },1400);
                 
               }else if(data.data[0].status_code == 10061){ 
+                newChihuo.customerId = null;
+                newChihuo.setLocalStorage('customer_id','');
+                newChihuo.setLocalStorage('email_address','');
+                newChihuo.setLocalStorage('password','');
                _this.emailPopInfo();               
               }else if(data.data[0].status_code == 1003){ 
                 newChihuo.showPopInfo("账号密码不匹配",1200);             

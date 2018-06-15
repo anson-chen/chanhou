@@ -22,6 +22,7 @@ define([
     render: function(){
       newChihuo.setPage('restaurantWishes');
       newChihuo.windowInit();
+      initData.restaurantWishesData.data = [];
       this.$el.html(_.template(restaurantWishesTemplate,initData.restaurantWishesData));
       this.initData(0);
       this.loadMore(10);

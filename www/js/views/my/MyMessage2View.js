@@ -37,7 +37,7 @@ define([
                   type: 'POST',
                   url: chihuo.getApiUri('addCustMoment.json'),
                   data: {
-                     custid:1057,
+                     custid: newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
                      type:'all',
                      momenttype:'all',
                      lat: newChihuo.lat,

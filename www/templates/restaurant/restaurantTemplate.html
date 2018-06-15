@@ -156,7 +156,7 @@
 				</li>
 			<%})%>
 			</ul>
-			<a href="<%if(newChihuo.getLocalStorage('customer_id')){%>#submitComment/<%=d.rest_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
+			<a href="<%if(newChihuo.getLocalStorage('customer_id') || newChihuo.customerId){%>#submitComment/<%=d.rest_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
 		</div>
 	</div>
 	<div class="rest-bottom">

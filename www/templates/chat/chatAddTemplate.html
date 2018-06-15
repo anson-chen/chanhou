@@ -14,10 +14,10 @@
 <%_.each(data,function(d,i){%>
 		<div class="rest-comment-head clearfix">
 			<a href="#chatContent/<%=d.friend_cust_id%>/<%=encodeURI(d.friend_cust_name)%>">
-		    <span class="chat-time"><%=chihuo.getDate(d.created_datetime)%></span>
+		    <span class="chat-time"><%=chihuo.timestampToTime(d.created_datetime)%> <%=chihuo.getDate(d.created_datetime)%></span>
 			<img src="<%if(d.friend_cust_url){%><%=d.friend_cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
 				<div class="comment-right-info">
-					<h3 style="background:none;"><%=d.friend_cust_name%></h3>
+					<h3 style="background:none;" <%if(chihuo.setMsgRemind(d.friend_cust_id)){%>class="chat-red-point"<%}%>><%=d.friend_cust_name%></h3>
 					<p><%=d.lst_msg_dtl%></p>
 				</div>
 			</a>
@@ -32,7 +32,7 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li class="cur">
+      <li class="cur" id="msgRemind">
         <a href="#chatAdd"><img src="imgs/detail-icon10.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
@@ -42,12 +42,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+      <li>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
+      <li>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

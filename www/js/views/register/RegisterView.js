@@ -88,7 +88,7 @@ define([
           if (data.status == 0) {
             if(data.data[0].status_code == 0 || data.data[0].status_code){
               newChihuo.showPopInfo("注册成功,请注意查收验证邮件",1200);
-              newChihuo.customerId = data.data[0].customer_id;
+              // newChihuo.customerId = data.data[0].customer_id;
               // _this.confirmCust();
               setTimeout(function(){
                   app_router.navigate('Index',{

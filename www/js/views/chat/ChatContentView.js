@@ -21,6 +21,7 @@ define([
       initData.chatContentData.name = name;
       initData.chatContentData.hisData = [];
       this.$el.html(_.template(chatContentTemplate,initData.chatContentData));
+      chihuo.deleteMsgRemind(toId);
       this.initData(toId);
       
     },
@@ -42,9 +43,7 @@ define([
                      if(data.status == 0){
                       initData.chatContentData.hisData = data.data;
                         newChihuo.getPage('chatContent') && _this.$el.html(_.template(chatContentTemplate,initData.chatContentData));
-                        //  newChihuo.getPage('chatContent') && setTimeout(function(){
-                        //    newChihuo.getPage('chatContent') && _this.initData(toId);
-                        // },5000);
+                        window.scrollTo(0,100000);   
                      }
                   } 
               });  
