@@ -2,8 +2,7 @@
  * @下拉刷新
  * 善有部分不完善之处，后续稍稍进行扩展
  */
- $(function(){
-(function(){
+(function($){
 	var isValid = false,	// 是否生效
 		isTouching = false,	// 触摸中标识
 		isEfec = false,	// 触摸是否生效
@@ -196,9 +195,11 @@
 	var initlize = function() {
 		loadingH = options.$loadingEl.height();
 		$el = options.$el;
+		if($el.length){
 	    $el[0].addEventListener('touchstart', touchStart, false);
 	   	$el[0].addEventListener('touchmove', touchMove, false);
 	    $el[0].addEventListener('touchend', touchEnd, false);
+	    }
 	}
 
     var pullDown = function(){
@@ -224,5 +225,4 @@
     	return $.pPullRefresh(settings);
     }
 
-})();
-});
+})(jQuery);

@@ -23,7 +23,7 @@ define([
     },
 
     photoInit: function(){
-      photoUse.init();
+      photoUse.bindEvents();
     },
 
     selectLike: function(e){

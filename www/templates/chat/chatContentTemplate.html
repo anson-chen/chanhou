@@ -10,14 +10,14 @@
   <div class="chat-time-set"><%=chihuo.timestampToTime(d.created_datetime)%> <%=chihuo.getDate(d.created_datetime)%></div>
   <%if(d.from_customer_id == custId){%>
    <div class="other-say">
-  	<img src="imgs/photo.png">
+  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>">
   	<div class="other-info">
   		<p><%=d.chat_msg_detail%></p>
   	</div>
   	</div>
     <%}else{%>
   <div class="myself-say">
-  	<img src="imgs/photo.png">
+  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>">
   	<div class="myself-info">
   		<p><%=d.chat_msg_detail%></p>
   	</div>

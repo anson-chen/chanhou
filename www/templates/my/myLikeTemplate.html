@@ -13,19 +13,21 @@
    <div class="swiper-wrapper">
 	    <div class="swiper-slide">
 	    	<div class="tab-swiper-wrap">
+	    	<%_.each(data,function(d,i){%>
 	    	<div class="wrap-border clearfix">
-				<div class="food-list-icon8">
-				半小时 <%=newChihuo.localize('global_var_ago')%>
+				<div class="<%if(d.favorite_flg){%>food-list-icon8<%}else{%>food-list-icon9<%}%>">
+				<%=chihuo.getLastTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
 				</div>
 				<div class="food-img">
-					<img src="imgs/map-img.jpg">
+					<img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
 				</div>
 				<div style="margin-left:100px;">
-					<h3 class="rest-name-title">重庆水煮鱼<img src='imgs/pass-icon.png'/></h3>
-					<p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>重庆  980米
-		<br>89% <%=newChihuo.localize('global_var_like')%></p>
+					<h3 class="rest-name-title"><%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.pricelevel_per_person%></span><span style="color:#0bbc13;">20%off</span><br><%=d.city_name%>  <%=d.cust_distance%>km
+		<br><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%></p>
 				</div>
 			</div>
+			<%})%>
 	    	</div>
 	    </div>
 	    <div class="swiper-slide">

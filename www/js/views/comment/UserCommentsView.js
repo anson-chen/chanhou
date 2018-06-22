@@ -25,6 +25,7 @@ define([
       newChihuo.setPage('userComments');
       newChihuo.windowInit();
       initData.userCommentsData.id = id;
+      initData.userCommentsData.data = [];
       this.$el.html(_.template(userCommentsTemplate,initData.userCommentsData));
       this.initData(id,0);
       this.loadMore(id,10);
@@ -51,10 +52,10 @@ define([
                         $('.loading-step1').show();
                         $('.loading-step2,.loading-step3').hide();
                         _this.bindEvents();
-                        var all = data.data[0].total_review_cnt;
-                        if(all){
+                        // var all = data.data[0].total_review_cnt;
+                        // if(all){
 
-                        }
+                        // }
                      }
                   } 
               });  

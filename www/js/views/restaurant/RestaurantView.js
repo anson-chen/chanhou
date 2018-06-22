@@ -218,7 +218,7 @@ define([
     },
 
     addPhoto: function(){
-      chihuo.wkLoginPermission() && photoUse.init(this.photoInterface);
+      chihuo.wkLoginPermission() && photoUse.bindEvents(this.photoInterface);
     }
 
   });

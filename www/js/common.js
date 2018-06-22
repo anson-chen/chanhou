@@ -36,7 +36,9 @@ var newChihuo = {
     },
     windowInit: function(distance){
       var distance = distance || 0;
-      window && window.scrollTo(0,distance) && $(window).off('scroll');
+      window && window.scrollTo(0,distance);
+      window && $(window).off('scroll');
+
     },
     returnToTop: function(){
       $('.return-top-icon').off('click').on('click',function(){
@@ -99,6 +101,37 @@ var newChihuo = {
         return true;
       } 
     },
+    tpLogin: function(uid){
+      if(uid && uid.sub){
+        var utp = uid.sub.indexOf('facebook') >= 0 ? 1 : 0;
+            utp = uid.sub.indexOf('linkedin') >= 0 ? 2 : 0;
+      }
+       uid && uid.sub && chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri('tpLogin.json'),
+          data:{
+            uid: uid.sub,
+            utp: utp ,// 1 :fb,2：linkin
+            lat: newChihuo.lat,
+            lng: newChihuo.lon,
+            locale: 'en'
+          },
+          success: function (data) {
+            if (data.status == 0) {
+              if(data.data[0].status_code == 0){
+                newChihuo.showPopInfo("第三方登录成功",1200);
+                newChihuo.customerId = data.data[0].customer_id;
+                newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
+              }else{
+               newChihuo.showPopInfo("第三方登录失败",1200);
+              }
+            }
+          },
+          error: function () {
+
+          }
+        });
+    },
     locale: 'en-CA',
     motionStatus: false,
     shakeTrigger: 1,
@@ -119,7 +152,8 @@ var newChihuo = {
     positionChanged: false,
     customerId: null,
     customer: '' || 'friend',
-    msgList:{}
+    msgList:{},
+    lock: null,
 };
 //静态资源路径
 var staticSource = {
@@ -259,6 +293,12 @@ var initData = {
       name: '',
       src: ''
     }
+  },
+  myPhotosData: {
+    data:[]
+  },
+   myLikeData: {
+    data:[]
   }
 };
 
@@ -319,7 +359,7 @@ var chihuo = {
    getRightTime: function(time){
       var d = new Date().getTime();
       var n;
-      var s = parseInt(d-time);
+      var s = time ? parseInt(d-time) : 1;
       if(s > (24*1000*60*60*365)) {
          var year = Math.ceil(s/(24*1000*60*60*365)) >1 ? 'years' : 'year' ;
          n = Math.ceil(s/(24*1000*60*60*365))+ ' ' +(newChihuo.locale == 'en-CA' ? year : '年');
@@ -759,16 +799,31 @@ var chihuo = {
 
   uploadusrphotostr: function() { 
     return this.getApiUri2() + "/upload_user_photostr.json";
-  },
+  }
 
-  doUploadPhoto:  function() {
+}
+
+var photoUse={
+    bindEvents: function(cb){
+      $('.photo-select-wrap').addClass('show-photo-select');
+      $('.photo-action1').on('click',function(){
+        photoUse.init(cb);
+        $('.photo-select-wrap').toggleClass('show-photo-select');
+      });
+
+       $('.photo-action2').on('click',function(){
+        photoUse.doUploadPhoto(cb);
+        $('.photo-select-wrap').toggleClass('show-photo-select');
+      });
+
+    },
+     doUploadPhoto: function(cb) {
         var formSelector = "#usr-formPhoto";
         if (!document.getElementById('usrFile')) {
-          $(e.currentTarget).next(formSelector).append("<input id='usrFile' type='file' name='file' accept='image/*'/>").find("input").click();
+          $(formSelector).append("<input id='usrFile' type='file' name='file' accept='image/*'/>").find("input").click();
         } else {
-          $(e.currentTarget).next(formSelector).find("input").click();
+          $(formSelector).find("input").click();
         }
-
         var filechooser = document.getElementById('usrFile');
         filechooser.onchange = function () {
           var files = this.files;
@@ -798,7 +853,7 @@ var chihuo = {
               var w = chihuo.usrLogoWidth;
               var h = w * img.height / img.width;
               var ftyp = 'image/jpeg';
-              var compressedDataUrl = WKPicCompress(img,ftyp,w,h,q);
+              var compressedDataUrl = chihuo.WKPicCompress(img,ftyp,w,h,q);
               img = null;
               var imageURI = compressedDataUrl;
               var payload = {
@@ -809,11 +864,14 @@ var chihuo = {
 
               var onSuccess = function (data) {
                 //var target="#photoUpload"+len;
-                if (data.status == 0) {
-                  $("#changePhoto img").attr("src",chihuo.address+"/"+data.data.photo_url);
-                } else {
-                  //$(target).find("b").text(getWKLocaleSrc("上传失败"));
-                }
+                 if (data.status == 0) {
+                       var html = '<div class="comment-photo-show"><img src="'+newChihuo.address+'/'+data.url+'"><b>+</b></div>';
+                       $('.comment-photo-wrap').prepend(html);
+                       var src = newChihuo.address+'/'+data.url;
+                       cb && cb(src);
+                    } else {
+                      
+                    }
               };
 
               var onError = function (data) {
@@ -838,7 +896,11 @@ var chihuo = {
                         url: chihuo.imgstrupload(),
                         data: payload,
                         success: function(data){
-                         callback();
+                          if(data.status == 0 && data.url){
+                            callback(true,data);
+                          }else{
+                            callback(false,data.errorMsg);
+                          }
                         } 
                     });
             };
@@ -847,11 +909,7 @@ var chihuo = {
           reader.readAsDataURL(file);
           $(formSelector + " input").remove();
         };
-  }
-
-}
-
-var photoUse={
+    },
     init:function(cb){
         var pictureSource;        //图片来源
         var destinationType;        //设置返回值的格式
@@ -982,7 +1040,7 @@ var photoUse={
                     var w = chihuo.picWidth;
                     var h = w * img.height / img.width;
                     var ftyp = 'image/jpeg';
-                    var compressedDataUrl = WKPicCompress(img,ftyp,w,h,q);
+                    var compressedDataUrl = chihuo.WKPicCompress(img,ftyp,w,h,q);
                     img = null;
                     var imageURI = compressedDataUrl;
                     //wkapp160922  console.log(imageURI);

@@ -17,6 +17,7 @@ define([
            'click .home-top-location': 'showCity',
            'click #homeCity p': 'changeCity',
            'click .hot-follow': 'addFollow',
+           'click .auth0 img':'auth0LockShow',
        },
 
         render: function(){
@@ -27,6 +28,42 @@ define([
             chihuo.getPosition(homeTemplate);
             !newChihuo.globalStatus && setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
             newChihuo.globalStatus = true;
+            this.auth0Init();
+        },
+
+        auth0Init: function(){
+          var options = {
+            allowedConnections: ['twitter', 'facebook', 'linkedin']
+          };
+          // Initializing our Auth0Lock
+          newChihuo.lock = newChihuo.lock ||  new Auth0Lock(
+            'fGIEyQ2eW5hEj1CvdRnfeXQUOTuUjDPK',
+            'foodymonkey.auth0.com',
+            options
+          );
+
+          newChihuo.lock && newChihuo.lock.on("authenticated", function(authResult) {
+        
+  // Use the token in authResult to getUserInfo() and save it to localStorage
+          newChihuo.lock.getUserInfo(authResult.accessToken, function(error, profile) {
+            if (error) {
+              // Handle error
+              return;
+            }
+            // console.log(profile);
+            newChihuo.tpLogin(profile);
+            localStorage.setItem('accessToken', authResult.accessToken);
+            localStorage.setItem('profile', JSON.stringify(profile));
+          });
+      });
+
+        },
+
+       auth0LockShow: function(){
+        
+        newChihuo.lock && newChihuo.lock.show();
+            
+
         },
 
         addFollow: function(e){
@@ -49,6 +86,8 @@ define([
                   } 
               });  
         },
+
+
 
         searchLink: function(){
             app_router.navigate('searchInit2', {

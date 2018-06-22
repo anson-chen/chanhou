@@ -18,7 +18,7 @@
 							<p><span class="comment-time"><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.reviewer_city_name%> <%=d.reviewer_country_name%></span></p>
 						</div>
 					</div>
-					<p class="comment-cont"><%=newChihuo.showMorePara(d.review_details)%><i></i></p>
+					<p class="comment-cont"><%=newChihuo.showMorePara(d.review_details.split('~~~')[0])%><i></i></p>
 					<%if(d.review_concat_photo_urls){%>
 						<div class="review-photo-urls clearfix">
 							<%_.each(d.review_concat_photo_urls.split(','),function(d,i){%>
@@ -31,8 +31,14 @@
 						<div class="comment-operation"><span class="good-icon" review=<%=d.cust_rest_review_id%>>100</span></div>
 						<div class="comment-operation user-page"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
-					<div class="communication" style="display:none;">
+					<%if(d.review_details.indexOf('~~~')>0){%>
+					<div class="communication">
+					<%_.each(JSON.parse(d.review_details.split('~~~')[1]),function(d,i){%>
+						<p><span><%=d.display_name%>：</span><%=d.comment_details%></p>
+						<!-- <p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p> -->
+					<%})%>
 					</div>
+					<%}%>
 					<div class="fix-comment-bottom user-recall">
 					<a href="javascript:;" class="bottom-left"><img src="imgs/face-icon.png"></a>
 					<div class="chat-input-wrap">

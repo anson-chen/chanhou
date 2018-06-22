@@ -29,7 +29,7 @@ define([
     },
 
     addProfileImg: function(){
-      photoUse.init(this.showProfileImg);
+      photoUse.bindEvents(this.showProfileImg);
       
     },
 

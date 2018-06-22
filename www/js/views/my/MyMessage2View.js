@@ -10,7 +10,7 @@ define([
     el: $("#page"),
     events: {
      'click .comment-effect6 .comment-cont':'showMoreComment',
-     
+     'click #feedsTab a':'showTabWrap' 
     },
     status: {
       st: 0,
@@ -26,7 +26,7 @@ define([
       // if(initData.myMessage2Data.data.length == 0){
       //   this.initData(this.status.st);
       // }
-      this.initData(this.status.st);
+      this.initData(0);
       this.loadMore(10);
       this.bindEvent();
     },
@@ -60,6 +60,13 @@ define([
                      }
                   } 
             });  
+    },
+
+     showTabWrap: function(e){
+      var obj=$(e.currentTarget);
+      var index=obj.index();
+      obj.addClass('cur').siblings().removeClass('cur');
+      swiperFeeds.slideTo(index);
     },
 
     loadMore: function(distance){

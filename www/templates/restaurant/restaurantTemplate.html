@@ -159,35 +159,36 @@
 			<a href="<%if(newChihuo.getLocalStorage('customer_id') || newChihuo.customerId){%>#submitComment/<%=d.rest_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
 		</div>
 	</div>
+	<%if(d.recomm_rests){%>
 	<div class="rest-bottom">
-		<div class="rest-detail">
+		   <div class="rest-detail">
 				<div class="detail-border">
-					<a href="#restaurantList" class="title-more-link"><%=newChihuo.localize('restaurant_seeall')%></a>
 					<h3 class="detail-block-title" style="padding-left:0;"><%=newChihuo.localize('restaurant_recommended')%></h3>
 				</div>
 			</div>	
 			<div class="swiper-container" id="rest-like">
 			    <div class="swiper-wrapper">
-			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
+			    <%_.each(JSON.parse(d.recomm_rests),function(d,i){%>
+			            <div class="swiper-slide index-dish-img"><a href="#restaurant/<%=d.restid%>"><img src="<%if(d.photo_url){%><%=d.photo_url%><%}else{%>imgs/pt1.png<%}%>">
+			            	<div class="rest-like"><p class="para-set"><%=d.rest_name%></p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 <%=d.distance.toFixed(2)%><%=newChihuo.localize('global_var_km')%><br><%=d.total_like_percentage%>% <%=newChihuo.localize('global_var_like')%></div></div>
 			            	</a>
 			            </div>
-			            <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
-			            </a>
-			            </div>
-			           
-			             <div class="swiper-slide index-dish-img"><a href="#restaurant"><img src="imgs/pt1.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利餐意大利大利餐意大利餐意大利餐意大利餐</p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 10<%=newChihuo.localize('global_var_km')%><br>89%<%=newChihuo.localize('global_var_like')%></div></div>
-			            </a>
-			            </div>
-			        
+			    <%})%>
 			    </div>
     		</div>
     	</div>	
-    	<%}})%>	
+    	<%}}})%>	
 	</div>
 </div>
+<div class="photo-select-wrap">
+	<ul>
+		<li class="photo-action1">拍照</li>
+		<li class="photo-action2">从手机相册选择</li>
+	</ul>
+	<form id="usr-formPhoto" style="display:none;">
+		
+	</form>	
+</div>	
 <script>
  	var width=window.innerWidth; 
     var swiperRest1 = new Swiper('#rest-banner', {

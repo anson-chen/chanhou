@@ -22,10 +22,6 @@ define([
         _this.loginInterface();
       });
 
-      $(".other-img img").on("click",function(){
-        var uid = '', utp = '';
-        _this.tpLogin(uid,utp);
-      });
     },
 
     loginPopInfo: function(func){
@@ -100,6 +96,8 @@ define([
               }else{
                newChihuo.showPopInfo("登录失败",1200); 
               }
+            }else{
+              newChihuo.showPopInfo("登录失败",1200);
             }
           },
           error: function () {
@@ -110,34 +108,6 @@ define([
          newChihuo.showPopInfo("请填写信息完整",1200);
         return false;
       }
-    },
-
-    tpLogin: function(uid,utp){
-       chihuo.wkAjax({
-          type: 'POST',
-          url: chihuo.getApiUri('tpLogin.json'),
-          data:{
-            uid: uid || 'gao4_facebook',
-            utp: utp || 1,
-            lat: newChihuo.lat,
-            lng: newChihuo.lon,
-            locale: 'en'
-          },
-          success: function (data) {
-            if (data.status == 0) {
-              if(data.data[0].status_code == 0){
-                newChihuo.customerId = data.data[0].customer_id;
-              }else{
-
-               newChihuo.showPopInfo("登录失败",1200);
-                
-              }
-            }
-          },
-          error: function () {
-
-          }
-        });
     },
 
     nrLogin: function(){

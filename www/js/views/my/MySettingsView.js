@@ -9,7 +9,7 @@ define([
   var MySettingsView = Backbone.View.extend({
     el: $("#page"),
     events: {
-     
+     'click #logout':'logout'
     },
 
     render: function(){
@@ -18,12 +18,23 @@ define([
       this.$el.html(_.template(mySettingsTemplate,initData.mySettingsData));
     },
 
-    showTabWrap: function(e){
-      var obj=$(e.currentTarget);
-      var index=obj.index();
-      obj.addClass('cur').siblings().removeClass('cur');
-      $(".tab-wish-wrap").hide().eq(index).show();
-    }
+    logout: function(){
+       chihuo.wkAjax({
+          type: 'GET',
+          url: chihuo.getApiUri('logout.json'),
+          success: function (data) {
+            if (data.status == 0) { 
+               newChihuo.showPopInfo("退出成功",1200);
+                newChihuo.customerId = null;
+                newChihuo.removeLocalStorage('customer_id');
+            }
+          },
+          error: function () {
+
+          }
+        });
+
+    },
 
   });
   return MySettingsView;

@@ -19,7 +19,6 @@ define([
       newChihuo.setPage('myFootprint');
       newChihuo.windowInit();
       this.$el.html(_.template(myFootprintTemplate));
-      this.initData();
     },
 
     showMoreInfo: function(e){

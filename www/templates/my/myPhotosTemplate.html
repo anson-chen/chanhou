@@ -5,53 +5,19 @@
     </nav>
 </div>
 <ul class="my-photos clearfix">
+<%_.each(data,function(d,i){%>
     <li>
         <div>
-            <img src="imgs/show-photo1.jpg">
+            <img src="<%if(d.rest_review_photo_url){%><%=d.rest_review_photo_url%><%}else{%>imgs/show-photo1.jpg<%}%>">
             <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
+                <span><%=d.total_rest_reviewtips%></span><%=chihuo.timestampToTime(d.review_datetime)%>
             </div>
         </div>
     </li>
-    <li>
-        <div>
-            <img src="imgs/show-photo2.jpg">
-            <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
-            </div>
-        </div>
-    </li>
-    <li>
-        <div>
-            <img src="imgs/show-photo3.jpg">
-            <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
-            </div>
-        </div>
-    </li>
-    <li>
-        <div>
-            <img src="imgs/show-photo4.jpg">
-            <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
-            </div>
-        </div>
-    </li>
-    <li>
-        <div>
-            <img src="imgs/show-photo1.jpg">
-            <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
-            </div>
-        </div>
-    </li>
-    <li>
-        <div>
-            <img src="imgs/show-photo3.jpg">
-            <div class="my-photo-mask">
-                <span>1850</span>2015.10.10
-            </div>
-        </div>
-    </li>
-
+<%})%>
 </ul>
+<div class="loading-wrap" id='specialLoad'>
+            <p class="loading-step1" style="display:none;">加载更多</p>
+            <p class="loading-step2">加载中</p>
+            <p class="loading-step3" style="display:none;">没有更多了~~</p>
+        </div>

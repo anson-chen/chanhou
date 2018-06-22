@@ -14,6 +14,7 @@ define([
     render: function(id,name){
       newChihuo.setPage('foodMenu');
       newChihuo.windowInit();
+      var name = decodeURIComponent(name);
       this.$el.html(_.template(foodMenuTemplate,initData.foodMenuData));
       if(name){
         this.initDataMenu(id,name);

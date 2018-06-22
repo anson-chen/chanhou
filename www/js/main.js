@@ -20,7 +20,8 @@ require.config({
     iscroll: 'iscroll',
     radialIndicator:'radialIndicator',
     touche:'touche',
-    pullRefresh:'p-pull-refresh'
+    pullRefresh:'p-pull-refresh',
+    lock: 'lock.min'
   }
 
 });

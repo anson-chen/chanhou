@@ -15,7 +15,6 @@ define([
     render: function(){
       newChihuo.setPage('register');
       newChihuo.windowInit();
-      console.log(this.$el);
       this.$el.html(_.template(registerTemplate));
       var _this=this;
       $("#register").on("click",function(){
