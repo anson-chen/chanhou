@@ -5,56 +5,64 @@
 		<h3><%=newChihuo.localize('profile_footprint_browse_history_header')%></h3>
 	</nav>
 	<div class="food-list-nav clearfix" id="historyTab">
-		 <a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
-        <a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
+		 <a href="javascript:;" class="cur" style="width:30%; margin:0 10%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+        <a href="javascript:;" style="width:30%; margin:0 10%;"><%=newChihuo.localize('global_var_dishes')%></a>
     
 	</div>
 </div>
 <div class="rest-list-wrap" style="padding-bottom:0;">
-<div class="swiper-container" id="history-swiper">
-   <div class="swiper-wrapper">
-	    <div class="swiper-slide">
 	    	<div class="tab-swiper-wrap">
 			<%_.each(data,function(d,i){%>
 			  <%if(d.browse_type == 'rest'){%>	
-				<div class="wrap-border clearfix">
-					<div class="food-list-icon3">
-					<%=chihuo.getRightTime(new Date(d.last_browse_date).getTime())%> <%=newChihuo.localize('global_var_ago')%>
-					</div>
-					<div class="food-img">
-						<img src="imgs/map-img.jpg">
-					</div>
-					<div style="margin-left:100px;">
-					<h3 class="rest-name-title"><%=d.browse_entity_name%><img src='imgs/pass-icon.png'/></h3>
-					<p class="rest-info-show" style="padding-top:5px; margin-right:80px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br><%=d.city_name%> <%=d.cust_distance%>
-					<br><%=d.total_likes_perc%> <%=newChihuo.localize('profile_me')%> <%=newChihuo.localize('global_var_like')%></p>
+				<div class="wrap-border delete-wrap">
+				    <div class="all-history-info clearfix">
+					    <div class="history-show-wrap">
+					    <a href="#restaurant/<%=d.browse_entity_id%>">
+							<div class="food-list-icon3" style="margin:0;">
+							<%=chihuo.getRightTime(new Date(d.last_browse_date).getTime())%> <%=newChihuo.localize('global_var_ago')%>
+							</div>
+							<div class="food-img">
+								<img src="<%if(d.profile_photo_url){%><%=d.profile_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
+							</div>
+							<div style="margin-left:100px;">
+							<h3 class="rest-name-title"><%=d.browse_entity_name%><img src='imgs/pass-icon.png'/></h3>
+							<p class="rest-info-show" style="padding-top:5px; margin-right:60px;"><%=d.cuisine_type%><span style="color:#0bbc13;padding-left:10px;"><%if(d.rest_promo){%><%=d.rest_promo%>off<%}%></span><br><%=d.city_name%> <%=d.cust_distance%>
+							<br><%=d.total_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+							</div>
+						</a>
+						</div>
+						<div class="delete-icon-btn" hisId="<%=d.browse_entity_id%>">
+							删除
+						</div>
 					</div>
 				</div>
 			<%}})%>	
 			</div>
-		</div>
-		<div class="swiper-slide">
-		   <div class="tab-swiper-wrap">
+		   <div class="tab-swiper-wrap" style="display:none;">
 		   <%_.each(data,function(d,i){%>
 			  <%if(d.browse_type == 'mi'){%>
-				<div class="wrap-border clearfix">
-					<div class="food-list-icon4">
-					<%=chihuo.getRightTime(new Date(d.last_browse_date).getTime())%> <%=newChihuo.localize('global_var_ago')%>
-					</div>
-					<div class="food-img">
-						<img src="imgs/map-img.jpg">
-					</div>
-					<div style="margin-left:100px;">
-					<h3 class="rest-name-title"><%=d.browse_entity_name%></h3>
-					<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;">小于20加元</span><span style="color:#0bbc13; display:inline-block;">20%off</span><br>800cals  Sodium100mg
-					<br><%=d.total_likes_perc%> <%=newChihuo.localize('profile_me')%> <%=newChihuo.localize('global_var_like')%></p>
-					</div>
+				<div class="wrap-border delete-wrap">
+					<div class="all-history-info clearfix">
+					    <div class="history-show-wrap">
+							<div class="food-list-icon4" style="margin:0;">
+							<%=chihuo.getRightTime(new Date(d.last_browse_date).getTime())%> <%=newChihuo.localize('global_var_ago')%>
+							</div>
+							<div class="food-img">
+								<img src="<%if(d.profile_photo_url){%><%=d.profile_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
+							</div>
+							<div style="margin-left:100px;">
+							<h3 class="rest-name-title"><%=d.browse_entity_name%></h3>
+							<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#0bbc13; padding-left:10px;"><%if(d.rest_promo){%><%=d.rest_promo%>off<%}%></span><br>
+				<%=d.total_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+							</div>
+						</div>
+						<div class="delete-icon-btn" hisId="<%=d.browse_entity_id%>">
+							删除
+						</div>
+				</div>
 				</div>
 			<%}})%>	
 			</div>
-		</div>
-	</div>
-</div>
 </div>
 	<div class="rest-fix-bottom">
     <ul class="clearfix">
@@ -73,29 +81,18 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+      <li>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
       <li id="msgRemind" class="cur">
-        <a href="javascript:;"><img src="imgs/bottom-red4.png">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>
     </ul>
   </div>
 </div>
-<%if(data.length){%>
-<script type="text/javascript">
-	var swiperHistory =  new Swiper('#history-swiper', {
-        slidesPerView: 'auto',
-        onSlideChangeEnd: function(swiper){
-        	$("#historyTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
-        }
-
-    });
-</script>
-<%}%>
 
 

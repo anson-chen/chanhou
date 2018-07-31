@@ -7,7 +7,12 @@
         <div class="setting-li clearfix">
             <a href="#praviteSetting">
             <span class="set-floor-title" style="color:#333; width:10em;"><%=newChihuo.localize('profile_settings_privacy')%></span>
-            <p class="set-floor-select" style="margin-right:0;"><%=newChihuo.localize('')%>允许Public查看</p>
+            <p class="set-floor-select" style="margin-right:0;">
+            <%if(privacy == 1){%><%=newChihuo.localize('profile_settings_privacy_accesstopublic')%>
+                <%}else if(privacy == 2){%><%=newChihuo.localize('profile_settings_privacy_accesstofriends')%><%}else{%>
+                <%=newChihuo.localize('profile_settings_privacy_accesstoselfonly')%>
+                <%}%>
+            </p>
             </a>
         </div>
         <div class="setting-li clearfix">
@@ -25,7 +30,10 @@
         <div class="setting-li clearfix">
          <a href="#messageRemind">
             <span class="set-floor-title" style="color:#333;width:11em;"><%=newChihuo.localize('profile_settings_notifications')%></span>
-            <p class="set-floor-select" style="margin-right:0;">开</p>
+            <p class="set-floor-select" style="margin-right:0;">
+            <%if(notification == 1){%><%=newChihuo.localize('profile_settings_notifications_switchon')%>
+                <%}else{%><%=newChihuo.localize('profile_settings_notifications_switchoff')%><%}%>
+            </p>
             </a>
         </div> 
         <div class="setting-li clearfix">
@@ -59,5 +67,5 @@
             </a>
         </div>           
     </div>
-    <div class="quit-setting" id='logout'><%=newChihuo.localize('')%>退 出</div>
+    <div class="quit-setting" id='logout'><%=newChihuo.localize('profile_settings_logout')%></div>
 </div>  

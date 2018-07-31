@@ -19,6 +19,7 @@ define([
       if(initData.myIndexData.data.length){
         initData.myProfileData.data[0].profile_photo_url = initData.myIndexData.data[0].profile_photo_url;
         initData.myProfileData.data[0].display_name = initData.myIndexData.data[0].display_name;
+        newChihuo.customer = initData.myIndexData.data[0].display_name;
       }
       this.$el.html(_.template(myProfileTemplate,initData.myProfileData));
       var _this = this;

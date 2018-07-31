@@ -13,6 +13,7 @@
    <div class="swiper-wrapper">
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
+            <%if(restData && restData.length){%>
             <%_.each(restData,function(d,i){%>
                 <div class="wrap-border clearfix">
                     <a href="#restaurant/<%=d.rest_id%>">
@@ -20,36 +21,42 @@
                         <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
                         </div>
                         <div class="food-img">
-                            <img src="imgs/map-img.jpg">
+                            <img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
                         </div>
                         <div style="margin-left:100px;">
                         <h3 class="rest-name-title"><%=d.rest_name%></h3>
-                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;">20%off</span><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+                        <p class="rest-info-show" style="padding-top:5px;margin-right:80px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span><%=d.cust_distance%></span><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
                         </div>
                     </a>
                 </div>
                 <%})%>
+                <%}else{%>           
+                    <p class="no-info-para">Woops, no  items in Wishlist</p>
+                <%}%>
             </div>
         </div>
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
+             <%if(miData){%>
             <%_.each(miData,function(d,i){%>
             <div class="wrap-border clearfix">
-                <a href="#food">
+                <a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
                     <div class="food-list-icon4">
-                    半小时 <%=newChihuo.localize('global_var_ago')%>
+                    <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
                     </div>
                     <div class="food-img">
-                        <img src="imgs/map-img.jpg">
+                         <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
                     </div>
                     <div style="margin-left:100px;">
                     <h3 class="rest-name-title"><%=d.mi_name%></h3>
-                    <p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;"><%=d.mi_unit_price%></span><br>800cals  100mg
-                    <br>89% <%=newChihuo.localize('global_var_like')%></p>
+                    <p class="rest-info-show" style="padding-top:5px;margin-right:80px;"><%=d.cuisine_type%> <span style="color:#0bbc13;"><%=d.mi_unit_price%></span></p>
                     </div>
                 </a>
             </div>
             <%})%>
+             <%}else{%>
+               <p class="no-info-para">Woops, no  items in Wishlist</p>
+                <%}%>
             </div>
         </div>      
     </div>

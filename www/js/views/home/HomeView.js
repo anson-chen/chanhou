@@ -24,11 +24,13 @@ define([
             newChihuo.setPage('home');
             newChihuo.windowInit();
             !newChihuo.globalStatus && chihuo.ajaxSetup();
+            initData.homeData.template = homeTemplate;
             this.$el.html(_.template(homeTemplate, initData.homeData));
             chihuo.getPosition(homeTemplate);
             !newChihuo.globalStatus && setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
             newChihuo.globalStatus = true;
-            this.auth0Init();
+            // this.auth0Init();
+            
         },
 
         auth0Init: function(){
@@ -65,6 +67,7 @@ define([
             
 
         },
+
 
         addFollow: function(e){
             var obj=$(e.currentTarget);
@@ -120,6 +123,7 @@ define([
             chihuo.findHotspotDetails($(e.currentTarget).text(),newChihuo.lat,newChihuo.lon,homeTemplate);
             initData.homeData.cityData[0].cityname = $(e.currentTarget).text();
             newChihuo.city = $(e.currentTarget).text();
+            newChihuo.setCity = true;
            
         }
     

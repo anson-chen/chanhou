@@ -10,15 +10,14 @@ define([
     el: $("#page"),
     events: {
      'click .head-photo-icon':'showPhotoMask',
-     'click #cancelMask,.close-set':'hidePhotoMask'
-
-     
+     'click #cancelMask,.close-set':'hidePhotoMask',
+     'click .detail-img-show':'goDetail'
     },
 
     render: function(){
       newChihuo.setPage('photoList');
       newChihuo.windowInit();
-      this.$el.html(_.template(photoListTemplate));
+      this.$el.html(_.template(photoListTemplate,initData.photoData));
     },
 
     showPhotoMask: function(){
@@ -27,7 +26,15 @@ define([
 
     hidePhotoMask: function(e){
      $(".photo-mask").hide();
+    },
+    goDetail: function(e){
+      var index = $(e.currentTarget).index();
+       initData.photoData.photoIndex = index;
+            app_router.navigate('photoDetail', {
+              trigger: true
+            });
     }
+
 
   });
   return PhotoListView;

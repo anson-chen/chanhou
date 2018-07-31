@@ -65,7 +65,12 @@ define([
   'views/setting/UserGuideView',
   'views/chat/ChatMessageView',
   'views/register/ForgetPasswordView',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView) {
+  'views/comment/SubmitMiCommentView',
+  'views/photo/DishHot1View',
+  'views/photo/DishHot2View',
+  'views/photo/DishHot3View',
+  'views/photo/DishHot4View',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -81,7 +86,8 @@ define([
       // 'restaurantList':'showRestaurantList',
       'restaurantMaps':'showRestaurantMaps', 
       'userComments/:id':'showUserComments', 
-      'submitComment/:id':'showSubmitComment', 
+      'submitComment/:id':'showSubmitComment',
+      'submitMiComment/:id/:name':'showSubmitMiComment',  
       'search':'showSearch', 
       'searchSet':'showSearchSet',
       'foodList':'showFoodList',
@@ -91,6 +97,7 @@ define([
       'foodMaps':'showFoodMaps',
       'food':'showFood',
       'food/:id':'showFood',
+      'food/:restId/:menuId':'showFood',
       'myShake':'showMyShake', 
       'searchInit':'showSearchInit',
       'map':'showMap',
@@ -109,6 +116,7 @@ define([
       'myWish':'showMyWish',
       'myComments':'showMyComments',
       'myIndex':'showMyIndex',
+      'myIndex/:id':'showMyIndex',
       'myRank':'showMyRank',
       'myProfile':'showMyProfile',
       'myMessage':'showMyMessage',
@@ -138,6 +146,10 @@ define([
       'safeProtocol':'showSafeProtocol',
       'userGuide':'showUserGuide',
       'forgetPassword':'showForgetPassword', 
+      'dishHot1':'showDishHot1',
+      'dishHot2/:name':'showDishHot2',
+      'dishHot3/:level':'showDishHot3',
+      'dishHot4/:level/:name':'showDishHot4',
       // Default
       '*actions': 'defaultAction'//'defaultAction'
     }
@@ -146,7 +158,7 @@ define([
   var initialize = function(){
 
     var app_router = new AppRouter;
-    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView;
+    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View;
 
     app_router.on('route:showLogin', function (actions) {
         loginView = loginView || new LoginView();
@@ -210,6 +222,12 @@ define([
        // We have no matching route, lets display the home page 
         submitCommentView = submitCommentView || new SubmitCommentView();
         submitCommentView.render(actions);
+    });
+
+     app_router.on('route:showSubmitMiComment', function (actions,name) {
+       // We have no matching route, lets display the home page 
+        submitMiCommentView = submitMiCommentView || new SubmitMiCommentView();
+        submitMiCommentView.render(actions,name);
     });
 
     app_router.on('route:showUserComments', function (actions) {
@@ -290,10 +308,15 @@ define([
         }
     });
 
-    app_router.on('route:showFood', function (actions) {
+    app_router.on('route:showFood', function (actions,name) {
        // We have no matching route, lets display the home page 
         foodView = foodView|| new FoodView();
-        foodView.render(actions);
+         if(name){
+          foodView.render(actions,name);
+         }else{
+          foodView.render(actions);
+         }
+        
     });
 
     app_router.on('route:showFoodMaps', function (actions) {
@@ -359,7 +382,12 @@ define([
     app_router.on('route:showMyIndex', function (actions) {
        // We have no matching route, lets display the home page 
         myIndexView = myIndexView || new MyIndexView();
-        myIndexView.render();
+        if(actions){
+          myIndexView.render(actions);
+        }else{
+          myIndexView.render();
+        }
+        
     });
 
     app_router.on('route:showMyMessage', function (actions) {
@@ -534,6 +562,30 @@ define([
        // We have no matching route, lets display the home page 
        forgetPasswordView = forgetPasswordView || new ForgetPasswordView();
        forgetPasswordView.render();
+    });
+
+    app_router.on('route:showDishHot1', function (actions) {
+       // We have no matching route, lets display the home page 
+       dishHot1View = dishHot1View || new DishHot1View();
+       dishHot1View.render();
+    });
+
+     app_router.on('route:showDishHot2', function (actions) {
+       // We have no matching route, lets display the home page 
+       dishHot2View = dishHot2View || new DishHot2View();
+       dishHot2View.render(actions);
+    });
+
+      app_router.on('route:showDishHot3', function (actions) {
+       // We have no matching route, lets display the home page 
+       dishHot3View = dishHot3View || new DishHot3View();
+       dishHot3View.render(actions);
+    });
+
+       app_router.on('route:showDishHot4', function (actions,name) {
+       // We have no matching route, lets display the home page 
+       dishHot4View = dishHot4View || new DishHot4View();
+       dishHot4View.render(actions,name);
     });
 
 

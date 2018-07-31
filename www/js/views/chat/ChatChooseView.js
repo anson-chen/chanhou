@@ -10,8 +10,8 @@ define([
     events: {
      'click #addressMore':'showMoreAddress',
      'click #userComments .comment-cont':'showMoreComment',
-     'click .go-message':'showMessage'
-     
+     'click .go-message':'showMessage',
+     'click .search-set-input i':'clearInput'
     },
 
     render: function(){
@@ -27,7 +27,7 @@ define([
                   type: 'GET',
                   url: chihuo.getApiUri('getAllFriends.json'),
                   data: {
-                     tid: newChihuo.customerId || 617344,
+                     tid: newChihuo.customerId,
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
@@ -54,7 +54,7 @@ define([
       obj.toggleClass('comment-cont-more');
     },
 
-     showMessage: function(e){
+    showMessage: function(e){
       var obj = $(e.currentTarget);
       initData.chatMessageData.data = {
         id : obj.attr('id') || '',
@@ -64,6 +64,11 @@ define([
        app_router.navigate('chatMessage',{
                   trigger: true
                 });
+    },
+
+    clearInput: function(e){
+      alert(90);
+      $(e.currentTarget).parent().find('input').val('');
     }
 
   });

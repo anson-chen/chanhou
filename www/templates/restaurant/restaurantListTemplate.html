@@ -3,7 +3,7 @@
 		<nav class="common-title">
 			<a href="#map2" class="head-rest-icon"></a>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
-			<h3>餐馆列表</h3>
+			<h3><%=newChihuo.localize('global_var_restlist')%></h3>
 		</nav>
 		<ul class="rank-ul clearfix">
 			<li><p><%=newChihuo.localize('global_var_like_percentage')%><i></i><i></i></p></li>
@@ -13,36 +13,29 @@
 	</div>
 	<div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
-		<div class="wrap-border clearfix" style="padding-top:0; position:relative;">
+		<div class="wrap-border clearfix">
 		<%if(newChihuo.wishSearch){%>
 		<a href="javascript:;" class="add-wishlist" rest="<%=d.rest_id%>">
 		<%}else{%>
 		<a href="#restaurant/<%=d.rest_id%>">
 		<%}%>
-			<div class="swiper-container rest-list-swiper">
-		        <div class="swiper-wrapper">
-		        <%if(d.rest_profile_photo_url){%>
-		         	<%_.each(d.rest_profile_photo_url.split(','),function(d,i){%>
-		        		<div class="swiper-slide"><img src="<%=d%>" class="banner-img"></div>
-		        	<%})%>
-		        <%}else{%>
-		        	<div class="swiper-slide"><img src="imgs/rest-list-img.jpg" class="banner-img"></div>
-		        <%}%>  
-		        </div>
-		        <!-- Add Pagination -->
-		         <div class="swiper-pagination"></div>
-		         <i class="fav-rest <%if(d.favorite_flg){%>fav-rest-add<%}%>" style="z-index:100;"></i>
-		    </div>
-		    <div class="<%if(d.following_flg){%>rest-fav-this<%}else{%>rest-fav-this2<%}%>" style="top:180px;"></div>
-			<div class="radius-like">
-				<div class="radius-num-show">
-					<span><%=parseInt(d.total_likes_perc * 100)%></span>%<br>喜欢
-				</div>	
-			</div>
-			<h3 class="rest-name-title"><%=d.rest_name%></h3>
-			<p class="rest-info-show"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;">20%off</span><br><%=d.cityname%> <%=d.cust_distance%>公里<br><%if(d.last_review_details){%>"<%=d.last_review_details.substring(0,50)%>"<br><%}%>10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
-			</a>
-		</div>
+		<div class='clearfix'>
+			<div class="radius-like" style="margin:-10px -5px 0 0; transform:scale(.85);">
+					<div class="radius-num-show">
+						<span><%=parseInt(d.total_likes_perc * 100)%></span>%<br><%=newChihuo.localize('global_var_like')%>
+					</div>	
+				</div>
+			   <div class="food-img">
+	                <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
+	           </div>
+	           <div style="margin:0 85px 0 100px;">
+	                <h3 class="rest-name-title" style="margin-right:0;"><%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:0;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><!-- 20%off --></span><br><%=d.cityname%> <%=newChihuo.showDistanceInfo(d.cust_distance)%></p>
+	           </div>
+         </div>
+         <p class="rest-info-show"  style="padding:0 15px;"><%if(d.last_review_details){%>"<%=d.last_review_details.substring(0,50)%>"<br><%}%>10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
+        </a>
+        </div>
 	<%})%>	
 	</div>
 	<div class="rest-fix-right"></div>

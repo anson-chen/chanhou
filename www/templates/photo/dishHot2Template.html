@@ -1,0 +1,27 @@
+<div class="food-bg" style="padding-bottom:20px;">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3 style="margin-right:15px;"><span style="float:right;"><%=newChihuo.city%></span><%=decodeURIComponent(title)%></h3>
+	</nav>
+</div>
+<div class="rest-list-wrap">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix">
+           <a href="#food/<%=d.rest_id%>/<%=d.rest_mi_id%>">
+            <div class="food-img">
+                <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
+            </div>
+            <div style="margin-left:100px;">
+               <h3 class="rest-name-title" style="margin-right:15px;"><%=d.rest_name%></h3>
+                <p class="rest-info-show" style="padding-top:5px;line-height:20px;"><%=d.cuisine_type%>
+                <%if(d.mi_unit_price){%><span style="color:#ff8b4c; padding-left:5px;"><%=d.mi_unit_price%></span><%}%><br><%if(d.cust_distance){%><%=d.cust_distance%>km<%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%><br><%=d.rest_mi_desc%></p>
+            </div>
+            </a>
+        </div>
+	<%})%>	
+</div>
+<div class="loading-wrap" id='specialLoad'>
+	    <p class="loading-step1" style="display:none;">加载更多</p>
+		<p class="loading-step2">加载中</p>
+		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+</div>

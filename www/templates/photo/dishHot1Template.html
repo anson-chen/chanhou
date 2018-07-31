@@ -1,0 +1,23 @@
+<div class="food-bg" style="padding-bottom:20px;">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3><span style="float:right;"><%=newChihuo.city%></span>Hot Dish</h3>
+	</nav>
+</div>
+<div class="rest-list-wrap">
+	<%_.each(data,function(d,i){%>
+		<div class="wrap-border clearfix">
+          <a href="#restaurantList/<%=encodeURIComponent(d.rest_mi_name)%>">
+            <div class="food-img">
+                <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
+            </div>
+            <div style="margin-left:100px;">
+               <h3 class="rest-name-title" style="margin-right:15px;"><%=d.rest_mi_name%></h3>
+               <p class="rest-info-show" style="padding:6px 0 0 15px;">
+                  <%if(d.tot_rests_cnt){%><span class="reset-style1 reset-bg4"><%=d.tot_rests_cnt%></span><%}%>
+                </p>
+            </div>
+            </a>
+        </div>
+	<%})%>	
+</div>

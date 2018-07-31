@@ -4,20 +4,23 @@
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<h3><%=newChihuo.localize('profile_followings_header')%></h3>
 		</nav>
-		<div class="food-list-nav clearfix" id="">
-			<a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"> <%=newChihuo.localize('profile_followings_followings')%></a>
-			<a href="javascript:;" style="width:20%; margin:0 15%;"> <%=newChihuo.localize('profile_followings_announcements')%></a>
+		<div class="food-list-nav clearfix" id="followingsTab">
+			<a href="javascript:;" class="cur" style="width:50%; margin:0;"> <%=newChihuo.localize('profile_followings_followings')%></a>
+			<a href="javascript:;" style="width:50%; margin:0 ;"> <%=newChihuo.localize('profile_followings_announcements')%></a>
 		</div>
 	</div>
 	<div class="wrap-border clearfix" style="position:relative; margin:15px 12px;">
-	<div class="container-down" style="overflow:hidden;min-height:100%;">
-		<div class="loading-wrap" style="margin-top:-88px;">
-			<div style="text-align:center; padding:10px 0;">
-				<div>
-					<p style="height:28px;">下拉刷新中...</p>
+	<div class="swiper-container" id="followings-swiper">
+  	 <div class="swiper-wrapper">
+        <div class="swiper-slide">
+		<div class="container-down" style="overflow:hidden;min-height:100%;">
+			<div class="loading-wrap" style="margin-top:-88px;">
+				<div style="text-align:center; padding:10px 0;">
+					<div>
+						<p style="height:28px;">下拉刷新中...</p>
+					</div>
 				</div>
 			</div>
-		</div>
 		<ul class="rest-comment user-comment">
 				<%_.each(data,function(d,i){%>
 				<li style="border-top:none;">
@@ -54,7 +57,7 @@
 						<img src="<%=d.review_concat_photo_url%>">
 					</div>
 					<%}%>
-					<div class="rest-comment-bottom">
+					<div class="rest-comment-bottom" style="display:none;">
 						<div class="comment-operation"><span class="good-icon"><%=d.total_compliments%></span></div>
 						<div class="comment-operation"><span class="wechat-icon"><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
@@ -84,12 +87,40 @@
 		</ul>
 	</div>
 	</div>
-	<a href="#submitComment" class="comment-edit">发布评论</a>
-	<div class="loading-more" style="margin-bottom:50px;">
-		加载更多
+	 <div class="swiper-slide">
+		 <div class="short-message-wrap">
+		 <%_.each(data,function(d,i){%>
+		    <div class="short-message">
+		    	<%if(d.profile_photo_url){%>
+							<img src="<%=d.profile_photo_url.split(',')[0]%>" class="comment-left-img">
+							<%}else{%>
+							  <img src="imgs/photo.png" class="comment-left-img"> 
+							<%}%>
+		    	<p><b><%=d.display_name%></b> <%=d.rsp_msg%></p>
+		    	<p style="color:#999;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></p>
+		    </div>
+		 <%})%>	
+		 </div>
+	 </div>
+	</div>
+	</div>
+	<div class="loading-wrap" id='specialLoad'>
+		    <p class="loading-step1" style="display:none;">加载更多</p>
+			<p class="loading-step2">加载中</p>
+			<p class="loading-step3" style="display:none;">没有更多了~~</p>
+	</div>
 	</div>
 	<div class="fix-comment-bottom" style="display:none;">
 		<a href="#" class="bottom-left"><img src="imgs/face-icon.png"></a>
 		<div class="chat-input-wrap"><input type="text" name="" class="chat-input"></div>
 	</div>
 </div>	
+<script type="text/javascript">
+    var swiperFollowings = new Swiper('#followings-swiper', {
+        slidesPerView: 'auto',
+        onSlideChangeEnd: function(swiper){
+            $("#followingsTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
+        }
+
+    });
+</script>

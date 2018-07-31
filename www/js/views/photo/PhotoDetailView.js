@@ -15,7 +15,7 @@ define([
     render: function(){
       newChihuo.setPage('photoDetail');
       newChihuo.windowInit();
-      this.$el.html(_.template(photoDetailTemplate,initData.restaurantData));
+      this.$el.html(_.template(photoDetailTemplate,initData.photoData));
       this.bindEvents();
     },
 

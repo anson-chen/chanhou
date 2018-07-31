@@ -8,7 +8,7 @@
 	<%_.each(data,function(d,i){%>
 	<div class="chat-people-list" style="margin:5px 12px;">
 		<div class="rest-comment-head clearfix">
-		    <%if(d.request_status_id == 0){%><span class="chat-add-word go-message2" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.profile_photo_url || '')%>>added</span><%}else{%><%if(d.send_flag){%><button class="chat-add-button chat-response" cust="<%=d.requester_id%>" rid=2>accept</button><button class="chat-add-button chat-response" style="margin-right:5px;" cust="<%=d.requester_id%>" rid=3>refuse</button><%}%>
+		    <%if(d.request_status_id == 0){%><span class="chat-add-word go-message2" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.profile_photo_url || '')%> >added</span><%}else{%><%if(d.send_flag){%><button class="chat-add-button chat-response" cust="<%=d.requester_id%>" rid=2>accept</button><button class="chat-add-button chat-response" style="margin-right:5px;" cust="<%=d.requester_id%>" rid=3>refuse</button><%}}%>
 			<img src="<%if(d.profile_photo_url){%>d.profile_photo_url<%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
 				<div class="comment-right-info">
 					<h3 style="background:none;"><%=d.requester_display_name%></h3>

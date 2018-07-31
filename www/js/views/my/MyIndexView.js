@@ -16,6 +16,15 @@ define([
     render: function(id){
       newChihuo.setPage('myIndex');
       newChihuo.windowInit();
+      if(!(newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))){
+           initData.myIndexData.data = [];
+      }
+      if(id){
+        initData.myIndexData.id = id;
+      }else{
+        initData.myIndexData.id = newChihuo.customerId || newChihuo.getLocalStorage('customer_id');
+      }
+      
       this.$el.html(_.template(myIndexTemplate,initData.myIndexData));
       this.initData(id);
       this.bindEvents();
@@ -23,12 +32,12 @@ define([
 
     initData: function(id){
       var _this = this;
-      if(newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
+      if(id || newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
         chihuo.wkAjax({
                   type: 'GET',
                   url: chihuo.getApiUri('getCustInfoById.json'),
                   data: {
-                     targetId: newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
+                     targetId: id || newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en'
@@ -38,6 +47,9 @@ define([
                         initData.myIndexData.data = data.data;
                         newChihuo.getPage('myIndex') && _this.$el.html(_.template(myIndexTemplate,initData.myIndexData));
                         newChihuo.getPage('myIndex') && _this.bindEvents();
+                        if(initData.myIndexData.id == newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
+                          newChihuo.customer = data.data[0].display_name;
+                        }
                      }
                   } 
               });  

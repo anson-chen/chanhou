@@ -10,12 +10,45 @@ define([
   var PraviteSettingView = Backbone.View.extend({
     el: $("#page"),
     events: {
+      'click #setPrivacy' : 'submitSetting'
       
     },
 
     render: function(){
+      newChihuo.setPage('praviteSetting');
       this.$el.html(_.template(praviteSettingTemplate));
       this.bindEvent();
+    },
+
+    submitSetting: function(){
+      var index = $('.cur-select').index();
+      chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri('updateCustSetting.json'),
+          data:{
+             cont:JSON.stringify({
+               privacy: index+1,
+             }),
+             lat: newChihuo.lat,
+             lng: newChihuo.lon,
+             locale: 'en',
+          },
+          success: function (data) {
+            if (data.status == 0) { 
+               newChihuo.showPopInfo('success');
+               initData.mySettingsData.privacy = index+1;
+               setTimeout(function(){
+                app_router.navigate('mySettings',{
+                  trigger: true
+                });
+                },1400);
+            }
+          },
+          error: function () {
+
+          }
+        });
+
     },
 
     bindEvent:function(){

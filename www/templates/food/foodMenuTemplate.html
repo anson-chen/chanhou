@@ -5,7 +5,7 @@
 		<h3><%=title%></h3>
 	</nav>
 	<div class="food-list-nav clearfix" >
-	<%if(title == '美食菜单'){%>
+	<%if(title == initData.restaurantData.data[0].rest_name){%>
 		<div class="swiper-container" id='foodMenuTab'>
 		   	<div class="swiper-wrapper">
 			<%_.each(data, function(d,i) {%>
@@ -19,26 +19,28 @@
 		<!-- <span class="more-down-icon"></span> -->
 	</div>
 </div>
-<div class="rest-list-wrap" style="padding-bottom:0;">
+<div class="rest-list-wrap" style="padding-bottom:15px;">
 <div class="swiper-container" id="foodMenu-swiper">
    <div class="swiper-wrapper">
    <%_.each(data, function(d,i) {%>
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
             <%_.each(d, function(d,i) {%>
-				<div class="wrap-border clearfix">
-					<a href="#food/<%=d.rest_menu_item_id%>">
-						<div class="food-list-icon1">
+				<div class="wrap-border clearfix" style="color:#999;">
+					<div class="food-list-icon1">
 						</div>
+						<a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
 						<div class="food-img" style="width:70px;">
 							<img src="imgs/map-img.jpg">
 						</div>
-						<div style="margin-left:80px;">
-						<h3 class="rest-name-title"><%=d.rest_mi_name%></h3>
-						<p class="rest-info-show" style="padding-top:5px;"><%=d.rest_mi_desc%><br><span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.mi_unit_price%></span><span style="color:#0bbc13;"><%=d.mi_promo%></span><br><%=d.mi_cals%>  <%=d.mi_sodium%>
-						<br><%=d.mi_tot_likes_perc%>喜欢  10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
+						</a>
+						<div style="margin-left:80px; margin-right:50px;">
+						<h3 class="rest-name-title" style="margin-right:10px;"><%=d.rest_mi_name%></h3>
+						<div class="menu-set-wrap">
+						<p class="para-hidden"><%=d.rest_mi_desc%></br><span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.mi_unit_price%></span><span style="color:#0bbc13;"><%=d.mi_promo%></span><br><%=d.mi_cals%>  <%=d.mi_sodium%>
+						<br><%=d.mi_tot_likes_perc%> <%=newChihuo.localize('global_var_like')%>  10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
 						</div>
-					</a>
+					</div>
 				</div>
 			<%})%>
 			</div>
@@ -47,7 +49,7 @@
 	</div>
 </div>
 </div>	
-<a href="#" class="food-edit">发布评论</a>
+<!-- <a href="#" class="food-edit">发布评论</a> -->
 <%if(data.length){%>
 <script type="text/javascript">
     var swiperFoodMenu = new Swiper('#foodMenu-swiper', {

@@ -19,7 +19,7 @@
 			// 浏览器中下拉默认事件一旦触发后，就不能再通过冒泡阻止此事件。
 			// chrome浏览器中大概是15PX左右的下拉后触发默认刷新，微信中大概是6像素左右。
 			// 如需在微信中使用，建议设置为6像素
-			startPX: 6, 	
+			startPX: 10, 	
 			callbacks: {
 				pullStart: null,	// 拖动开始
 				start: null,	// 开始请求数据
@@ -82,7 +82,6 @@
 	 * 触摸移动过程
 	 */
 	var touchMove = function(evt) {
-		console.log(isDestory,isTouching,isEfec);
 		if(isDestory) return;
 		if(!isTouching) return;
 		if(!isEfec) return;
@@ -91,7 +90,6 @@
         	x = parseInt(touch.pageX), //页面触点X坐标
         	y = parseInt(touch.pageY), //页面触点Y坐标
         	t = y - startY;			// 触摸距离isEfec
-
         //  距离必须大于灵敏距离触摸才生效
         if(!isValid && t > options.startPX) {
         	isValid = true;
@@ -103,18 +101,18 @@
 
         // 向上拖动
         if(t < 0){
-        	$loadingEl.css('margin-top', -loadingH);
+        	// $loadingEl.css('margin-top', -loadingH);
         }
 
         // 拖动高度未超过刷新显示容器高度
         if(t > 0 && t <= loadingH){
-        	$loadingEl.css('margin-top', -(loadingH-t));
-        	$loadingEl.height(loadingH);	
+        	// $loadingEl.css('margin-top', -(loadingH-t));
+        	// $loadingEl.height(loadingH);	
         } 
         // 拖动高度超过刷新显示容器高度
         else if(t > loadingH){
-        	$loadingEl.css('margin-top', 0);
-        	$loadingEl.height(t);
+        	// $loadingEl.css('margin-top', 0);
+        	// $loadingEl.height(t);
         } 
 
         disY = t;
@@ -148,17 +146,17 @@
 
 	    // 拖动高度未超过刷新显示容器高度
 	    if(t <= loadingH){
-	    	$loadingEl.css('margin-top', -(loadingH-t));
-	    	$loadingEl.height(loadingH);
-	    	$loadingEl.animate({'margin-top': -loadingH}, 200, function() {
-	    		isTouching = false;
-	    	});
+	    	// $loadingEl.css('margin-top', -(loadingH-t));
+	    	// $loadingEl.height(loadingH);
+	    	// $loadingEl.animate({'margin-top': -loadingH}, 200, function() {
+	    	// 	isTouching = false;
+	    	// });
 	    }
 	    
 	    // 拖动高度超过刷新显示容器高度
 	    else if(t > loadingH) {
 	    	if(options.cb) options.cb();
-	    	$loadingEl.animate({'height': loadingH}, 200, function() {});
+	    	// $loadingEl.animate({'height': loadingH}, 200, function() {});
 	    }
 
 	    var sendData = $.isFunction(options.sendData) ? options.sendData() : options.sendData;
@@ -193,7 +191,7 @@
 	 *   绑定处理事件
 	 */
 	var initlize = function() {
-		loadingH = options.$loadingEl.height();
+		loadingH = options.$loadingEl && options.$loadingEl.height();
 		$el = options.$el;
 		if($el.length){
 	    $el[0].addEventListener('touchstart', touchStart, false);

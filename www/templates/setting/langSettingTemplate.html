@@ -1,38 +1,38 @@
 <div class="food-bg" style="padding-bottom:15px;">
 	<nav class="common-title">
-		<a href="javascript:;" class="sub-comment">确定</a>
+		<a href="javascript:;" class="sub-comment" id="setLanguage"><%=newChihuo.localize('global_okbutton')%></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3><%=newChihuo.localize('')%>语言设置</h3>
 	</nav>
 </div>	
  <div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">   
-        <div class="setting-li clearfix">
+        <div class="setting-li clearfix <%if(initData.mySettingsData.language == 1){%>cur-select<%}%>">
            
             <span class="set-floor-title" style="color:#333; width:10em;">English</span>
-            <p class="set-floor-select" style="margin-right:0; background:none;">✔️</p>
+            <p class="set-floor-select" style="margin-right:0; background:none;"><%if(initData.mySettingsData.language == 1){%>✔️<%}%></p>
         </div>
-         <div class="setting-li clearfix">
+         <div class="setting-li clearfix <%if(initData.mySettingsData.language == 2){%>cur-select<%}%>">
            
             <span class="set-floor-title" style="color:#333; width:10em;">简体中文</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.language == 2){%>✔️<%}%></p>
             
         </div>
-         <div class="setting-li clearfix">
+         <div class="setting-li clearfix <%if(initData.mySettingsData.language == 3){%>cur-select<%}%>">
             
             <span class="set-floor-title" style="color:#333; width:10em;">繁体中文</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.language == 3){%>✔️<%}%></p>
             
         </div>
-        <div class="setting-li clearfix">
+        <div class="setting-li clearfix <%if(initData.mySettingsData.language == 4){%>cur-select<%}%>">
            
             <span class="set-floor-title" style="color:#333; width:10em;">Francais</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.language == 4){%>✔️<%}%></p>
             
         </div>
-        <div class="setting-li clearfix">
+        <div class="setting-li clearfix <%if(initData.mySettingsData.language == 5){%>cur-select<%}%>">
            
             <span class="set-floor-title" style="color:#333; width:10em;">Espanol</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.language == 5){%>✔️<%}%></p>
             
         </div>
     </div>    

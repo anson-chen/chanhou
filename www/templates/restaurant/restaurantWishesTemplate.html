@@ -1,7 +1,6 @@
 <div class="set-bg">
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="head-wish-icon"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3><%=newChihuo.localize('wishes_mywishlist')%></h3>
 	</nav>
@@ -14,6 +13,7 @@
 	<div class="rest-list-wrap" style="padding-bottom:0px;">
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix">
+		<a href="#restaurant/<%=d.rest_id%>">
 			<div class="wish-right">
 				<img src="imgs/fav-rest.png">
 				<img src="imgs/detail-icon25.png">
@@ -28,9 +28,10 @@
 			</div>
 			<div style="margin-left:80px;">
 			<h3 class="rest-name-title"><%=d.rest_name%><img src="imgs/pass-icon.png"/></h3>
-			<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%=d.rest_discount_save%>off</span><br><%=d.city_name%>  <%=d.cust_distance%>
-<br><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%></p>
+			<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.rest_discount_save){%><%=d.rest_discount_save%>off<%}%></span><br><%=d.city_name%>  <%=d.cust_distance%>
+<br><%if(d.total_likes_perc){%><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%><%}%></p>
 			</div>
+			</a>
 		</div>
 	<%})%>
 		<div class="loading-wrap" id='specialLoad'>
@@ -38,26 +39,6 @@
 			<p class="loading-step2">加载中</p>
 			<p class="loading-step3" style="display:none;">没有更多了~~</p>
 		</div>
-		<div class="detail-border">
-			<a href="#" class="title-more-link"><%=newChihuo.localize('wishes_seeall')%></a>
-			<h3 class="detail-block-title" style="padding-left:0;"><%=newChihuo.localize('wishes_recommended')%></h3>
-		</div>
-		<div class="swiper-container" id="wish-like">
-			    <div class="swiper-wrapper">
-			            <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐意大利大利<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
-			            	</a>
-			            </div>
-			           <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐意大餐意<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
-			            	</a>
-			            </div>
-			             <div class="swiper-slide index-dish-img"><a href="#"><img src="imgs/pt2.png">
-			            	<div class="rest-like"><p class="para-set">意大利餐意大餐意<i class="pass-icon"></i></p><div class="like-para">北京菜 渥太华<br>$$$ 10km <br>85%喜欢</div></div>
-			            	</a>
-			            </div>
-			    </div>
-	 	</div>
 	</div>
 	<a href="#searchInit2/wish"><div class="wish-fix-right"></div></a>
 	<div class="rest-fix-bottom">

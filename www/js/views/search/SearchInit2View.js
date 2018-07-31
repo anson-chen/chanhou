@@ -8,7 +8,8 @@ define([
   var SearchInit2View = Backbone.View.extend({
     el: $("#page"),
     events: {
-     'click #searchInit2Tab a':'showTabWrap'
+     'click #searchInit2Tab a':'showTabWrap',
+      'submit #searchInit2':'showInfo',
     },
 
     render: function(status){
@@ -25,6 +26,42 @@ define([
         this.findCustMiSearchHotKW();
             
       this.bindEvents(status);
+
+    },
+
+    showInfo: function(event){
+      var value = $.trim($("#searchInit").val());
+          var index = $('#searchInit2Tab .cur').index();
+          if(value){
+            var url = index == 0 ? 'getRestByName.json' : 'getRestMIByName.json';
+            var option = index == 0 ? {
+                     restname: value,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     st: 1 ,
+                     ct: 20
+                } : {
+                     restminame: value,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     st: 1 ,
+                     ct: 20
+                };
+            chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri(url),
+                  data: option,
+                  success: function(data){
+                     if(data.status == 0){
+                        
+                    
+                   }
+                  } 
+            });  
+            event.preventDefault();
+          }
 
     },
 

@@ -9,7 +9,8 @@ define([
   var MyMessageView = Backbone.View.extend({
     el: $("#page"),
     events: {
-     'click .comment-effect4 .comment-cont':'showMoreComment'
+     'click .comment-effect4 .comment-cont':'showMoreComment',
+     'click #followingsTab a':'showTabWrap' 
     },
      status: {
       st: 0,
@@ -25,7 +26,7 @@ define([
       // if(initData.myMessageData.data.length == 0){
       //   this.initData(this.status.st);
       // }
-      this.initData(this.status.st);
+      this.initData(0);
       this.loadMore(10);
       this.bindEvent();
     },
@@ -36,7 +37,7 @@ define([
                   type: 'POST',
                   url: chihuo.getApiUri('addCustMoment.json'),
                   data: {
-                     custid:1057,
+                     custid: newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
                      type:'all',
                      momenttype:'followings',
                      lat: newChihuo.lat,
@@ -75,6 +76,12 @@ define([
           }
         }); 
     },
+     showTabWrap: function(e){
+      var obj=$(e.currentTarget);
+      var index=obj.index();
+      obj.addClass('cur').siblings().removeClass('cur');
+      swiperFollowings.slideTo(index);
+    },
 
     bindEvent: function(){
       var _this = this;
@@ -84,6 +91,7 @@ define([
         sendData: {
 
         },
+        startPX:150,
         url:chihuo.getApiUri('addCustMoment.json'),
         callbacks: {
           pullStart: function(){

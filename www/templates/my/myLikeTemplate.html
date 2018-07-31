@@ -21,9 +21,9 @@
 				<div class="food-img">
 					<img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
 				</div>
-				<div style="margin-left:100px;">
-					<h3 class="rest-name-title"><%=d.rest_name%></h3>
-					<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.pricelevel_per_person%></span><span style="color:#0bbc13;">20%off</span><br><%=d.city_name%>  <%=d.cust_distance%>km
+				<div style="margin-left:100px; margin-right:70px;">
+					<h3 class="rest-name-title" style="margin:0;"><%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.pricelevel_per_person%></span><br><%=d.city_name%>  <%=newChihuo.showDistanceInfo(d.cust_distance)%>
 		<br><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%></p>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
         </a>
       </li>
       <li id="msgRemind" class="cur">
-        <a href="#myIndex"><img src="imgs/bottom-red4.png">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

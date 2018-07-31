@@ -1,19 +1,39 @@
 <div class="map-bg">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
-        <h3>照片详情</h3>
+        <h3><%=newChihuo.localize('review_photos_details_header')%></h3>
     </nav>
 </div>
 <div class="photo-show-wrap">
-	<img src="<%=photoUrl%>" style="height:auto;" alt="加载失败">
+<%if(photoUrl){%>
+        <span class="photo-swiper-btn photo-left-btn"></span>
+        <span class="photo-swiper-btn photo-right-btn"></span>
+		<div class="swiper-container" id="photoDetail">
+			    <div class="swiper-wrapper">
+			    	<%_.each(photoUrl.split(','),function(d,i){%>
+			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" style='height: auto;'></div>
+			        <%})%>
+			    </div>
+    	</div>
+<%}%>    	
 </div>
 <!-- <div class="photo-num">
 	<span>15</span>/30
 </div> -->
-<div class="bottom-photo">
+<div class="bottom-photo" style="display:none;">
 	<div class="right-photo-info">
 		<img src="imgs/round-icon2.png"><span>1850</span>
 	</div>
 	<img src="imgs/photo.png" class="user-photo-bottom">
 	<p class="photo-bottom-para"><span>刘林峰</span><br>上传于2017-05-02</p>
 </div>
+<%if(photoUrl){%>
+<script>
+     var swiperRest2 = new Swiper('#photoDetail', {
+     	initialSlide:<%=photoIndex%>,
+        slidesPerView: 'auto',
+        nextButton: '.photo-right-btn',
+        prevButton: '.photo-left-btn',
+    });
+</script>  
+<%}%>    

@@ -1,27 +1,27 @@
 <div class="food-bg" style="padding-bottom:15px;">
     <nav class="common-title">
-        <a href="javascript:;" class="sub-comment">确定</a>
+        <a href="javascript:;" class="sub-comment" id="setPrivacy"><%=newChihuo.localize('global_okbutton')%></a>
         <a href="javascript:history.go(-1);" class="common-return"></a>
         <h3><%=newChihuo.localize('')%>隐私设置</h3>
     </nav>
 </div>  
      <div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">   
-        <div class="setting-li clearfix">
+        <div class="setting-li clearfix <%if(initData.mySettingsData.privacy == 1){%>cur-select<%}%>">
             
-            <span class="set-floor-title" style="color:#333; width:10em;">允许公共查看</span>
-            <p class="set-floor-select" style="margin-right:0; background:none;">✔️</p>
-            
-        </div>
-         <div class="setting-li clearfix">
-            
-            <span class="set-floor-title" style="color:#333; width:10em;">只允许好友查看</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <span class="set-floor-title" style="color:#333; width:10em;"><%=newChihuo.localize('profile_settings_privacy_accesstopublic')%></span>
+            <p class="set-floor-select" style="margin-right:0; background:none;"><%if(initData.mySettingsData.privacy == 1){%>✔️<%}%></p>
             
         </div>
-         <div class="setting-li clearfix">
+         <div class="setting-li clearfix <%if(initData.mySettingsData.privacy == 2){%>cur-select<%}%>">
+            
+            <span class="set-floor-title" style="color:#333; width:10em;"><%=newChihuo.localize('profile_settings_privacy_accesstofriends')%></span>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.privacy == 2){%>✔️<%}%></p>
+            
+        </div>
+         <div class="setting-li clearfix <%if(initData.mySettingsData.privacy == 3){%>cur-select<%}%>">
            
-            <span class="set-floor-title" style="color:#333; width:10em;">只有自己才能查看</span>
-            <p class="set-floor-select" style="margin-right:0;background:none;"></p>
+            <span class="set-floor-title" style="color:#333; width:10em;"><%=newChihuo.localize('profile_settings_privacy_accesstoselfonly')%></span>
+            <p class="set-floor-select" style="margin-right:0;background:none;"><%if(initData.mySettingsData.privacy == 3){%>✔️<%}%></p>
             
         </div>
     </div>    

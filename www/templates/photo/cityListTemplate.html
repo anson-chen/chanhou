@@ -1,7 +1,7 @@
 <div class="food-bg" style="padding-bottom:20px;">
 	<nav class="common-title">
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3>城市列表</h3>
+		<h3><%=newChihuo.localize('citylist_header')%></h3>
 	</nav>
 </div>
 <div class="rest-list-wrap">
@@ -16,7 +16,7 @@
 		         <div class="swiper-pagination"></div>
 		    </div>
 			<h3 class="rest-name-title" style="height:25px;"><%=d.othercity_name%></h3>
-			<p class="rest-info-show">餐馆数:<%=d.total_rests_cnt%></p>
+			<p class="rest-info-show"><%=newChihuo.localize('global_restaurantscount')%>:<%=d.total_rests_cnt%></p>
 			</a>
 		</div>
 	<%})%>	

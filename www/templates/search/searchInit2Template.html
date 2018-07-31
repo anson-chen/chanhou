@@ -6,7 +6,9 @@
 			    <i></i>
 				<a href="javascript:history.go(-1);" class="common-return"></a>
 				<div style="margin:0 30px 0 40px;">
+				<form id='searchInit2'>
 					<input type="text" value="" placeholder="<%=newChihuo.localize('main_searchbutton')%>" id='searchInit'>
+				</form>
 				</div>		
 			</div>
 		</nav>
@@ -32,7 +34,7 @@
 						<li><i class="rest-delete">X</i><span><%=d.rest_name%></span></li>
 					<%})%>
 					</ul>
-					<p class='clear-all'><%=newChihuo.localize('search_clear')%></p>
+					<p class='clear-all' style="width:200px;"><%=newChihuo.localize('search_clear')%></p>
 				</div>
 			</div>
 		</div>	
@@ -51,7 +53,7 @@
 						<li><i class="mi-delete">X</i><span><%=d.mi_name%></span></li>
 					<%})%>
 					</ul>
-					<p class='clear-all'><%=newChihuo.localize('search_clear')%></p>
+					<p class='clear-all' style="width:200px;"><%=newChihuo.localize('search_clear')%></p>
 				</div>
 			</div>
 		</div>

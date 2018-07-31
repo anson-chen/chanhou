@@ -2,7 +2,7 @@
 	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
 	    <nav class="common-title">
 	        <a href="javascript:history.go(-1);" class="common-return"></a>
-	        <h3>添加聊天信息</h3>
+	        <h3><%=newChihuo.localize('chat_addchats')%></h3>
 	    </nav>
 	</div>  
 	<div class="chat-apply-wrap" style="padding:15px 0;">
@@ -10,7 +10,7 @@
 		    <img src="imgs/search-index.png" class="chat-search-icon">
 			<i></i>
 			<div style="margin:0 30px;">
-				<input type="text" name="" value="" placeholder="搜索吃友">
+				<input type="text" name="" value="" placeholder="Enter email address to find">
 			</div>		
 		</div>
 	</div>
@@ -18,7 +18,7 @@
 	<%_.each(data,function(d,i){%>
 		<div class="rest-comment-head clearfix">
 			<a href="javascript:;" class="go-message" id="<%=d.friend_cust_id%>" name=<%=d.friend_cust_name%> src=<%=(d.cust_url || '')%>>
-				<img src="<%if(d.cust_url){%><%=d.cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+				<img src="<%if(d.friend_cust_url){%><%=d.friend_cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
 					<div class="comment-right-info">
 						<h3 style="background:none;"><%=d.friend_cust_name%></h3>
 						<p></p>

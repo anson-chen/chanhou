@@ -13,7 +13,7 @@
 	</nav>
 </div>
 <div class="map-wrap">
-	<div id="googleMap" style="height:100%;">
+	<div id="leafletMap" style="height:100%;">
 		
 	</div>
 </div>
@@ -39,12 +39,12 @@
 						</div>	
 					</div>
 					<div class="map-rest-img">
-							<img src="imgs/map-img.jpg">
+							<img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
 							<i></i>
 					</div>
 						<div style="margin-left:110px;">
 						<h3 class="rest-name-title"><%=d.rest_name%></h3>
-						<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%=d.rest_dicount_save%>off</span><br><%=d.cust_distance%>  <%=newChihuo.localize('global_var_km')%></p>
+						<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span><br><%=newChihuo.showDistanceInfo(d.cust_distance)%></p>
 						</div>
 				</div>
 			</a>	
@@ -70,13 +70,13 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+      <li>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
       <li id="msgRemind">
-        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

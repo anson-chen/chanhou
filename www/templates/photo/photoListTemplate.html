@@ -2,24 +2,17 @@
 	<nav class="common-title">
 		<a href="javascript:;" class="head-photo-icon"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3>餐厅照片</h3>
+		<h3><%=newChihuo.localize('review_photos_header')%></h3>
 	</nav>
 </div>
 <div class="photo-list-wrap">
+<%if(photoUrl){%>
 	<ul class="clearfix">
-		<li><a href="#photoDetail"><img src="imgs/photo-list1.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list2.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list3.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list2.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list1.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list3.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list2.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list3.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list1.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list1.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list2.jpg"></a></li>
-		<li><a href="#photoDetail"><img src="imgs/photo-list3.jpg"></a></li>
+	<%_.each(photoUrl.split(','),function(d,i){%>
+		<li class="detail-img-show"><img src="<%=d%>"></li>
+	<%})%>
 	</ul>
+<%}%>	
 </div>
 <div class="photo-mask">
 	<div class="mask-set">

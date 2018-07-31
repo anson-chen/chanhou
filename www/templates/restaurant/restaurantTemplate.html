@@ -2,7 +2,7 @@
 	<nav class="common-title">
 		<a href="javascript:;" class="share"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3><%=newChihuo.localize('restaurant_info')%></h3>
+		<h3><%if(data[0]){%><%=data[0].rest_name%><%}%></h3>
 	</nav>
 	<div class="rest-wrap">
 	<%_.each(data,function(d,i){%>
@@ -31,17 +31,17 @@
 				</div>	
 			</div>
 			<div style="position:relative;">
-			<h3 class="rest-name-title"><%=d.rest_name%></h3><img src="imgs/pass-icon.png" class="rest-pass-icon">
+			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
-			<p class="rest-info-show"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;">20%off</span><br><%=d.city_name%><span style="padding-left:10px;"><%=d.chihuo_distance%><%=newChihuo.localize('global_var_km')%></span></p>
+			<p class="rest-info-show"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span></p>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
 				<li class="rest-icon1"><div class="rest-status <%if(d.checkin_flg){%>done<%}%>"><img src="<%=staticSource.restIcon1%>"></div>
-				<p><span><%=(d.total_rest_checkins || 0)%></span><%=newChihuo.localize('restaurant_checkin')%><%if(d.total_rest_checkins > 1){%>s<%}%></p></li>
+				<p><span><%=(d.total_rest_checkins || 0)%> </span><%=newChihuo.localize('restaurant_checkin')%><%if(d.total_rest_checkins > 1){%>s<%}%></p></li>
 				<li class="rest-icon2"><div class="rest-status <%if(d.compliment_flg != 'n'){%>done<%}%>"><img src="<%=staticSource.restIcon2%>"></div>
-				<p><span><%=d.total_rest_compliments%></span></p></li>
-				<li class="rest-icon3"><img src=<%if(d.following_flg == 'n'){%><%=staticSource.restIcon4%><%}else{%><%=staticSource.restIcon3%><%}%> style="width:40px;margin-top:10px;" class="<%if(d.following_flg != 'n'){%>done<%}%>"><p><span><%=d.total_rest_followers%></span><%=newChihuo.localize('restaurant_follower')%><%if(d.total_rest_followers > 1){%>s<%}%></p></li>			
+				<p><span><%=(d.total_rest_compliments || 0)%> </span>like<%if(d.total_rest_compliments > 1){%>s<%}%></p></li>
+				<li class="rest-icon3"><img src=<%if(d.following_flg == 'n'){%><%=staticSource.restIcon4%><%}else{%><%=staticSource.restIcon3%><%}%> style="width:40px;margin-top:10px;" class="<%if(d.following_flg != 'n'){%>done<%}%>"><p><span><%=(d.total_rest_followers || 0)%></span> <%=newChihuo.localize('restaurant_follower')%><%if(d.total_rest_followers > 1){%>s<%}%></p></li>			
 			</ul>
 		</div>
 		<div class="wrap-border clearfix">
@@ -50,13 +50,13 @@
 				<div class="detail-border">
 					<p class="detail-open"><i class="detail-icon-common detail-icon1"></i><%=newChihuo.localize('restaurant_hours')%></p>
 					<div class="week-time">
-						<p>周一：<%=d.mon_open_hrs%></p>
-						<p>周二：<%=d.tue_open_hrs%></p>
-						<p>周三：<%=d.wed_open_hrs%></p>
-						<p>周四：<%=d.thu_open_hrs%></p>
-						<p>周五：<%=d.fri_open_hrs%></p>
-						<p>周六：<%=d.sat_open_hrs%></p>
-						<p>周日：<%=d.sun_open_hrs%></p>
+						<p <%if(chihuo.getWeekTime(1)){%>class='cur<%if(chihuo.getOpenStatus(d.mon_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_mon')%>：<%=d.mon_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(2)){%>class='cur<%if(chihuo.getOpenStatus(d.tue_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_tue')%>：<%=d.tue_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(3)){%>class='cur<%if(chihuo.getOpenStatus(d.wed_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_wed')%>：<%=d.wed_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(4)){%>class='cur<%if(chihuo.getOpenStatus(d.thu_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_thu')%>：<%=d.thu_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(5)){%>class='cur<%if(chihuo.getOpenStatus(d.fri_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_fri')%>：<%=d.fri_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(6)){%>class='cur<%if(chihuo.getOpenStatus(d.sat_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_sat')%>：<%=d.sat_open_hrs || '休息'%></p>
+						<p <%if(chihuo.getWeekTime(0)){%>class='cur<%if(chihuo.getOpenStatus(d.sun_open_hrs)){%> opening<%}%>'<%}%>><%=newChihuo.localize('restaurant_openhours_sun')%>：<%=d.sun_open_hrs || '休息'%></p>
 					</div>
 				</div>
 				<%}%>
@@ -67,7 +67,6 @@
 				    <%if(d.contact_phone_no){%>
 					<span class="connect-info" style="padding-right:30px;"><i class="detail-icon-common detail-icon3"></i><a href="tel:<%=d.contact_phone_no%>"><%=d.contact_phone_no%></a></span>
 					<%}%>
-					<span class="connect-info"><i class="detail-icon-common detail-icon4"></i>028-67899876</span>
 					<span class="connect-info"><i class="detail-icon-common detail-icon5"></i><%=d.weburl%></span>
 				</div>
 				<%if(d.feature_tags){%>
@@ -100,18 +99,22 @@
 		<div class="wrap-border clearfix">
 			<div class="rest-detail">
 				<div class="detail-border">
-					<a href="#photoList" class="title-more-link"><%=newChihuo.localize('restaurant_more_picutres')%></a>
+				<%if(d.rest_photo_urls){%>
+					<a href="javascript:;" class="title-more-link photo-list-link"><%=newChihuo.localize('restaurant_more_picutres')%></a>
+					<%}%>
 					<h3 class="detail-block-title title-icon2"><%=newChihuo.localize('restaurant_pictures')%></h3>
 				</div>
 			</div>
 			<%if(d.rest_photo_urls){%>	
-			<div class="swiper-container" id="rest-photo">
+			<div class="swiper-container" id="rest-photo" photo='<%=d.rest_photo_urls%>'>
 			    <div class="swiper-wrapper">
 			    	<%_.each(d.rest_photo_urls.split(','),function(d,i){%>
 			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i></i></div>
 			        <%})%>
 			    </div>
     		</div>
+    		<%}else{%>
+    		<p class="photo-word-show">To be the first foody adding a photo to earn a 100 points</p>
     		<%}%>
     		<div class="comment-photo-wrap img-rest-photo clearfix" rest="<%=d.rest_id%>">
     			
@@ -121,15 +124,18 @@
 		<div class="wrap-border clearfix" style="position:relative;">
 			<div class="rest-detail">
 				<div class="detail-border" style="border:none;">
+				<%if(d.total_rest_reviews){%>
 					<a href="#userComments/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('restaurant_more_reviews')%></a>
-					<h3 class="detail-block-title title-icon3"><%=newChihuo.localize('restaurant_reviews')%><span style="color:#999;">(<%=d.total_rest_reviews%>)</span></h3>
+					<%}%>
+					<h3 class="detail-block-title title-icon3"><%=newChihuo.localize('restaurant_reviews')%><span style="color:#999;">(<%=d.total_rest_reviews || 0%>)</span></h3>
 				</div>
 			</div>	
 			<ul class="rest-comment">
 			<%_.each(data,function(d,i){%>
+			<%if(d.total_rest_reviews){%>
 				<li>
 					<div class="rest-comment-head clearfix">
-						<a href="#myIndex">
+						<a href="#myIndex/<%=d.customer_id%>">
 						  <%if(d.reviewer_profile_url){%>
 							<img src="<%=d.reviewer_profile_url.split(',')[0]%>" class="comment-left-img"> 
 						  <%}else{%>
@@ -141,7 +147,7 @@
 							<p><span class="comment-time"><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.reviewer_city%> <%=d.reviewer_country%></span></p>
 						</div>
 					</div>
-					<p class="comment-cont"><%=newChihuo.showMorePara(d.last_review_details)%><i></i></p>
+					<p class="comment-cont"><%=d.last_review_details%></p>
 					<%if(d.review_photo_urls){%>
 						<div class="review-photo-urls clearfix">
 							<%_.each(d.review_photo_urls.split(','),function(d,i){%>
@@ -150,11 +156,15 @@
 						</div>
 					<%}%>
 					<div class="rest-comment-bottom">
-						<span class="wechat-icon" style="margin-right:20px;">2.5k</span>
-						<span class="good-icon">2.5k</span>
+						<%if(d.review_comments_cnt){%><span class="wechat-icon" style="margin-right:20px;"><%=d.review_comments_cnt%></span><%}%>
+						<%if(d.review_likes_cnt){%><span class="good-icon"><%=d.review_likes_cnt%></span><%}%>
 					</div>
 				</li>
-			<%})%>
+			<%}else{%>
+			   <%if(i==0){%>
+			      <p class="photo-word-show">To be the first foody adding a review to earn a 150 points</p>
+			   <%}%>
+			<%}})%>
 			</ul>
 			<a href="<%if(newChihuo.getLocalStorage('customer_id') || newChihuo.customerId){%>#submitComment/<%=d.rest_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
 		</div>
@@ -170,7 +180,7 @@
 			    <div class="swiper-wrapper">
 			    <%_.each(JSON.parse(d.recomm_rests),function(d,i){%>
 			            <div class="swiper-slide index-dish-img"><a href="#restaurant/<%=d.restid%>"><img src="<%if(d.photo_url){%><%=d.photo_url%><%}else{%>imgs/pt1.png<%}%>">
-			            	<div class="rest-like"><p class="para-set"><%=d.rest_name%></p><div class="like-para">北京菜<span style="color:#ff8b4c; padding-left:10px;">$$$</span><br>渥太华 <%=d.distance.toFixed(2)%><%=newChihuo.localize('global_var_km')%><br><%=d.total_like_percentage%>% <%=newChihuo.localize('global_var_like')%></div></div>
+			            	<div class="rest-like"><p class="para-set"><%=d.rest_name%></p><div class="like-para"><%=d.cuisine%><span style="color:#ff8b4c; padding-left:10px;"><%=d.price%></span><br><%=d.city%> <%=newChihuo.showDistanceInfo(d.distance.toFixed(2))%><br><%if(d.total_like_percentage){%><%=d.total_like_percentage%>% <%=newChihuo.localize('global_var_like')%><%}%></div></div>
 			            	</a>
 			            </div>
 			    <%})%>

@@ -24,7 +24,7 @@ var newChihuo = {
     },
     errorPopInfo: function(func){
        var pop = $('#popInfo');
-       var info ='<p>网络错误！请刷新尝试</p><div class="error-pop"><span class="close-pop">关闭</span><span class="refresh">刷新</span></div>'
+       var info ='<p>Network error,please try again shortly.</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">refresh</span></div>'
        pop.html(info).addClass('pop-info-show');
        $(".error-pop .close-pop").on('click',function(){
            pop.removeClass('pop-info-show').html('');
@@ -54,6 +54,7 @@ var newChihuo = {
     welcome: function(customer){
       var hour = new Date().getHours();
       var tips = '';
+      var customer = customer || 'friend';
       if(hour >=6 && hour <=11){
         tips = 'Good morning,'+ customer;
       }else if( hour >11 && hour < 18){
@@ -62,6 +63,29 @@ var newChihuo = {
         tips = 'Good evening,'+ customer;
       }
       return tips;
+    },
+    showDiscountInfo:function(data){
+      if(data == '0' || data == '0%' || data == undefined){
+        return '';
+      }else{
+        return data + 'off';
+      }
+
+    },
+    showDistanceInfo: function(data){
+      var dis = this.locale == 'en-CA' ? 'km' : '公里';
+      if(data == 0){
+         return '';
+
+      }else if(data<1){
+         return data*1000 + 'm';
+
+      }else if(data>=1){
+          return data + dis;
+      }else{
+         return undefined;
+      }
+
     },
     localize: function(id,key){
       var obj = chihuoLocal;
@@ -151,7 +175,7 @@ var newChihuo = {
     positionTime: null,
     positionChanged: false,
     customerId: null,
-    customer: '' || 'friend',
+    customer: null,
     msgList:{},
     lock: null,
 };
@@ -252,7 +276,8 @@ var initData = {
     id:null
   },
   myIndexData: {
-    data:[]
+    data:[],
+    id: null
   },
   myProfileData: {
     data:[
@@ -299,6 +324,30 @@ var initData = {
   },
    myLikeData: {
     data:[]
+  },
+  photoData:{
+    photoUrl: null,
+    photoIndex: null
+  },
+   dishHot1Data: {
+    data:[]
+  },
+  dishHot2Data: {
+    data:[],
+    title: null
+  },
+  dishHot3Data: {
+    data:[],
+    title:null
+  },
+  dishHot4Data: {
+    data:[],
+    title:null
+  },
+  mySettingsData: {
+    privacy: null,
+    language: null,
+    notification: null
   }
 };
 
@@ -314,6 +363,45 @@ var chihuo = {
 
   getApiUri2: function(api){
       return newChihuo.address+'/wkfdmk/'+ api;
+  },
+
+  getWeekTime:function(day){
+      var now = new Date();
+      return now.getDay()==day;
+  },
+
+  getOpenStatus: function(hours){
+    var begin,end;
+    if(hours.indexOf('24小时')>=0){
+        return true;
+    }
+    if(hours && hours.indexOf('–')>=0){
+      begin = parseInt(hours.split('–')[0].split(':')[0]);     
+      end = parseInt(hours.split('–')[1].split(':')[0]);
+      var now = new Date().getHours();
+      if(begin || end){
+        if(begin >= end){
+          if(now >=begin || now <= end){
+            return true;
+          }else{
+            return false;
+          }
+        }else{
+          if(now >= begin && now<=end){
+            return true;
+          }else{
+            return false;
+          }
+        }
+      }
+    }
+  },
+
+  commentTime:function(time){
+    if(time){
+      var t = new Date(time.substring(0,19)).getTime();
+    return t ? this.timestampToTime(t) : time.substring(0,10);
+    }
   },
 
   timestampToTime: function(timestamp) {
@@ -456,14 +544,15 @@ var chihuo = {
   },
 
 
-  getPosition: function(template){
+  getPosition: function(template,refresh){
     document.addEventListener("deviceready", onDeviceReady, false);
     if(newChihuo.debug){
-        chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template);
+        chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
       }
    
     //device APIs are available
-    function onDeviceReady() {  
+    function onDeviceReady() {
+        StatusBar && StatusBar.backgroundColorByHexString("#FFF"); 
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
         clearInterval(newChihuo.positionTime);
         newChihuo.positionTime = setInterval(function(){navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);          
@@ -474,10 +563,10 @@ var chihuo = {
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
       if(change){
-        chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template);
+        !newChihuo.setCity && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
       }
       if(!change && newChihuo.localCity && newChihuo.localCity != newChihuo.city){
-        chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template);
+        !newChihuo.setCity && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
       }
     }          
              
@@ -490,7 +579,7 @@ var chihuo = {
      
   },
 
-  openStreetMap: function(lat, lon, template){
+  openStreetMap: function(lat, lon, template,refresh){
     var _this = this;
       if(lat && lon){
         $.ajax({
@@ -505,10 +594,10 @@ var chihuo = {
           success: function (data) { 
               newLocation = data.address.city || data.address.state_district || 'toronto';
               newChihuo.localCity = newLocation;
-               if(newChihuo.city != newChihuo.localCity){
+               if((newChihuo.city != newChihuo.localCity) || refresh){
 
-                if(newChihuo.city){
-                 newChihuo.getPage('home') && newChihuo.showPopInfo('检测到城市变化，即将为您更新当前城市数据');
+                if((newChihuo.city != newChihuo.localCity) && newChihuo.city){
+                 newChihuo.getPage('home') && newChihuo.showPopInfo(newChihuo.localize('home_changelocation'));
                 }
                 if(newChihuo.getPage('home')){
                   newChihuo.city = newLocation;
@@ -520,9 +609,9 @@ var chihuo = {
               
             },
           error: function () {
-              newChihuo.errorPopInfo(function(){chihuo.openStreetMap(lat, lon, template)});
-              // chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-              // chihuo.findHotspotDetails('toronto',newChihuo.lat,newChihuo.lon,template);
+              // newChihuo.errorPopInfo(function(){chihuo.openStreetMap(lat, lon, template,refresh)});
+              chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+              chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
           }
         })
       }
@@ -607,6 +696,11 @@ var chihuo = {
                                   }
 
                                  }
+                              if(data.bc && !$.isEmptyObject(data.bc)){
+                                $('#msgFeeds').addClass('message-remind').click(function(){
+                                         $('#msgFeeds').removeClass('message-remind');
+                                    });
+                              }    
                               
                             },
                             error: function(xhr){
@@ -722,40 +816,44 @@ var chihuo = {
       }
     },
 
-  initMapShow: function(mapData,index){
-    newChihuo.infowindow = null;
-    newChihuo.markerWrap = [];
-    function setMapMarker(data,index){
-      var mapOpt = {
-      center:new google.maps.LatLng(data[index].address_latitude,data[index].address_longitude),
-      zoom:16,
-      mapTypeId:google.maps.MapTypeId.ROADMAP
-      };
-      newChihuo.map = new google.maps.Map(document.getElementById("googleMap"),mapOpt);
-     
-      function createMarker(point,query) {
-             var marker = new google.maps.Marker({
-              position:point,
-              icon: query == index ? 'imgs/marker2.png' : 'imgs/marker.png'
-             });
-              marker.setMap(newChihuo.map);
-              newChihuo.markerWrap.push(marker);
-              if(query == index){
-                newChihuo.infowindow = new google.maps.InfoWindow({
-                  content:index+1+'. '+data[query].rest_name
-                  });
-                newChihuo.infowindow.open(newChihuo.map,marker);
-              }
-                return marker;
-      }
+    initMapOption:function(mapData){
+    newChihuo.map = L.map('leafletMap').setView([mapData[0].address_latitude,mapData[0].address_longitude], 16);
 
-      for (var i= 0; i< data.length; i++) {
-      var point= new google.maps.LatLng(mapData[i].address_latitude,mapData[i].address_longitude);
-        createMarker(point,i);
-      }  
-    }
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.streets'
+      }).addTo(newChihuo.map);
+    },
+
+  initMapShow: function(mapData,index){
+    newChihuo.markerWrap = [];
     if(mapData && mapData.length){
-      setMapMarker(mapData,index);
+     newChihuo.myIcon1 = L.icon({
+          iconUrl: 'imgs/marker2.png',
+          iconSize: [45, 50],
+          iconAnchor: [22, 94],
+          popupAnchor: [0, -90],
+          className: 'set-index'
+      });
+
+      newChihuo.myIcon2 = L.icon({
+          iconUrl: 'imgs/marker.png',
+          iconSize: [24, 40],
+          iconAnchor: [22, 94],
+          popupAnchor: [-10, -90],
+      });
+       for (var i= 0; i< mapData.length; i++) {
+      var mark = L.marker([mapData[i].address_latitude,mapData[i].address_longitude],{icon: i==index ? newChihuo.myIcon1 : newChihuo.myIcon2 }).addTo(newChihuo.map);
+          newChihuo.markerWrap.push(mark);
+          if(i==index){
+            mark.bindPopup(i+1+": "+mapData[i].rest_name).openPopup();
+          }else{
+            mark.bindPopup(i+1+": "+mapData[i].rest_name);
+          }
+      }  
     }
   }, 
 

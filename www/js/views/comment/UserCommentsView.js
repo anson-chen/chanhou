@@ -46,6 +46,9 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
+                      if(num==0){
+                        initData.userCommentsData.data = [];
+                      }
                         initData.userCommentsData.data =[...initData.userCommentsData.data,...data.data];
                         newChihuo.getPage('userComments') && _this.$el.html(_.template(userCommentsTemplate,initData.userCommentsData));
                         _this.status.loading = false;
@@ -80,6 +83,7 @@ define([
     submitComment: function(event){
       var _this = this;
       event.preventDefault();
+      $(event.currentTarget).find('.chat-input').blur();
       $(event.currentTarget).find('.chat-input').val().length && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestReviewComment.json'),
@@ -93,10 +97,11 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        // _this.initData(initData.userCommentsData.id,0);
+                       
                        data.data && data.data.length && $('.reply').parent().next().show().append('<p><span>' + data.data[0].rsp_msg +'：</span>'+ data.data[0].comment_details+'</p>');
                        $('.reply').parent().parent().find('.user-recall').hide();
                        $('.reply').removeClass('reply');
+                        _this.initData(initData.userCommentsData.id,0);
                        
                      }
                   } 
@@ -140,12 +145,6 @@ define([
        var obj=$(e.currentTarget);
        obj.parent().parent().find('.user-recall').toggle().find('.chat-input').val('').focus().attr('review',$(obj.children()[0]).attr('review'));
     }
-
-     
-     
-
-
-
 
   });
   return UserCommentsView;

@@ -1,7 +1,7 @@
 <div class="food-bg" style="padding-bottom:20px;">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
-        <h3>照片</h3>
+        <h3><%=newChihuo.localize('profile_footprint_photos_header')%></h3>
     </nav>
 </div>
 <ul class="my-photos clearfix">
@@ -17,7 +17,7 @@
 <%})%>
 </ul>
 <div class="loading-wrap" id='specialLoad'>
-            <p class="loading-step1" style="display:none;">加载更多</p>
-            <p class="loading-step2">加载中</p>
+            <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_more')%></p>
+            <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
             <p class="loading-step3" style="display:none;">没有更多了~~</p>
         </div>

@@ -10,12 +10,43 @@ define([
   var LangSettingView = Backbone.View.extend({
     el: $("#page"),
     events: {
-      
+      'click #setLanguage' : 'submitSetting'
     },
 
     render: function(){
       this.$el.html(_.template(langSettingTemplate));
       this.bindEvent();
+    },
+
+     submitSetting: function(){
+      var index = $('.cur-select').index();
+      chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri('updateCustSetting.json'),
+          data:{
+             cont:JSON.stringify({
+               language: index+1,
+             }),
+             lat: newChihuo.lat,
+             lng: newChihuo.lon,
+             locale: 'en',
+          },
+          success: function (data) {
+            if (data.status == 0) { 
+               newChihuo.showPopInfo('success');
+               initData.mySettingsData.language = index+1;
+               setTimeout(function(){
+                app_router.navigate('mySettings',{
+                  trigger: true
+                });
+                },1400);
+            }
+          },
+          error: function () {
+
+          }
+        });
+
     },
 
     bindEvent:function(){

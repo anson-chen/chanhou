@@ -12,21 +12,15 @@ define([
      'click #addressMore':'showMoreAddress',
      'click .comment-effect3 .comment-cont':'showMoreComment',
      'click .add-rest-photo': 'addPhoto',
-     'click .comment-edit': 'checkPermission'
+     'click .comment-edit': 'checkPermission',
+     'click .week-time':'showWeekTime'
     },
 
     render: function(id,from){
       newChihuo.setPage('restaurant');
       newChihuo.windowInit();
       this.$el.html(_.template(restaurantTemplate,initData.restaurantData));
-      if(id != initData.restaurantData.id){
-        this.findRestDetailById(id);
-        initData.restaurantData.id = id;
-      }else{
-        if(from){
-        this.findRestDetailById(id);
-        }
-      }
+      this.findRestDetailById(id);
       this.bindEvents(id);
 
     },
@@ -58,6 +52,10 @@ define([
 
     bindEvents: function(id){
       var _this = this;
+      if(!$('.week-time .cur').hasClass('opening')){
+         $('.detail-open').addClass('closed');
+      }
+
       $('.radius-like').each(function(){
         var num = $(this).find('span').text();
         var radialObj = radialIndicator(this, {
@@ -173,15 +171,26 @@ define([
       });
 
       $('.photo-detail-show').on('click',function(){
-           var url = $(this).attr('src');
+           var url = $("#rest-photo").attr('photo');
+           var index = $(this).parent().index();
            if(url){
-            initData.restaurantData.photoUrl = url;
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
             app_router.navigate('photoDetail', {
               trigger: true
             });
            }
+      });
 
-      })
+       $('.photo-list-link').on('click',function(){
+           var url = $("#rest-photo").attr('photo');
+           if(url){
+            initData.photoData.photoUrl = url;
+            app_router.navigate('photoList', {
+              trigger: true
+            });
+           }
+      });
 
     },
 
@@ -192,6 +201,11 @@ define([
     showMoreComment: function(e){
       var obj=$(e.currentTarget);
       obj.toggleClass('comment-cont-more');
+    },
+
+    showWeekTime: function(e){
+      var obj=$(e.currentTarget);
+      obj.toggleClass('show-all');
     },
 
     photoInterface: function(){

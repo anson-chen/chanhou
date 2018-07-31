@@ -1,6 +1,6 @@
 <div class="food-bg">
 		<nav class="common-title">
-			<a href="javascript:;" class="head-search-icon">阿拉伯特色</a>
+			<a href="javascript:;" class="head-search-icon"><%=newChihuo.city%></a>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<h3 style="margin:0 80px;"><%=newChihuo.localize('customize_filter')%></h3>
 		</nav>
@@ -54,7 +54,7 @@
 			</div>
 			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
 				<span class="set-floor-title"><%=newChihuo.localize('customize_open')%></span>
-				<p class="set-floor-select"><input class="time-demo" placeholder="选择时间"/></p>
+				<p class="set-floor-select"><input class="time-demo" placeholder="<%=newChihuo.localize('customize_open')%>"/></p>
 				<div class="set-time"><img src="imgs/open-icon.png"><img src="imgs/notopen-icon.png"></div>
 			</div>
 			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
@@ -79,14 +79,20 @@
 			<div class="set-floor clearfix">
 				<span class="set-floor-title"><%=newChihuo.localize('customize_distance')%></span>
 				<div class="right-set-info clearfix">
-					<span>1千米</span><span>3千米</span><span>5千米</span><span>10千米</span><span>全城</span>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'distance'){%>
+						<span><%=d.name%></span>
+					<%}})%>
 				</div>
 			</div>
 			<div style="background:#f4f8fb; height: 15px; "></div>
 			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
 				<span class="set-floor-title"><%=newChihuo.localize('customize_price')%></span>
 				<div class="right-set-info clearfix">
-					<span>$</span><span>$$</span><span>$$$</span><span>$$$$</span>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.custom_category == 'price'){%>
+						<span><%=d.name%></span>
+					<%}})%>
 				</div>
 			</div>
 			<div class="set-floor clearfix select-dish-mask" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;" query=2>
@@ -95,7 +101,7 @@
 			</div>
 			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
 				<span class="set-floor-title"><%=newChihuo.localize('customize_open')%></span>
-				<p class="set-floor-select"><input class="time-demo" placeholder="<%=newChihuo.localize('customize_open')%>选择时间"/></p>
+				<p class="set-floor-select"><input class="time-demo" placeholder="<%=newChihuo.localize('customize_open')%>"/></p>
 				<div class="set-time"><img src="imgs/open-icon.png"></div>
 				
 			</div>
@@ -109,16 +115,9 @@
 </div>
 <div class="search-mask">
     <div class="city-mask-list">
-    	<p>阿富汗</p>
-    	<p>美国</p>
-    	<p>亚洲</p>
-    	<p>加拿大</p>
-    	<p>多伦多</p>
-    	<p>北京</p>
-    	<p>上海</p>
-    	<p>香港</p>
-    	<p>天津</p>
-    	<p>渥太华</p>
+    <%_.each(initData.homeData.cityData, function(d,i) {%>
+      <p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p>
+    <%})%>
     </div>
     <div class="dish-mask-list">
     	<%_.each(data,function(d,i){%>

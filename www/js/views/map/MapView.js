@@ -172,24 +172,26 @@ define([
       var swiperMap =  new Swiper('#map-swiper', {
         slidesPerView: 'auto',
         onInit: function(swiper){
-            google && chihuo.initMapShow(initData.restaurantNearData.data,swiper.activeIndex);
-            newChihuo.mapListener && google.maps.event.removeListener(newChihuo.mapListener);
-            newChihuo.mapListener = google.maps.event.addListener(newChihuo.map,'center_changed',function(){
-              clearTimeout(time);
+            chihuo.initMapOption(initData.restaurantNearData.data);
+            newChihuo.map && chihuo.initMapShow(initData.restaurantNearData.data,swiper.activeIndex);
+            newChihuo.map && newChihuo.map.on('moveend',function(ev){
+               clearTimeout(time);
               time = setTimeout(function() {    
-                _this.status.sendRequest && _this.initData(newChihuo.map.getCenter().lat(),newChihuo.map.getCenter().lng());
-              },800);
-            })
+                _this.status.sendRequest && _this.initData(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng);
+              },800);             
+            });
+            // newChihuo.mapListener && google.maps.event.removeListener(newChihuo.mapListener);
+            // newChihuo.mapListener = google.maps.event.addListener(newChihuo.map,'center_changed',function(){
+             
+            // })
 
         },
         onSlideChangeStart: function(swiper){
            _this.status.sendRequest = false;
-          google && newChihuo.map.panTo({lat:initData.restaurantNearData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantNearData.data[swiper.activeIndex].address_longitude});
-          google && newChihuo.markerWrap[swiper.activeIndex-1 > 0 ? swiper.activeIndex-1 : 0].setIcon('imgs/marker.png');
-          google && newChihuo.markerWrap[swiper.activeIndex+1 < newChihuo.markerWrap.length ? swiper.activeIndex+1 : swiper.activeIndex].setIcon('imgs/marker.png');
-          google && newChihuo.markerWrap[swiper.activeIndex].setIcon('imgs/marker2.png');                
-          google && newChihuo.infowindow.open(newChihuo.map,newChihuo.markerWrap[swiper.activeIndex]);
-          google && newChihuo.infowindow.setContent(swiper.activeIndex+1+". "+ initData.restaurantNearData.data[swiper.activeIndex].rest_name);
+           newChihuo.map && newChihuo.map.panTo({lat:initData.restaurantNearData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantNearData.data[swiper.activeIndex].address_longitude});
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex-1 > 0 ? swiper.activeIndex-1 : 0].setIcon(newChihuo.myIcon2);
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex+1 < newChihuo.markerWrap.length ? swiper.activeIndex+1 : swiper.activeIndex].setIcon(newChihuo.myIcon2);
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex].setIcon(newChihuo.myIcon1).openPopup();               
         },
         onSlideChangeEnd: function(swiper){
           if(!_this.status.sendRequest){

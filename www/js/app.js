@@ -8,6 +8,7 @@ define([
   'common',
   'radialIndicator',
   'touche',
+  'jqueryMove'
   // 'lock',
 ], function($, _, Backbone, Router){
   var initialize = function(){

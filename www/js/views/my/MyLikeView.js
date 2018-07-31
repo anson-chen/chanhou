@@ -51,6 +51,31 @@ define([
                      }
                   } 
             });  
+
+            // chihuo.wkAjax({
+            //       type: 'GET',
+            //       url: chihuo.getApiUri('getMyRestLike.json'),
+            //       data: {
+            //          lat: newChihuo.lat,
+            //          lng: newChihuo.lon,
+            //          locale: 'en',
+            //          st: num*_this.status.ct+1,
+            //          ct: _this.status.ct,
+            //       },
+            //       success: function(data){
+            //          if(num == 0){
+            //           initData.myLikeData.data = [];
+            //          }
+            //          if(data.status == 0){
+            //             initData.myLikeData.data = [...initData.myLikeData.data,...data.data];
+            //             newChihuo.getPage('myLike') && _this.$el.html(_.template(myLikeTemplate,initData.myLikeData));
+            //              _this.status.loading = false;
+            //              $('.loading-step1').show();
+            //             $('.loading-step2,.loading-step3').hide();
+                      
+            //          }
+            //       } 
+            // });  
     },
 
     loadMore: function(distance){

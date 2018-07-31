@@ -93,6 +93,7 @@ define([
 
         },
         url:chihuo.getApiUri('addCustMoment.json'),
+        startPX:150,
         callbacks: {
           pullStart: function(){
             

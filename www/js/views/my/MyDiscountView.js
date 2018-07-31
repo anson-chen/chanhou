@@ -11,7 +11,8 @@ define([
     events: {
      'click .discount-city':'showCity',
      'click #discountCity p': 'changeCity', 
-     'click #discountMenuTab span':'showTabWrap' 
+     'click #discountMenuTab span':'showTabWrap',
+     'click .promotion-para':'showMoreInfo',
     },
 
     render: function(){
@@ -20,6 +21,9 @@ define([
       this.$el.html(_.template(myDiscountTemplate,initData.myDiscountData));
       this.getCityList();
       this.initData();
+    },
+    showMoreInfo: function(){
+       $('.promotion-para').toggleClass('promotion-toggle');
     },
 
     getCityList:function(){

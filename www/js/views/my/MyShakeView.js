@@ -92,7 +92,7 @@ function deviceMotionHandler(event){
                       if(data.data && data.data.length){
                           var d = data.data[0];
                           var imgSrc = d.rest_profile_photo_url || 'imgs/rest-list-img.jpg';
-                          var html ='<a href="#restaurant/'+d.rest_id+'"><img src="'+ imgSrc +'"><h3>'+d.rest_name+'</h3><p class="rest-info-show" style="padding-top:5px;">'+d.cuisine_type+'<span style="color:#ff8b4c; padding:0 10px;">'+d.rest_avg_pricelevel_per_person+'</span><span style="color:#0bbc13;">'+d.rest_dicount_save+'off</span><br>'+d.cust_distance+'公里  '+d.total_likes_perc+'%喜欢</p></a>';
+                          var html ='<a href="#restaurant/'+d.rest_id+'"><img src="'+ imgSrc +'"><h3>'+d.rest_name+'</h3><p class="rest-info-show" style="padding-top:5px;">'+d.cuisine_type+'<span style="color:#ff8b4c; padding:0 10px;">'+d.rest_avg_pricelevel_per_person+'</span><span style="color:#0bbc13;">'+newChihuo.showDiscountInfo(d.rest_dicount_save)+'</span><br>'+newChihuo.showDistanceInfo(d.cust_distance)+' '+d.total_likes_perc+'%'+newChihuo.localize('global_var_like')+'</p></a>';
                           $('.mask-shake .shake-info');
                           $('.mask-shake .shake-info').eq(1).hide().end().eq(0).show().html(html);
                           $('.mask-shake').show();

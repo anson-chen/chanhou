@@ -25,7 +25,7 @@
 		<%_.each(data,function(d,i){%>
 				<li style="border-top:none;">
 					<div class="rest-comment-head clearfix">
-						<a href="javascript:;">
+						<a href="#myIndex/<%=d.customer_id%>">
 						<%if(d.profile_photo_url){%>
 						<img src="<%=d.profile_photo_url.split(',')[0]%>" class="comment-left-img">
 						<%}else{%>
@@ -59,7 +59,7 @@
 						<%})%>
 					</div>
 					<%}%>
-					<div class="rest-comment-bottom">
+					<div class="rest-comment-bottom" style="display:none;">
 						<div class="comment-operation"><span class="good-icon"><%=d.total_compliments%></span></div>
 						<div class="comment-operation"><span class="wechat-icon"><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
@@ -78,10 +78,12 @@
 		 <%_.each(data,function(d,i){%>
 		    <div class="short-message">
 		    	<%if(d.profile_photo_url){%>
+		    	<a href="#myIndex/<%=d.customer_id%>">
 							<img src="<%=d.profile_photo_url.split(',')[0]%>" class="comment-left-img">
 							<%}else{%>
 							  <img src="imgs/photo.png" class="comment-left-img"> 
 							<%}%>
+							</a>
 		    	<p><b><%=d.display_name%></b> <%=d.rsp_msg%></p>
 		    	<p style="color:#999;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></p>
 		    </div>
@@ -94,13 +96,12 @@
 		    <p class="loading-step1" style="display:none;">加载更多</p>
 			<p class="loading-step2">加载中</p>
 			<p class="loading-step3" style="display:none;">没有更多了~~</p>
-		</div>
 	</div>
-	<a href="#submitComment" class="comment-edit">发布评论</a>
+	</div>
 	<div class="rest-fix-bottom">
     <ul class="clearfix">
       <li>
-        <a href="#"><img src="imgs/bottom-red1.png">
+        <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
@@ -114,7 +115,7 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind cur">
+      <li class="cur">
         <a href="javascript:;"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
