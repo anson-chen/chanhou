@@ -27,7 +27,7 @@ define([
                   type: 'GET',
                   url: chihuo.getApiUri('getAllFriends.json'),
                   data: {
-                     tid: newChihuo.customerId,
+                     tid: newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',

@@ -11,27 +11,30 @@
 	</ul>
 </div>	
 	<div class="rest-list-wrap" style="padding-bottom:0px;">
+	<%if(data.length){%>
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix">
 		<a href="#restaurant/<%=d.rest_id%>">
-			<div class="wish-right">
-				<img src="imgs/fav-rest.png">
-				<img src="imgs/detail-icon25.png">
-				<div style="padding:5px 3px 0 0;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></div>
-			</div>
-			<div class="food-img" style="width:70px;">
-			<%if(d.concat_prof_photo_url){%>
-				<img src="<%=d.concat_prof_photo_url.split(',')[0]%>">
-			<%}else{%>
-				<img src="imgs/map-img.jpg">
-			<%}%>
-			</div>
-			<div style="margin-left:80px;">
-			<h3 class="rest-name-title"><%=d.rest_name%><img src="imgs/pass-icon.png"/></h3>
-			<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.rest_discount_save){%><%=d.rest_discount_save%>off<%}%></span><br><%=d.city_name%>  <%=d.cust_distance%>
-<br><%if(d.total_likes_perc){%><%=d.total_likes_perc%>% <%=newChihuo.localize('global_var_like')%><%}%></p>
-			</div>
-			</a>
+			<div class='clearfix'>
+			
+			   <div class="food-img">
+	               <%if(d.concat_prof_photo_url){%>
+						<img src="<%=d.concat_prof_photo_url.split(',')[0]%>">
+					<%}else{%>
+						<img src="imgs/map-img.jpg">
+					<%}%>
+	           </div>
+	           <div style="margin:0 5px 0 100px; position:relative;">
+	                <%if(d.cust_distance){%><span class="position-distance"><%=d.cust_distance%></span><%}%>
+	                <h3 class="rest-name-title" style="margin-right:60px;"><%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%>
+					<%if(d.total_reviews_cnt){%><span class="reset-style reset-bg6" style="float:right; margin-top:1px;"><%=d.total_reviews_cnt%></span><%}%>
+					<span style="color:#ff8b4c; padding-right:10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span><br><%=d.cuisine_type%></p>
+					<p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></p>
+	           </div>
+         </div>
+		</a>
 		</div>
 	<%})%>
 		<div class="loading-wrap" id='specialLoad'>
@@ -39,6 +42,9 @@
 			<p class="loading-step2">加载中</p>
 			<p class="loading-step3" style="display:none;">没有更多了~~</p>
 		</div>
+	<%}else{%>
+		<div class="whoops"></div>
+	<%}%>	
 	</div>
 	<a href="#searchInit2/wish"><div class="wish-fix-right"></div></a>
 	<div class="rest-fix-bottom">
@@ -58,7 +64,7 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+      <li>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>

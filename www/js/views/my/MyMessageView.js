@@ -53,10 +53,13 @@ define([
                      if(data.status == 0){
                       initData.myMessageData.data = [...initData.myMessageData.data,...data.data];
                        newChihuo.getPage('myMessage') && _this.$el.html(_.template(myMessageTemplate, initData.myMessageData));
-                     _this.status.loading = false;
-                         $('.loading-step1').show();
-                        $('.loading-step2,.loading-step3').hide();
-                        _this.bindEvent();
+                        if(data.data.length == 0){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
+                        }
+                        _this.status.loading =false;
+                        newChihuo.getPage('myMessage') && !_this.bindEvent() && !initData.myMessageData.data.length && chihuo.setNoDataInfo();
                      }
                   } 
             });  
@@ -64,11 +67,14 @@ define([
 
      loadMore: function(distance){
       var _this = this;
+       var winheight = $(window).height();
        $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
           if(_this.status.isEnd == true){
              return;
           }
-          if (!_this.status.loading && ($(document).height() - $(this).scrollTop() - $(this).height()< distance)){
+          if (!_this.status.loading && ($(document).height() - scroll - winheight< distance)){
             _this.status.loading = true;
             $('.loading-step2').show();
             $('.loading-step1,.loading-step3').hide();
@@ -87,14 +93,15 @@ define([
       var _this = this;
       var pullRefresh = $('.container-down').pPullRefresh({
         $el: $('.container-down'),
-        $loadingEl: $('.loading-wrap'),
-        sendData: {
-
-        },
-        startPX:150,
+        $loadingEl: null,
+        sendData: {},
+        startPX:100,
         url:chihuo.getApiUri('addCustMoment.json'),
         callbacks: {
           pullStart: function(){
+            $('#reload').addClass('show-reload');
+            _this.initData(0);
+            setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
             
           },
           start: function(){
@@ -111,7 +118,6 @@ define([
           }
         },
         func: function(){
-          _this.initData(0);
         }
       });
     },  

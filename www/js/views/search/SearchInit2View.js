@@ -17,16 +17,13 @@ define([
       newChihuo.windowInit();
       this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
      
-        this.findCustRestSearchHis();
+      this.findCustRestSearchHis(status);
       
-        this.findCustMiSearchHis();
+      this.findCustMiSearchHis(status);
      
-        this.findCustRestSearchHotKW();
+      this.findCustRestSearchHotKW(status);
       
-        this.findCustMiSearchHotKW();
-            
-      this.bindEvents(status);
-
+      this.findCustMiSearchHotKW(status);      
     },
 
     showInfo: function(event){
@@ -50,13 +47,29 @@ define([
                      ct: 20
                 };
             chihuo.wkAjax({
-                  type: 'POST',
+                  type: 'GET',
                   url: chihuo.getApiUri(url),
                   data: option,
                   success: function(data){
                      if(data.status == 0){
-                        
-                    
+                      var list = data.data;
+                        if(list.length){
+                          var html='';
+                          for(var i=0; i<list.length; i++){
+                            if(status == 'wish'){
+                          
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'/wish">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                            }else{
+                              
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                            }
+                            
+                        }
+                        $('.search-value-show').show().find('ul').html(html);
+                     }else{
+                        $('.search-value-show').show().find('ul').html('<li><p style="text-align:center;">no result</p></li>');
+                     }
+                                       
                    }
                   } 
             });  
@@ -65,7 +78,7 @@ define([
 
     },
 
-    findCustRestSearchHis: function(){
+    findCustRestSearchHis: function(status){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -81,13 +94,14 @@ define([
                     if(data.status == 0){
                       initData.searchInit2Data.restHis = data.data;
                       newChihuo.getPage('searchInit2') && _this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
+                      newChihuo.getPage('searchInit2') && _this.bindEvents(status);
                      }
                   } 
             });  
 
     },
 
-    findCustMiSearchHis: function(){
+    findCustMiSearchHis: function(status){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -103,13 +117,14 @@ define([
                     if(data.status == 0){
                       initData.searchInit2Data.miHis = data.data;
                       newChihuo.getPage('searchInit2') && _this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
+                      newChihuo.getPage('searchInit2') && _this.bindEvents(status);
                      }
                   } 
             });  
 
     },
 
-    findCustRestSearchHotKW: function(){
+    findCustRestSearchHotKW: function(status){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -125,6 +140,7 @@ define([
                      if(data.status == 0){
                       initData.searchInit2Data.restHot = data.data;
                       newChihuo.getPage('searchInit2') && _this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
+                      newChihuo.getPage('searchInit2') && _this.bindEvents(status);
                      }
                    }
   
@@ -132,7 +148,7 @@ define([
 
     },
 
-    findCustMiSearchHotKW: function(){
+    findCustMiSearchHotKW: function(status){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -148,6 +164,7 @@ define([
                      if(data.status == 0){
                         initData.searchInit2Data.miHot = data.data;
                         newChihuo.getPage('searchInit2') && _this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
+                        newChihuo.getPage('searchInit2') && _this.bindEvents(status);
                      }
                    }
   
@@ -156,10 +173,10 @@ define([
     },
 
     bindEvents: function(status){
-       $("#page").on('keyup','#searchInit',function(){
+       $("#searchInit").on('keyup',function(e){
           var value = $.trim($(this).val());
           var index = $('#searchInit2Tab .cur').index();
-          if(value){
+          if(value && e.keyCode!=13){
             var url = index == 0 ? 'addCustRestByName.json' : 'addCustRestMIByName.json';
             var option = index == 0 ? {
                      restname: value,
@@ -176,7 +193,8 @@ define([
                      st: 1 ,
                      ct: 20
                 };
-            chihuo.wkAjax({
+            clearTimeout(this.request);    
+            this.request = setTimeout(function(){chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri(url),
                   data: option,
@@ -188,26 +206,28 @@ define([
                           for(var i=0; i<list.length; i++){
                             if(status == 'wish'){
                           
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'/wish">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'/wish">'+(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
                             }else{
                               
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'">'+(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'<span>'+(index==0 ? list[i].total_rests_byname : list[i].total_restmi_byname)+'个结果</span></a></li>';
                             }
                             
                         }
                         $('.search-value-show').show().find('ul').html(html);
+                     }else{
+                        $('.search-value-show').show().find('ul').html('<li><p style="text-align:center;">no result</p></li>');
                      }
                    }
                   } 
-            });  
+            })},200);  
           }
        });
 
-       $('#page').on('click','.value-close',function(){
+       $('.value-close').on('click',function(){
            $('.search-value-show').hide();
        });
 
-       $('#page').on('click','.rest-delete',function(){
+       $('.rest-delete').on('click',function(){
         var name = $(this).next('span').text();
         var obj = $(this).parent();
                 chihuo.wkAjax({
@@ -227,7 +247,7 @@ define([
             });  
        });
 
-       $('#page').on('click','.mi-delete',function(){
+       $('.mi-delete').on('click',function(){
            var name = $(this).next('span').text();
            var obj = $(this).parent();
                 chihuo.wkAjax({
@@ -247,7 +267,7 @@ define([
             });  
        });
 
-       $('#page').on('click','.clear-all',function(){
+       $('.clear-all').on('click',function(){
         var index = $(this).index('.clear-all');
         var url = index==0 ? 'rmCustAllRestSearchHis.json' : 'rmCustAllMiSearchHis.json';
                 chihuo.wkAjax({

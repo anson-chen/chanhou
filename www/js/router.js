@@ -70,7 +70,8 @@ define([
   'views/photo/DishHot2View',
   'views/photo/DishHot3View',
   'views/photo/DishHot4View',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View) {
+  'views/comment/UserMiCommentsView',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -86,6 +87,7 @@ define([
       // 'restaurantList':'showRestaurantList',
       'restaurantMaps':'showRestaurantMaps', 
       'userComments/:id':'showUserComments', 
+      'userMiComments/:id':'showUserMiComments', 
       'submitComment/:id':'showSubmitComment',
       'submitMiComment/:id/:name':'showSubmitMiComment',  
       'search':'showSearch', 
@@ -158,7 +160,7 @@ define([
   var initialize = function(){
 
     var app_router = new AppRouter;
-    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View;
+    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView;
 
     app_router.on('route:showLogin', function (actions) {
         loginView = loginView || new LoginView();
@@ -234,6 +236,12 @@ define([
        // We have no matching route, lets display the home page 
         userCommentsView = userCommentsView || new UserCommentsView();
         userCommentsView.render(actions);
+    });
+
+    app_router.on('route:showUserMiComments', function (actions) {
+       // We have no matching route, lets display the home page 
+        userMiCommentsView = userMiCommentsView || new UserMiCommentsView();
+        userMiCommentsView.render(actions);
     });
 
     app_router.on('route:showSearch', function (actions) {

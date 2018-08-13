@@ -62,7 +62,7 @@ define([
                      if(data.status == 0){
                       initData.myDiscountData.discountData = chihuo.dealData(data.data,'promodaytp');
                       newChihuo.getPage('myDiscount') && _this.$el.html(_.template(myDiscountTemplate,initData.myDiscountData));
-                      newChihuo.getPage('myDiscount') && !initData.myDiscountData.discountData.length && $('.whoops').show();
+                      newChihuo.getPage('myDiscount') && !initData.myDiscountData.discountData.length && chihuo.setNoDataInfo();
                   }
                 }
               });  

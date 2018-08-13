@@ -26,29 +26,27 @@ define([
         var swiperMap =  new Swiper('#restaurantMaps-swiper', {
           slidesPerView: 'auto',
           onInit: function(swiper){
-              function setMapMarker(lat,lon){
-                var mapOpt = {
-                center:new google.maps.LatLng(lat,lon),
-                zoom:16,
-                mapTypeId:google.maps.MapTypeId.ROADMAP
-                };
-                newChihuo.map = new google.maps.Map(document.getElementById("googleMap4"),mapOpt);
-               
-                function createMarker(point) {
-                       var marker = new google.maps.Marker({
-                        position:point,
-                        icon: 'imgs/marker2.png'
-                       });
-                        marker.setMap(newChihuo.map);
-                        return marker;
-                }
-            
-                var point= new google.maps.LatLng(lat,lon);
-                createMarker(point);   
-                }
-                if(lat && lon){
-                  setMapMarker(lat,lon);
-                }
+              newChihuo.map = L.map('leafletMap').setView([initData.restaurantData.data[0].addr_lat,initData.restaurantData.data[0].addr_lng], 15);
+
+              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                maxZoom: 15,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                  '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                  'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                id: 'mapbox.streets'
+              }).addTo(newChihuo.map);
+
+              newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
+                  iconUrl: 'imgs/marker2.png',
+                  iconSize: [45, 50],
+                  iconAnchor: [22, 94],
+                  popupAnchor: [0, -90],
+                  className: 'set-index'
+              });
+
+             L.marker([initData.restaurantData.data[0].addr_lat,initData.restaurantData.data[0].addr_lng],{icon:  newChihuo.myIcon1 }).addTo(newChihuo.map).bindPopup(initData.restaurantData.data[0].rest_name).openPopup();
+              
+
             }
         });
       }

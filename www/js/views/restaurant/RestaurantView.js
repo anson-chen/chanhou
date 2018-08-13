@@ -19,6 +19,7 @@ define([
     render: function(id,from){
       newChihuo.setPage('restaurant');
       newChihuo.windowInit();
+      initData.restaurantData.from = from ? from : '';
       this.$el.html(_.template(restaurantTemplate,initData.restaurantData));
       this.findRestDetailById(id);
       this.bindEvents(id);

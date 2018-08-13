@@ -5,9 +5,10 @@ define([
     'views/sidebar/SidebarView',
     'jqueryMove',
     'text!templates/home/homeTemplate.html',
+    'auth0cordova',
     '../../../swiperplugin/js/roundabout',
-    'swiper'
-], function ($, _, Backbone, SidebarView, jqueryMove, homeTemplate) {
+    'swiper',
+], function ($, _, Backbone, SidebarView, jqueryMove, homeTemplate, auth0cordova) {
 
     var HomeView = Backbone.View.extend({
         el: $("#page"),
@@ -18,52 +19,33 @@ define([
            'click #homeCity p': 'changeCity',
            'click .hot-follow': 'addFollow',
            'click .auth0 img':'auth0LockShow',
+           'click .set-city-bg':'setCityBg',
        },
 
         render: function(){
             newChihuo.setPage('home');
             newChihuo.windowInit();
             !newChihuo.globalStatus && chihuo.ajaxSetup();
+            !newChihuo.globalStatus && chihuo.initApp(homeTemplate);
             initData.homeData.template = homeTemplate;
             this.$el.html(_.template(homeTemplate, initData.homeData));
-            chihuo.getPosition(homeTemplate);
+            newChihuo.globalStatus && chihuo.getPosition(homeTemplate);
             !newChihuo.globalStatus && setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
             newChihuo.globalStatus = true;
-            // this.auth0Init();
+            // console.log(auth0cordova); 可以打印出信息，没有报错
+            // auth0cordova.onRedirectUri('/#index');
             
         },
 
-        auth0Init: function(){
-          var options = {
-            allowedConnections: ['twitter', 'facebook', 'linkedin']
-          };
-          // Initializing our Auth0Lock
-          newChihuo.lock = newChihuo.lock ||  new Auth0Lock(
-            'fGIEyQ2eW5hEj1CvdRnfeXQUOTuUjDPK',
-            'foodymonkey.auth0.com',
-            options
-          );
-
-          newChihuo.lock && newChihuo.lock.on("authenticated", function(authResult) {
-        
-  // Use the token in authResult to getUserInfo() and save it to localStorage
-          newChihuo.lock.getUserInfo(authResult.accessToken, function(error, profile) {
-            if (error) {
-              // Handle error
-              return;
-            }
-            // console.log(profile);
-            newChihuo.tpLogin(profile);
-            localStorage.setItem('accessToken', authResult.accessToken);
-            localStorage.setItem('profile', JSON.stringify(profile));
-          });
-      });
+        setCityBg: function(e){
+          var obj =$(e.currentTarget);
+          var src = obj.find('img').attr('src');
+          initData.restaurantList2Data.bg = src;
 
         },
-
-       auth0LockShow: function(){
         
-        newChihuo.lock && newChihuo.lock.show();
+       auth0LockShow: function(){ 
+       console.log(auth0cordova);
             
 
         },
@@ -111,8 +93,12 @@ define([
         },
 
         showCity: function(){
-            $('.search-mask').show();
-            $('.city-mask-list').show();
+          if($('.city-mask-list').children().length){
+             $('.search-mask').show();
+             $('.city-mask-list').show();
+          }else{
+            newChihuo.showPopInfo('暂无城市数据,请下拉刷新重试');
+          }     
         },
 
         changeCity: function(e){

@@ -33,8 +33,11 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                      initData.mySignInData.restData = data.data;
+                       initData.mySignInData.restData = data.data;
                       newChihuo.getPage('mySignIn') && _this.$el.html(_.template(mySignInTemplate,initData.mySignInData));
+                       newChihuo.getPage('mySignIn') && _this.bindEvents();
+                      newChihuo.getPage('mySignIn') && !initData.mySignInData.miData.length && chihuo.setNoDataInfo($('.midata-wrap'));
+                      newChihuo.getPage('mySignIn') && !initData.mySignInData.restData.length && chihuo.setNoDataInfo($('.restdata-wrap'));
                      }
                   } 
               });  
@@ -52,6 +55,9 @@ define([
                      if(data.status == 0){
                       initData.mySignInData.miData = data.data;
                        newChihuo.getPage('mySignIn') && _this.$el.html(_.template(mySignInTemplate,initData.mySignInData));
+                       newChihuo.getPage('mySignIn') && _this.bindEvents();
+                      newChihuo.getPage('mySignIn') && !initData.mySignInData.miData.length && chihuo.setNoDataInfo($('.midata-wrap'));
+                      newChihuo.getPage('mySignIn') && !initData.mySignInData.restData.length && chihuo.setNoDataInfo($('.restdata-wrap'));
                      }
                   } 
               });  
@@ -62,6 +68,12 @@ define([
       var index=obj.index();
       obj.addClass('cur').siblings().removeClass('cur');
       swiperSignIn.slideTo(index);
+    },
+    bindEvents:function(){
+       $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
+        }); 
     }
 
   });

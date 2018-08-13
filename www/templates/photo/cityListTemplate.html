@@ -8,15 +8,9 @@
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix" style="padding-top:0; position:relative;">
 		<a href="#restaurantList2/<%=d.othercity_name%>/null">
-			<div class="swiper-container rest-list-swiper">
-		        <div class="swiper-wrapper">
-		            <div class="swiper-slide"><img src="<%if(d.othercity_profile_purl){%><%=d.othercity_profile_purl%><%}else{%>imgs/pt3.png<%}%>" class="banner-img"></div>
-		        </div>
-		        <!-- Add Pagination -->
-		         <div class="swiper-pagination"></div>
-		    </div>
+			<img src="<%if(d.othercity_profile_purl){%><%=d.othercity_profile_purl%><%}else{%>imgs/pt3.png<%}%>" class="banner-img" style="margin-bottom:5px;">
+		    <%if(d.total_rests_cnt){%><span class="reset-style1 reset-bg4" style="float:right;"><%=d.total_rests_cnt%></span><%}%>
 			<h3 class="rest-name-title" style="height:25px;"><%=d.othercity_name%></h3>
-			<p class="rest-info-show"><%=newChihuo.localize('global_restaurantscount')%>:<%=d.total_rests_cnt%></p>
 			</a>
 		</div>
 	<%})%>	

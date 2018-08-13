@@ -1,15 +1,16 @@
-<div style="background: #eff3f6;">
-    <div class="food-bg">
+<div>
+    <div class="food-bg opacity-bg">
         <nav class="common-title">
             <a href="javascript:history.go(-1);" class="common-return"></a>
             <h3><%=newChihuo.localize('profile_footprint_followings_header')%></h3>
         </nav>
         <div class="food-list-nav clearfix" id="">
-            <a href="javascript:;" class="cur" style="width:40%; margin:0 5%;"><%=newChihuo.localize('global_var_restaurants')%></a>
-            <a href="javascript:;" style="width:40%; margin:0 5%;"><%=newChihuo.localize('profile_footprint_followings_users')%></a>
+            <a href="javascript:;" class="cur" style="width:40%; margin:0 1%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+            <a href="javascript:;" style="width:56%; margin:0 1%;"><%=newChihuo.localize('profile_footprint_followings_users')%></a>
         </div>
     </div>
-    <div class="rest-list-wrap" style="padding-bottom:0;">
+    <div class="rest-list-wrap" style="padding-bottom:70px;">
+    <%if(data.length){%>
     <div class="tab-signin-wrap">
     <%_.each(data,function(d,i){%>
         <div class="wrap-border clearfix">
@@ -22,8 +23,8 @@
             </div>
             <div style="margin-left:100px;">
                <h3 class="rest-name-title"><%=d.myfollowing_display_name%></h3>
-                <p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>重庆  980米
-                <br>89% <%=newChihuo.localize('global_var_like')%></p>
+                <p class="rest-info-show" style="padding-top:5px;"><!-- 北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>重庆  980米
+                <br>89% <%=newChihuo.localize('global_var_like')%> --></p>
             </div>
             </a>
         </div>
@@ -44,7 +45,12 @@
             </div>
         </div>
     </div>
-    <div class="rest-fix-bottom">
+    <%}else{%>
+    <div class="whoops"></div>
+    <%}%>
+</div>  
+</div>
+ <div class="rest-fix-bottom">
     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
@@ -73,7 +79,5 @@
       </li>
     </ul>
   </div>
-</div>  
-</div>
 
 

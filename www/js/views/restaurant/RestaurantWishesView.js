@@ -57,12 +57,14 @@ define([
                      if(data.status == 0){
                       initData.restaurantWishesData.data = [...initData.restaurantWishesData.data,...data.data];
                       newChihuo.getPage('restaurantWishes') && _this.$el.html(_.template(restaurantWishesTemplate,initData.restaurantWishesData));
-                        if(data.total <= (num+1)*_this.status.ct+1){
+                        if(data.data.length == 0){
                             _this.status.isEnd = true;
                              $('.loading-step3').show();
                              $('.loading-step1,.loading-step2').hide();
                         }
-                      newChihuo.getPage('restaurantWishes') && _this.bindEvents();  
+                        _this.status.loading =false;
+                      newChihuo.getPage('restaurantWishes') && _this.bindEvents();
+                      newChihuo.getPage('restaurantWishes') && !initData.restaurantWishesData.data.length && chihuo.setNoDataInfo(); 
                      }
                   } 
               });  

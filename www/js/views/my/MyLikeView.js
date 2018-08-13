@@ -44,9 +44,13 @@ define([
                      if(data.status == 0){
                         initData.myLikeData.data = [...initData.myLikeData.data,...data.data];
                         newChihuo.getPage('myLike') && _this.$el.html(_.template(myLikeTemplate,initData.myLikeData));
-                         _this.status.loading = false;
-                         $('.loading-step1').show();
-                        $('.loading-step2,.loading-step3').hide();
+                        if(data.data.length == 0){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
+                        }
+                        _this.status.loading =false;
+                         newChihuo.getPage('myLike') && !initData.myLikeData.data.length && chihuo.setNoDataInfo();
                       
                      }
                   } 
@@ -80,11 +84,14 @@ define([
 
     loadMore: function(distance){
       var _this = this;
+        var winheight = $(window).height();
        $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
           if(_this.status.isEnd == true){
              return;
           }
-          if (!_this.status.loading && ($(document).height() - $(this).scrollTop() - $(this).height()< distance)){
+          if (!_this.status.loading && ($(document).height() - scroll - winheight < distance)){
             _this.status.loading = true;
             $('.loading-step2').show();
             $('.loading-step1,.loading-step3').hide();

@@ -34,7 +34,7 @@ define([
                      if(data.status == 0){
                         initData.myHistoryData.data = data.data;
                         newChihuo.getPage('myHistory') && _this.$el.html(_.template(myHistoryTemplate,initData.myHistoryData));
-                        newChihuo.getPage('myHistory') && _this.bindEvents();
+                        newChihuo.getPage('myHistory') && !_this.bindEvents() && !initData.myHistoryData.data.length && chihuo.setNoDataInfo();
                      }
                    }
             });  
@@ -50,6 +50,13 @@ define([
     },
 
     bindEvents: function(){
+      var _this = this;
+
+      $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
+        });
+         
       $('.tab-swiper-wrap').each(function(){
            if($(this).children().length == 0){
             $(this).html('<p class="no-data">no data</p>');
@@ -97,7 +104,22 @@ define([
       $('.delete-icon').on('click',function(){
         var index = $('#historyTab .cur').index();
         var url = index == 0 ? 'purgeRestBrwHis.json' : 'purgeMIBrwHis.json';
-        var option = {
+        _this.showDeleteInfo(url,index);
+      });
+
+    },
+
+    showDeleteInfo: function(url,index){
+      var _this = this;
+       var pop = $('#popInfo');
+       var info ='<p>are you sure to delete all history?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+          var option = {
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en'
@@ -109,15 +131,14 @@ define([
                   success: function(data){
                      if(data.status == 0){
                        newChihuo.showPopInfo('deleted all success');
-                       $('.tab-swiper-wrap').eq(index).html('<p class="no-data">no data</p>');
+                       _this.initData();
+                       
                      }
                    }
             });
-
-      });
+       });
 
     }
-
   });
   return MyHistoryView;
 });

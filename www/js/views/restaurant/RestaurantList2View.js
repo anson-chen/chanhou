@@ -23,6 +23,11 @@ define([
     render: function(city,name){
       newChihuo.setPage('restaurantList2');
       newChihuo.windowInit();
+      if(initData.restaurantList2Data.bg && name == 'null'){
+         initData.restaurantList2Data.setBg = true;
+      }else{
+         initData.restaurantList2Data.setBg = false;
+      }
       this.$el.html(_.template(restaurantList2Template,initData.restaurantList2Data));
       this.initData(city,name,0);
       this.loadMore(city,name,10);
@@ -66,14 +71,14 @@ define([
                         initData.restaurantList2Data.data = [...initData.restaurantList2Data.data,...data.data];
                         if(newChihuo.getPage('restaurantList2')){
                             _this.$el.html(_.template(restaurantList2Template,initData.restaurantList2Data));
-                            $('.loading-step1').show();
-                            $('.loading-step2,.loading-step3').hide();
-                             _this.bindEvents();
-                            if(data.total < _this.status.ct){
-                                _this.status.isEnd = true;
-                                 $('.loading-step3').show();
-                                 $('.loading-step1,.loading-step2').hide();
+                            _this.bindEvents();
+                            if(data.data.length == 0){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
                             }
+                          _this.status.loading =false;
+                             
                         } 
                      }
                   } 
@@ -83,13 +88,14 @@ define([
 
     loadMore: function(city,name,distance){
       var _this = this;
+      var winheight = $(window).height();
        $(window).off('scroll').on('scroll',function(){
+          var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
           if(_this.status.isEnd == true){
-            $('.loading-step3').show();
-            $('.loading-step1,.loading-step2').hide();
              return;
           }
-          if (!_this.status.loading && ($(document).height() - $(this).scrollTop() - $(this).height()< distance)){
+          if (!_this.status.loading && ($(document).height() - scroll - winheight< distance)){
             _this.status.loading = true;
             $('.loading-step2').show();
             $('.loading-step1,.loading-step3').hide();

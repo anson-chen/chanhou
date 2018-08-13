@@ -26,7 +26,7 @@
 			</div>
 			<h3 class="rest-name-title" style="height:28px;"><%=d.rest_name%></h3>
 			<h3 class="rest-name-title" style="height:28px;"><%=d.rest_mi_name%></h3>
-			<p class="rest-info-show" style="padding-top:10px;"><span style="color:#ff8b4c;font-size:15px;"><%=d.mi_unit_price%></span><span style="color:#0bbc13; padding:0 10px;"><%=newChihuo.showDiscountInfo(d.mi_discount)%></span><br><%=d.cuisine_type%> <%=d.city_name%> <%=newChihuo.showDistanceInfo(d.mi_distance)%></p>
+			<p class="rest-info-show" style="padding-top:0px;"><span style="color:#ff8b4c;font-size:15px;"><%=d.mi_unit_price%></span><span style="color:#0bbc13; padding:0 10px;"><%=newChihuo.showDiscountInfo(d.mi_discount)%></span><br><%=d.cuisine_type%> <%=d.city_name%> <%=newChihuo.showDistanceInfo(d.mi_distance)%><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
@@ -75,9 +75,9 @@
 		</div>
 		<div class="wrap-border clearfix" style="position:relative;">
 			<div class="rest-detail">
-				<div class="detail-border" style="border:none;">
+				<div class="detail-border" <%if(d.review_comments_cnt){%>style="border:none;"<%}%>>		
 				<%if(d.review_comments_cnt){%>
-					<a href="#userComments/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('restaurant_more_reviews')%></a>
+					<a href="#userMiComments/<%=d.rest_menu_item_id%>" class="title-more-link"><%=newChihuo.localize('restaurant_more_reviews')%></a>
 					<%}%>
 					<h3 class="detail-block-title title-icon3"><%=newChihuo.localize('restaurant_reviews')%><span style="color:#999;">(<%=d.review_comments_cnt || 0%>)</span></h3>
 				</div>

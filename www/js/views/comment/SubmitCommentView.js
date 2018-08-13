@@ -12,7 +12,8 @@ define([
      'click .like-comment-icon':'selectLike',
      'click .sub-comment':'submitComment',
      'click #capture': 'photoInit',
-     'click .comment-photo-show b': 'deletePhoto'
+     'click .comment-photo-show b': 'deletePhoto',
+     'click .set-score-wrap i': 'setScore'
      
     },
 
@@ -24,6 +25,16 @@ define([
 
     photoInit: function(){
       photoUse.bindEvents();
+    },
+
+    setScore: function(e){
+      var $obj = $(e.currentTarget);
+      var index = $obj.index();
+      $obj.parent().children().removeClass('cur');
+      for(var i=0; i<= index; i++){
+          $obj.parent().children().eq(i).addClass('cur');
+      }
+      $obj.parent().attr('score',index+1);
     },
 
     selectLike: function(e){
@@ -46,15 +57,32 @@ define([
     submitComment: function(){
         var  _this = this;
         var  cont = $('.user-textarea').val();
-        var  tags = '';
-        $('.comment-select-list .cur').each(function(){
-          tags+=$(this).text()+';'
-        });
+        var  tags = {};
+        var like = parseInt($('.like-word').attr('num')) || 0;
+        tags['like'] = like;
         var restId = $('.sub-comment').attr('restId');
         var urls = ''; 
         $('.comment-photo-show').each(function(){
           urls+=$(this).find('img').attr('src')+','
         });
+
+        $('.score-star').each(function(){
+          var star = $(this).attr('score');
+          var index = $(this).index('.score-star');
+          if(star){
+            if(index == 0){
+              tags['service'] = parseInt(star) || 1;
+            }else if(index == 1){
+              tags['food'] = parseInt(star) || 1;
+            }else if(index == 2){
+              tags['ambiance'] = parseInt(star) || 1;
+            }else{
+              tags['overall'] = parseInt(star) || 1;
+            }
+          }
+        });
+
+        console.log(JSON.stringify(tags));
         
             chihuo.wkAjax({
                   type: 'POST',
@@ -63,9 +91,7 @@ define([
                      restId: restId,
                      cont: cont,
                      urls:urls.substr(0,urls.length-1),
-                     tags:tags.substr(0,tags.length-1),
-                     flg1:'Y',
-                     flg2:'Y',
+                     tags:JSON.stringify(tags),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en'
@@ -76,6 +102,7 @@ define([
                         setTimeout(function(){app_router.navigate('restaurant/'+restId+'/comment', {
                             trigger: true    
                           });
+
                           },1000);
                      }
                   },

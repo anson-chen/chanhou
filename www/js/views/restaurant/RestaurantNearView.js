@@ -16,7 +16,7 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 10
+      ct: 20
     },
 
     search: {
@@ -134,11 +134,6 @@ define([
                           initData.restaurantNearData.lon = newChihuo.lon;  
                           $('.loading-step1').show();
                           $('.loading-step2,.loading-step3').hide();
-                          // if(data.total <= (num+1)*_this.status.ct+1){
-                          //     _this.status.isEnd = true;
-                          //      $('.loading-step3').show();
-                          //      $('.loading-step1,.loading-step2').hide();
-                          // }
                           _this.bindEvents();
                           _this.statusSave();
                         }
@@ -163,11 +158,14 @@ define([
 
     loadMore: function(distance){
       var _this = this;
+      var winheight = $(window).height();
        $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
           if(_this.status.isEnd == true){
              return;
           }
-          if (!_this.status.loading && ($(document).height() - $(this).scrollTop() - $(this).height()< distance)){
+          if (!_this.status.loading && ($(document).height() - scroll - winheight < distance)){
             _this.status.loading = true;
             $('.loading-step2').show();
             $('.loading-step1,.loading-step3').hide();
@@ -194,13 +192,14 @@ define([
 
       var pullRefresh = $('.container-down').pPullRefresh({
         $el: $('.container-down'),
-        $loadingEl: $('.loading-wrap'),
-        sendData: {
-
-        },
+        $loadingEl: null,
+        sendData: {},
         url: chihuo.getApiUri('findNearbyRestsWithRange2.json'),
         callbacks: {
           pullStart: function(){
+            $('#reload').addClass('show-reload');
+            _this.initData(0);
+            setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
             
           },
           start: function(){
@@ -217,7 +216,7 @@ define([
           }
         },
         func: function(){
-          _this.initData(0);
+          
         }
       });
 

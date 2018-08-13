@@ -7,7 +7,7 @@
 </div>  
 <div class="rest-list-wrap" style="padding-bottom:70px;">
 <div class="wrap-border clearfix">
-            <a href=""><img src="imgs/invite.png" class="invite-img"></a>
+            <a href="##chatInvite"><div class="invite-img"><p>invite friends to join us</p></div></a>
         </div>
         <div class="wrap-border clearfix" style="padding:0 15px;">   
             <div class="setting-li clearfix">
@@ -35,32 +35,32 @@
         </div>
 </div> 
 <div class="rest-fix-bottom">
-        <ul class="clearfix">
-             <li class="cur">
-                <a href="#"><img src="imgs/bottom-red1.png">
-                <p>首页</p>
-                </a>
-              </li>
-              <li id="msgRemind">
-                <a href="#chatAdd"><img src="imgs/detail-icon10.png">
-                <p>聊天</p>
-                </a>
-              </li>
-              <li style="width:24%; position:relative;">
-                <a href="#restaurantWishes">
-                <div class="rest-bottom-middle"></div>
-                </a>
-              </li>
-              <li>
-                <a href="#myMessage2"><img src="imgs/bottom-h3.png">
-                <p>动态</p>
-                </a>
-              </li>
-              <li>
-                <a href="#myIndex"><img src="imgs/bottom-h4.png">
-                <p>我的</p>
-                </a>
-              </li>
-        </ul>
-    </div>     
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li class="cur">
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:;"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

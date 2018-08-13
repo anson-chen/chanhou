@@ -1,5 +1,5 @@
 <div style="background:#f4f8fb;" class="comment-effect1">
-	<div class="food-bg">
+	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<h3><%=newChihuo.localize('profile_footprint_reviews_header')%></h3>
@@ -14,10 +14,13 @@
    <div class="swiper-wrapper">
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
+            <%if(restData.length){%>
             <%_.each(restData,function(d,i){%>
 			<div class="wrap-border clearfix" style="margin:15px 12px 0; padding:10px;">
 			<div class="rest-comment-head clearfix">
+					<a href="#myIndex/<%=d.customer_id%>">
 						<img src="imgs/photo.png" class="comment-left-img"> 
+					</a>
 						<div class="comment-right-info">
 							<h3 style="background: none;"><%=d.rest_name%></h3>
 							<p><span class="comment-time"><%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('')%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.city_name%></span></p>
@@ -32,6 +35,7 @@
 					</div>
 					<%}%>
 					<div class="message-wrap clearfix">
+					<a href="#restaurant/<%=d.rest_id%>">
 						<div class="food-img">
 							<img src="imgs/map-img.jpg">
 						</div>
@@ -39,28 +43,29 @@
 						<h3 class="rest-name-title"><%=d.rest_name%></h3>
 						<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%> <%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
 						</div>
+					</a>
 					</div>
 					<div class="rest-comment-bottom">
 						<div class="comment-operation"><span class="share-icon">share</span></div>
 						<div class="comment-operation"><span class="good-icon">1</span></div>
 						<div class="comment-operation"><span class="wechat-icon"><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
-					<!-- <div class="communication">
-						<p><span>刘仙姑：</span>不错哇，小伙子</p>
-						<p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p>
-						<p><span>刘仙姑：</span>不错哇，小伙子谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖</p>
-						<p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p>
-					</div> -->
 				</div>
 				<%})%>
+				<%}else{%>
+				<div class="whoops restdata-wrap"></div>
+				<%}%>
             </div>
         </div>
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
+            <%if(miData.length){%>
             <%_.each(miData,function(d,i){%>
 	<div class="wrap-border clearfix" style="margin:15px 12px 0; padding:10px;">
 			<div class="rest-comment-head clearfix">
+					<a href="#myIndex/<%=d.customer_id%>">
 						<img src="imgs/photo.png" class="comment-left-img"> 
+					</a>
 						<div class="comment-right-info">
 							<h3 style="background: none;"><%=d.mi_name%></h3>
 							<p><span class="comment-time"><%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.rest_city_name%></span></p>
@@ -75,6 +80,7 @@
 					</div>
 					<%}%>
 					<div class="message-wrap clearfix">
+					<a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
 						<div class="food-img">
 							<img src="imgs/map-img.jpg">
 						</div>
@@ -82,28 +88,57 @@
 						<h3 class="rest-name-title"><%=d.mi_name%></h3>
 						<p class="rest-info-show" style="padding-top:5px;"><%=d.rest_city_name%> <%=d.mi_unit_price%></p>
 						</div>
+					</a>	
 					</div>
 					<div class="rest-comment-bottom">
 						<div class="comment-operation"><span class="share-icon">share</span></div>
 						<div class="comment-operation"><span class="good-icon">10</span></div>
 						<div class="comment-operation"><span class="wechat-icon"><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
-					<!-- <div class="communication">
-						<p><span>刘仙姑：</span>不错哇，小伙子</p>
-						<p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p>
-						<p><span>刘仙姑：</span>不错哇，小伙子谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖谢谢领导夸奖</p>
-						<p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p>
-					</div> -->
 				</div>
 				<%})%>
+				<%}else{%>
+				<div class="whoops midata-wrap"></div>
+				<%}%>
             </div>
         </div>      
     </div>
-</div>
-</div>
-	<div class="loading-more">
-		加载更多
+    <div class="loading-wrap" id='specialLoad'>
+		    <p class="loading-step1" style="display:none;">加载更多</p>
+			<p class="loading-step2">加载中</p>
+			<p class="loading-step3" style="display:none;">没有更多了~~</p>
 	</div>
+</div>
+</div>
+ <div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" class="cur">
+        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>	
 <script type="text/javascript">
     var swiperMyComment = new Swiper('#comment-swiper', {

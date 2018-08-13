@@ -1,10 +1,11 @@
-<div class="food-bg" style="padding-bottom:20px;">
+<div class="food-bg opacity-bg" style="padding-bottom:20px;">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
         <h3><%=newChihuo.localize('profile_footprint_followers_header')%></h3>
     </nav>
 </div>
 <div class="rest-list-wrap">
+<%if(data.length){%>
 <%_.each(data,function(d,i){%>
         <div class="wrap-border clearfix">
         <%if(d.following_flg == 'N'){%>
@@ -29,5 +30,37 @@
                 </div>
             </div>
         </div>
- <%})%>      
+ <%})%> 
+ <%}else{%>
+ <div class="whoops"></div>
+ <%}%>     
 </div>
+ <div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" class="cur">
+        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>

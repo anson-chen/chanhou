@@ -7,7 +7,7 @@
 <div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix">
-          <a href="#restaurantList/<%=encodeURIComponent(d.rest_mi_name)%>">
+          <a href="#dishHot2/<%=encodeURIComponent(d.rest_mi_name)%>">
             <div class="food-img">
                 <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
             </div>

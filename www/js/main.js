@@ -21,7 +21,7 @@ require.config({
     radialIndicator:'radialIndicator',
     touche:'touche',
     pullRefresh:'p-pull-refresh',
-    lock: 'lock.min'
+    auth0cordova: 'auth0cordova',
   }
 
 });

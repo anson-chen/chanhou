@@ -5,6 +5,7 @@ define([
   'backbone',
   'router', // Request router.js
   'localize',
+  'auth0cordova',
   'common',
   'radialIndicator',
   'touche',

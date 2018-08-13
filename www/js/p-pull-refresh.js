@@ -50,10 +50,9 @@
 		isValid = false,	// 是否生效
 		isEfec = false,	// 触摸是否生效
 		startX, startY, disY = 0;
-		options.$loadingEl.animate({'margin-top': -loadingH}, (isAnim == false ? 0 : 400), function() {
-    		isTouching = false;
-    		runCb('end');
-    	});
+		isTouching = false;
+    	runCb('end');
+    	;
 	}
 	
 	/**
@@ -191,7 +190,7 @@
 	 *   绑定处理事件
 	 */
 	var initlize = function() {
-		loadingH = options.$loadingEl && options.$loadingEl.height();
+		// loadingH = options.$loadingEl && options.$loadingEl.height();
 		$el = options.$el;
 		if($el.length){
 	    $el[0].addEventListener('touchstart', touchStart, false);

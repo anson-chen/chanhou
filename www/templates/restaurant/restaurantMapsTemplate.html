@@ -1,12 +1,11 @@
 <div class="map-bg">
 	<nav class="common-title">
-		<a href="#restaurantList" class="head-rest-icon"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3>餐馆地图</h3>
+		<h3><%=newChihuo.localize('address_map')%></h3>
 	</nav>
 </div>
 <div class="map-wrap">
-	<div id="googleMap4" style="height:100%;">
+	<div id="leafletMap" style="height:100%;">
 		
 	</div>
 </div>
@@ -19,7 +18,7 @@
 				    <div class="rest-fav-this"></div>
 					<div class="radius-like" style="margin-right:0;">
 						<div class="radius-num-show">
-							<span><%=parseInt(data[0].total_rest_compliments_perc)%></span>%<br>喜欢
+							<span><%=parseInt(data[0].total_rest_compliments_perc)%></span>%<br><%=newChihuo.localize('global_var_like')%>
 						</div>	
 					</div>
 
@@ -33,7 +32,7 @@
 					</div>
 					<div style="margin-left:110px;">
 					<h3 class="rest-name-title"><%=data[0].rest_name%></h3>
-					<p class="rest-info-show" style="padding-top:5px;"><%=data[0].cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=data[0].price_level%></span><span style="color:#0bbc13;">20%off</span><br><%=data[0].chihuo_distance%>公里</p>
+					<p class="rest-info-show" style="padding-top:5px;"><%=data[0].cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=data[0].price_level%></span><br><%=newChihuo.showDistanceInfo(data[0].chihuo_distance.toFixed(1))%></p>
 					</div>
 				</div>
 			</div>
@@ -41,32 +40,32 @@
 		</div>
 	</div>		
 </div>	
-    <div class="rest-fix-bottom">
-		<ul class="clearfix">
-             <li class="cur">
-                <a href="#"><img src="imgs/bottom-red1.png">
-                <p>首页</p>
-                </a>
-              </li>
-              <li>
-                <a href="#chatAdd"><img src="imgs/detail-icon10.png">
-                <p>聊天</p>
-                </a>
-              </li>
-              <li style="width:24%; position:relative;">
-                <a href="#restaurantWishes">
-                <div class="rest-bottom-middle"></div>
-                </a>
-              </li>
-              <li class="message-remind">
-                <a href="#myMessage2"><img src="imgs/bottom-h3.png">
-                <p>动态</p>
-                </a>
-              </li>
-              <li id="msgRemind">
-                <a href="#myIndex"><img src="imgs/bottom-h4.png">
-                <p>我的</p>
-                </a>
-              </li>
-        </ul>
-	</div>
+<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind">
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+</div>

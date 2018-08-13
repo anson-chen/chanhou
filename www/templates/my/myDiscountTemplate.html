@@ -3,7 +3,7 @@
 		<a href="javascript:;" class="share"></a>
 		<div class="top-location discount-city" style="float:right; margin:5px 10px 0 0;"><%=newChihuo.city%></div>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3 style="margin-left:100px;"><%=newChihuo.localize('main_promotionwheel')%></h3>
+		<h3><%=newChihuo.localize('main_promotionwheel')%></h3>
 	</nav>
 	<div class="food-list-nav clearfix" >
 		<div class="swiper-container" id='discountMenuTab'>
@@ -18,6 +18,7 @@
 	</div>
 </div>
 <div class="rest-list-wrap">
+<%if(discountData.length){%>
 <div class="swiper-container" id="discountMenu-swiper">
    <div class="swiper-wrapper">
     <%_.each(discountData, function(d,i) {%>
@@ -50,6 +51,13 @@
 	<%})%>		
 	</div>
 </div>
+<%}else{%>
+<div class="whoops">
+   <p>It looks like you don't have any data yet.</p>
+   <span>let's change that!<b>start exploring dishes and place now</b>& well save it here for later.</span>
+   <a href="#index">Begin Exploring</a>
+</div>
+<%}%>
 </div>		
 <div class="search-mask">
     <div class="city-mask-list" id="discountCity">
@@ -75,19 +83,18 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+      <li>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
       <li id="msgRemind">
-        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>
     </ul>
   </div>
-<p class='whoops'>whoops,there is no data!</p>
 <%if(discountData.length){%>
 <script type="text/javascript">
     var swiperDiscountMenu = new Swiper('#discountMenu-swiper', {

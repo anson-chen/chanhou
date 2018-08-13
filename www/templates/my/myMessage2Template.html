@@ -1,29 +1,23 @@
 <div style="background:#f4f8fb; padding-bottom: 70px;" class="comment-effect6">
-	<div class="food-bg">
+	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<h3><%=newChihuo.localize('activitity_activities')%></h3>
 		</nav>
 		<div class="food-list-nav clearfix" id="feedsTab">
-			<a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('activitity_activities')%></a>
+			<a href="javascript:;" class="cur" style="width:30%; margin:0 10%;"><%=newChihuo.localize('activitity_activities')%></a>
 			<a href="javascript:;" style="width:40%; margin:0 5%;"><%=newChihuo.localize('activitity_notifications')%></a>
 		</div>
 	</div>
 	<div class="wrap-border clearfix" style="position:relative; margin:15px 12px;">
+	<%if(data.length){%>
 	<div class="swiper-container" id="feeds-swiper">
-   <div class="swiper-wrapper">
+  	 <div class="swiper-wrapper">
         <div class="swiper-slide">
-		<div class="container-down" style="overflow:hidden;min-height:100%;">
-			<div class="loading-wrap" style="margin-top:-88px;">
-				<div style="text-align:center; padding:10px 0;">
-					<div>
-						<p style="height:28px;">下拉刷新中...</p>
-					</div>
-				</div>
-			</div>
-		<ul class="rest-comment user-comment">
-		<%_.each(data,function(d,i){%>
-				<li style="border-top:none;">
+		<div class="container-down" style="width:100%;">
+			<ul class="rest-comment user-comment">
+		   <%_.each(data,function(d,i){%>
+				<li <%if(i==0){%>style="border-top:none;"<%}%>>
 					<div class="rest-comment-head clearfix">
 						<a href="#myIndex/<%=d.customer_id%>">
 						<%if(d.profile_photo_url){%>
@@ -63,14 +57,9 @@
 						<div class="comment-operation"><span class="good-icon"><%=d.total_compliments%></span></div>
 						<div class="comment-operation"><span class="wechat-icon"><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
-					
-					<!-- <div class="communication">
-						<p><span>刘仙姑：</span>不错哇，小伙子</p>
-						<p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p>
-					</div> -->
 				</li>
 				<%})%>
-		</ul>
+			</ul>
 		</div>
 	</div>
 	 <div class="swiper-slide">
@@ -97,6 +86,9 @@
 			<p class="loading-step2">加载中</p>
 			<p class="loading-step3" style="display:none;">没有更多了~~</p>
 	</div>
+	<%}else{%>
+	<div class="whoops"></div>
+	<%}%>
 	</div>
 	<div class="rest-fix-bottom">
     <ul class="clearfix">

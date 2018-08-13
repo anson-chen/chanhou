@@ -24,6 +24,7 @@ define([
         pl='$$$';
       }
       initData.dishHot3Data.title = 'Hot '+ pl +' Dish';
+      initData.dishHot3Data.level = level;
       this.$el.html(_.template(dishHot3Template,initData.dishHot3Data));
       this.initData(level);
     },

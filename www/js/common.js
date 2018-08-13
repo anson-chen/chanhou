@@ -73,7 +73,7 @@ var newChihuo = {
 
     },
     showDistanceInfo: function(data){
-      var dis = this.locale == 'en-CA' ? 'km' : '公里';
+      var dis = this.locale == 'en-CA' ? ' km' : ' 公里';
       if(data == 0){
          return '';
 
@@ -163,6 +163,7 @@ var newChihuo = {
     lon: null || -79.2972919,  //-79.2972919,
     debug: 1,
     city: null,
+    setCity: false,
     localCity: null,
     msg: 0,
     time: null,
@@ -189,7 +190,7 @@ var staticSource = {
 //初始数据
 var initData = {
   homeData: {
-    cityData: [{cityname:''}],
+    cityData: null,
     detailData: null
   },//首页数据
   restaurantData: {
@@ -272,6 +273,10 @@ var initData = {
     miData: []
   },
   userCommentsData:{
+    data:[],
+    id:null
+  },
+  userMiCommentsData:{
     data:[],
     id:null
   },
@@ -368,6 +373,11 @@ var chihuo = {
   getWeekTime:function(day){
       var now = new Date();
       return now.getDay()==day;
+  },
+
+  setNoDataInfo: function(obj){
+    var $obj = obj || $('.whoops');
+    $obj.length && $obj.html("<p>It looks like you don't have any data yet.</p><span>Let's change that. Start exploring dishes and place now and will save it here for later.</span><a href='#index'>Begin Exploring</a>").show();
   },
 
   getOpenStatus: function(hours){
@@ -474,7 +484,7 @@ var chihuo = {
      $.ajaxSetup({
                 //发送请求前触发
                 beforeSend: function (xhr) {
-                    var html='<div id="maskScreen" mask="1" style="position: fixed;width: 100%; height: 100%; left: 0; top: 0; background: #000; opacity: 0.5; z-index:10000; color: #fff;"><p style="text-align: center; padding-top: 100px;">loading...</p></div>';
+                    var html='<div id="maskScreen" mask="1" style="position: fixed;width: 100%; height: 100%; left: 0; top: 0; background: #000; opacity: 0.5; z-index:1000; color: #fff;"><p style="text-align: center; padding-top: 100px;">loading...</p></div>';
                     if($("#maskScreen").length){
                         var index=parseInt($("#maskScreen").attr("mask"));
                         $("#maskScreen").attr("mask",++index);
@@ -511,7 +521,6 @@ var chihuo = {
   wkLoginPermission: function(){
       if(newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
          return true;
-
       }else{
        var pop = $('#popInfo');
        var info ='<p>please login in first</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
@@ -543,44 +552,97 @@ var chihuo = {
       
   },
 
-
-  getPosition: function(template,refresh){
-    document.addEventListener("deviceready", onDeviceReady, false);
-    if(newChihuo.debug){
-        chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
-      }
-   
+  initApp: function(template){
+     document.addEventListener("deviceready", onDeviceReady, false);
+     document.addEventListener("resume", resumeReady, false);//app从后台运行时重新获取监听的事件
     //device APIs are available
     function onDeviceReady() {
-        StatusBar && StatusBar.backgroundColorByHexString("#FFF"); 
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        clearInterval(newChihuo.positionTime);
-        newChihuo.positionTime = setInterval(function(){navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);          
+        StatusBar && StatusBar.backgroundColorByHexString("#fe812d") && 
+        StatusBar.overlaysWebView(false);
+          // StatusBar.styleDefault();
+        chihuo.splashShow(function(){chihuo.getPosition(template)});     
     }
+
+    function resumeReady() {
+      setTimeout(function(){
+        chihuo.splashShow(function(){chihuo.getPosition(template)});
+      },0);
+    }
+
+  },
+
+  splashShow: function(func,time){
+    var $splash = $('#splash');
+    if($splash.length){
+      app_router.navigate('Index',{
+        trigger: true
+      });
+      newChihuo.splash = true;
+      $splash.html('<p><img src="imgs/logo.png"><img src="imgs/foodymonkey.jpg"></p>').show();
+      func && func();
+      setTimeout(function(){
+        $splash.hide().html('');
+        newChihuo.splash = false;
+      },time || 2500);
+    } 
+  },
+
+  matchCityInfo: function(city,template){
+    var pop = $('#popInfo');
+    var info ='<p>change your current city?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           newChihuo.setCity = false;
+           newChihuo.splash = false;
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           newChihuo.city = city;
+           newChihuo.setCity = false;
+           newChihuo.splash = false;
+           newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+           newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+          
+       });
+
+
+  },
+
+  opacityBg: function(obj,scroll){
+    var height = $(obj).height();
+    if(scroll > height){
+      return;
+    }else{
+      var opacity = (1-scroll/height);
+      $(obj).css({'opacity':opacity});
+    }
+  },
+
+  getPosition: function(template,refresh){
+     navigator.geolocation.getCurrentPosition(onSuccess, onError);
+     clearInterval(newChihuo.positionTime);
+     newChihuo.positionTime = setInterval(function(){navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);  
     // onSuccess Geolocation
     function onSuccess(position) {
       var newLat = position.coords.latitude;
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
-      if(change){
-        !newChihuo.setCity && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
-      }
-      if(!change && newChihuo.localCity && newChihuo.localCity != newChihuo.city){
-        !newChihuo.setCity && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
-      }
+      newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);     
     }          
-             
-
+     
     // onError Callback receives a PositionError object
     function onError(error) {
-        console.log('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+         newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
+         newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+         newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
     }
      
   },
 
   openStreetMap: function(lat, lon, template,refresh){
     var _this = this;
+    var showCityInfo = newChihuo.splash ? true : false;
       if(lat && lon){
         $.ajax({
           type: 'GET',
@@ -592,26 +654,25 @@ var chihuo = {
           beforeSend:function(){},
           complete: function (xhr, status) {},
           success: function (data) { 
-              newLocation = data.address.city || data.address.state_district || 'toronto';
+              newLocation = data.address.city || data.address.state_district || 'Toronto';
               newChihuo.localCity = newLocation;
-               if((newChihuo.city != newChihuo.localCity) || refresh){
-
-                if((newChihuo.city != newChihuo.localCity) && newChihuo.city){
-                 newChihuo.getPage('home') && newChihuo.showPopInfo(newChihuo.localize('home_changelocation'));
+               if(refresh || newChihuo.localCity){
+                if((newChihuo.city != newChihuo.localCity) && newChihuo.setCity && showCityInfo){
+                 newChihuo.getPage('home') && chihuo.matchCityInfo(newChihuo.localCity,template);
                 }
-                if(newChihuo.getPage('home')){
-                  newChihuo.city = newLocation;
-                } 
-                //后期优化添加界面和数据符合才渲染模板
-                newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-                newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+                if(newChihuo.city != newChihuo.localCity){
+                   //后期优化添加界面和数据符合才渲染模板
+                   newChihuo.city = newChihuo.city == null ?  newChihuo.localCity :  newChihuo.city;
+                   newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+                    newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+                }
                }
               
             },
           error: function () {
-              // newChihuo.errorPopInfo(function(){chihuo.openStreetMap(lat, lon, template,refresh)});
-              chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-              chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+              newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
+              newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+              newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
           }
         })
       }
@@ -622,7 +683,7 @@ var chihuo = {
                   type: 'GET',
                   url: chihuo.getApiUri('findAllCities.json'),
                   data: {
-                     city: city,
+                     city: city || 'toronto',
                      lat: lat,
                      lng: lon,
                      locale: 'en'
@@ -632,6 +693,9 @@ var chihuo = {
                         initData.homeData.cityData = data.data;
                         newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData)); 
                      }
+                  },
+                  error: function(){
+                    newChihuo.showPopInfo('网络错误，请下拉刷新重试');
                   } 
               });        
   },
@@ -651,14 +715,15 @@ var chihuo = {
                                 if(data.data && data.data.length){
                                   initData.homeData.detailData = chihuo.dealData(data.data,'categoryid');
                                 }else{
-                                  newChihuo.popInfo('查询结果为空，为您显示多伦多的数据');
+                                  newChihuo.showPopInfo('查询结果为空，为您显示多伦多的数据');
                                   initData.homeData.cityData[0].cityname = 'toronto';
                                   chihuo.findHotspotDetails('toronto',lat,lon,template);
                                 }
-                                  initData.homeData.detailData = chihuo.dealData(data.data,'categoryid');
-                                  console.log(initData.homeData.detailData);
                                   newChihuo.getPage('home') && $("#page").html(_.template(template, initData.homeData));
                                }
+                            },
+                            error: function(){
+                              newChihuo.showPopInfo('网络错误，请下拉刷新重试');
                             }
 
                         });
@@ -729,15 +794,15 @@ var chihuo = {
   dealData: function(data,status){
       var len = data.length;
       var  k  = -1;
-      var  j;
+      var map = {};
       var menu = [];
       if(len){
         for(var i = 0; i < len; i++ ){
-          if( j == data[i][status]){
-             menu[k].push(data[i]);
+          if(map[data[i][status]] !== undefined){
+             menu[map[data[i][status]]].push(data[i]);
           }else{
               k++;
-              j = data[i][status];
+              map[data[i][status]] = k;
               menu[k] = [];
               menu[k].push(data[i]);
 
@@ -817,10 +882,10 @@ var chihuo = {
     },
 
     initMapOption:function(mapData){
-    newChihuo.map = L.map('leafletMap').setView([mapData[0].address_latitude,mapData[0].address_longitude], 16);
+    newChihuo.map = L.map('leafletMap').setView([mapData[0].address_latitude,mapData[0].address_longitude], 15);
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
+        maxZoom: 15,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -831,7 +896,7 @@ var chihuo = {
   initMapShow: function(mapData,index){
     newChihuo.markerWrap = [];
     if(mapData && mapData.length){
-     newChihuo.myIcon1 = L.icon({
+     newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
           iconUrl: 'imgs/marker2.png',
           iconSize: [45, 50],
           iconAnchor: [22, 94],
@@ -839,7 +904,7 @@ var chihuo = {
           className: 'set-index'
       });
 
-      newChihuo.myIcon2 = L.icon({
+      newChihuo.myIcon2 =  newChihuo.myIcon2 || L.icon({
           iconUrl: 'imgs/marker.png',
           iconSize: [24, 40],
           iconAnchor: [22, 94],

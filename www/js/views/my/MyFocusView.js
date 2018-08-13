@@ -35,6 +35,7 @@ define([
                      if(data.status == 0){ 
                         initData.myFocusData.data = data.data;
                         newChihuo.getPage('myFocus') && _this.$el.html(_.template(myFocusTemplate,initData.myFocusData));
+                         newChihuo.getPage('myFocus') && !_this.bindEvents() && !initData.myFocusData.data.length && chihuo.setNoDataInfo();
                      }
                   } 
               });  
@@ -45,6 +46,13 @@ define([
       var index=obj.index();
       obj.addClass('cur').siblings().removeClass('cur');
       $(".tab-wish-wrap").hide().eq(index).show();
+    },
+
+    bindEvents:function(){
+       $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
+        }); 
     }
 
   });

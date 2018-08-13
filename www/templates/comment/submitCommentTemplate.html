@@ -5,45 +5,19 @@
 		<h3 style="margin:0 60px;"><%=newChihuo.localize('review_header')%></h3>
 	</nav>
 	<div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">
-		<div class="comment-select"><p><%=newChihuo.localize('review_overall ')%></p><span class="like-up like-comment-icon"><img src="imgs/like-up.png"></span><span class="like-word like-comment-word"><%=newChihuo.localize('global_var_like')%></span><span class="like-comment-icon"><img src="imgs/like-down.png" style="margin-top:2px"></span><span class="like-comment-word"><%=newChihuo.localize('review_dislike')%></span></div>
-		<ul class="comment-select-list clearfix">
-			<li> 
-				<p class="comment-service cur" attr="service">服务好</p>
-			</li>
-			<li>
-				<p class="comment-service" attr="service">服务一般</p>
-			</li>
-			<li>
-				<p class="comment-service" attr="service">服务差</p>
-			</li>
-			<li>
-				<p class="comment-taste cur" attr="taste">味道好</p>
-			</li>
-			<li>
-				<p class="comment-taste" attr="taste">味道一般</p>
-			</li>
-			<li>
-				<p class="comment-taste" attr="taste">味道差</p>
-			</li>
-			<li>
-				<p class="comment-environment cur" attr="environment">环境好</p>
-			</li>
-			<li>
-				<p class="comment-environment" attr="environment">环境一般</p>
-			</li>
-			<li>
-				<p class="comment-environment" attr="environment">环境差</p>
-			</li>
-			<li>
-				<p class="comment-clean cur" attr="clean">卫生好</p>
-			</li>
-			<li>
-				<p class="comment-clean" attr="clean">卫生一般</p>
-			</li>
-			<li>
-				<p class="comment-clean" attr="clean">卫生差</p>
-			</li>
-		</ul>
+		<div class="comment-select"><p><%=newChihuo.localize('review_overall ')%></p><span class="like-up like-comment-icon"><img src="imgs/like-up.png"></span><span class="like-word like-comment-word" num='1'><%=newChihuo.localize('global_var_like')%></span><span class="like-comment-icon"><img src="imgs/like-down.png" style="margin-top:2px"></span><span class="like-comment-word" num='0'><%=newChihuo.localize('review_dislike')%></span></div>
+		<div class="set-score-wrap clearfix">
+			<span><%=newChihuo.localize('review_service_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+		</div>
+		<div class="set-score-wrap clearfix">
+			<span><%=newChihuo.localize('review_food_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+		</div>
+		<div class="set-score-wrap clearfix">
+			<span><%=newChihuo.localize('review_ambiance_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+		</div>
+		<div class="set-score-wrap clearfix">
+			<span><%=newChihuo.localize('')%>Overall：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+		</div>
 		<textarea class="user-textarea" placeholder="<%=newChihuo.localize('review_tooltips')%>"></textarea>
 		<div class="comment-photo-wrap clearfix">
 			<!-- <div class="comment-photo-show">

@@ -1,10 +1,10 @@
-<div class="food-bg">
+<div class="food-bg opacity-bg">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
         <h3><%=newChihuo.localize('profile_footprint_wishes_header')%></h3>
     </nav>
     <div class="food-list-nav clearfix" id="wishTab">
-        <a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+        <a href="javascript:;" class="cur" style="width:30%; margin:0 10%;"><%=newChihuo.localize('global_var_restaurants')%></a>
         <a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
     </div>
 </div>
@@ -17,31 +17,31 @@
             <%_.each(restData,function(d,i){%>
                 <div class="wrap-border clearfix">
                     <a href="#restaurant/<%=d.rest_id%>">
-                        <div class="food-list-icon<%if(d.favorite_flg == 'Y'){%>6<%}else{%>7<%}%>" style="margin-top:0;">
+                        <div class="food-list-icon<%if(d.favorite_flg == 'Y'){%>6<%}else{%>7<%}%>" style="margin:0;">
                         <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
                         </div>
                         <div class="food-img">
                             <img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
                         </div>
-                        <div style="margin-left:100px;">
-                        <h3 class="rest-name-title"><%=d.rest_name%></h3>
-                        <p class="rest-info-show" style="padding-top:5px;margin-right:80px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span><%=d.cust_distance%></span><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+                        <div style="margin-left:100px;margin-right:70px;">
+                        <h3 class="rest-name-title" style="margin-right:0;"><%=d.rest_name%></h3>
+                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%> <%if(d.price_level){%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><%}%><%if(d.cust_distance){%><span><%=d.cust_distance%></span><%}%><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
                         </div>
                     </a>
                 </div>
                 <%})%>
                 <%}else{%>           
-                    <p class="no-info-para">Woops, no  items in Wishlist</p>
+                    <div class="whoops restdata-wrap"></div>
                 <%}%>
             </div>
         </div>
         <div class="swiper-slide">
             <div class="tab-swiper-wrap">
-             <%if(miData){%>
+             <%if(miData.length){%>
             <%_.each(miData,function(d,i){%>
             <div class="wrap-border clearfix">
                 <a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
-                    <div class="food-list-icon4">
+                    <div class="food-list-icon4" style="margin:0;">
                     <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
                     </div>
                     <div class="food-img">
@@ -55,12 +55,46 @@
             </div>
             <%})%>
              <%}else{%>
-               <p class="no-info-para">Woops, no  items in Wishlist</p>
+               <div class="whoops midata-wrap"></div>
                 <%}%>
             </div>
         </div>      
     </div>
 </div>
+ <div class="loading-wrap" id='specialLoad'>
+            <p class="loading-step1" style="display:none;">加载更多</p>
+            <p class="loading-step2">加载中</p>
+            <p class="loading-step3" style="display:none;">没有更多了~~</p>
+    </div>
+     <div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li>
+        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" class="cur">
+        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 <script type="text/javascript">
     var swiperWish = new Swiper('#wish-swiper', {

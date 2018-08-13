@@ -1,7 +1,7 @@
 <div class="rest-bg comment-effect3">
 	<nav class="common-title">
 		<a href="javascript:;" class="share"></a>
-		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<a href="javascript:history.go(<%if(from =='comment'){%>-3<%}else{%>-1<%}%>);" class="common-return"></a>
 		<h3><%if(data[0]){%><%=data[0].rest_name%><%}%></h3>
 	</nav>
 	<div class="rest-wrap">
@@ -33,7 +33,7 @@
 			<div style="position:relative;">
 			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
-			<p class="rest-info-show"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span></p>
+			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">

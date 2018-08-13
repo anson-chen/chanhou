@@ -1,4 +1,4 @@
-<div class="food-bg">
+<div class="food-bg opacity-bg">
 	<nav class="common-title">
 		<a href="javascript:;" class="delete-icon"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -10,7 +10,8 @@
     
 	</div>
 </div>
-<div class="rest-list-wrap" style="padding-bottom:0;">
+<div class="rest-list-wrap">
+<%if(data.length){%>
 	    	<div class="tab-swiper-wrap">
 			<%_.each(data,function(d,i){%>
 			  <%if(d.browse_type == 'rest'){%>	
@@ -32,7 +33,7 @@
 						</a>
 						</div>
 						<div class="delete-icon-btn" hisId="<%=d.browse_entity_id%>">
-							删除
+							Delete
 						</div>
 					</div>
 				</div>
@@ -57,12 +58,15 @@
 							</div>
 						</div>
 						<div class="delete-icon-btn" hisId="<%=d.browse_entity_id%>">
-							删除
+							Delete
 						</div>
 				</div>
 				</div>
 			<%}})%>	
 			</div>
+<%}else{%>
+<div class="whoops"></div>
+<%}%>			
 </div>
 	<div class="rest-fix-bottom">
     <ul class="clearfix">

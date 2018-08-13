@@ -1,29 +1,30 @@
 <nav class="top-nav clearfix">
-  <span class="voice-icon"></span>
   <div class="index-search">
     <input type="text" name="" placeholder="<%=newChihuo.localize('main_searchbutton')%>">
     <i></i>
   </div>
   <img src="imgs/index-logo.png" class="index-logo">
-  <div class="top-location home-top-location" style="margin-left:5px;"><%=cityData[0].cityname%></div>
+  <div class="top-location home-top-location" style="margin-left:5px;"><%if(cityData){%><%=cityData[0].cityname%><%}%></div>
 </nav>
  <div class="welcome-tips">
     <%=newChihuo.welcome(newChihuo.customer)%>
   </div>
-<div class="container-down" style="overflow:hidden;min-height:100%; margin-top:60px;">
+<div class="container-down" style="margin-top:60px;">
 <div class="index-banner" style="position:relative; margin-top:0;"> 
  
   <!-- Swiper -->
     <div class="swiper-container" id="index-banner">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><a href="#restaurant"><img src="imgs/index-img1.jpg" class="banner-img"></a></div>
-            <div class="swiper-slide"><a href="#restaurant"><img src="imgs/index-img2.jpg" class="banner-img"></a></div>
+            <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p>FoodyMonkey<br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>
+            <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner2_index.jpg" class="banner-img"><p class="index-img-para">Dish Review</p></div></a></div>
+            <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner3_index.jpg" class="banner-img"><p class="index-img-para">Restaurant Review</p></div></a></div>
+            <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner4_index.jpg" class="banner-img"><p class="index-img-para">Social Chat</p></div></a></div>
+            <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner5_index.jpg" class="banner-img"></div></a></div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination banner-pagination"></div>
     </div>
 </div>
-<%if(detailData !== null){%>
 <div class="index-round">
     <audio src="swiperplugin/sound.mp3" controls="controls" preload id="bottomAudio" loop hidden></audio>
      <div class="swiper-container" id="index-round">
@@ -63,12 +64,10 @@
             </div>
              <div class="swiper-slide">
                <a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a>
-            </div>
-            
+            </div>          
         </div>
     </div>
 </div>
-<%}%>
 <div class="index-new-wrap">
 <%if(detailData !== null){%>
 <%_.each(detailData, function(d,i) {%>
@@ -121,7 +120,7 @@
     <div class="swiper-container" id="index-city">
         <div class="swiper-wrapper">
         <%_.each(d, function(d,i) {%>
-            <div class="swiper-slide index-dish-img"><a href="#restaurantList2/<%=d.cityname%>/null"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt3.png<%}%>"><p><%=d.cityname%></p><span>（<%=d.totrestcnt%>）</span></a></div>
+            <div class="swiper-slide index-dish-img"><a href="#restaurantList2/<%=d.cityname%>/null" class="set-city-bg"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt3.png<%}%>"><p><%=d.cityname%></p><span>（<%=d.totrestcnt%>）</span></a></div>
             <%})%>
         </div>
     </div>
@@ -143,7 +142,8 @@
              <%if(d.categoryid < 25){%>        
                   <div class="swiper-slide index-dish-img">
                   <div class="father-wrap">
-                    <a href="#restaurant/<%=d.facilityid%>"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt2.png<%}%>"></a>
+                    <a href="#restaurant/<%=d.facilityid%>">
+                    <div class="img-middle-wrap"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/pt2.png<%}%>"></div></a>
                     <div class="rest-like">
                       <p class="para-set"><%=d.facilityname%><%if(d.restpermitpassflg=='Y'){%><i class="pass-icon"></i><%}%></p>
                       <div class="like-para"><%=d.restcuisinetype%> <%=newChihuo.showDistanceInfo(d.restdistance)%><br>
@@ -203,9 +203,11 @@
   </div>
 <div class="search-mask">
     <div class="city-mask-list" id="homeCity">
+    <%if(cityData){%>
     <%_.each(cityData, function(d,i) {%>
       <p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p>
     <%})%>
+    <%}%>
     </div>
 </div>
 <%if(detailData && detailData.length){%>
@@ -252,7 +254,36 @@
         });
       });
 
-     var swiperNav = new Swiper('#index-round',{
+      var welcome = setTimeout(function(){
+        $('.welcome-tips').addClass('toggle-welcome');
+      },5000);
+
+  (function(){
+    var height = $('.index-banner').height();
+    $('.index-banner').css({opacity:1});
+    $(window).off('scroll').on('scroll',function(){
+       var scrollTop = $(this).scrollTop();
+           height    =  height || $('.index-banner').height();
+           clearTimeout(welcome);
+          if($('.welcome-tips').hasClass('toggle-welcome')){
+            $('.welcome-tips').removeClass('toggle-welcome');
+          }else{
+            welcome = setTimeout(function(){
+              $('.welcome-tips').addClass('toggle-welcome');
+            },2500);
+          }
+       if(scrollTop > height){
+        return;
+       }else{
+        var op = (1- scrollTop/height).toFixed(2) > 0.2 ? (1- scrollTop/height).toFixed(2) : 0.2;
+        $('.index-banner').css({opacity:op});
+       }
+    });
+  }())
+</script>
+<%}%>
+<script type="text/javascript">
+  var swiperNav = new Swiper('#index-round',{
           effect : 'coverflow',
           slidesPerView: 3,
           initialSlide:5,
@@ -266,26 +297,36 @@
             slideShadows : false
           }
         }); 
-     $('.container-down').on('swipedown',function(){
-      $('#reload').addClass('show-reload');
-      newChihuo.setCity = false;
-      chihuo.getPosition(initData.homeData.template,true);
-      setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
-  });
 
-  (function(){
-    var height = $('.index-banner').height();
-    $('.index-banner').css({opacity:1});
-    $(window).off('scroll').on('scroll',function(){
-       var scrollTop = $(this).scrollTop();
-           height    =  height || $('.index-banner').height();
-       if(scrollTop > height){
-        return;
-       }else{
-        var op = (1- scrollTop/height).toFixed(2) > 0.2 ? (1- scrollTop/height).toFixed(2) : 0.2;
-        $('.index-banner').css({opacity:op});
-       }
-    });
-  }())
+  var pullRefresh = $('.container-down').pPullRefresh({
+        $el: $('.container-down'),
+        $loadingEl: null,
+        sendData: {
+
+        },
+        url: '',
+        callbacks: {
+          pullStart: function(){
+            $('#reload').addClass('show-reload');
+            newChihuo.setCity = false;
+            chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,initData.homeData.template);
+            setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
+          },
+          start: function(){
+            
+          },
+          success: function(response){
+            
+          },
+          end: function(){
+            
+          },
+          error: function(){
+            
+          }
+        },
+        func: function(){
+          _this.initData(0);
+        }
+      });
 </script>
-<%}%>

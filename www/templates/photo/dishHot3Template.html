@@ -7,7 +7,7 @@
 <div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix">
-          <a href="#restaurantList/<%=encodeURIComponent(d.rest_mi_name)%>">
+          <a href="#dishHot4/<%=level%>/<%=encodeURIComponent(d.rest_mi_name)%>">
             <div class="food-img">
                 <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
             </div>
@@ -15,7 +15,7 @@
                <h3 class="rest-name-title" style="margin-right:15px;"><%=d.rest_mi_name%></h3>
                 <p class="rest-info-show" style="padding-top:5px;line-height:20px;">
                 <%if(d.tot_rests_cnt){%><span class="reset-style1 reset-bg4"><%=d.tot_rests_cnt%></span><%}%>
-                <span style="color:#ff8b4c;"><%=d.avg_unit_prc%></span><br><%if(d.price_range){%> L <%=d.price_range.split('-')[0]%><span style="padding-left:10px;">H <%=d.price_range.split('-')[1]%></span><%}%><br><%if(d.cust_distance){%><%=d.cust_distance%>km<%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%>
+                <span style="color:#ff8b4c;">$<%=d.avg_unit_prc%></span><br><%if(d.price_range){%> L $<%=d.price_range.split(' - ')[0]%><span style="padding-left:10px;">H $<%=d.price_range.split(' - ')[1]%></span><%}%><br><%if(d.cust_distance){%><%=d.cust_distance%>km<%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%>
                 </p>
             </div>
             </a>

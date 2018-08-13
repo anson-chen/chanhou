@@ -1,5 +1,5 @@
 <div class="set-bg" style="padding-bottom:120px;">
-	<div class="food-bg">
+	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="#map" class="head-rest-icon"></a>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -11,14 +11,7 @@
     		<li class="cur toggle"><p><%=newChihuo.localize('global_var_distance')%><i></i><i></i></p></li>
 		</ul>
 	</div>
-	<div class="container-down" style="overflow:hidden;min-height:100%;">
-		<div class="loading-wrap" style="margin-top:-88px;">
-			<div style="text-align:center; padding:10px 0;">
-				<div>
-					<p style="height:28px;">下拉刷新中...</p>
-				</div>
-			</div>
-		</div>
+	<div class="container-down">
 	<div class="rest-list-wrap" style="padding-bottom:0;">
 	<%_.each(data, function(d,i) {%>
 		<div class="wrap-border clearfix">
@@ -28,14 +21,17 @@
 			   <div class="food-img">
 	                <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
 	           </div>
-	           <div style="margin:0 15px 0 100px;">
-	                <h3 class="rest-name-title" style="margin-right:0;"><%=i+1%>. <%=d.rest_name%></h3>
-					<p class="rest-info-show" style="padding-top:0; position:relative;">
-					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=d.total_likes_perc*100%>%</span><%}%>
-					<%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span><br><%=d.city_name%>   <%=newChihuo.showDistanceInfo(d.cust_distance)%></p>
+	           <div style="margin:0 5px 0 100px; position:relative;">
+	                <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance.toFixed(1))%></span><%}%>
+	                <h3 class="rest-name-title" style="margin-right:60px;"><%=i+1%>. <%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
+					<%if(d.total_other_custs){%><span class="reset-style reset-bg6" style="float:right; margin-top:1px;"><%=d.total_other_custs%></span><%}%>
+					<span style="color:#ff8b4c; padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span><br><%=d.cuisine_type%></p>
+					<p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(d.address){%><b class="address-set"><%=d.address%></b><%}%></p>
 	           </div>
          </div>
-         <p class="rest-info-show"  style="padding:0 15px;"><%if(d.last_review_details){%><span style="color:#333; font-size:15px;">"<%=d.last_review_details.substring(0,50)%>"</span><br><%}%><%if(d.total_other_custs){%><span style="font-size:12px;">10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</span><%}%></p>
+         <%if(d.last_review_details){%><b class="address-set" style="padding:0 10px;color:#333;"><%=d.last_review_details%></b><%}%>
 		</a>
 		</div>
 	<%})%>

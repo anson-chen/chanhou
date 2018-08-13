@@ -17,7 +17,7 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 10
+      ct: 20
     },
      search: {
        showPop: false,
@@ -91,6 +91,10 @@ define([
                      if(data.status == 0){
                         if(lat || lng){
                           _this.status.sendRequest = true;
+                        }
+                        if(data.data.length == 0){
+                          newChihuo.showPopInfo('Not lucky! Restaurant not fund.');
+                          return;
                         } 
                         if(num == 0){
                         initData.restaurantNearData.data = [];
@@ -100,9 +104,7 @@ define([
                           _this.$el.html(_.template(mapTemplate,initData.restaurantNearData));
                           _this.bindEvents();
                           _this.statusSave();
-                          if(data.data.length == 0){
-                          newChihuo.showPopInfo('Not lucky! Restaurant not fund.');
-                          }
+                          
                         } 
                         
                      }
@@ -136,7 +138,7 @@ define([
                   },
                   success: function(data){
                      if(data && data.length){
-                        _this.initData(data[0].lat,data[0].lon);
+                        _this.initData(data[0].lat,data[0].lon,0);
                      }
                   } 
               });  
