@@ -629,8 +629,8 @@ var chihuo = {
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
       newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);     
-    }          
-     
+    }    
+           
     // onError Callback receives a PositionError object
     function onError(error) {
          newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;

@@ -41,7 +41,7 @@ define([
                   },
                   success: function(data){
                      if(num == 0){
-                      initData.myCommentsData.miData = [];
+                      initData.myWishData.restData = [];
                       _this.status.st = 0;
                      }
                      if(data.status == 0){
@@ -72,7 +72,7 @@ define([
                   },
                   success: function(data){
                      if(num == 0){
-                      initData.myCommentsData.miData = [];
+                      initData.myWishData.miData = [];
                       _this.status.st = 0;
                      }
                      if(data.status == 0){

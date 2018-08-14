@@ -55,13 +55,17 @@ define([
                       var list = data.data;
                         if(list.length){
                           var html='';
+                          var last='';
+                          if(status == 'wish'){
+                            last='/wish';
+                          }
                           for(var i=0; i<list.length; i++){
-                            if(status == 'wish'){
+                            if(index == 0){
                           
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'/wish">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
                             }else{
                               
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'">'+list[i].rest_mi_name+'<span>'+list[i].total_restmi_byname+'个结果</span></a></li>';
                             }
                             
                         }
@@ -203,13 +207,17 @@ define([
                         var list = data.data;
                         if(list.length){
                           var html='';
+                          var last='';
+                          if(status == 'wish'){
+                            last='/wish';
+                          }
                           for(var i=0; i<list.length; i++){
-                            if(status == 'wish'){
+                            if(index == 0){
                           
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'/wish">'+(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
                             }else{
                               
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'">'+(index == 0 ? list[i].rest_name : list[i].rest_mi_name)+'<span>'+(index==0 ? list[i].total_rests_byname : list[i].total_restmi_byname)+'个结果</span></a></li>';
+                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'">'+list[i].rest_mi_name+'<span>'+list[i].total_restmi_byname+'个结果</span></a></li>';
                             }
                             
                         }

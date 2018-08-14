@@ -38,6 +38,14 @@ define([
         chihuo.sortAll(index,$(this).hasClass('toggle'),restaurantWishesTemplate,initData.restaurantWishesData,_this);
       });
 
+      $('.wrap-border').on('swipeleft',function(){
+         $(this).find('.all-history-info').addClass('delete-animation');
+      });
+
+      $('.wrap-border').on('swiperight',function(){
+         $(this).find('.all-history-info').removeClass('delete-animation');
+      });
+
       
     },
 

@@ -32,7 +32,7 @@ define([
                   type: 'GET',
                   url: chihuo.getApiUri('getCuisinesbyCity.json'),
                   data: {
-                     city: city || 'toronto',
+                     city: decodeURIComponent(city) || 'toronto',
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',

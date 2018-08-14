@@ -74,7 +74,7 @@
 <%if(d[0].categoryid == 1){%>
 <div class="wrap-border">
   <div class="floor-title">
-    <a href="#cuisineList/<%=newChihuo.city%>" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>  
+    <a href="#cuisineList/<%=encodeURIComponent(newChihuo.city)%>" class="more-link"><%=newChihuo.localize('restaurant_more')%></a>  
     <h3 class="index-title-bg1"><%=d[0].categoryname%></h3>
   </div>
   <div class="floor-wrap">
@@ -101,7 +101,7 @@
     <div class="swiper-container category-dish">
           <div class="swiper-wrapper">
              <%_.each(d, function(d,i) {%>
-                  <div class="swiper-slide index-dish-img"><a href="<%if(d.categoryid==2){%>#dishHot2/<%=d.facilityname%><%}else{%>#dishHot4/<%=d.categoryid%>/<%=d.facilityname%><%}%>"><div class="img-middle-wrap"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/zfx-pt.jpg<%}%>"></div><p class="para-set" style="height:auto;"><span>(<%=d.totrestcnt%>)</span><%=d.facilityname%><br><b><%=d.restavgprice%></b></p></a></div>
+                  <div class="swiper-slide index-dish-img"><a href="<%if(d.categoryid==2){%>#dishHot2/<%=encodeURIComponent(d.facilityname)%><%}else{%>#dishHot4/<%=encodeURIComponent(d.categoryid)%>/<%=encodeURIComponent(d.facilityname)%><%}%>"><div class="img-middle-wrap"><img src="<%if(d.profileurl){%><%=d.profileurl%><%}else{%>imgs/zfx-pt.jpg<%}%>"></div><p class="para-set" style="height:auto;"><span>(<%=d.totrestcnt%>)</span><%=d.facilityname%><br><b><%=d.restavgprice%></b></p></a></div>
             <%})%>        
           </div>
         </div>

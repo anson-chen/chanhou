@@ -3410,7 +3410,7 @@ input::-webkit-input-placeholder{
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    animation: splash 3s infinite;
+    animation: splash 2.5s infinite;
     text-align: center;
 }
 #splash p img {
@@ -3420,13 +3420,13 @@ input::-webkit-input-placeholder{
 @keyframes splash
 {
 0%   {opacity:1;}
-25%  {opacity:.6;}
-50%  {opacity:.3;}
-75%  {opacity:.6;}
-100% {opacity:1;}
+25%  {opacity:.5;}
+50%  {opacity:.15;}
+75%  {opacity:.5;}
+100% {opacity:.8;}
 }
 .new-set-bg {
-    background: rgba(255,255,255,.7);
+    background: rgba(255,255,255,.5);
 }
 .new-set-bg .common-title h3 {
     color: #ff8b4c;
