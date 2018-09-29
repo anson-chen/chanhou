@@ -72,7 +72,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo("添加心愿单成功",1200);
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_wishlist'),1200);
                         setTimeout(function(){
                           app_router.navigate('restaurantWishes',{
                             trigger: true

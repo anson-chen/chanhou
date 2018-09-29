@@ -33,7 +33,7 @@ define([
           },
           success: function (data) {
             if (data.status == 0) { 
-               newChihuo.showPopInfo('success');
+               newChihuo.showPopInfo(newChihuo.localize('success'));
                initData.mySettingsData.language = index+1;
                setTimeout(function(){
                 app_router.navigate('mySettings',{

@@ -1,20 +1,23 @@
 <div class="login-bg">
+<style type="text/css">
+  #returnIcon { display: none; }
+</style>
     <div class="common-title clearfix">
         <a href="javascript:history.go(-1);" class="common-return"></a>
     </div> 
-    <div class="wrap-border clearfix" style="margin:80px 12px 20px; padding:15px;">   
+    <div class="wrap-border clearfix" style="margin:30px 12px 20px; padding:15px;">   
        <img src="imgs/chanhou.png" class="position-img">
-       <div class="login-wrap" style="margin-top:-50px;">
+       <div class="login-wrap" style="margin-top:-95px;">
          <input type="text" name="" id="inputEmail" placeholder="<%=newChihuo.localize('profile_login_email')%>">
        </div>
        <div class="login-wrap">
          <input type="password" name="" id="inputPassword" placeholder="<%=newChihuo.localize('profile_login_password')%>">
        </div>
        <div class="clearfix">
-         <a href="#forgetPassword"><p class="agreement" style="float:right;"><%=newChihuo.localize('profile_login_forgot')%></p></a>
+         <!--<a href="#forgetPassword"><p class="agreement" style="float:right;"><%=newChihuo.localize('profile_login_forgot')%></p></a>-->
          <a href="#password"><p class="agreement" style="float:left;"><%=newChihuo.localize('profile_login_changepasswd')%></p></a>
        </div>
-        <div class="quit-setting" style="background: #fb6700; margin:0 0 20px;" id="login"><%=newChihuo.localize('profile_login_login')%></div>
+        <div class="quit-setting" style="background: #fb6700; margin:0;" id="login"><%=newChihuo.localize('profile_login_login')%></div>
     </div>
     <div class="other-side"><p><%=newChihuo.localize('profile_login_thirdparty')%></p></div>
     <div class="other-img auth0 clearfix">

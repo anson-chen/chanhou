@@ -4,24 +4,36 @@
         <h3><%=newChihuo.localize('profile_footprint_photos_header')%></h3>
     </nav>
 </div>
-<%if(data.length){%>
+<!-- <%if(data.length){%>
 <ul class="my-photos clearfix">
 <%_.each(data,function(d,i){%>
     <li>
         <div>
             <img src="<%if(d.rest_review_photo_url){%><%=d.rest_review_photo_url%><%}else{%>imgs/show-photo1.jpg<%}%>">
             <div class="my-photo-mask">
-                <span><%=d.total_rest_reviewtips%></span><%=chihuo.timestampToTime(d.review_datetime)%>
+                <%=chihuo.timestampToTime(d.review_datetime)%>
             </div>
         </div>
     </li>
 <%})%>
 </ul>
 <div class="loading-wrap" id='specialLoad'>
-    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_more')%></p>
-    <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
-    <p class="loading-step3" style="display:none;">没有更多了~~</p>
-</div>
+        <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+        <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+        <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
+    </div>
 <%}else{%>
 <div class="whoops"></div>
-<%}%>
+<%}%> -->
+<ul class="my-photos clearfix">
+
+    <li>
+        <div>
+            <img src="imgs/photo.png">
+            <div class="my-photo-mask">
+                <span>123</span>12333
+            </div>
+        </div>
+    </li>
+
+</ul>

@@ -7,38 +7,32 @@
 	<div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">
 		<div class="comment-select"><p><%=newChihuo.localize('review_overall ')%></p><span class="like-up like-comment-icon"><img src="imgs/like-up.png"></span><span class="like-word like-comment-word" num='1'><%=newChihuo.localize('global_var_like')%></span><span class="like-comment-icon"><img src="imgs/like-down.png" style="margin-top:2px"></span><span class="like-comment-word" num='0'><%=newChihuo.localize('review_dislike')%></span></div>
 		<div class="set-score-wrap clearfix">
-			<span><%=newChihuo.localize('review_service_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+			<span><%=newChihuo.localize('review_service')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
 		</div>
 		<div class="set-score-wrap clearfix">
-			<span><%=newChihuo.localize('review_food_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+			<span><%=newChihuo.localize('review_food')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
 		</div>
 		<div class="set-score-wrap clearfix">
-			<span><%=newChihuo.localize('review_ambiance_text')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+			<span><%=newChihuo.localize('review_ambiance')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
 		</div>
 		<div class="set-score-wrap clearfix">
-			<span><%=newChihuo.localize('')%>Overall：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+			<span><%=newChihuo.localize('review_overall ')%>：</span><p class="score-star"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
 		</div>
 		<textarea class="user-textarea" placeholder="<%=newChihuo.localize('review_tooltips')%>"></textarea>
 		<div class="comment-photo-wrap clearfix">
-			<!-- <div class="comment-photo-show">
-				<img src="imgs/map-img.jpg">
-				<b>+</b>
-			</div> -->
-			<!-- <a href="#photoList">
-			<div class="add-comment-photo">
-			</div></a> -->
+			
 		</div>
 	</div>
-	<div class="fix-comment-bottom">
-		<a href="#" class="bottom-rihgt"><img src="imgs/upload.png"></a>
+</div>
+<div class="fix-comment-bottom">
+		<a href="#" class="bottom-right"><img src="imgs/upload.png"></a>
 		<a href="#" class="bottom-left"><img src="imgs/face-icon.png"></a>
 		<a href="javascript:;" class="bottom-middle" id="capture"><img src="imgs/photo-go.png"></a>
 	</div>
-</div>
 <div class="photo-select-wrap">
 	<ul>
-		<li class="photo-action1">拍照</li>
-		<li class="photo-action2">从手机相册选择</li>
+		<li class="photo-action1"><%=newChihuo.localize('photo_source_camera')%></li>
+		<li class="photo-action2"><%=newChihuo.localize('photo_source_photo_librarry')%></li>
 	</ul>
 	<form id="usr-formPhoto" style="display:none;">
 		

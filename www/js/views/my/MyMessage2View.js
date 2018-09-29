@@ -16,16 +16,15 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 10
+      ct: 10,
+      tips: null
     },
 
     render: function(){
       newChihuo.setPage('myMessage2');
       newChihuo.windowInit();
+      !this.status.tips && newChihuo.showReloadInfo(this.status,'myMessage2');
       this.$el.html(_.template(myMessage2Template,initData.myMessage2Data));
-      // if(initData.myMessage2Data.data.length == 0){
-      //   this.initData(this.status.st);
-      // }
       this.initData(0);
       this.loadMore(10);
       this.bindEvent();
@@ -97,13 +96,10 @@ define([
         $loadingEl: null,
         sendData: {},
         url:chihuo.getApiUri('addCustMoment.json'),
-        startPX:100,
         callbacks: {
           pullStart: function(){
-            $('#reload').addClass('show-reload');
-            _this.initData(0);
-            setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
-            
+            $('#reload').addClass('show-reload');          
+            setTimeout(function(){$('#reload').removeClass('show-reload')},1000); 
           },
           start: function(){
             
@@ -119,8 +115,15 @@ define([
           }
         },
         func: function(){
+           _this.initData(0);
         }
       });
+
+      $('.reload-top-icon').on('click',function(){
+         $('#reload').addClass('show-reload');          
+          setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
+          _this.initData(0);
+      })
     },  
 
     showMoreComment: function(e){

@@ -59,7 +59,7 @@ define([
          
       $('.tab-swiper-wrap').each(function(){
            if($(this).children().length == 0){
-            $(this).html('<p class="no-data">no data</p>');
+            $(this).html("<div class='whoops' style='display:block'><p>It looks like you don't have any data yet.</p><span>Let's change that. Start exploring dishes and place now and will save it here for later.</span><a href='#index'>Begin Exploring</a></div>");
            }
       });
 
@@ -93,7 +93,7 @@ define([
                   data: option,
                   success: function(data){
                      if(data.status == 0){
-                       newChihuo.showPopInfo('deleted success');
+                       newChihuo.showPopInfo(newChihuo.localize('delete_a_record'));
                        $(_this).parents('.wrap-border').remove();
                      }
                    }
@@ -130,7 +130,7 @@ define([
                   data: option,
                   success: function(data){
                      if(data.status == 0){
-                       newChihuo.showPopInfo('deleted all success');
+                       newChihuo.showPopInfo(newChihuo.localize('delete_all_records'));
                        _this.initData();
                        
                      }

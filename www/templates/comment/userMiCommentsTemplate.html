@@ -18,7 +18,7 @@
 							<p><span class="comment-time"><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.reviewer_city_name%> <%=d.reviewer_country_name%></span></p>
 						</div>
 					</div>
-					<p class="comment-cont"><%=d.review_details.split('~~~')[0]%></p>
+					<p class="comment-cont"><%=d.review_details && d.review_details.split('~~~')[0]%></p>
 					<%if(d.review_concat_photo_urls){%>
 						<div class="review-photo-urls clearfix">
 							<%_.each(d.review_concat_photo_urls.split(','),function(d,i){%>
@@ -28,10 +28,10 @@
 					<%}%>
 					<div class="rest-comment-bottom">
 						<div class="comment-operation"><span class="share-icon">share</span></div>
-						<div class="comment-operation"><span class="good-icon" review=<%=d.cust_rest_review_id%>><%=d.review_likes_cnt%></span></div>
-						<div class="comment-operation user-mi-page"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>><%=newChihuo.localize('activitity_reply')%></span></div>			
+						<div class="comment-operation"><span class="good-icon" review=<%=d.cust_rest_mi_review_id%>><%=d.review_likes_cnt%></span></div>
+						<div class="comment-operation user-mi-page"><span class="wechat-icon" review=<%=d.cust_rest_mi_review_id%>><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>
-					<%if(d.review_details.indexOf('~~~')>0){%>
+					<%if(d.review_details && d.review_details.indexOf('~~~')>0){%>
 					<div class="communication">
 					<%_.each(JSON.parse(d.review_details.split('~~~')[1]),function(d,i){%>
 						<p><b class="comment-time-right"><%=chihuo.commentTime(d.created_datetime)%></b><span><%=d.display_name%>：</span><%=d.comment_details%></p>
@@ -50,10 +50,10 @@
 		<%})%>		
 		</ul>
 	</div>
-	<a href="#submitComment/<%=id%>" class="comment-edit">发布评论</a>
+	<!-- <a href="#submitMiComment/<%=id%>" class="comment-edit">发布评论</a> -->
 	<div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+	    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+		<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+		<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 	</div>
 </div>	

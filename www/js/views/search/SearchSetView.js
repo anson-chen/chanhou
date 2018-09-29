@@ -55,7 +55,17 @@ define([
 
       $(".right-set-info span").on('click',function(){
         if($(this).parent().hasClass('set-feature')){
-         $(this).toggleClass('cur');
+          var index = $(this).index();
+          if(index == 0){
+            $(this).addClass('cur').siblings().removeClass('cur');;
+          }else{
+             $(this).toggleClass('cur');
+             $(this).parent().children().eq(0).removeClass('cur');
+            if($(this).parent().find('.cur').length == 0){
+             $(this).addClass('cur');
+            }
+          }
+          
          return;
         }
            $(this).addClass('cur').siblings().removeClass('cur');

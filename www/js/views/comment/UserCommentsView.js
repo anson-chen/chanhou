@@ -126,7 +126,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('点赞成功',1000);
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_compliment'),1000);
                         var num = parseInt($(_this).text()) || 0;
                         $(_this).addClass('good-done').text(++num);
                      }

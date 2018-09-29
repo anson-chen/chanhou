@@ -19,10 +19,22 @@
 					    <%if(d.category == 'cuisine'){%>
 						<li><p><%=d.name%></p></li>
 					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'cuisine'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
 				</ul>
 			</div>
 			<div class="slot2" id="slot2">
 				<ul id="slotMachine2">
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'price'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
 					<%_.each(data,function(d,i){%>
 					    <%if(d.category == 'price'){%>
 						<li><p><%=d.name%></p></li>
@@ -75,6 +87,14 @@
 					    <%if(d.category == 'distance'){%>
 						<li><p><%=d.name%></p></li>
 					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
+					<%_.each(data,function(d,i){%>
+					    <%if(d.category == 'distance'){%>
+						<li><p><%=d.name%></p></li>
+					<%}})%>
 				</ul>
 			</div>
 			</div>
@@ -93,8 +113,8 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -103,12 +123,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
@@ -118,12 +138,7 @@
 </div>	
 <div class="mask-shake">
 	<div class="shake-info" style="display:none;">
-		<!-- <a href="#restaurant">
-			<img src="imgs/rest-list-img.jpg">
-			<h3>全聚德加拿大总店-没有比这好吃</h3>
-			<p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>10公里  89%喜欢
-		<br>1000cals 盐：100mg</p>
-		</a> -->
+		
 	</div>
 	<div class="shake-info" style="display:none;">
 		<p class="shake-para-show">Not lucky! Restaurant not fund,please shake again.</p>
@@ -132,18 +147,6 @@
 </div>
 <%if(data.length){%>
 <script>
-	// var machine1 = $("#slotMachine1").slotMachine({
-	// 	active	: 0
-	// });
-	// var machine2 = $("#slotMachine2").slotMachine({
-	// 	active	: 0,
-	// 	delay	: 0
-	// });
-	// var machine3 = $("#slotMachine3").slotMachine({
-	// 	active	: 0,
-	// 	delay	: 0
-	// });
-	
 	function onComplete($el, active){
 		switch($el[0].id){
 			case 'slotMachine1':
@@ -164,8 +167,5 @@
 			$("#slotMachine3").removeClass('completed');
 	}
 }
-	
-
-
 </script> 
 <%}%>

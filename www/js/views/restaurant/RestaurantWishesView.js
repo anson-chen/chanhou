@@ -46,6 +46,27 @@ define([
          $(this).find('.all-history-info').removeClass('delete-animation');
       });
 
+      $('.delete-icon-btn').on('click',function(){
+        var _this = this;
+          chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri('rmWLRests.json'),
+                  data:  {
+                     restId: $(this).attr('hisId'),
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                   },
+                  success: function(data){
+                     if(data.status == 0){
+                       newChihuo.showPopInfo(newChihuo.localize('delete_a_record'));
+                       $(_this).parents('.wrap-border').remove();
+                     }
+                   }
+            });
+
+      });
+
       
     },
 
@@ -63,6 +84,9 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
+                      if(num==0){
+                      initData.restaurantWishesData.data = [];
+                      }
                       initData.restaurantWishesData.data = [...initData.restaurantWishesData.data,...data.data];
                       newChihuo.getPage('restaurantWishes') && _this.$el.html(_.template(restaurantWishesTemplate,initData.restaurantWishesData));
                         if(data.data.length == 0){

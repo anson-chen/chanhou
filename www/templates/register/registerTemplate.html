@@ -1,20 +1,38 @@
-<div class="rest-bg" style="padding-bottom:70px;">
+<div class="rest-bg" style="padding-bottom:20px;">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
-        <h3>register</h3>
+        <h3>User register</h3>
     </nav>
-    <div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">   
-       <img src="imgs/chanhou.png" class="login-img">
+    <div class="wrap-border clearfix" style="margin:5px 12px; padding:15px 15px 0;">   
        <div class="login-wrap">
          <input type="text" name="" id="email" placeholder="<%=newChihuo.localize('profile_register_email')%>">
+         <span>*</span>
+       </div>
+        <div class="login-wrap">
+         <input type="text" name="" id="firstName" placeholder="First Name">
+         <span>*</span>
+       </div>
+        <div class="login-wrap">
+         <input type="text" name="" id="lastName" placeholder="Last Name">
+       </div>
+        <div class="login-wrap">
+         <input type="text" name="" id="nickName" placeholder="Nick Name">
        </div>
        <div class="login-wrap">
          <input type="password" name="" id="password"  placeholder="<%=newChihuo.localize('profile_register_password')%>">
+         <span>*</span>
        </div>
        <div class="login-wrap">
          <input type="password" name="" id="repassword" placeholder="<%=newChihuo.localize('profile_register_confirm_password')%>">
+         <span>*</span>
        </div>
+       <p class="agreement"><input type="checkbox" checked="true" class="agree-check" />I confirm this email address that I am using for registration is mine and accurate</p>
        <p class="agreement"><%=newChihuo.localize('profile_register_consent')%></p>
     </div>
     <div class="quit-setting" style="background: #fb6700;" id="register"><%=newChihuo.localize('profile_register_submit')%></div>
 </div>  
+<style type="text/css">
+  .login-wrap input {
+    height: 40px;
+  }
+</style>

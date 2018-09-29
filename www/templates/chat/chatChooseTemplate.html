@@ -10,14 +10,20 @@
 		    <img src="imgs/search-index.png" class="chat-search-icon">
 			<i></i>
 			<div style="margin:0 30px;">
-				<input type="text" name="" value="" placeholder="Enter email address to find">
+				<form id="chatChooseForm">
+					 <input type="text" name="" value="" class="invite-input" placeholder="Enter partial user or display name">
+				</form>
 			</div>		
 		</div>
 	</div>
+	<div class="search-chihuo-list">
+		
+	</div>
 	<div class="chat-people-list">
+	<%if(data && data.length){%>
 	<%_.each(data,function(d,i){%>
 		<div class="rest-comment-head clearfix">
-			<a href="javascript:;" class="go-message" id="<%=d.friend_cust_id%>" name=<%=d.friend_cust_name%> src=<%=(d.cust_url || '')%>>
+			<a href="javascript:;" class="go-message" id="<%=d.friend_cust_id%>" name=<%=d.friend_cust_name%> src=<%=(d.friend_cust_url || '')%>>
 				<img src="<%if(d.friend_cust_url){%><%=d.friend_cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
 					<div class="comment-right-info">
 						<h3 style="background:none;"><%=d.friend_cust_name%></h3>
@@ -26,5 +32,8 @@
 			</a>
 		</div>
 	<%})%>	
+	<%}else{%>
+	<div class="whoops"></div>
+	<%}%>    
 	</div>      
 </div>

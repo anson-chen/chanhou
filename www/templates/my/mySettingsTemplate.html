@@ -1,6 +1,6 @@
 <div class="rest-bg" style="padding-bottom:70px;">
     <nav class="common-title">
-        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <a href="#myIndex" class="common-return"></a>
         <h3><%=newChihuo.localize('profile_settings_header')%></h3>
     </nav>
     <div class="wrap-border clearfix" style="margin:20px 12px; padding:15px;">   
@@ -18,25 +18,21 @@
         <div class="setting-li clearfix">
          <a href="#langSetting">
             <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_language')%></span>
-            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
-            </a>
-        </div>  
-        <div class="setting-li clearfix">
-         <a href="javascript:;">
-            <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_rewards')%></span>
-            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
-            </a>
-        </div> 
-        <div class="setting-li clearfix">
-         <a href="#messageRemind">
-            <span class="set-floor-title" style="color:#333;width:11em;"><%=newChihuo.localize('profile_settings_notifications')%></span>
             <p class="set-floor-select" style="margin-right:0;">
-            <%if(notification == 1){%><%=newChihuo.localize('profile_settings_notifications_switchon')%>
-                <%}else{%><%=newChihuo.localize('profile_settings_notifications_switchoff')%><%}%>
+               <%if(language == 1){%>English
+                <%}else if(language == 2){%>
+                简体中文
+                <%}else if(language == 3){%>
+                繁体中文
+                 <%}else if(language == 4){%>
+                Francais
+                <%}else{%>
+                Espanol
+                <%}%>
             </p>
             </a>
-        </div> 
-        <div class="setting-li clearfix">
+        </div>  
+        <div class="setting-li clearfix" style="display:none;">
          <a href="#userGuide">
             <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_help')%></span>
             <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
@@ -53,30 +49,18 @@
             <span class="set-floor-title" style="color:#333; width: 10em;"><%=newChihuo.localize('profile_settings_security_policy')%></span>
             <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
             </a>
-        </div>
-         <div class="setting-li clearfix">
-          <a href="#appUpdate">
-            <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_software_update')%></span>
-            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
-            </a>
-        </div>   
-         <div class="setting-li clearfix" style="border:none;">
-          <a href="#aboutUs">
-            <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_about')%></span>
-            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
-            </a>
-        </div>           
+        </div>  
     </div>
-    <div class="quit-setting" id='logout'><%=newChihuo.localize('profile_settings_logout')%></div>
+    <div class="quit-setting <%if(!newChihuo.getLocalStorage('customer_id')){%>no-effect-quit<%}%>" id='logout'><%=newChihuo.localize('profile_settings_logout')%></div>
     <div class="rest-fix-bottom">
-    <ul class="clearfix">
+     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -85,13 +69,13 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind" class="cur">
-        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

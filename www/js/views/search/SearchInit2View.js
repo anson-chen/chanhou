@@ -28,7 +28,7 @@ define([
 
     showInfo: function(event){
       var value = $.trim($("#searchInit").val());
-          var index = $('#searchInit2Tab .cur').index();
+      var index = $('#searchInit2Tab .cur').index();
           if(value){
             var url = index == 0 ? 'getRestByName.json' : 'getRestMIByName.json';
             var option = index == 0 ? {
@@ -61,18 +61,22 @@ define([
                           }
                           for(var i=0; i<list.length; i++){
                             if(index == 0){
-                          
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              var result = list[i].total_rests_byname > 1 ? ' results' : ' result';
+
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+result+'results</span></a></li>';
                             }else{
+                              var result = list[i].total_restmi_byname > 1 ? ' results' : ' result';
                               
-                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'">'+list[i].rest_mi_name+'<span>'+list[i].total_restmi_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'/search">'+list[i].rest_mi_name+'<span>'+list[i].total_restmi_byname+result+'results</span></a></li>';
                             }
                             
                         }
                         $('.search-value-show').show().find('ul').html(html);
+                       
                      }else{
                         $('.search-value-show').show().find('ul').html('<li><p style="text-align:center;">no result</p></li>');
                      }
+                    
                                        
                    }
                   } 
@@ -177,6 +181,91 @@ define([
     },
 
     bindEvents: function(status){
+       $('.trend-search span').on('click',function(){
+          var index = $(this).parent().index('.trend-search');
+          var value = $(this).text();
+          if(value){
+            $("#searchInit").val(value);
+            var url = index == 0 ? 'addCustRestByName.json' : 'addCustRestMIByName.json';
+            var option = index == 0 ? {
+                     restname: value,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     st: 1 ,
+                     ct: 20
+                } : {
+                     restminame: value,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     st: 1 ,
+                     ct: 20
+                };
+                chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri(url),
+                  data: option,
+                  success: function(data){
+                     if(data.status == 0){
+                        var list = data.data;
+                        if(list.length){
+                          var html='';
+                          var last='';
+                          if(status == 'wish'){
+                            last='/wish';
+                          }
+                          for(var i=0; i<list.length; i++){
+                            if(index == 0){
+
+                              var result = list[i].total_rests_byname > 1 ? ' results' : ' result';
+                          
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'"><em>'+list[i].rest_name+'</em><span>'+list[i].total_rests_byname+result+'</span></a></li>';
+                            }else{
+
+                               var result = list[i].total_restmi_byname > 1 ? ' results' : ' result';
+                              
+                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'/search"><em>'+list[i].rest_mi_name+'</em><span>'+list[i].total_restmi_byname+result+'</span></a></li>';
+                            }
+                            
+                        }
+                        $('.search-value-show').show().find('ul').html(html);
+                         $('.search-value-show li a').on('click',function(){
+                        var option = index == 0 ? {
+                                 restname: $(this).find('em').html(),
+                                 lat: newChihuo.lat,
+                                 lng: newChihuo.lon,
+                                 locale: 'en',
+                                 st: 1 ,
+                                 ct: 20
+                            } : {
+                                 restminame: $(this).find('em').html(),
+                                 lat: newChihuo.lat,
+                                 lng: newChihuo.lon,
+                                 locale: 'en',
+                                 st: 1 ,
+                                 ct: 20
+                            };
+
+                              chihuo.wkAjax({
+                              type: 'POST',
+                              url: chihuo.getApiUri(url),
+                              data: option,
+                              success: function(data){
+                                    
+                              }
+                            });
+                        });
+                     }else{
+                        $('.search-value-show').show().find('ul').html('<li><p style="text-align:center;">no result</p></li>');
+                     }
+                   }
+                  } 
+            }); 
+
+            }
+
+       });  
        $("#searchInit").on('keyup',function(e){
           var value = $.trim($(this).val());
           var index = $('#searchInit2Tab .cur').index();
@@ -213,15 +302,45 @@ define([
                           }
                           for(var i=0; i<list.length; i++){
                             if(index == 0){
+
+                              var result = list[i].total_rests_byname > 1 ? ' results' : ' result';
                           
-                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'">'+list[i].rest_name+'<span>'+list[i].total_rests_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#restaurantList/'+encodeURIComponent(list[i].rest_name)+last+'"><em>'+list[i].rest_name+'</em><span>'+list[i].total_rests_byname+result+'</span></a></li>';
                             }else{
+
+                               var result = list[i].total_restmi_byname > 1 ? ' results' : ' result';
                               
-                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'">'+list[i].rest_mi_name+'<span>'+list[i].total_restmi_byname+'个结果</span></a></li>';
+                              html+='<li><a href="#dishHot2/'+encodeURIComponent(list[i].rest_mi_name)+'/search"><em>'+list[i].rest_mi_name+'</em><span>'+list[i].total_restmi_byname+result+'</span></a></li>';
                             }
                             
                         }
                         $('.search-value-show').show().find('ul').html(html);
+                         $('.search-value-show li a').on('click',function(){
+                        var option = index == 0 ? {
+                                 restname: $(this).find('em').html(),
+                                 lat: newChihuo.lat,
+                                 lng: newChihuo.lon,
+                                 locale: 'en',
+                                 st: 1 ,
+                                 ct: 20
+                            } : {
+                                 restminame: $(this).find('em').html(),
+                                 lat: newChihuo.lat,
+                                 lng: newChihuo.lon,
+                                 locale: 'en',
+                                 st: 1 ,
+                                 ct: 20
+                            };
+
+                              chihuo.wkAjax({
+                              type: 'POST',
+                              url: chihuo.getApiUri(url),
+                              data: option,
+                              success: function(data){
+                                    
+                              }
+                            });
+                        });
                      }else{
                         $('.search-value-show').show().find('ul').html('<li><p style="text-align:center;">no result</p></li>');
                      }

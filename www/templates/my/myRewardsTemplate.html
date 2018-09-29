@@ -1,0 +1,55 @@
+<div class="set-bg">
+<div class="food-bg">
+    <nav class="common-title">
+        <span class="rewards-top">learn</span>
+        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <h3>Rewards</h3>
+    </nav>
+    <div class="food-list-nav clearfix" id="searchSetTab">
+		<a href="javascript:;" class="cur" style="width:20%; margin:0 7%;">Earn</a>
+		<a href="javascript:;" style="width:20%; margin:0 6%; color:#ccc;">Redeem</a>
+        <a href="javascript:;" style="width:20%; margin:0 7%; color:#ccc;">History</a>
+	</div>
+</div>
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+          <%if(status.yesterdayScore){%><span style="float:right;">+<%=data[0].total_points%></span><%}%>Point balance
+      </h4>
+    </div>
+    <div class="panel-collapse collapse in">
+      <div class="panel-body">
+        <%if(data[0] && data[0].realized_score){%>
+        	<%_.each(JSON.parse(data[0].realized_score),function(d,i){%>
+        	  <%if(d.total_points){%><p class="rewards-para rewards-icon-<%=d.type%>"><span><%=d.total_points%></span><%=d.cnt%> <%if(d.type == 'follower'){%>friend<%}else{%><%=d.type%><%}%><%if(d.cnt>1 && d.type != 'likes'){%>s<%}%> <em>x</em> <%=d.unit_point%></p><%}%>
+        	<%})%>
+        	<p class="rewards-tips">* Points will take up to 2 business days to be posted to your account. </p>
+        <%}else{%>
+        	<div class="whoops" style="display:block;">
+        		<p>It looks like you don't have any data yet.</p><span>Let's change that. Start exploring dishes and place now and will save it here for later.</span><a href='#index'>Begin Exploring</a>
+        	</div>
+        <%}%>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" style="display:none;">
+    <div class="panel-heading">
+      <h4 class="panel-title">     
+        <%if(status.todayScore){%><span style="float:right;">+<%=status.todayScore%></span><%}%>Point balance of today
+      </h4>
+    </div>
+    <div class="panel-collapse collapse in">
+      <div class="panel-body">
+         <%if(data[0] && data[0].unrealized_score){%>
+        	<%_.each(JSON.parse(data[0].unrealized_score),function(d,i){%>
+        	  <p class="rewards-para rewards-icon-<%=d.type%>"><span><%=d.total_points%></span><%=d.cnt%> <%=d.type%><%if(d.cnt>1){%>s<%}%> <em>x</em> <%=d.unit_point%></p>
+        	<%})%>
+        <%}else{%>
+			<%=newChihuo.localize('no_results')%>
+        <%}%>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

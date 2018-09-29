@@ -27,18 +27,18 @@
             <div class="tab-swiper-wrap">
             <%_.each(d, function(d,i) {%>
 				<div class="wrap-border clearfix" style="color:#999;">
-					<div class="food-list-icon1">
+					    <div class="<%if(d.mi_myfollowing_flg == 'N'){%>food-list-icon2<%}else{%>food-list-icon1<%}%>">
 						</div>
 						<a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
-						<div class="food-img" style="width:70px;">
+						<div class="food-img">
 							<img src="imgs/map-img.jpg">
 						</div>
 						</a>
-						<div style="margin-left:80px; margin-right:50px;">
+						<div style="margin-left:100px; margin-right:50px;">
 						<h3 class="rest-name-title" style="margin-right:10px;"><%=d.rest_mi_name%></h3>
-						<div class="menu-set-wrap">
-						<p class="para-hidden"><%=d.rest_mi_desc%></br><span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.mi_unit_price%></span><span style="color:#0bbc13;"><%=d.mi_promo%></span><br><%=d.mi_cals%>  <%=d.mi_sodium%>
-						<br><%=d.mi_tot_likes_perc%> <%=newChihuo.localize('global_var_like')%>  10 Minutes ago <%=d.total_other_custs%> customers were also interested in it</p>
+						<div>
+						<p class="para-hidden"><%if(d.rest_mi_desc){%><%=d.rest_mi_desc%></br><%}%><span style="color:#ff8b4c; padding:0 10px 0 0;"><%=d.mi_unit_price%></span><%if(d.mi_promo){%><span style="color:#0bbc13;"><%=d.mi_promo%></span><%}%><br><%if(d.mi_cals){%><%=d.mi_cals%><%}%>  <%if(d.mi_sodium){%><%=d.mi_sodium%><%}%>
+						<br><%if(d.mi_tot_likes_perc){%><%=d.mi_tot_likes_perc%> <%=newChihuo.localize('global_var_like')%><%}%> <%if(d.total_other_custs){%> 10 Minutes ago <%=d.total_other_custs%> customers were also interested in it<%}%></p>
 						</div>
 					</div>
 				</div>

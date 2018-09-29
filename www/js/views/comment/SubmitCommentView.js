@@ -98,7 +98,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('评论成功',1000);
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_review'),1000);
                         setTimeout(function(){app_router.navigate('restaurant/'+restId+'/comment', {
                             trigger: true    
                           });

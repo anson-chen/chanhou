@@ -7,6 +7,7 @@
 <div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
 		<div class="wrap-border clearfix">
+           <%if(!initData.dishHot2Data.from){%>
            <a href="#food/<%=d.rest_id%>/<%=d.rest_mi_id%>">
             <div class="food-img">
                 <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
@@ -14,15 +15,35 @@
             <div style="margin-left:100px;">
                <h3 class="rest-name-title" style="margin-right:15px;"><%=d.rest_name%></h3>
                 <p class="rest-info-show" style="padding-top:5px;line-height:20px;"><%=d.cuisine_type%>
-                <%if(d.mi_unit_price){%><span style="color:#ff8b4c; padding-left:5px;"><%=d.mi_unit_price%></span><%}%><br><%if(d.cust_distance){%><%=d.cust_distance%>km<%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%></p>
+                <%if(d.mi_unit_price){%><span style="color:#ff8b4c; padding-left:5px;"><%=d.mi_unit_price%></span><%}%><br><%if(d.cust_distance){%><%=newChihuo.showDistanceInfo(d.cust_distance)%><%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%></p>
                 <div style="height:42px; overflow:hidden; padding:0 10px;"><%=d.rest_mi_desc%></div>
             </div>
             </a>
+            <%}else{%>
+                <a href="#restaurant/<%=d.rest_id%>">
+                <div class='clearfix'>
+                   <div class="food-img">
+                        <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
+                         <%if(d.ad_flag == 'y' || d.ad_flag == 'Y'){%><span class="ad-flag">Ad</span><%}%>
+                   </div>
+                   <div style="margin:0 5px 0 100px; position:relative;">
+                        <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%>
+                        <h3 class="rest-name-title" style="margin-right:60px;"><%=d.rest_name%></h3>
+                        <p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+                        <%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
+                        <%if(d.total_reviews_cnt){%><span class="reset-style reset-bg6" style="float:right;"><%=d.total_reviews_cnt%></span><%}%>
+                        <span style="color:#ff8b4c; padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><br><%=d.cuisine_type%></p>
+                        <p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(d.address){%><b class="address-set"><%=d.address%></b><%}%></p>
+                   </div>
+                </div>
+             <%if(d.last_review_details){%><b class="address-set" style="padding:0 10px;color:#333;"><%=d.last_review_details%></b><%}%>
+            </a>
+            <%}%>
         </div>
 	<%})%>	
 </div>
 <div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+        <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+        <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+        <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 </div>

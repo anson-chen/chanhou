@@ -7,12 +7,6 @@
 </div>	
 <div class="rest-list-wrap" style="padding-bottom:10px;">
 	<div class="wrap-border clearfix" style="padding:0 15px;">       
-           <div class="setting-li clearfix">
-                <a href="#myFans">
-                    <i class="footprint-icon fp-icon1"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_footprint_followers')%></span>
-                    <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
-                 </a>
-            </div>     
             <div class="setting-li clearfix">
              <a href="#myFocus">   
                 <i class="footprint-icon fp-icon2"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_footprint_followings')%></span>
@@ -64,8 +58,8 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -74,12 +68,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind" class="cur">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

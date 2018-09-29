@@ -64,9 +64,9 @@ input::-webkit-input-placeholder{
      top: 0;
      left: 0;
      width: 100%;
-     padding:15px;
+     padding:15px 10px;
      z-index: 100;
-     background: -webkit-linear-gradient(left, #fe812d 0, #ff9c59 100%);
+     background: -webkit-linear-gradient(top, #fe812d 0, #ff9c59 100%);
 }
 .top-search {
     float: right;
@@ -80,13 +80,14 @@ input::-webkit-input-placeholder{
 }
 .index-search {
     float: right;
-    width: 50%;
+    width: 45%;
     padding-left: 22px;
     border-radius: 4px;
     height: 30px;
     background: url(../imgs/search-index.png) no-repeat 4px center #fff;
     background-size: 14px;
     position: relative;
+    font-size: 12px;
 }
 .index-search input {
     background: none;
@@ -113,7 +114,6 @@ input::-webkit-input-placeholder{
 }
 .top-location {
     float: left;
-    margin-left: 15px;
     background: url(../imgs/detail-icon23.png) no-repeat right center;
     background-size: 15px;
     height: 30px;
@@ -124,7 +124,7 @@ input::-webkit-input-placeholder{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
-    width:75px;
+    width:120px;
 }
 
 .index-banner {
@@ -259,6 +259,18 @@ input::-webkit-input-placeholder{
     color: #fff;
     box-shadow: 0px 1px 5px 2px rgba(255,255,255,.5); 
 }
+.index-img-para2{
+    position: absolute;
+    bottom: 40px;
+    left: 5px;
+    background: #f94c4c;
+    padding: 0 10px;
+    border-radius: 10px;
+    height: 22px;
+    line-height: 20px;
+    color: #fff;
+    box-shadow: 0px 1px 5px 2px rgba(255,255,255,.5); 
+}
 .banner-img { 
     display: block;
     width: 100%;
@@ -268,7 +280,7 @@ input::-webkit-input-placeholder{
     padding: 5px 0 0 8px;
 }
 
-#index-city .index-dish-img {
+#index-city .index-dish-img, #index-college .index-dish-img {
     width: 90%;
     padding: 10px 5px 0;
 }
@@ -385,7 +397,7 @@ input::-webkit-input-placeholder{
     padding-left: 25px;
 }
 .index-title-bg5 {
-    background: url(../imgs/detail-icon1.png) 0 center no-repeat;
+    background: url(../imgs/detail-icon29.png) 0 center no-repeat;
     background-size: 20px;
     padding-left: 25px;
 }
@@ -482,7 +494,7 @@ input::-webkit-input-placeholder{
     z-index: 10;
 }
 .food-bg {
-    background: -webkit-linear-gradient(left, #fe812d 0, #ff9c59 100%);
+    background: -webkit-linear-gradient(top, #fe812d 0, #ff9c59 100%);
     background-size: 100% auto;
     box-shadow: 0 1px 20px 10px #ecd0bd;
     position: relative;
@@ -500,6 +512,7 @@ input::-webkit-input-placeholder{
     height: 25px;
     width: 25px;
     background-size: 100%;
+    display: none;
 
 }
 .common-title .delete-icon {
@@ -596,6 +609,10 @@ input::-webkit-input-placeholder{
     font-weight: normal;
     color: #fff;
     line-height: 40px;
+    overflow: hidden;
+    height: 40px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 16px;
 }
 .rest-wrap {
@@ -844,7 +861,7 @@ input::-webkit-input-placeholder{
 }
 
 #rest-photo .index-dish-img {
-    width: 40%;
+    width: 90px;
     padding: 10px 10px 10px 0;
 }
 
@@ -857,9 +874,11 @@ input::-webkit-input-placeholder{
 .index-dish-img .para-set {
     padding: 0;
     margin: 3px 0;
-    line-height: 20px;
-    height: 40px;
+    line-height: 24px;
+    height: 24px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 #rest-banner i,.fav-rest{
     position: absolute;
@@ -921,6 +940,7 @@ input::-webkit-input-placeholder{
     padding:5px 0 0;
     margin-top: 5px;
     position: relative;
+    height: 30px;
 }
 .rest-comment {
     position: relative;
@@ -1013,6 +1033,7 @@ input::-webkit-input-placeholder{
     background: url(../imgs/detail-icon19.png) no-repeat;
     background-size: 14px;
     padding-left: 20px;
+    display: none;
 }
 .wechat-icon {
     background: url(../imgs/detail-icon10.png) no-repeat;
@@ -1053,9 +1074,19 @@ input::-webkit-input-placeholder{
     text-indent: -9999px;
 
 }
+.rank-ul-fixed .rank-ul {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #ff9c59;
+    z-index: 100;
+}
 .rank-ul {
-    margin-top: 10px;
+    padding-top: 10px;
     padding-bottom: 10px;
+    width: 100%;
+    top:-50px;
+    transition: all 0.3s;
 }
 .rank-ul li {
     float: left;
@@ -1212,8 +1243,8 @@ input::-webkit-input-placeholder{
     height: 28px;
 }
 .rest-bottom-middle {
-    background: url(../imgs/buddies.jpg) #f0f0f0  center center no-repeat;
-    background-size: 70%;
+    background: url(../imgs/chat-bg.png) #f5f5f5  center center no-repeat;
+    background-size: 62%;
     width: 66px;
     height: 66px;
     border-radius: 50%;
@@ -1249,10 +1280,10 @@ input::-webkit-input-placeholder{
 }
 .map-rest-img {
     position: absolute;
-    top: -20px;
-    width: 100px;
-    height: 100px;
-    left: 15px;
+    top: -10px;
+    width: 90px;
+    height: 90px;
+    left: 8px;
 
 }
 .map-rest-img img {
@@ -1312,6 +1343,7 @@ input::-webkit-input-placeholder{
     width: 100%;
     height: 70px;
     background: #ecedf1;
+    z-index: 50;
 }
 .user-recall {
     position: static;
@@ -1321,13 +1353,14 @@ input::-webkit-input-placeholder{
 .user-recall .chat-input-wrap {
     padding-top: 15px;
 }
-.fix-comment-bottom .bottom-rihgt {
+.fix-comment-bottom .bottom-right {
     margin-right: 20px;
     float: right;
     margin-top: 24px;
 }
-.bottom-rihgt img {
+.bottom-right img {
      width: 30px;
+     display: none;
 }
 .fix-comment-bottom .bottom-left {
     float: left;
@@ -1336,6 +1369,7 @@ input::-webkit-input-placeholder{
 }
 .bottom-left img {
     width: 30px;
+    display: none;
 }
 .fix-comment-bottom .bottom-middle {
     text-align: center;
@@ -1431,7 +1465,7 @@ input::-webkit-input-placeholder{
     position: relative;
     
 }
-.comment-photo-show img{
+.comment-photo-show img,.photo-detail-show{
     height: 80px;
     width: 80px;
     border-radius: 5px;
@@ -1565,6 +1599,7 @@ input::-webkit-input-placeholder{
     float: left;
     width: 90px;
     margin-left: 10px;
+    position: relative;
 }
 .food-img img {
     width: 100%;
@@ -1831,7 +1866,7 @@ input::-webkit-input-placeholder{
     background-size: 50px;
 }
 .big-shake {
-    margin: 40px 0;
+    margin: 10px 0 40px;
     text-align: center;
 }
 .big-shake img {
@@ -1882,7 +1917,7 @@ input::-webkit-input-placeholder{
     border-bottom: 1px solid #e1e8ee;
     color: #a3a3af;
     padding-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 .search-hot {
     padding: 20px 0 0;
@@ -1984,6 +2019,9 @@ input::-webkit-input-placeholder{
     right:-7px;
     top: 7px;
 }
+.floor-point {
+    position: relative;
+}
 #searchSet-swiper .set-floor-title:after {
     height: 0;
     
@@ -2027,11 +2065,11 @@ input::-webkit-input-placeholder{
 .search-set-fix {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    right: 0;
+    width: 70%;
     height: 60px;
-    background: #7f7f7f;
-    z-index: 100;
+    z-index: 350;
+    display: none;
 }
 .search-set-fix button {
     float: left;
@@ -2060,7 +2098,7 @@ input::-webkit-input-placeholder{
     position: absolute;
     right: 0;
     bottom: 0px;
-    width: 30px;
+    width: 26px;
 }
 .hot-fav-icon {
     top: 20px;
@@ -2223,10 +2261,13 @@ input::-webkit-input-placeholder{
     text-align: center;
     color: #fff;
 }
+.no-effect-quit {
+    background: #ccc;
+}
 .setting-li {
     border-bottom: 1px solid #e1e8ee;
-    margin: 15px 0;
-    padding-bottom: 15px;
+    margin: 8px 0 0;
+    padding-bottom: 8px;
 }
 .fans-info {
     padding-top: 0;
@@ -2251,10 +2292,13 @@ input::-webkit-input-placeholder{
     float: left;
     width: 50%; 
     margin-bottom: 12px;
+    height:220px;
+    overflow: hidden;
+    text-align: center;
 }
 .my-photos li img {
-    width: 100%;
-    height: 220px;
+    max-width: 100%;
+    max-height: 100%;
     background: #dfdfdf;
 }
 .my-photo-mask {
@@ -2267,6 +2311,7 @@ input::-webkit-input-placeholder{
     padding: 0 5px;
     background: rgba(0,0,0,.3);
     color: #fff;
+    text-align: left;
 }
 .my-photo-mask span {
     float: right;
@@ -2281,8 +2326,13 @@ input::-webkit-input-placeholder{
     margin-left: 15px;
 }
 .vip-level {
-    padding: 15px 0 15px 15px;
+    padding: 0 0 0 10px;
     position: relative;
+    width: 90%;
+}
+.vip-level-points {
+    color: #ff8b4c;
+    font-weight: normal;
 }
 .vip-level img {
     position: absolute;
@@ -2292,7 +2342,7 @@ input::-webkit-input-placeholder{
 }
 .vip-level p {
     height: 10px;
-    width: 75%;
+    width: 100%;
     border-radius: 5px;
     background: #f2f6f9;
 }
@@ -2301,10 +2351,14 @@ input::-webkit-input-placeholder{
     height: 10px;
     border-radius: 5px;
     display: block;
-
+    width: 60%;
+}
+.vip-level-score {
+    font-weight: normal;
+    float: right;
 }
 .my-index {
-    padding: 15px 0;
+    padding: 0;
 
 }
 .my-index li {
@@ -2312,8 +2366,8 @@ input::-webkit-input-placeholder{
     width: 25%;
     text-align: center;
     border-left: 1px solid #e7eef3;
-    padding: 10px 0;
-    font-size: 16px;
+    padding: 0;
+    font-size: 13px;
     color: #444;
 }
 .my-index li span {
@@ -2322,18 +2376,17 @@ input::-webkit-input-placeholder{
 
 .my-index li img {
     width: 60%;
-    margin-bottom: 5px;
 }
 .invite-img {
     padding-left: 100px;
     background: url(../imgs/invite_bg.png) no-repeat 10px center;
-    background-size: 80px ;
-    height: 60px;
+    background-size: 60px ;
+    height: 40px;
 }
 .invite-img p {
     color: #fc9667;
     font-size: 16px;
-    line-height: 60px;
+    line-height: 40px;
 }
 .my-index-icon {
     float: left;
@@ -2403,7 +2456,8 @@ input::-webkit-input-placeholder{
     
 }
 .login-wrap {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
+    position: relative;
 }
 .login-wrap input {
     width: 100%;
@@ -2415,16 +2469,30 @@ input::-webkit-input-placeholder{
     font-size: 16px;
     color: #666;
 }
+.login-wrap span {
+    position: absolute;
+    right: -10px;
+    font-size: 18px;
+    top: 10px;
+    color: red;
+}
 .agreement {
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     color: #666;
+}
+.agreement input {
+    vertical-align: text-bottom;
+    margin-right: 5px;
 }
 .login-bg {
      background:  -webkit-linear-gradient(#ff9954 0, #fe812d 100%);
      padding-bottom: 30px;
+     position: absolute;
+     min-height: 100%;
+     width: 100%;
 }
 .other-side {
-    margin: 50px 12px;
+    margin: 30px 12px;
     position: relative;
     border-top: 1px solid #edc0a3;
 }
@@ -2439,15 +2507,22 @@ input::-webkit-input-placeholder{
 }
 .other-img {
     text-align: center;
+    border:1px solid #999;
+    border-radius: 10px;
+    padding: 10px 0 14px;
+    width: 240px;
+    margin:0 auto;
+    background:#8cc7f9;
+    box-shadow: inset 0 -4px 0 #60a6e2;
 }
 .other-img img {
-    margin: 0 15px;
-    width: 40px;
+    margin: 0 8px;
+    width: 30px;
 }
 .go-register {
     text-align: center;
     font-size: 16px;
-    padding: 40px 0 20px;
+    padding: 20px 0;
     color: #fff;
 
 }
@@ -2584,17 +2659,30 @@ input::-webkit-input-placeholder{
 .chat-add-button {
     background: #fe8636;
     height: 34px;
-    padding: 0 20px;
+    padding: 0 4px;
     border-radius: 4px;
     border: none;
     outline: none;
     color: #fff;
     float: right;
 }
+.add-this-friend {
+    background: #fe8636;
+    padding: 2px 5px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    color: #fff;
+    margin: 10px auto 0;
+    display: inline-block;
+    box-shadow: 0px 0px 1px 1px #ecd0bd inset;
+}
 .chat-add-word {
     float: right;
     color: #999;
     padding: 10px 15px;
+    background: #eee;
+    border-radius: 8px;
 }
 .chat-time {
     float: right;
@@ -2864,6 +2952,9 @@ input::-webkit-input-placeholder{
     float: right;
     color: #999;
 }
+.search-value-show ul li em {
+   font-style: normal;
+}
 .value-close {
     text-align: center;
     padding: 15px;
@@ -2917,7 +3008,7 @@ input::-webkit-input-placeholder{
     vertical-align: middle;
     width: 40px;
     height: 40px;
-    background: #f2f6f9;
+    background: #d1dce5;
     border-radius: 50%;
     margin: 10px auto 0;
 }
@@ -2942,7 +3033,7 @@ input::-webkit-input-placeholder{
     vertical-align: middle;
     width: 50px;
     height: 50px;
-    background: #f2f6f9;
+    background: #d1dce5;
     border-radius: 50%;
     margin: 0 auto;
 }
@@ -2998,7 +3089,7 @@ input::-webkit-input-placeholder{
 .add-query-rest {
     position: absolute;
     top: 46px;
-    left: 15px;
+    left: 8px;
     background: rgba(255,255,255,.6);
     color: #333;
     height: 34px;
@@ -3067,7 +3158,7 @@ input::-webkit-input-placeholder{
     width: 60%;
     -webkit-transform: translate(-50%,0);
     transform: translate(-50%,0);
-    background: -webkit-linear-gradient(left, #fe812d 0, #ff9c59 100%);
+    background: -webkit-linear-gradient(bottom,#fe812d 0,#ff9c59 100%);
     padding: 0 0 4px;
     z-index: 90;
     color: #fff;
@@ -3117,7 +3208,6 @@ input::-webkit-input-placeholder{
     color: #ff7416;  
 }
 .search-name-show {
-    width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -3189,6 +3279,7 @@ input::-webkit-input-placeholder{
     box-shadow: 0 1px 10px #ddd;
     width: 100%;
     transition: all .3s;
+    z-index: 100;
 }
 .show-photo-select {
     bottom: 0;
@@ -3209,11 +3300,10 @@ input::-webkit-input-placeholder{
 .enter-rest {
     background: url(../imgs/bottom-red1.png) no-repeat 3px center;
     background-size: 18px auto; 
-    padding-left: 28px;
+    padding: 0 5px 0 28px;
     line-height: 30px;
-    display: block;
+    display: inline-block;
     border:1px solid #ccc;
-    width: 100px;
     box-shadow: 1px 1px 6px 2px rgba(0,0,0,.2);
 }
 .food-btn-more {
@@ -3251,12 +3341,11 @@ input::-webkit-input-placeholder{
 }
 .menu-toggle-show .para-hidden {
     height: auto;
-
 }
 .para-hidden {
     line-height: 20px;
-    height: 40px;
-    overflow: hidden;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 .no-info-para {
     text-align: center;
@@ -3300,7 +3389,7 @@ input::-webkit-input-placeholder{
     border-radius: 50%;
     background:url(../imgs/reload.png) no-repeat center center #ff9954;
     background-size: 50%;
-    position: absolute;
+    position: fixed;
     top: -100px;
     left: 50%;
     margin-left: -22px;
@@ -3401,7 +3490,7 @@ input::-webkit-input-placeholder{
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10000;
+    z-index: 2000;
     background: rgba(255,255,255,.95);
     display: none;
 }
@@ -3429,13 +3518,263 @@ input::-webkit-input-placeholder{
     background: rgba(255,255,255,.5);
 }
 .new-set-bg .common-title h3 {
-    color: #ff8b4c;
+    color: #000;
 }
 .new-set-bg .rank-ul p {
-    color: #ff8b4c;
+    color: #333;
 }
 .new-set-bg .rank-ul li.cur p {
-    color: #f94c4c;
+    color: #000;
+}
+.reload-top-icon {
+   background:url(../imgs/reload.png) no-repeat center center;
+   width: 30px;
+   height: 30px;
+   background-size: 20px;
+   float: right;
+}
+.like-shake-icon {
+    margin-left: 10px;
+    padding-left: 25px;
+    background: url(../imgs/detail-icon9.png) no-repeat left center;
+    background-size: 18px;
+}
+.get-direction {
+    background: url(../imgs/direction.png) no-repeat left center;
+    background-size: 14px;
+    padding-left: 20px;
+}
+.ad-flag {
+    position: absolute;
+    background: #ff8b4c;
+    padding: 2px 10px;
+    font-size: 14px;
+    color: #fff;
+    top: 0;
+    left: 0;
+    border-radius: 10px 0 10px 0;
+}
+.set-place {
+    float: right;
+    max-width: 90px;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#appLaunch {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    z-index: 10000;
+    background:rgb(242, 247, 251);
+}
+#app-launch img {
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+#app-launch .launch-logo {
+    width: 60%;
+    height: auto;
+    display: inline-block;
+}
+#app-launch .swiper-slide {
+    position: relative;
+}
+.launch-pagination .swiper-pagination-bullet-active{
+    background:rgba(241,115,30,.8);
+}
+.lanuch-para {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.lanuch-para p {
+    text-align: center;
+    width: 100%;
+}
+.lanuch-para .app-name {
+    padding: 70px 20px 0;
+    position: absolute;
+    top: 100px;
+    background: url(../imgs/logo.png) no-repeat center top;
+    background-size: auto 50px;
+}
+.lanuch-para .para1 {
+    color: #fff;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 40px;
+    font-size: 16px;
+}
+.lanuch-para .para2 {
+    color: #fe8636;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 90px;
+    
+}
+.lanuch-para .para3 {
+    color: #fe8636;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 90px;
+    
+}
+.lanuch-para .para4 {
+    color: #fe8636;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 90px;
+}
+.lanuch-para button {
+    background: #fe8636;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    color: #fff;
+    margin: 10px auto 0;
+    display: inline-block;
+    box-shadow: 0px 0px 1px 1px #ecd0bd inset;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    margin-left: -56px;
+}
+
+.foody-monkey {
+    background: url(../imgs/banner-word.png) no-repeat;
+    background-size:  auto 18px; 
+    display: inline-block;
+    height: 18px;
+    width: 200px;
+}
+.write-name {
+    background: url(../imgs/down-arrow.png) no-repeat right center;
+    background-size: 12px;
+    padding-right: 15px;
+}
+.set-profile-img {
+    background: url(../imgs/logo.png) no-repeat center center #eee;
+    background-size: 50px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.set-profile-img p {
+    text-align: center;
+    padding-top: 65px;
+    color: #ffc49d;
+}
+.friend-request-title {
+    background: url(../imgs/detail-icon16.png) no-repeat 95% center #fff; 
+    padding: 10px 15px;
+    background-size: auto 16px;
+    margin: 10px 12px;
+}
+.request-point {
+    position: relative;
+}
+.request-point:after {
+    position: absolute;
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: red;
+    left: 50%;
+    top: 12px;
+}
+.index-no-info {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+}
+.my-rewards {
+    color: #fff;
+    float: right;
+    padding-right: 10px;
+}
+.rewards-top {
+    color: #ccc;
+    padding-right: 15px;
+    font-size: 16px;
+    float: right;
+}
+.rewards-para {
+    line-height: 30px;
+    background: url(../imgs/footprint-icon.png) no-repeat;
+    height: 30px;
+    margin-left: 5px;
+    background-size: 20px;
+    padding-left: 30px;
+    color: #858585;
+    font-size: 13px;
+}
+.rewards-tips {
+    color: #858585;
+    font-size: 13px;
+    line-height: 24px;
+}
+.rewards-para em {
+    font-style: normal;
+    padding: 0 10px;
+}
+.rewards-para span {
+    float: right;
+    padding-right: 10px;
+}
+.email-invite {
+   font-size: 14px;
+   border-bottom: 1px dashed #858585;
+   padding: 8px 0;
+}
+.email-invite p {
+   height: 42px;
+   color: #858585;
+}
+.email-invite span {
+   color: #333;
+}
+.email-invite a {
+    float: right;
+    height: 30px;
+    margin-top: 6px;
+    line-height: 30px;
+    background: #fe8636;
+    border-radius: 4px;
+    padding: 0 10px;
+    color: #fff;
+}
+
+.rewards-icon-follower {
+    background-position: 0 5px;
+}
+.rewards-icon-following {
+     background-position: 0 -45px;
+}
+.rewards-icon-review {
+     background-position: 0 -98px;
+}
+.rewards-icon-photo {
+     background-position: 0 -150px;
+}
+.rewards-icon-wishlist {
+     background-position: 0 -255px;
+}
+.rewards-icon-beenhere {
+    background-position: 0 -305px;
+}
+.rewards-icon-likes {
+    background-position: 0 -200px;
 }
 
 

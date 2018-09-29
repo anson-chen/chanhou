@@ -22,6 +22,7 @@ define([
       newChihuo.setPage('chatRequest');
       newChihuo.windowInit();
       this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
+      newChihuo.requestList = {};//清空好友请求消息列表
       this.initData(0);
     },
 
@@ -39,13 +40,30 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                      initData.chatRequestData.data = data.data;
+                      initData.chatRequestData.toData = data.data;                      
                       // alert(JSON.stringify(initData.chatRequestData.data));
                       newChihuo.getPage('chatRequest') && _this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
                   }
-                  if(data.status == 0 && data.data.length ==0){
-                     newChihuo.showPopInfo('暂无馋猴好友请求');
+                }
+              });  
+
+      
+      chihuo.wkAjax({
+                  type: 'GET',
+                  url: chihuo.getApiUri('getAllFriendReq.json'),
+                  data: {
+                     st: num*_this.status.ct+1,
+                     ct: _this.status.ct,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en'
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                      initData.chatRequestData.fromData = data.data;                      
+                      newChihuo.getPage('chatRequest') && _this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
                   }
+                  
                 }
               });  
     },
@@ -65,7 +83,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('操作成功');
+                        newChihuo.showPopInfo(newChihuo.localize('success'));
                      }
                 }
               });  

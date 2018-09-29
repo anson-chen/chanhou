@@ -16,7 +16,8 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 20
+      ct: 20,
+      tips: null
     },
 
     search: {
@@ -33,6 +34,7 @@ define([
     render: function(){
       newChihuo.setPage('restaurantNear');
       newChihuo.windowInit();
+      !this.status.tips && newChihuo.showReloadInfo(this.status,'restaurantNear');
       if(initData.restaurantNearData.lat != newChihuo.lat || initData.restaurantNearData.lon != newChihuo.lon){
          initData.restaurantNearData.data = [];
       }
@@ -101,11 +103,14 @@ define([
       this.search.price = $('#price').find('.cur').index()>=0 ? $('#price').find('.cur').index() : 0;
       this.search.cuisine = $('#cuisine').text();
       this.search.openhours = $('.time-demo2').val();
-      console.log(_this.search);
+      // console.log(_this.search);
       var filters = 'addr:'+ addr +',distance:'+ distance +',resttype:'+ resttype +',price:'+ price +',cuisine:'+ cuisine +',openhours:'+ openhours +',features:'+features;
       if(chihuo.setSearch){
         filters = chihuo.setSearch;
         chihuo.setSearch = null;
+      }
+      if(distance == 'all' && resttype == 'all' && price == 'all' && cuisine == 'all' && openhours == 'all' && features == 'All'){
+          filters = '';
       }
               chihuo.wkAjax({
                   type: 'GET',
@@ -129,21 +134,31 @@ define([
                         initData.restaurantNearData.data =[...initData.restaurantNearData.data,...data.data] ;
                         if(newChihuo.getPage('restaurantNear')){                 
                           _this.$el.html(_.template(restaurantNearTemplate,initData.restaurantNearData));
-                          _this.status.loading = false;
                           initData.restaurantNearData.lat = newChihuo.lat;
                           initData.restaurantNearData.lon = newChihuo.lon;  
-                          $('.loading-step1').show();
-                          $('.loading-step2,.loading-step3').hide();
+                           if(data.data.length == 0){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
+                           }
+                        _this.status.loading =false;
                           _this.bindEvents();
                           _this.statusSave();
                         }
                      }
+                  },
+                  error: function(){
+                     _this.status.isEnd = true;
+                    $('.loading-step3').show();
+                    $('.loading-step1,.loading-step2').hide();
+                     _this.status.loading =false;
+
                   } 
               });  
     },
 
     statusSave: function(){
-      this.search.showPop ? $('.map-mask').show() : $('.map-mask').hide();
+      this.search.showPop ? $('.map-mask,.search-set-fix').show() : $('.map-mask,.search-set-fix').hide();
       $('.address-filter').val(this.search.addr=='null' ? '' : this.search.addr);
       $('#distance').children().removeClass('cur').eq(this.search.distance).addClass('cur');
       $('#resttype').children().removeClass('cur').eq(this.search.resttype).addClass('cur');
@@ -177,19 +192,7 @@ define([
 
     bindEvents: function(){
       var _this = this;
-      $('.radius-like').each(function(){
-        var num = $(this).find('span').text();
-        var radialObj = radialIndicator(this, {
-              barColor: '#fb560a',
-              barWidth: 10,
-              radius: 30,
-              initValue: num,
-              displayNumber: false,
-              roundCorner : true
-        }); 
-        // radialObj.animate(num); 
-      });
-
+     
       var pullRefresh = $('.container-down').pPullRefresh({
         $el: $('.container-down'),
         $loadingEl: null,
@@ -197,8 +200,7 @@ define([
         url: chihuo.getApiUri('findNearbyRestsWithRange2.json'),
         callbacks: {
           pullStart: function(){
-            $('#reload').addClass('show-reload');
-            _this.initData(0);
+            $('#reload').addClass('show-reload');           
             setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
             
           },
@@ -216,7 +218,7 @@ define([
           }
         },
         func: function(){
-          
+           _this.initData(0);
         }
       });
 
@@ -226,11 +228,27 @@ define([
         chihuo.beginSort(index,this,initData.restaurantNearData.data,'total_likes_perc','rest_avg_pricelevel_per_person','cust_distance');
         chihuo.sortAll(index,$(this).hasClass('toggle'),restaurantNearTemplate,initData.restaurantNearData,_this);
       });
+
+      $('.reload-top-icon').on('click',function(){
+         $('#reload').addClass('show-reload');          
+          setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
+          _this.initData(0);
+      });
       
       
       $(".right-set-info span").on('click',function(){
         if($(this).parent().hasClass('set-feature')){
-         $(this).toggleClass('cur');
+          var index = $(this).index();
+          if(index == 0){
+            $(this).addClass('cur').siblings().removeClass('cur');;
+          }else{
+             $(this).toggleClass('cur');
+             $(this).parent().children().eq(0).removeClass('cur');
+            if($(this).parent().find('.cur').length == 0){
+             $(this).addClass('cur');
+            }
+          }
+
           _this.status.st = 0;
           _this.initData(0);
          return;
@@ -251,12 +269,12 @@ define([
       });
 
       $(".rest-fix-right").on('click',function(){
-         $(".map-mask").show();
+         $(".map-mask,.search-set-fix").show();
          _this.search.showPop = true;
       });
 
       $(".close-map-mask").on('click',function(){
-         $(".map-mask").hide();
+         $(".map-mask,.search-set-fix").hide();
          _this.search.showPop = false;
       });
 
@@ -275,12 +293,15 @@ define([
 
        $(".select-dish-mask").on('click',function(){
          $(".dish-mask-list,.search-mask").show();
+         $(".search-set-fix").hide();
       });
 
        $(".dish-mask-list p").on('click',function(){
           $(this).addClass('cur').siblings().removeClass('cur');
           $(".search-mask,.dish-mask-list").hide();
           $('.select-dish-mask').eq(0).find(".set-floor-select").text($(this).text());
+          _this.status.st = 0;
+         _this.initData(0);
       });
 
 

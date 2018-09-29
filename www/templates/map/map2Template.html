@@ -1,6 +1,6 @@
 <div class="map-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="head-search-icon">阿拉伯特色</a>
+		<a href="javascript:;" class="head-search-icon" style="background:none; padding:0;"><%=newChihuo.city%></a>
 		<div class="search-common" style="margin-right:80px;">
 		    <i></i>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -11,12 +11,9 @@
 	</nav>
 </div>
 <div class="map-wrap">
-	<div id="googleMap2" style="height:100%;">
-		<img src="imgs/map-init.jpg">
-	</div>
-</div>
-<div class='hover-map'>
-	<img src="imgs/fix-button.png">
+  <div id="leafletMap" style="height:100%;">
+    
+  </div>
 </div>
 <div class="map-fix-rest">
 <div class="swiper-container" id="map2-swiper">
@@ -26,20 +23,18 @@
 	    	<div class="tab-swiper-wrap" style="padding-top:10px;">
 	    	<a href="#restaurant/<%=d.rest_id%>">
 				<div class="wrap-border clearfix" style="position:relative; padding-bottom:0;">
-				    <div class="rest-fav-this2"></div>
-					<div class="radius-like" style="margin-right:0;">
-						<div class="radius-num-show">
-							<span><%=d.total_likes_perc%></span>%<br><%=newChihuo.localize('global_var_like')%>
-						</div>	
-					</div>
+				  <div class="rest-fav-this2"></div>
 					<div class="map-rest-img">
-						<img src="imgs/map-img.jpg">
+						<img src="<%=d.rest_profile_photo_url%>">
 						<i></i>
 					</div>
-					<div style="margin-left:110px;">
-					<h3 class="rest-name-title"><%=d.rest_name%></h3>
-					<p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br><%=d.cust_distance%> <%=newChihuo.localize('global_var_km')%></p>
-					</div>
+           <div style="margin:0 5px 0 100px; position:relative;">
+              <h3 class="rest-name-title" style="margin-right:10px;"><%=d.rest_name%></h3>
+              <p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+              <%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
+              <span style="color:#ff8b4c; padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><br><%=d.cuisine_type%> <%=newChihuo.showDistanceInfo(d.cust_distance)%></p>
+              <p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(d.address){%><b class="address-set"><%=d.address%></b><%}%></p>
+           </div>
 				</div>
 			</a>
 			</div>
@@ -48,15 +43,15 @@
 	</div>
 </div>	
 </div>	
-    <div class="rest-fix-bottom">
+   <div class="rest-fix-bottom">
     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -65,13 +60,13 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="message-remind">
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
-        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>
@@ -79,48 +74,20 @@
   </div>
 	<%if(data.length > 0){%>	
 <script type="text/javascript">
-function setMapMarker(data,index){
-   if (GBrowserIsCompatible()) {
-        newChihuo.map = new GMap2(document.getElementById("googleMap2"));
-        newChihuo.map.setCenter(new GLatLng(data[index].address_latitude,data[index].address_longitude), 16);
-              function createMarker(point,query) {
-              	if(query == index){
-					var myIcon = new GIcon(G_DEFAULT_ICON,"imgs/marker2.png");
-					 myIcon.iconSize = new GSize(30, 30);  	
-                	 myIcon.iconAnchor = new GPoint(15,7);  
-                    var marker= new GMarker(point,{icon:myIcon});
-              	}else{
-              		var myIcon = new GIcon(G_DEFAULT_ICON,"imgs/marker.png");
-              		myIcon.iconSize = new GSize(12,20);
-                	var marker= new GMarker(point,{icon:myIcon});
-
-              	}
-                
-                return marker;
-              }
-
-              for (var i= 0; i< data.length; i++) {
-                var point= new GLatLng(data[i].address_latitude,data[i].address_longitude);
-                    newChihuo.map.addOverlay(createMarker(point, i));
-                    if(i == index){
-                      newChihuo.map.openInfoWindowHtml(point, data[index].rest_name);
-                    }
-              }  
-            
-    }
-}
 	var swiperMap =  new Swiper('#map2-swiper', {
         slidesPerView: 'auto',
         onInit: function(swiper){
-           setMapMarker(initData.restaurantListData.data,swiper.activeIndex);
-
+           chihuo.initMapOption(initData.restaurantListData.data);
+           newChihuo.map && chihuo.initMapShow(initData.restaurantListData.data,swiper.activeIndex);
+           
         },
-        onSlideChangeEnd: function(swiper){
-        	newChihuo.map.clearOverlays(); 
-        	newChihuo.map.closeInfoWindow();
-        	setMapMarker(initData.restaurantListData.data,swiper.activeIndex);
 
-        }
+        onSlideChangeStart: function(swiper){
+           newChihuo.map && newChihuo.map.panTo({lat:initData.restaurantListData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantListData.data[swiper.activeIndex].address_longitude});
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex-1 > 0 ? swiper.activeIndex-1 : 0].setIcon(newChihuo.myIcon2);
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex+1 < newChihuo.markerWrap.length ? swiper.activeIndex+1 : swiper.activeIndex].setIcon(newChihuo.myIcon2);
+           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex].setIcon(newChihuo.myIcon1).openPopup();               
+        },
 
     });
 

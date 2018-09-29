@@ -1,6 +1,7 @@
 var newChihuo = {
-    address: 0 ? "http://staging.wookongcorp.com:9099" : "http://staging.wookongcorp.com",
+    address: "http://app.foodymonkey.com",//"http://staging.wookongcorp.com:9099"
     appname: "wkfdmk",
+    geosrvUrl: "http://geosrv.foodymonkey.com/geosrv",
     textShowLength: 80,
     showMorePara: function(str, kind){
        if(str && str.length && str.length > this.textShowLength ){
@@ -38,7 +39,6 @@ var newChihuo = {
       var distance = distance || 0;
       window && window.scrollTo(0,distance);
       window && $(window).off('scroll');
-
     },
     returnToTop: function(){
       $('.return-top-icon').off('click').on('click',function(){
@@ -54,13 +54,16 @@ var newChihuo = {
     welcome: function(customer){
       var hour = new Date().getHours();
       var tips = '';
-      var customer = customer || 'friend';
+      if(customer){
+        newChihuo.setLocalStorage('welcomeName',customer);
+      }
+      var customer = customer || newChihuo.getLocalStorage('welcomeName') || 'friend';
       if(hour >=6 && hour <=11){
-        tips = 'Good morning,'+ customer;
+        tips = 'Good morning, '+customer+'.';
       }else if( hour >11 && hour < 18){
-        tips = 'Good afternoon,'+ customer;
+        tips = 'Good afternoon, '+customer+'.';
       }else{
-        tips = 'Good evening,'+ customer;
+        tips = 'Good evening, '+customer+'.';
       }
       return tips;
     },
@@ -74,14 +77,18 @@ var newChihuo = {
     },
     showDistanceInfo: function(data){
       var dis = this.locale == 'en-CA' ? ' km' : ' 公里';
+      var data = parseFloat(data);
       if(data == 0){
          return '';
-
       }else if(data<1){
-         return data*1000 + 'm';
+         return data*1000 + ' m';
 
-      }else if(data>=1){
-          return data + dis;
+      }else if(data>=1 && data<10){
+          return data.toFixed(1) + dis;
+
+      }else if(data>=10){
+          return data.toFixed(0) + dis;
+
       }else{
          return undefined;
       }
@@ -127,15 +134,19 @@ var newChihuo = {
     },
     tpLogin: function(uid){
       if(uid && uid.sub){
-        var utp = uid.sub.indexOf('facebook') >= 0 ? 1 : 0;
-            utp = uid.sub.indexOf('linkedin') >= 0 ? 2 : 0;
+        if(uid.sub.indexOf('facebook') >= 0){
+          var utp = 1;
+        }
+        if(uid.sub.indexOf('linkedin') >= 0){
+          var utp = 2;
+        }
       }
        uid && uid.sub && chihuo.wkAjax({
           type: 'POST',
           url: chihuo.getApiUri('tpLogin.json'),
           data:{
             uid: uid.sub,
-            utp: utp ,// 1 :fb,2：linkin
+            utp: utp || 0 ,// 1 :fb,2：linkin
             lat: newChihuo.lat,
             lng: newChihuo.lon,
             locale: 'en'
@@ -143,11 +154,42 @@ var newChihuo = {
           success: function (data) {
             if (data.status == 0) {
               if(data.data[0].status_code == 0){
-                newChihuo.showPopInfo("第三方登录成功",1200);
+                newChihuo.showPopInfo(newChihuo.localize('login_success'),1200);
                 newChihuo.customerId = data.data[0].customer_id;
                 newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
+                newChihuo.setLocalStorage('loginType','3rd');
+                newChihuo.setProfile(uid);
               }else{
-               newChihuo.showPopInfo("第三方登录失败",1200);
+               newChihuo.showPopInfo(newChihuo.localize('login_fail'),1200);
+              }
+            }
+          },
+          error: function () {
+
+          }
+        });  
+    },
+
+    setProfile: function(uid){
+      chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri('updateProfile.json'),
+          data:{
+            name: uid.nickname || uid.name,
+            purl: uid.picture,
+            lat: newChihuo.lat,
+            lng: newChihuo.lon,
+            locale: 'en'
+          },
+          success: function (data) {
+            if (data.status == 0) {
+              if(data.data[0].status_code == 0){
+                initData.myIndexData.data.profile_photo_url = uid.picture;
+                initData.myIndexData.data.display_name = uid.nickname || uid.name;
+                newChihuo.customer = data.data[0].display_name || uid.nickname || uid.name;
+                app_router.navigate('myIndex',{
+                  trigger: true
+                });
               }
             }
           },
@@ -155,6 +197,36 @@ var newChihuo = {
 
           }
         });
+    },
+
+    showReloadInfo: function(obj,page,time){
+      clearTimeout(this.reloadInfo);
+      this.reloadInfo = setTimeout(function(){
+          newChihuo.getPage(page) && newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh'),3000,function(){
+               obj.tips = true;
+        })},time || 1000*20); //在页面第一次停留超过60s以后会提醒用户可以下拉刷新
+    },
+   openMapApp: function(lat, lng, label) {
+    var geocoords = lat + ',' + lng;
+    var u = navigator.userAgent
+    var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    var Android = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+
+    //if ((navigator.platform.indexOf('iPhone') != -1) || (navigator.platform.indexOf('iPad') != -1) || (navigator.platform.indexOf('iPod') != -1)) {
+    //    iOS = true
+    //}
+    //var Android = false;
+    //if ((navigator.platform.indexOf('Android') != -1) || (navigator.platform.indexOf('android') != -1) || (navigator.platform.indexOf('ANDROID') != -1)) {
+    //    Android = true
+    //}
+    var mlabel = encodeURI(label);
+    if (iOS) {
+        window.open('maps://?q=' + geocoords, '_system');
+    } else if (Android) {
+        window.open('geo:0,0?q=' + geocoords + '(' + mlabel + ')', '_system');
+    } else {
+        window.open('http://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
+    }
     },
     locale: 'en-CA',
     motionStatus: false,
@@ -166,6 +238,7 @@ var newChihuo = {
     setCity: false,
     localCity: null,
     msg: 0,
+    friendReq: 0,
     time: null,
     longSpeed: 1000*20,
     shortSpeed: 1000*3,
@@ -178,7 +251,13 @@ var newChihuo = {
     customerId: null,
     customer: null,
     msgList:{},
+    requestList:{},
+    activityNum:0,
+    activityObj:null,
     lock: null,
+    indexTimeout: null,
+    wkAppVersion: '3.0.21',
+    wkAppBuild: '221',
 };
 //静态资源路径
 var staticSource = {
@@ -190,7 +269,7 @@ var staticSource = {
 //初始数据
 var initData = {
   homeData: {
-    cityData: null,
+    cityData: [{cityname:'Toronto'}],
     detailData: null
   },//首页数据
   restaurantData: {
@@ -239,7 +318,7 @@ var initData = {
   },//
   foodMenuData:{
     data: [],
-    title: '美食菜单'
+    title: ''
   },//美食菜单
   myFansData: {
     data: []
@@ -314,8 +393,12 @@ var initData = {
   chatInviteData: {
     data:[]
   },
-  chatRequestData: {
+  contactData:{
     data:[]
+  },
+  chatRequestData: {
+    toData:[],
+    fromData:[]
   },
   chatMessageData: {
     data:{
@@ -350,18 +433,993 @@ var initData = {
     title:null
   },
   mySettingsData: {
-    privacy: null,
-    language: null,
-    notification: null
+    privacy: 1,
+    language: 1,
+    notification: 1
   }
 };
 
+//============enhancement for request============
+//如果是单纯的网页浏览模式时是永远不会到这一步的，因为没有cordova.js支持，此flag用于判断是否可以获得cordova.js支持
+//var WK_IS_DEVICE_READY_FLAG = false;
+var WKShortener = {
+    ALPHABET : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    encode : function(num) {
+        var sb = "";
+        var BASE = this.ALPHABET.length;
+        while ( num > 0 ) {
+            var pos = num % BASE;
+            //console.log("#######[test wksortener]pos:" + pos);
+            sb = this.ALPHABET.substring(pos, pos+1) + sb;
+            num = parseInt(num / BASE);
+            //console.log("#######[test wksortener]num:" + num);
+        }
+        return sb;
+    },
+    decode : function(str) {
+        var  num = 0;
+        var BASE = this.ALPHABET.length;
+        for ( var i = 0; i < str.length; i++ ) {
+            num = num * BASE + this.ALPHABET.indexOf(str.substring(i, i+1));
+        }
+        return num;
+    },
+    //test : function() {
+    //    var n = 999923987;
+    //    var xx = WKShortener.encode(n);
+    //    console.log("#######[test wksortener] n: " + n + " xx:" + xx);
+    //    console.log("#######[test wksortener] n: " + n + " xx:" + xx + " nn:" + WKShortener.decode(xx));
+    //}
+};
+//WKShortener.test();
+
+var WKSysUtils = {
+    uuidv4: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
+    //uuidv4pro: function () {
+    //    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    //        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+    //    });
+    //},
+    getUniqueId: function (prefix) {
+        var d = new Date().getTime();
+        if (undefined === prefix) {
+            prefix = 'uid-';
+        }
+        d = prefix + "-" + WKShortener.encode(parseInt(Math.random() * 100000000)) + "-" + WKShortener.encode(parseInt(d)) + "-" + WKShortener.encode(parseInt(Math.random() * 100000000));
+        return d;
+    },
+    getDeviceId: function () {
+        return this.getUniqueId("wid");// "wid-XXXXXX-XXXXXXXXX-XXXXXX"  中间XXX为15位时间的短码
+    },
+};
+//    test : function() {
+//        console.log(this.getDeviceId());
+//    }
+//};
+//WKSysUtils.test();
+
+
+var WKObf = {
+    map:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", //Base64从0到63的对应编码字符集
+    _unicodeToByte: function(str) //将Unicode字符串转换为UCS-16编码的字节数组
+    {
+        var result=[];
+        for(var i=0;i<str.length;i++)
+            result.push(str.charCodeAt(i)>>8,str.charCodeAt(i)&0xff);
+        return result;
+    },
+    //_byteToUnicode: function(arr) //将UCS-16编码的字节数组转换为Unicode字符串
+    //{
+    //    var result="";
+    //    for(var i=0;i<arr.length;i+=2)
+    //        result+=String.fromCharCode((arr[i]<<8)+arr[i+1]);
+    //    return result;
+    //},
+    encode: function(str)
+    {
+        if(str===null || typeof str === 'undefined') {
+            return "";
+        }
+        var buffer,result="",flag; //flag表示在字节数组剩余的个数
+        var arr=this._unicodeToByte(str);
+        flag=arr.length%3;
+        if(flag==1)
+            arr.push(0,0);
+        else if(flag==2)
+            arr.push(0);
+        for(var i=0;i<arr.length;i+=3) //此时arr.length一定能被3整除
+        {
+            buffer=(arr[i]<<16)+(arr[i+1]<<8)+arr[i+2];
+            result+=this.map.charAt(buffer>>18)+this.map.charAt(buffer>>12&0x3f)+this.map.charAt(buffer>>6&0x3f)+this.map.charAt(buffer&0x3f);
+        }
+        if(flag==1)
+            result=result.replace(/AA$/g,"==");
+        else if(flag==2)
+            result=result.replace(/A$/g,"=");
+        return result;
+    },
+};
+
+var WKStorageUtils = {
+    saveval : function(lkey, val) {
+        this.clear(lkey);
+        localStorage.setItem(lkey, val);
+    },
+    saveJson : function(lkey, j) {
+        this.clear(lkey);
+        localStorage.setItem(lkey, jsonUtils.toStr(j));
+    },
+    getval : function(lkey) {
+        return localStorage.getItem(lkey);
+    },
+    getJson : function(lkey) {
+        return jsonUtils.toJson(localStorage.getItem(lkey));
+    },
+    clear : function(lkey) {
+        return localStorage.removeItem(lkey);
+    }
+};
+
+
+var WKStorageManager = {
+    curlogtypkey: "loginType", // "wk.storage.clogtyp", newChihuo.setLocalStorage('loginType','3rd')
+    sysdidkey: "wk.storage.sysdid",
+    tpusrkey: "wk.storage.tpcinfo",
+    custinfokey : "wk.storage.uinfo",
+    custdetailkey : "wk.storage.cdetail",
+
+    clear : function() {
+        this.clearLogTyp();
+        this.clearTpUsrInfo();
+        this.clearCustInfo;
+    },
+    setCustDetail : function() {
+        WKStorageUtils.saveJson(this.custdetailkey);
+    },
+    getCustDetail : function() {
+        return WKStorageUtils.getJson(this.custdetailkey);
+    },
+    clearCustDetail : function() {
+        WKStorageUtils.clear(this.custdetailkey);
+    },
+    setLogTyp : function() {
+        WKStorageUtils.saveval(this.curlogtypkey);
+    },
+    getLogTyp : function() {
+        return WKStorageUtils.getval(this.curlogtypkey);
+    },
+    clearLogTyp : function() {
+        WKStorageUtils.clear(this.curlogtypkey);
+    },
+    setSysDeviceId : function(d) {
+        WKStorageUtils.saveval(this.sysdidkey, d);
+    },
+    getSysDeviceId : function() {
+        var did = WKStorageUtils.getval(this.sysdidkey);
+        if(did) {
+            return did;
+        } else {
+            var ndid = WKSysUtils.getDeviceId();
+            WKStorageUtils.saveval(this.sysdidkey, ndid);
+            return ndid;
+        }
+    }, // 不允许clear这个ID
+    setTpUsrInfo : function() {
+        WKStorageUtils.saveJson(this.tpusrkey);
+    },
+    getTpUsrInfo : function() {
+        return WKStorageUtils.getJson(this.tpusrkey);
+    },
+    clearTpUsrInfo : function() {
+        WKStorageUtils.clear(this.tpusrkey);
+    },
+    setCustInfo : function() {
+        WKStorageUtils.saveJson(this.custinfokey);
+    },
+    getCustInfo : function() {
+        //WKStorageUtils.getJson(this.custinfokey);
+        var acct = WKStorageUtils.getval('email_address');
+        var pass = WKStorageUtils.getval('password');
+        if ((typeof acct == 'undefined' || acct == null )) {
+        //if ((typeof acct == 'undefined' || acct == null ) && (typeof pass ==  'undefined' || pass == null)) {
+            return null;
+        }
+        var acctkey = wkUMS.reglog.params.acct;
+        var passkey = wkUMS.reglog.params.pass;
+        var data = {};
+        data[acctkey] = acct;
+        data[passkey] = pass;
+        return data;
+    },
+    clearCustInfo : function() {
+        WKStorageUtils.clear(this.custinfokey);
+    },
+};
+
+//-----------action 间隔控制辅助工具----------
+var wkActionHelper = {
+    WK_SYS_TIMESTAMP_MAP : {},
+    ACTION_INTERVAL_MS : 1000,
+    setTimeStamp : function(actionId,ts){
+        this.WK_SYS_TIMESTAMP_MAP[actionId] = ts;
+    },
+    clearTimeStamp : function(actionId) {
+        if(!actionId) {
+            this.WK_SYS_TIMESTAMP_MAP = {};
+        } else if(this.WK_SYS_TIMESTAMP_MAP.hasOwnProperty(actionId)){
+            delete this.WK_SYS_TIMESTAMP_MAP[actionId];
+        }
+    },
+    shouldSkip: function(actionId,curTS,interval){
+        var _ts = this.WK_SYS_TIMESTAMP_MAP[actionId];
+        var _interval = this.ACTION_INTERVAL_MS;
+        if(!!interval && typeof interval === 'number' && interval > 5 ) {
+            _interval=interval;
+        }
+        if(!_ts) {
+            console.log("_ts is null!!!");
+            return false;
+        } else {
+            //var curTS = new Date().getTime();
+            //this.setTimeStamp(actionId, curTS);
+            console.log("(curTS - _ts) = " + (curTS - _ts) + " interval:" + _interval);
+            console.log("actionId: " + actionId + " >>> shouldSkip: " + (curTS - _ts < _interval));
+            return (curTS - _ts < _interval);
+        }
+    },
+    // 一段时间内只执行第一个action以避免短时间内多次执行action
+    doFirst : function(actionId, callback, interval) {
+        if(!!actionId && !!callback) {
+            var curTimeStamp = (new Date()).valueOf();
+            if(!this.shouldSkip(actionId,curTimeStamp, interval)) {
+                //console.log("do call back -> " +callback);
+                callback();
+                this.setTimeStamp(actionId, curTimeStamp);// 以上次真正调用callback的时间记，而不是每次尝试就记，否则效果是如果连续尝试将永远无法callback
+            } else {
+                console.log("[id="+actionId+"]"+"action has been discarded!!! [" +"curTimStamp="+curTimeStamp+ "]");
+            }
+            //this.setTimeStamp(actionId, curTimeStamp);
+        }
+    },
+    WK_SYS_ACTIONID_TIMEOUT_MAP : {},
+    POST_ACTION_INTERVAL_MS : 200,
+    setTimeoutID : function(actionId, tid){
+        this.WK_SYS_ACTIONID_TIMEOUT_MAP[actionId] = tid;
+    },
+    getTimeoutID : function(actionId){
+        if(this.WK_SYS_ACTIONID_TIMEOUT_MAP.hasOwnProperty(actionId)) {
+            return this.WK_SYS_ACTIONID_TIMEOUT_MAP[actionId];
+        }
+        return 0;
+    },
+    clearTimeoutID : function(actionId) {
+        if(!actionId) {
+            this.WK_SYS_ACTIONID_TIMEOUT_MAP = {};
+        } else if(this.WK_SYS_ACTIONID_TIMEOUT_MAP.hasOwnProperty(actionId)){
+            delete this.WK_SYS_ACTIONID_TIMEOUT_MAP[actionId];
+        }
+    },
+    // 一段时间内只执行最后一个action以避免短时间内多次执行action，注意如果之前的action已经完成则无法取消，且取消本身是有代价的，由于异步性及延迟问题，最好是dofirst+重试并做好提示+允许重刷。
+    doLast : function(actionId, callback,interval) {
+        if(!!actionId && !!callback) {
+            var _interval = this.POST_ACTION_INTERVAL_MS;
+            if(!!interval && typeof interval === 'number' && interval > 5) {
+                _interval=interval;
+            }
+            var curTimeStamp = (new Date()).valueOf();
+            var tid = this.getTimeoutID(actionId);
+            if (tid) {
+                clearTimeout(tid);
+                console.log("[id=" + actionId + "]" + "tried to discard the last action!!! [" + "curTimStamp=" + curTimeStamp + "]" + "tid="+tid);
+            }
+            tid = setTimeout(callback,_interval);
+            this.setTimeoutID(actionId,tid);
+        }
+    }
+};
+
+
+var wkUMS = {
+    logtypekey : "log_type",
+    reglog : {
+        logpoint : 'rcLogin.json',
+        logtype : 3,
+        params : {
+            acct : 'acct',
+            pass : 'pass'
+        }
+    },
+    tplog : {
+        logpoint : 'tpLogin.json',
+        logtype : 2,
+        params : {
+            uid : 'uid',
+            utp : 'utp'
+        }
+    },
+    nrlog : {
+        logpoint : 'nrLogin.json',
+        logtype : 1,
+        params : {
+            did : 'd'
+        }
+    },
+    unknowncode : "wkunknown",
+    cur_loginrequest_retry : 0,
+    max_loginrequest_retry : 1,
+    getreglogparams : function(acct, pass) {
+        var _acct = acct;
+        var _pass = pass;
+        if ((typeof acct == 'undefined' || acct == null ) && (typeof pass ==  'undefined' || pass == null)) {
+            var cinfo = WKStorageManager.getCustInfo();
+            if(!cinfo || !jsonUtils.isJson(cinfo)) {
+                console.log("[wkUMS.getreglogparams] cinfo is wrong!");
+                return null;
+            }
+            if(!jsonUtils.hasField(cinfo, this.reglog.params.acct) || !jsonUtils.hasField(cinfo, this.reglog.params.pass)) {
+                console.log("[wkUMS.getreglogparams] cannot find key attribute in cinfo!");
+                return null;
+            }
+            _acct = cinfo[this.reglog.params.acct];
+            _pass = cinfo[this.reglog.params.pass];
+        }
+
+        var type = this.reglog.logtype;
+        var url = chihuo.getApiUri(this.reglog.logpoint);
+        var d = WKStorageManager.getSysDeviceId();
+        return {
+            logtyp : type,
+            url : url,
+            data : {
+                did : d,
+                acct : _acct,
+                pass : _pass
+            }
+        };
+    },
+    gettplogparams: function(uid, utp) {
+        var _uid = uid;
+        var _utp = utp;
+        if ((typeof uid == 'undefined' || uid == null ) && (typeof utp ==  'undefined' || utp == null)) {
+            var tuinfo = WKStorageManager.getTpUsrInfo();
+            if(!tuinfo || !jsonUtils.isJson(tuinfo)) {
+                console.log("[wkUMS.gettplogparams] tuinfo is wrong!");
+                return null;
+            }
+            if(!jsonUtils.hasField(tuinfo, this.tplog.params.uid) || !jsonUtils.hasField(tuinfo, this.tplog.params.utp)) {
+                console.log("[wkUMS.gettplogparams] cannot find key attribute in tuinfo!");
+                return null;
+            }
+            _uid = tuinfo[this.tplog.params.uid];
+            _utp = tuinfo[this.tplog.params.utp];
+        }
+
+        var type = this.tplog.logtype;
+        var url = chihuo.getApiUri(this.tplog.logpoint);
+        var d = WKStorageManager.getSysDeviceId();
+        return {
+            logtyp : type,
+            url : url,
+            data : {
+                did : d,
+                uid : _uid,
+                utp : _utp
+            }
+        };
+    },
+    getdlogparams: function() {
+        var d = WKStorageManager.getSysDeviceId();
+        if(!d) {
+            console.log("[wkUMS.gettplogparams] d is wrong!");
+            return null;
+        }
+        var type = this.nrlog.logtype;
+        var url = chihuo.getApiUri(this.nrlog.logpoint);
+        return {
+            logtyp : type,
+            url : url,
+            data : {
+                did : d
+            }
+        };
+    },
+    getRefreshTokenParams : function() {
+        var logtype = WKStorageManager.getLogTyp();
+        if (!logtype) {
+            return this.getdlogparams();
+        }
+
+        if (logtype === 'chanhou') {
+            var cinfo = WKStorageManager.getCustInfo();
+            if(cinfo && jsonUtils.isJson(cinfo)) {
+                var p = this.getreglogparams();
+                if(p) {
+                    return p;
+                }
+            }
+        }
+
+        if (logtype === '3rd') {
+            var tuinfo = WKStorageManager.getTpUsrInfo();
+            if(tuinfo && jsonUtils.isJson(tuinfo)) {
+                var p = this.gettplogparams();
+                if(p) {
+                    return p;
+                }
+            }
+        }
+
+        return this.getdlogparams();
+    },
+    getStatusCode : function(data) {
+        var rows = ajaxHelper.extractData(data);
+        if(rows && rows.hasOwnProperty("length") && rows.length > 0) {
+            return this.extractStatusCode(rows[0]);
+        }
+        return this.unknowncode;
+    },
+    extractStatusCode : function(resprow) {
+        var statusCode = this.unknowncode;
+        var statusKey = "status_code";
+        if(jsonUtils.hasField(resprow, statusKey)) {
+            statusCode = resprow[statusKey]; // maybe -100, -1, 0, 1, null, etc.
+        }
+        return statusCode
+    },
+    dorequest: function(option, t){
+        if(!ajaxHelper.isTooFrequentCall(option, t)) {
+            $.ajax(option);
+        } else {
+            console.log('[dorequest] too frequent and skipped this time.')
+        }
+        //return $.ajax(ajaxHelper.enhance(option));
+    },
+    //cur_loginrequest_retry : 0,
+    cur_loginrequest_retry_key : 'cur_loginrequest_retry',
+    getRefreshTokenAjaxOp : function(parentop, onlogin, onerror) {
+        var params = this.getRefreshTokenParams();
+        if (!params) {
+            console.log("[refreshtoken.getRefreshTokenParams] cannot get params!");
+            return;
+        }
+        var logtype = params['logtyp'];
+        var URL = params['url'];
+        var data =params['data'];
+        var dataType = "json";
+        if (logtype == this.tplog.logtype) {
+            console.log("[refreshtoken.getRefreshTokenParams] doing silent tplogin!");
+            var auth0getUserInfo = function (cb) { // 检查accessToken是否存在，如存在直接获取userinfo（若accessToken过期或失效会返回错误以后要加错误处理），如不存在调用auth0cordova 做login
+                if (!Auth0 || !Auth0.Authentication) {
+                    console.error('!Auth0 || !Auth0.Authentication');
+                    return;
+                }
+                var auth0 = new Auth0.Authentication({
+                    domain: "foodymonkey.auth0.com",
+                    clientID: "fGIEyQ2eW5hEj1CvdRnfeXQUOTuUjDPK",
+                });
+                var accessToken = localStorage.getItem('access_token');
+                if (accessToken) {
+                    try {
+                        auth0.userInfo(accessToken, cb);
+                    } catch (err) {
+                       alert('getuserinfo exception: ' + err);
+                    }
+                } else {
+                    alert('please login via auth0.');
+                    //this.auth0login();
+                }
+            };
+            auth0getUserInfo(function (err, profile) {
+                if (err) {
+                    alert('get user info Error ' + err.message);
+                }
+                var info = JSON.stringify(profile, null, 4);
+                newChihuo.profile = JSON.parse(info);
+                newChihuo.tpLogin(newChihuo.profile);
+            });
+            return
+        }
+
+        var ajaxop = {
+            type: 'POST',
+            url: URL,
+            data: data,
+            dataType: dataType,
+            beforeSend: function(){},
+            success: function(data,status,xhr){
+                if(data && data.hasOwnProperty('data')) {
+                    //console.log('got resp');
+                    var resp = data['data'];
+                    //console.log( resp);
+                    var statusCode = this.unknowncode;
+                    if(resp.hasOwnProperty("length")) {
+                        statusCode = wkUMS.extractStatusCode(resp[0]);
+                    }
+                    //console.log("status code: " + statusCode);
+
+                    if(statusCode == 0) {
+                        var cdetail = resp[0];
+                        cdetail[this.logtypekey] = logtype;
+                        WKStorageManager.setCustDetail(cdetail);
+                        var cur_loginrequest_retry = localStorage.getItem(wkUMS.cur_loginrequest_retry_key);
+                        console.log('succeed and reset cur_loginrequest_retry:' + cur_loginrequest_retry);
+
+                        if(onlogin) {
+                            if(cur_loginrequest_retry < wkUMS.max_loginrequest_retry) {
+                                cur_loginrequest_retry = cur_loginrequest_retry + 1;
+                                localStorage.setItem(wkUMS.cur_loginrequest_retry_key, cur_loginrequest_retry);
+                                console.log(' cur_loginrequest_retry:' + wkUMS.cur_loginrequest_retry);
+                                onlogin(statusCode, parentop );
+                            } else {
+                                cur_loginrequest_retry = 0;
+                                localStorage.setItem(wkUMS.cur_loginrequest_retry_key, cur_loginrequest_retry); //保存，以免重新页面后被重置而无法记录实际次数
+                                console.log(' reset cur_loginrequest_retry:' + cur_loginrequest_retry);
+                            }
+                        } else {
+                            if(cur_loginrequest_retry < wkUMS.max_loginrequest_retry) {
+                                cur_loginrequest_retry = cur_loginrequest_retry + 1;
+                                localStorage.setItem(wkUMS.cur_loginrequest_retry_key, cur_loginrequest_retry);
+                                location.reload(); //此处似有bug，需要在合适地方设this.cur_loginrequest_retry = 0，否则只执行一次，等待修正
+                                //chihuo.wkAjax(parentop);//重做父请求，因为之前因登陆问题没做成被跳了，现在补做，但由于有请求过滤机制有可能有的请求的子登陆请求被过滤了根本到不了这儿！！这需要所有请求都应当有很好的出错提示和刷新按钮界面！！！
+                                //否则就应当刷新页面！！！
+                            } else {
+                                cur_loginrequest_retry = 0;
+                                localStorage.setItem(wkUMS.cur_loginrequest_retry_key, cur_loginrequest_retry); //保存，以免重新页面后被重置而无法记录实际次数
+                                // 必须在跳过后重置并保存，否则如果写cookie不成功则只能刷一次，以后重试时不能重刷
+                                console.log(' reset cur_loginrequest_retry:' + cur_loginrequest_retry);
+                            }
+                        }
+                        return;
+                    } else {
+                        console.log('failed to fetch token status code:' + statusCode);
+                    }
+                    if(statusCode === this.unknowncode) {
+                        console.log('[refreshtoken] cannot get the status code in resp[' + resp + ']');
+                    }
+                    if(onerror) {
+                        onerror(0, statusCode, parentope);
+                    }
+                    return;
+                }
+            },
+            error: function(xhr, p2, p3) {
+                //console.log(xhr);
+                ////console.log(p2);
+                ////console.log(p3);
+                //var info = null;
+                //if(xhr && xhr.hasOwnProperty('responseJSON')) {
+                //    info = xhr.responseJSON;
+                //}
+                //info = xhr.responseJSON;
+                //if(xhr && xhr.status == 403) {
+                //    if(info && info.hasOwnProperty('status') && info['status'] < 0) {
+                //        showBigModalDialog(info['msg'] + ' [Click close to refresh page]', 'Error', null, function(){
+                //            //window.location.href='/'; //window.location.href
+                //            location.reload();
+                //        });
+                //        console.log(info['msg']);
+                //        //window.location.href=window.location.href
+                //        return;
+                //    }
+                //}
+                ////showBigModalDialog('unknown error', 'Error');
+                //console.log('unknown error');
+                var statusCode = this.unknowncode;
+                if(xhr) {
+                    statusCode = xhr.status;
+                }
+                if(onerror) {
+                    onerror(1, statusCode, parentope);
+                }
+            }
+        };
+        return ajaxop;
+    },
+    refreshtoken : function(parentop, onlogin, onerror) { //[need cookie, otherwise get 403]
+        //https://stackoverflow.com/questions/2870371/why-is-jquerys-ajax-method-not-sending-my-session-cookie
+        //Note: AJAX calls only send Cookies if the url you're calling is on the same domain as your calling script.
+        var minterval = 2000;//用户登陆或刷新token的间隔周期必须大于等于1s. 1秒内只执行第1个请求
+        var ajaxop = this.getRefreshTokenAjaxOp(parentop, onlogin, onerror);
+        ajaxop && this.dorequest(ajaxop, minterval);
+        //$.post(URL,data,function(data,status,xhr){
+        //        if(data && data.hasOwnProperty('data')) {
+        //            console.log('got resp');
+        //            var resp = data['data'];
+        //            console.log( resp);
+        //            var statusCode = this.unknowncode;
+        //            if(resp.hasOwnProperty("length")) {
+        //                statusCode = wkUMS.extractStatusCode(resp[0]);
+        //            }
+        //            console.log("status code: " + statusCode);
+        //            if(statusCode === this.unknowncode) {
+        //                console.log('[refreshtoken] cannot get the status code in resp[' + resp + ']');
+        //            }
+        //
+        //            if(statusCode == 0) {
+        //                var cdetail = resp[0];
+        //                cdetail[this.logtypekey] = type;
+        //                WKStorageManager.setCustDetail(cdetail);
+        //                this.cur_loginrequest_retry = 0;
+        //                console.log('succeed and reset cur_loginrequest_retry:' + this.cur_loginrequest_retry);
+        //            } else {
+        //                console.log('failed to fetch token status code:' + statusCode);
+        //            }
+        //
+        //            // ???????????????????
+        //            if(onlogin) {
+        //                if(this.cur_loginrequest_retry < this.max_loginrequest_retry) {
+        //                    this.cur_loginrequest_retry = this.cur_loginrequest_retry + 1;
+        //                    console.log(' cur_loginrequest_retry:' + this.cur_loginrequest_retry);
+        //                    onlogin();
+        //                } else {
+        //                    this.cur_loginrequest_retry = 0;
+        //                    console.log(' reset cur_loginrequest_retry:' + this.cur_loginrequest_retry);
+        //                }
+        //            }
+        //            return;
+        //        }
+        //    },dataType)
+        //    .fail(function(xhr, p2, p3) {
+        //        console.log(xhr);
+        //        //console.log(p2);
+        //        //console.log(p3);
+        //        var info = null;
+        //        if(xhr && xhr.hasOwnProperty('responseJSON')) {
+        //            info = xhr.responseJSON;
+        //        }
+        //        info = xhr.responseJSON;
+        //        if(xhr && xhr.status == 403) {
+        //            if(info && info.hasOwnProperty('status') && info['status'] < 0) {
+        //                showBigModalDialog(info['msg'] + ' [Click close to refresh page]', 'Error', null, function(){
+        //                    window.location.href='/'; //window.location.href
+        //                });
+        //                console.log(info['msg']);
+        //                //window.location.href=window.location.href
+        //                return;
+        //            }
+        //        }
+        //        //showBigModalDialog('unknown error', 'Error');
+        //        console.log('unknown error');
+        //    })
+    },
+    login : function(typ, a, b, onsuccess, onerror) {
+        var minterval = 2000;
+        var ajaxop = null;
+        if (typ == this.reglog.logtype) {
+            ajaxop = {
+                url : chihuo.getApiUri(this.reglog.logpoint),
+                data : {
+                    did : WKStorageManager.getSysDeviceId(),
+                    acct : a,
+                    pass : b
+                },
+                success : onsuccess || function (data,status,xhr) {},
+                error : onerror || function(xhr, p2, p3) {}
+            };
+        } else if (typ == this.tplog.logtype) {
+            ajaxop = {
+                url : chihuo.getApiUri(this.tplog.logpoint),
+                data : {
+                    did : WKStorageManager.getSysDeviceId(),
+                    uid: a,
+                    utp: b
+                },
+                success : onsuccess || function (data,status,xhr) {},
+                error : onerror || function(xhr, p2, p3) {}
+            };
+        }
+        if(!!ajaxop) {
+            this.dorequest(ajaxop, minterval);
+        } else {
+            console.log("[login] ERROR: log type is wrong! do error!")
+            if(onerror) {
+                onerror();
+            }
+        }
+    }
+};
+
+//-----------------------------------------------
+var commonUtils = {
+    isInteger : function(obj) {
+        return typeof obj === 'number' && obj%1 === 0
+    },
+    isFunc : function(fn) {
+        return Object.prototype.toString.call(fn)=== '[object Function]';
+    }
+};
+
+var jsonUtils = {
+    isJson : function(obj) {
+        return typeof(obj) == "object" &&
+            Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length
+    },
+    isJsonString : function(str) {
+        try {
+            if (typeof JSON.parse(str) == "object") {
+                return true;
+            }
+        } catch(e) {
+        }
+        return false;
+    },
+    toJson : function(jstr) {
+        if(this.isJsonString(jstr)) {
+            return JSON.parse(jstr);
+        }
+        return null;
+    },
+    toStr : function(j) {
+        if(this.isJson(j)) {
+            return JSON.stringify(j);
+        }
+        return null;
+    },
+    hasField : function(obj, fdname) {
+        if (!obj || ! fdname) {
+            return false;
+        }
+        return fdname in obj; //obj.hasOwnProperty(fdname);
+    },
+    clone : function(jsonObj) {
+        var buf;
+        if (jsonObj instanceof Array) {
+            buf = [];
+            var i = jsonObj.length;
+            while (i--) {
+                buf[i] = this.clone(jsonObj[i]);
+            }
+            return buf;
+        }else if (jsonObj instanceof Object){
+            buf = {};
+            for (var k in jsonObj) {
+                buf[k] = this.clone(jsonObj[k]);
+            }
+            return buf;
+        }else{
+            return jsonObj;
+        }
+    },
+    merge : function(o1, o2) {
+        var resultJsonObject={};
+        for(var attr in o1){
+            resultJsonObject[attr]=o1[attr];
+        }
+        for(var attr in o2){
+            resultJsonObject[attr]=o2[attr];
+        }
+        return resultJsonObject;
+    }
+};
+var historyAjaxRequest = {}; // RqID -> timestamp
+var ajaxHelper = {
+    minInterval : 200, // unit is ms.
+    extractData : function(data) {
+        if(data && data.hasOwnProperty('data')) {
+            var resp = data['data'];
+            //console.log('got resp:');
+            //console.log(resp);
+            return resp;
+        }
+        return null;
+    },
+    overrideBefore : function(ofunc, nfunc, key) {
+        return function(p) {
+            if(!nfunc(p)) { // if nfunc(p) return false or return nothing then do ofunc(p). if return true then skip ofunc() !!! we can make a decision according to the nfunc(p) dynamically.
+                ofunc(p);
+            }
+        };
+        //if (key == 'success') { // Anything data, String textStatus, jqXHR jqXHR
+        //    return function(data) {
+        //        nfunc(data);
+        //        ofunc(data);
+        //    };
+        //}
+        //if (key == 'error') { // jqXHR jqXHR, String textStatus, String errorThrown
+        //    return function(jqXHR) { // jqXHR.status  jqXHR.status can be 200, 403 ...
+        //        nfunc(jqXHR);
+        //        ofunc(jqXHR);
+        //    };
+        //}
+        //if (key == 'beforeSend') { // jqXHR jqXHR, PlainObject settings
+        //    return function(xhr) {
+        //        nfunc(xhr);
+        //        ofunc(xhr);
+        //    };
+        //}
+        //if (key == 'complete') { //  jqXHR jqXHR, String textStatus
+        //    return function(jqXHR) { // jqXHR.status  jqXHR.status can be 200, 403 ...
+        //        nfunc(jqXHR);
+        //        ofunc(jqXHR);
+        //    };
+        //}
+        //return null;
+    },
+    overrideAfter : function(ofunc, nfunc, key) {
+        return function(p) {
+            ofunc(p);
+            nfunc(p);
+        };
+    },
+    decorateOpt : function(o, n, t) {
+        if (!o || !jsonUtils.isJson(o)) {
+            console.log('[ajaxHelper.decorateOpt] ERROR: original ajax option is null or error! return null.');
+            return null;
+        }
+        if (!n || !jsonUtils.isJson(n)) {
+            console.log('[ajaxHelper.decorateOpt] WARNING: new ajax option is null or error! do nothing.');
+            return o;
+        }
+        if (typeof t == 'undefined' || t == null || !commonUtils.isInteger(t) || t < 0 || t > 2) {
+            console.log('[ajaxHelper.decorateOpt] ERROR: the decorate type[' + t + '] is not correct! do nothing.');
+            return o;
+        }
+        var rjson = o;// jsonUtils.clone(o);
+        for(var k in n){
+            if (!n[k]) {
+                continue;
+            }
+            if (jsonUtils.hasField(rjson, k)) {
+                if (jsonUtils.isJson(rjson[k]) && jsonUtils.isJson(n[k])) {
+                    rjson[k] = jsonUtils.merge(rjson[k], n[k]);
+                    continue;
+                }
+                if(commonUtils.isFunc(rjson[k]) && commonUtils.isFunc(n[k])) {
+                    //console.log('==============');
+                    //console.log('func:');
+                    //console.log(rjson[k]);
+                    //console.log('----------------------------');
+                    if (t == 0) { // just replace
+                        rjson[k] = n[k];
+                    } else if(t==1) {
+                        rjson[k] = this.overrideBefore(rjson[k], n[k], k);
+                    } else if(t==2) {
+                        rjson[k] = this.overrideAfter(rjson[k], n[k], k);
+                    }
+                    //console.log('t=' + t);
+                    //console.log('func:');
+                    //console.log(rjson[k]);
+                    //console.log('==============');
+                    continue;
+                }
+            } else {
+                rjson[k] = n[k];
+            }
+        }
+        return rjson;
+    },
+    extractRqID : function(o) {
+        if (!jsonUtils.isJson(o)) {
+            console.error('[ajaxHelper.extractRqID] failed to extract rq id due to the wrong json.');
+            return '';
+        }
+        if(!jsonUtils.hasField(o, 'url')) {
+            console.error('[ajaxHelper.extractRqID] failed to extract rq id due to no url in json.');
+            return '';
+        }
+        if(!jsonUtils.hasField(o, 'type')) {
+            console.error('[ajaxHelper.extractRqID] failed to extract rq id due to no type in json.');
+            return '';
+        }
+        var params = '';
+        if (jsonUtils.hasField(o, 'data')) {
+            params = JSON.stringify(o['data']);
+        }
+        //return '1';
+        return o['type'] + '|' + o['url'] + '|' + params;
+    },
+    isTooFrequentCall : function(option, minterval) {
+        var rqid = this.extractRqID(option);
+        //console.log(historyAjaxRequest);
+        var ret = false;
+        var curts = new Date().getTime();
+        //console.log('curts: ' + (curts));
+        var minInterval = this.minInterval;
+        if(!!minterval && typeof minterval == 'number'&& minterval > 5) {
+            minInterval = minterval;
+        }
+        if (jsonUtils.hasField(historyAjaxRequest, rqid)) {
+            var ots = historyAjaxRequest[rqid];
+            ret =  (curts - ots) < minInterval;
+            //console.log('curts - ots=' + (curts - ots));
+            //console.log('ret=' + (ret));
+        }
+        //historyAjaxRequest[rqid] = curts;//这种方法如果某种请求连续在指定时间内发出则这些所有的请求都将被过滤！！！
+        if (!ret) {//[对用户较宽容]只记不应跳过的请求的时间戳，这样不应跳过的请求，也就是实际执行的请求最坏将以最小间隔为周期不断执行，但不会出每次都在小于最小间隔时连续无限请求时所有请求全被过滤的情况
+            historyAjaxRequest[rqid] = curts;
+        }
+        return ret;
+    },
+    show_reg_confirm: function() {
+        var r=confirm("Please Sign Up/In and Enjoy All of Features of FoodyMonkey...");
+        if (r==true)
+        {
+            location = '#login';
+        }
+        else
+        {
+        }
+    },
+    enhance : function(o) {
+        //console.log('RQID: ' + this.extractRqID(o));
+        var extra = {
+            data: {did : WKStorageManager.getSysDeviceId(), app: newChihuo.wkAppBuild + '-' + newChihuo.wkAppVersion},
+            withCredentials: true,
+            beforeSend : function() {
+                return true; // if true then wont run the original function, but if false will do
+            },
+            success: function(data) {
+                //console.log('well done! added extra function in success!!');
+                //console.log(data);
+                //var scode = wkUMS.getStatusCode(data);
+                //if(!data || (data && !data.hasOwnProperty("data")) || wkUMS.getStatusCode(data) == wkUMS.unknowncode) {
+                //    return false;// if true then wont run the original function, but if false will do
+                //}
+                if (data && data.hasOwnProperty("errorCode")) {
+                    if(data["errorCode"] < 1) {
+                        wkUMS.refreshtoken(o);
+                        return true; // if true then wont run the original function, but if false will do
+                    }
+                }
+
+                var pdata = null;
+
+                if(data && data.hasOwnProperty("data")) {
+                    pdata = data["data"];
+                }
+
+                if(pdata && Array.isArray(pdata) && pdata.length > 0) {
+                    //console.log(pdata);
+                    var row = pdata[0];
+                    //console.log(row);
+                    if(row && row.hasOwnProperty('rsp_msg') && row['rsp_msg'] === "10060") {
+                        //alert("10060");
+                        ajaxHelper.show_reg_confirm();
+                        return true;
+                    }
+                    if(row && row.hasOwnProperty('status_code') && (row['status_code'] === "10060" || row['status_code'] === 10060)) {
+                        //alert("10060");
+                        ajaxHelper.show_reg_confirm();
+                        return true;
+                    }
+                }
+               return false; // if true then wont run the original function, but if false will do
+            }
+        }
+        return this.decorateOpt(o, extra, 1); //o;//
+    }
+};
+//============enhancement for request============
+
 //通用方法
 var chihuo = {
-  picQuality: 0.92,
-  picWidth: 800,
-  usrLogoWidth: 100,
+  picQuality: 0.90,
+  picMaxSize: 10 * 1024 * 1024,
+  picWidth: 1080,
+  usrLogoWidth: 1080,
   setSearch: null,
+  appLaunch: function(template){
+    if(newChihuo.getLocalStorage('appLaunch')){
+      return;
+    }else{
+      $("#appLaunch").show().html(template);
+      newChihuo.removeLocalStorage('customer_id');
+      newChihuo.removeLocalStorage('appLaunch');
+      newChihuo.removeLocalStorage('loginType');
+      newChihuo.removeLocalStorage('password');
+      newChihuo.removeLocalStorage('email_address');
+      $('#beginExploring').on('click',function(){
+          $("#appLaunch").html('').hide();
+          newChihuo.setLocalStorage('appLaunch',true);
+      });
+    }
+    
+  },
   getApiUri: function(api){
       return newChihuo.address+'/wkfdmk/v2/'+ api;
   },
@@ -488,7 +1546,7 @@ var chihuo = {
                     if($("#maskScreen").length){
                         var index=parseInt($("#maskScreen").attr("mask"));
                         $("#maskScreen").attr("mask",++index);
-                        console.log(index);
+                       
                     }else{
                         $("body").append(html);
                     }
@@ -499,7 +1557,6 @@ var chihuo = {
                     if($("#maskScreen").length){
                         var index=parseInt($("#maskScreen").attr("mask"));
                         $("#maskScreen").attr("mask",--index);
-                        console.log(index);
                         if(index==0){
                             $("#maskScreen").remove();
                         }
@@ -514,8 +1571,13 @@ var chihuo = {
 
   },
 
-  wkAjax: function(option){
-      return $.ajax(option);
+  wkAjax: function(option, t){
+      if(!ajaxHelper.isTooFrequentCall(option, t)) {
+          $.ajax(ajaxHelper.enhance(option));
+      } else {
+          console.log('[wkAjax] too frequent and skipped this time.')
+      }
+      //return $.ajax(ajaxHelper.enhance(option));
   },
 
   wkLoginPermission: function(){
@@ -523,7 +1585,7 @@ var chihuo = {
          return true;
       }else{
        var pop = $('#popInfo');
-       var info ='<p>please login in first</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       var info ='<p>'+newChihuo.localize('please_login_first')+'</p><div class="error-pop"><span class="close-pop">'+newChihuo.localize('cancel') +'</span><span class="refresh">'+newChihuo.localize('refresh')+'</span></div>'
        pop.html(info).addClass('pop-info-show');
        $(".error-pop .close-pop").on('click',function(){
            pop.removeClass('pop-info-show').html('');
@@ -543,6 +1605,8 @@ var chihuo = {
       if(newLat != lastLat || newLon != lastLon){
          newChihuo.lat = newLat;
          newChihuo.lon = newLon;
+         newChihuo.setLocalStorage('lat',newChihuo.lat);
+         newChihuo.setLocalStorage('lon',newChihuo.lon);
          newChihuo.positionChanged = true;
          return true;
       }else{
@@ -553,20 +1617,79 @@ var chihuo = {
   },
 
   initApp: function(template){
+      //$('#page').ready(function () {
+      //        var $splash = $('#splash');
+      //        if ($splash) {
+      //            $splash.html('').hide();
+      //        }
+      //    }
+      //);
+      //$(document).ready(function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //});
+      //document.attachEvent('onreadystatechange', function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //    //if (document.readyState=='complete') {
+      //    //    var $splash = $('#splash');
+      //    //    if ($splash) {
+      //    //        $splash.html('').hide();
+      //    //    }
+      //    //}
+      //});
+      //window.onReady(function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //});
+      //$('#page').ready(function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //});
+      //document.addEventListener('DOMContentLoaded', function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //});
+      //window.onload=function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //}
+      //document.getElementById("page").onready=function(){
+      //    var $splash = $('#splash');
+      //    if ($splash) {
+      //        $splash.html('').hide();
+      //    }
+      //}
      document.addEventListener("deviceready", onDeviceReady, false);
-     document.addEventListener("resume", resumeReady, false);//app从后台运行时重新获取监听的事件
+     //document.addEventListener("resume", resumeReady, false);//app从后台运行时重新获取监听的事件
     //device APIs are available
     function onDeviceReady() {
-        StatusBar && StatusBar.backgroundColorByHexString("#fe812d") && 
-        StatusBar.overlaysWebView(false);
-          // StatusBar.styleDefault();
-        chihuo.splashShow(function(){chihuo.getPosition(template)});     
+        StatusBar && StatusBar.backgroundColorByHexString("#fe812d"); 
+        StatusBar && StatusBar.overlaysWebView(false);
+
+        chihuo.getPosition(template);
+        cordova.plugins.notification.badge.requestPermission(function(granted){});
+        
     }
 
     function resumeReady() {
-      setTimeout(function(){
-        chihuo.splashShow(function(){chihuo.getPosition(template)});
-      },0);
+      if(!newChihuo.resumeOff){
+         setTimeout(function(){
+          chihuo.splashShow(function(){chihuo.getPosition(template)});        
+        },0);
+      }    
     }
 
   },
@@ -574,12 +1697,15 @@ var chihuo = {
   splashShow: function(func,time){
     var $splash = $('#splash');
     if($splash.length){
-      app_router.navigate('Index',{
-        trigger: true
-      });
+      if(!(newChihuo.getPage('map') || newChihuo.getPage('map2') || newChihuo.getPage('restaurantMaps'))){
+         app_router.navigate('Index',{
+         trigger: true
+          });
+        }
+     
       newChihuo.splash = true;
       $splash.html('<p><img src="imgs/logo.png"><img src="imgs/foodymonkey.jpg"></p>').show();
-      func && func();
+      // func && func();
       setTimeout(function(){
         $splash.hide().html('');
         newChihuo.splash = false;
@@ -589,7 +1715,7 @@ var chihuo = {
 
   matchCityInfo: function(city,template){
     var pop = $('#popInfo');
-    var info ='<p>change your current city?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+    var info ='<p>'+newChihuo.localize('change_your_city')+'</p><div class="error-pop"><span class="close-pop">'+newChihuo.localize('cancel')+'</span><span class="refresh">'+newChihuo.localize('global_okbutton')+'</span></div>'
        pop.html(info).addClass('pop-info-show');
        $(".error-pop .close-pop").on('click',function(){
            pop.removeClass('pop-info-show').html('');
@@ -599,21 +1725,26 @@ var chihuo = {
        $(".error-pop .refresh").on('click',function(){
            pop.removeClass('pop-info-show').html('');
            newChihuo.city = city;
+           newChihuo.setLocalStorage('city',newChihuo.city);
            newChihuo.setCity = false;
            newChihuo.splash = false;
            newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
            newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
           
        });
-
-
   },
 
   opacityBg: function(obj,scroll){
     var height = $(obj).height();
     if(scroll > height){
+      if($('.rank-ul').length){
+         $(obj).css('opacity',1).addClass('rank-ul-fixed');
+      }
       return;
     }else{
+      if($('.rank-ul').length &&  $(obj).hasClass('rank-ul-fixed')){
+         $(obj).removeClass('rank-ul-fixed');
+      }
       var opacity = (1-scroll/height);
       $(obj).css({'opacity':opacity});
     }
@@ -624,18 +1755,28 @@ var chihuo = {
      clearInterval(newChihuo.positionTime);
      newChihuo.positionTime = setInterval(function(){navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);  
     // onSuccess Geolocation
-    function onSuccess(position) {
+    function onSuccess(position){
       var newLat = position.coords.latitude;
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
-      newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);     
-    }    
+      (change || newChihuo.setCity) && newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);     
+    }  
+
+    function setTimeoutIndex(){
+      newChihuo.city = newChihuo.getLocalStorage('city');
+      newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
+      newChihuo.setLocalStorage('city',newChihuo.city);
+      newChihuo.lat = newChihuo.getLocalStorage('lat') || newChihuo.lat;
+      newChihuo.lon = newChihuo.getLocalStorage('lon') || newChihuo.lon;
+      newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+      newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+    }
+
+    setTimeoutIndex();
            
     // onError Callback receives a PositionError object
     function onError(error) {
-         newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
-         newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-         newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+      console.log(error);
     }
      
   },
@@ -646,7 +1787,8 @@ var chihuo = {
       if(lat && lon){
         $.ajax({
           type: 'GET',
-          url: 'https://nominatim.openstreetmap.org/reverse?format=xml&zoom=18&addressdetails=1&format=json',
+          url: newChihuo.geosrvUrl + '/reverse?format=json&_mtk=wk2018',  // 无法跨域传cookies
+          // 'https://nominatim.openstreetmap.org/reverse?format=xml&zoom=18&addressdetails=1&format=json',
           data:{
               lat: lat,
               lon: lon
@@ -658,16 +1800,15 @@ var chihuo = {
               newChihuo.localCity = newLocation;
                if(refresh || newChihuo.localCity){
                 if((newChihuo.city != newChihuo.localCity) && newChihuo.setCity && showCityInfo){
-                 newChihuo.getPage('home') && chihuo.matchCityInfo(newChihuo.localCity,template);
+                  newChihuo.getPage('home') && chihuo.matchCityInfo(newChihuo.localCity,template);
                 }
                 if(newChihuo.city != newChihuo.localCity){
                    //后期优化添加界面和数据符合才渲染模板
-                   newChihuo.city = newChihuo.city == null ?  newChihuo.localCity :  newChihuo.city;
-                   newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-                    newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+                  newChihuo.city = newChihuo.city == null ?  newChihuo.localCity :  newChihuo.city;
+                  newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
+                  newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
                 }
-               }
-              
+               }       
             },
           error: function () {
               newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
@@ -694,8 +1835,8 @@ var chihuo = {
                         newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData)); 
                      }
                   },
-                  error: function(){
-                    newChihuo.showPopInfo('网络错误，请下拉刷新重试');
+                 error: function(){
+                    newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh_network'));
                   } 
               });        
   },
@@ -715,7 +1856,7 @@ var chihuo = {
                                 if(data.data && data.data.length){
                                   initData.homeData.detailData = chihuo.dealData(data.data,'categoryid');
                                 }else{
-                                  newChihuo.showPopInfo('查询结果为空，为您显示多伦多的数据');
+                                  newChihuo.showPopInfo(newChihuo.localize('switch_to_toronto'));
                                   initData.homeData.cityData[0].cityname = 'toronto';
                                   chihuo.findHotspotDetails('toronto',lat,lon,template);
                                 }
@@ -723,7 +1864,7 @@ var chihuo = {
                                }
                             },
                             error: function(){
-                              newChihuo.showPopInfo('网络错误，请下拉刷新重试');
+                              newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh_network'));
                             }
 
                         });
@@ -754,17 +1895,43 @@ var chihuo = {
 
                                  });
                                  if(newChihuo.msg > 0){
-                                  $('#msgRemind').addClass('message-remind').click(function(){
-                                         $('#msgRemind').removeClass('message-remind');
-                                         newChihuo.msg = 0;
-                                    });
-                                  }
-
+                                    $('#msgRemind').addClass('message-remind');
                                  }
+                                 //好友请求消息提醒
+                                 var friendReq = data.pp['29'];
+                                 friendReq && friendReq.length && $.each( friendReq, function(index,value){
+                                     newChihuo.friendReq += parseInt(value['v']);
+                                     if(newChihuo.requestList.hasOwnProperty(value['s'])){
+                                      newChihuo.requestList[value['s']] += parseInt(value['v']);
+                                     }else{
+                                      newChihuo.requestList[value['s']] = parseInt(value['v']);
+                                     }
+
+                                 });
+                                 if(newChihuo.friendReq > 0){
+                                    $('#msgIndex').addClass('message-remind');
+                                    $('#msgPoint').addClass('floor-point');
+                                    $('#msgPoint2').addClass('request-point');
+                                 }
+
+                              }
                               if(data.bc && !$.isEmptyObject(data.bc)){
-                                $('#msgFeeds').addClass('message-remind').click(function(){
-                                         $('#msgFeeds').removeClass('message-remind');
-                                    });
+                               if(!_.isEqual(newChihuo.activityObj,data.bc)){
+                                newChihuo.activityObj = data.bc;
+                                newChihuo.activityNum++;
+                                $('#msgFeeds').addClass('message-remind');
+                               }                            
+                              }
+
+                              if(!$.isEmptyObject(newChihuo.requestList) || !$.isEmptyObject(newChihuo.msgList) || newChihuo.activityNum){
+                                var allNum = newChihuo.activityNum + Object.keys(newChihuo.requestList).length + Object.keys(newChihuo.msgList).length;
+                                cordova.plugins.notification.badge.hasPermission(function (granted) {
+                                  cordova.plugins.notification.badge.set(allNum);
+                                });
+                              }else{
+                                 cordova.plugins.notification.badge.hasPermission(function(granted) {
+                                  cordova.plugins.notification.badge.clear();
+                                });
                               }    
                               
                             },
@@ -850,11 +2017,10 @@ var chihuo = {
           data.sort(this.sortBy(attr)).reverse();
         }
       }
-      console.log(data);
       return data;
   },
 
-  beginSort(index,obj,data,like,price,distance){
+  beginSort: function(index,obj,data,like,price,distance){
     var query = $(obj).hasClass('toggle') ? 'asc' : 'desc';
       if(index == 0){
           $('.rank-ul li').eq(1).removeClass('cur toggle');
@@ -885,11 +2051,13 @@ var chihuo = {
     newChihuo.map = L.map('leafletMap').setView([mapData[0].address_latitude,mapData[0].address_longitude], 15);
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 15,
+        maxZoom: 18,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'
+        id: 'mapbox.streets',
+		// retina: '@2x',
+		detectRetina: true
       }).addTo(newChihuo.map);
     },
 
@@ -898,25 +2066,25 @@ var chihuo = {
     if(mapData && mapData.length){
      newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
           iconUrl: 'imgs/marker2.png',
-          iconSize: [45, 50],
-          iconAnchor: [22, 94],
-          popupAnchor: [0, -90],
+          iconSize: [40, 40],  // [45, 50],
+          iconAnchor: [22, 40], // [22, 94],
+          popupAnchor:  [0, -40], // [0, -90],
           className: 'set-index'
       });
 
       newChihuo.myIcon2 =  newChihuo.myIcon2 || L.icon({
           iconUrl: 'imgs/marker.png',
-          iconSize: [24, 40],
-          iconAnchor: [22, 94],
-          popupAnchor: [-10, -90],
+          iconSize: [20, 34], // [24, 40],
+          iconAnchor: [11, 34], // [22, 94],
+          popupAnchor:  [0, -34], //  [-10, -90],
       });
        for (var i= 0; i< mapData.length; i++) {
       var mark = L.marker([mapData[i].address_latitude,mapData[i].address_longitude],{icon: i==index ? newChihuo.myIcon1 : newChihuo.myIcon2 }).addTo(newChihuo.map);
           newChihuo.markerWrap.push(mark);
           if(i==index){
-            mark.bindPopup(i+1+": "+mapData[i].rest_name).openPopup();
+            mark.bindPopup('<span class="get-direction go-direction" lat ="'+mapData[i].address_latitude+'" lng="'+mapData[i].address_longitude+'"  name = "'+mapData[i].rest_name+'">'+mapData[i].rest_name+'<br>Get Directions</span>').openPopup();
           }else{
-            mark.bindPopup(i+1+": "+mapData[i].rest_name);
+            mark.bindPopup('<span class="get-direction go-direction" lat ="'+mapData[i].address_latitude+'" lng="'+mapData[i].address_longitude+'"  name = "'+mapData[i].rest_name+'">'+mapData[i].rest_name+'<br>Get Directions</span>');
           }
       }  
     }
@@ -945,9 +2113,9 @@ var chihuo = {
     var base64data = canvas.toDataURL(fileType, q);
 
     var initSize = img.src.length;
-    //wkapp160922  console.log('压缩前：', initSize);
-    //wkapp160922  console.log('压缩后：', base64data.length);
-    //wkapp160922  console.log('压缩率：', 100 * (initSize - base64data.length) / initSize, "%");
+    // console.log('压缩前：', initSize);
+    // console.log('压缩后：', base64data.length);
+    // console.log('压缩率：', 100 * (initSize - base64data.length) / initSize, "%");
 
     canvas = ctx = null;
 
@@ -957,7 +2125,7 @@ var chihuo = {
 
   imgstrupload: function() { 
 
-    return "http://staging.wookongcorp.com/wkfdmk/imagestrupload.j";
+    return newChihuo.address + "/wkfdmk/imagestrupload.j";
   },
 
   uploadusrphotostr: function() { 
@@ -968,13 +2136,14 @@ var chihuo = {
 
 var photoUse={
     bindEvents: function(cb){
+      newChihuo.resumeOff = true;
       $('.photo-select-wrap').addClass('show-photo-select');
-      $('.photo-action1').on('click',function(){
+      $('.photo-action1').off('click').on('click',function(){
         photoUse.init(cb);
         $('.photo-select-wrap').toggleClass('show-photo-select');
       });
 
-       $('.photo-action2').on('click',function(){
+       $('.photo-action2').off('click').on('click',function(){
         photoUse.doUploadPhoto(cb);
         $('.photo-select-wrap').toggleClass('show-photo-select');
       });
@@ -998,7 +2167,7 @@ var photoUse={
           }
 
           if(!($.trim(file.name).toLowerCase().indexOf('.jpg') > -1 || $.trim(file.name).toLowerCase().indexOf('.jpeg') > -1 || $.trim(file.name).toLowerCase().indexOf('.png') > -1)) {
-            alert(getWKLocaleSrc('不支持当前所选文件的类型或格式，请选择一个图片文件，最好是jpg图片文件，再试一次...'));
+            alert('Please chose a jpg, jpeg, or png image file. '); // getWKLocaleSrc('不支持当前所选文件的类型或格式，请选择一个图片文件，最好是jpg图片文件，再试一次...'));
           }
 
           var reader = new FileReader();
@@ -1007,7 +2176,7 @@ var photoUse={
             var img = new Image();
             // 如果图片大于 10 M，不允许上传
             if (result.length > chihuo.picMaxSize) {
-              alert(getWKLocaleSrc('图片尺寸太大，请选择较小的图片上传...'));
+              alert('Image is too large, please chose a smaller one and try again.'); // getWKLocaleSrc('图片尺寸太大，请选择较小的图片上传...'));
               $(formSelector + " input").remove();
               return;
             }
@@ -1032,6 +2201,7 @@ var photoUse={
                        $('.comment-photo-wrap').prepend(html);
                        var src = newChihuo.address+'/'+data.url;
                        cb && cb(src);
+                       newChihuo.resumeOff = false;
                     } else {
                       
                     }
@@ -1115,6 +2285,7 @@ var photoUse={
                        $('.comment-photo-wrap').prepend(html);
                        var src = newChihuo.address+'/'+data.url;
                        cb && cb(src);
+                       newChihuo.resumeOff = false;
                        // $('.comment-photo-wrap').prepend(data);
 
                         // $('.user-textarea').val(data);
@@ -1126,7 +2297,7 @@ var photoUse={
                 };
 
                 var onError = function (data) {
-                   newChihuo.showPopInfo('上传失败');
+                   newChihuo.showPopInfo(newChihuo.localize('fail_to_upload_photo'));
                 };
 
                 var callback = function (bSuccess, result) {
@@ -1185,7 +2356,7 @@ var photoUse={
             }
 
             if(!($.trim(file.name).toLowerCase().indexOf('.jpg') > -1 || $.trim(file.name).toLowerCase().indexOf('.jpeg') > -1 || $.trim(file.name).toLowerCase().indexOf('.png') > -1)) {
-                alert(getWKLocaleSrc('不支持当前所选文件的类型或格式，请选择一个图片文件，最好是jpg图片文件，再试一次...'));
+                alert('Please chose a jpg, jpeg, or png image file. '); // getWKLocaleSrc('不支持当前所选文件的类型或格式，请选择一个图片文件，最好是jpg图片文件，再试一次...'));
             }
 
             var reader = new FileReader();
@@ -1194,7 +2365,7 @@ var photoUse={
                 var img = new Image();
                 // 如果图片大于 10 M，不允许上传
                 if (result.length > chihuo.picMaxSize) {
-                    alert(getWKLocaleSrc('图片尺寸太大，请选择较小的图片上传...'));
+                    alert('Image is too large, please chose a smaller one and try again.'); // getWKLocaleSrc('图片尺寸太大，请选择较小的图片上传...'));
                     $(formSelector + " input").remove();
                     return;
                 }
@@ -1287,8 +2458,8 @@ var contact = {
 
     function gotContacts(c) {
       // console.log("gotContacts, number of results "+c.length);
-      initData.chatInviteData.data = c;
-      (initData.chatInviteData.data.length > 0) && cb && cb(c);
+      initData.contactData.data = c;
+      (c.length > 0) && cb && cb(c);
       
       
       // for(var i=0, len=c.length; i<len; i++) {
@@ -1328,7 +2499,28 @@ var contact = {
 }
 
 
+var WK_OPEN_MAP_APP = function (lat, lng, label) {
+    var geocoords = lat + ',' + lng;
+    var u = navigator.userAgent
+    var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    var Android = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
 
+    //if ((navigator.platform.indexOf('iPhone') != -1) || (navigator.platform.indexOf('iPad') != -1) || (navigator.platform.indexOf('iPod') != -1)) {
+    //    iOS = true
+    //}
+    //var Android = false;
+    //if ((navigator.platform.indexOf('Android') != -1) || (navigator.platform.indexOf('android') != -1) || (navigator.platform.indexOf('ANDROID') != -1)) {
+    //    Android = true
+    //}
+    var mlabel = encodeURI(label);
+    if (iOS) {
+        window.open('maps://?q=' + geocoords, '_system');
+    } else if (Android) {
+        window.open('geo:0,0?q=' + geocoords + '(' + mlabel + ')', '_system');
+    } else {
+        window.open('http://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
+    }
+}
 
 
 

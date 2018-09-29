@@ -11,10 +11,11 @@ define([
      'click .chatApply':'sendchatInvite'
     },
 
-    render: function(id,name){
+    render: function(id,name,from){
       newChihuo.setPage('chatApply');
       newChihuo.windowInit();
       this.$el.html(_.template(chatApplyTemplate,{id:id,name:name}));
+      newChihuo.chatFrom = from;
     },
 
     sendchatInvite: function(e){
@@ -23,15 +24,15 @@ define([
           type: 'POST',
           url: chihuo.getApiUri('sendFriendReq.json'),
           data:{
-            fid: id,
+            fid: id || 617344,
             lat: newChihuo.lat,
             lng: newChihuo.lon,
             locale: 'en'
           },
           success: function (data) {
             if(data.status == 0){
-              newChihuo.showPopInfo('请求发送成功',1200,function(){
-                 app_router.navigate('chatInvite',{
+              newChihuo.showPopInfo(newChihuo.localize('request_success'),1200,function(){
+                 app_router.navigate(!newChihuo.chatFrom ? 'chatInvite' : 'myIndex/'+newChihuo.chatFrom,{
                   trigger: true
                 });
               });

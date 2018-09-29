@@ -41,8 +41,8 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li class="cur">
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" class="cur <%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%>">
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -51,12 +51,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+      <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="javascript:;"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

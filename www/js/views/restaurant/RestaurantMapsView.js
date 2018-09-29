@@ -33,18 +33,18 @@ define([
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                   '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                   'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                id: 'mapbox.streets'
+                id: 'mapbox.streets',
+                  detectRetina: true
               }).addTo(newChihuo.map);
 
               newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
                   iconUrl: 'imgs/marker2.png',
-                  iconSize: [45, 50],
-                  iconAnchor: [22, 94],
-                  popupAnchor: [0, -90],
+                  iconSize: [40, 40], // [45, 50],
+                  iconAnchor: [22, 40], // [22, 94],
+                  popupAnchor: [0, -40],
                   className: 'set-index'
               });
-
-             L.marker([initData.restaurantData.data[0].addr_lat,initData.restaurantData.data[0].addr_lng],{icon:  newChihuo.myIcon1 }).addTo(newChihuo.map).bindPopup(initData.restaurantData.data[0].rest_name).openPopup();
+             L.marker([initData.restaurantData.data[0].addr_lat,initData.restaurantData.data[0].addr_lng],{icon:  newChihuo.myIcon1 }).addTo(newChihuo.map).bindPopup('<span class="get-direction go-direction" lat ="'+initData.restaurantData.data[0].addr_lat+'" lng="'+initData.restaurantData.data[0].addr_lng+'"  name = "'+initData.restaurantData.data[0].rest_name+'">'+initData.restaurantData.data[0].rest_name+'<br>Get Directions</span>').openPopup();
               
 
             }

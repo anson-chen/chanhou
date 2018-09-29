@@ -33,7 +33,7 @@
 			<div style="position:relative;">
 			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
-			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
+			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><%if(d.chihuo_distance){%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%}%><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
@@ -83,14 +83,14 @@
 		<div class="wrap-border clearfix">
 			<div class="rest-detail">
 				<div class="detail-border">
-					<a href="#foodMenu/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('')%>更多美食</a>
+					<a href="#foodMenu/<%=d.rest_id%>" class="title-more-link"><%=newChihuo.localize('restaurant_more_info')%></a>
 					<h3 class="detail-block-title title-icon1"><%=newChihuo.localize('global_var_dishes')%></h3>
 				</div>
 			</div>	
 			<div class="swiper-container" id="rest-food">
 			    <div class="swiper-wrapper">
 			   		 <%_.each(d.concat_menu_keyval.split(','),function(k,i){%>
-			            <div class="swiper-slide index-dish-img"><a href="#foodMenu/<%=d.rest_id%>/<%=k.split(';')[0]%>"><img src="imgs/zfx-pt.jpg"><p class="para-set" style="height:auto;"><%=k.split(';')[0]%> (<%=k.split(';')[1]%>)</p></a></div>
+			            <div class="swiper-slide index-dish-img"><a href="#foodMenu/<%=d.rest_id%>/<%=k.split(';')[0]%>"><img src="imgs/zfx-pt.jpg" style="border-radius:8px;"><p class="para-set" style="height:auto;"><%=k.split(';')[0]%> (<%=k.split(';')[1]%>)</p></a></div>
 			    	<%})%>        
 			    </div>
     		</div>
@@ -178,11 +178,21 @@
 			</div>	
 			<div class="swiper-container" id="rest-like">
 			    <div class="swiper-wrapper">
-			    <%_.each(JSON.parse(d.recomm_rests),function(d,i){%>
-			            <div class="swiper-slide index-dish-img"><a href="#restaurant/<%=d.restid%>"><img src="<%if(d.photo_url){%><%=d.photo_url%><%}else{%>imgs/pt1.png<%}%>">
-			            	<div class="rest-like"><p class="para-set"><%=d.rest_name%></p><div class="like-para"><%=d.cuisine%><span style="color:#ff8b4c; padding-left:10px;"><%=d.price%></span><br><%=d.city%> <%=newChihuo.showDistanceInfo(d.distance.toFixed(2))%><br><%if(d.total_like_percentage){%><%=d.total_like_percentage%>% <%=newChihuo.localize('global_var_like')%><%}%></div></div>
-			            	</a>
-			            </div>
+			    <%_.each(JSON.parse(d.recomm_rests),function(d,i){%>      
+			      <div class="swiper-slide index-dish-img">
+                  <div class="father-wrap">
+                    <a href="#restaurant/<%=d.restid%>">
+                    <div class="img-middle-wrap"><img src="<%if(d.photo_url){%><%=d.photo_url%><%}else{%>imgs/pt1.png<%}%>"></div></a>
+                    <div class="rest-like">
+                      <p class="para-set"><%=d.rest_name%><%if(d.restpermitpassflg=='Y'){%><i class="pass-icon"></i><%}%></p>
+                      <div class="like-para">
+                        <span style="color:#ff8b4c; padding:0 5px 0 0;"><%=d.price%></span>
+                        <span class="reset-bg5" style="padding-left:18px;"><%=d.total_like_percentage || 60%>%</span>
+                        <img src="<%if(d.restfollowingflg == 'Y'){%><%=staticSource.restIcon3%><%}else{%><%=staticSource.restIcon4%><%}%>" class="hot-set-img <%if(d.restfollowingflg == 'Y'){%>hot-follow-done<%}else{%>hot-follow<%}%>" rest=<%=d.restid%> />
+                      </div>
+                    </div>
+                    </div>
+                  </div>
 			    <%})%>
 			    </div>
     		</div>
@@ -192,8 +202,8 @@
 </div>
 <div class="photo-select-wrap">
 	<ul>
-		<li class="photo-action1">拍照</li>
-		<li class="photo-action2">从手机相册选择</li>
+		<li class="photo-action1"><%=newChihuo.localize('photo_source_camera')%></li>
+		<li class="photo-action2"><%=newChihuo.localize('photo_source_photo_librarry')%></li>
 	</ul>
 	<form id="usr-formPhoto" style="display:none;">
 		

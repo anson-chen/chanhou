@@ -13,14 +13,14 @@
             </div>
             <div style="margin-left:100px;">
                <h3 class="rest-name-title" style="margin-right:15px;"><%=d.rest_name%></h3>
-                 <p class="rest-info-show" style="padding-top:5px;line-height:20px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding-left:5px;">$<%=d.unit_price%></span><br><%if(d.cust_distance){%><%=d.cust_distance%>km<%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%><div style="padding:0 10px; height:42px; overflow:hidden;"><%=d.rest_mi_desc%></div></p>
+                 <p class="rest-info-show" style="padding-top:5px;line-height:20px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding-left:5px;">$<%=d.unit_price%></span><br><%if(d.cust_distance){%><%=newChihuo.showDistanceInfo(d.cust_distance)%><%}%><%if(d.total_likes_perc){%><span class="reset-style1 reset-bg5" style="margin-left:8px;"><%=parseInt(d.total_likes_perc)%>%</span><%}%><div style="padding:0 10px; height:42px; overflow:hidden;"><%=d.rest_mi_desc%></div></p>
             </div>
             </a>
         </div>
 	<%})%>	
 </div>
 <div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
-</div>
+        <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+        <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+        <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
+    </div>

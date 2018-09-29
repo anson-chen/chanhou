@@ -17,7 +17,9 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 20
+      ct: 20,
+      lat: null,
+      lng: null,
     },
      search: {
        showPop: false,
@@ -73,6 +75,9 @@ define([
         filters = chihuo.setSearch;
         chihuo.setSearch = null;
       }
+      if(distance == 'all' && resttype == 'all' && price == 'all' && cuisine == 'all' && openhours == 'all' && features == 'All'){
+          filters = '';
+      }
               chihuo.wkAjax({
                   type: 'GET',
                   url: chihuo.getApiUri('findNearbyRestsWithRange2.json'),
@@ -93,7 +98,7 @@ define([
                           _this.status.sendRequest = true;
                         }
                         if(data.data.length == 0){
-                          newChihuo.showPopInfo('Not lucky! Restaurant not fund.');
+                          newChihuo.showPopInfo(newChihuo.localize('no_restaurants_in_slot'));
                           return;
                         } 
                         if(num == 0){
@@ -104,7 +109,8 @@ define([
                           _this.$el.html(_.template(mapTemplate,initData.restaurantNearData));
                           _this.bindEvents();
                           _this.statusSave();
-                          
+                          _this.status.lat = lat || newChihuo.lat;
+                          _this.status.lng = lng || newChihuo.lon;
                         } 
                         
                      }
@@ -114,7 +120,7 @@ define([
     },
 
     statusSave: function(){
-      this.search.showPop ? $('.map-mask').show() : $('.map-mask').hide();
+      this.search.showPop ? $('.map-mask,.search-set-fix').show() : $('.map-mask,.search-set-fix').hide();
       $('.address-filter').val(this.search.addr=='null' ? '' : this.search.addr);
       $('#distance').children().removeClass('cur').eq(this.search.distance).addClass('cur');
       $('#resttype').children().removeClass('cur').eq(this.search.resttype).addClass('cur');
@@ -132,7 +138,7 @@ define([
       event.preventDefault();
       $('.map-input').val().length && chihuo.wkAjax({
                   type: 'GET',
-                  url: "https://nominatim.openstreetmap.org/search?format=json",
+                  url: newChihuo.geosrvUrl + '/search?format=json&_mtk=wk2018', // 无法跨域传cookies // "https://nominatim.openstreetmap.org/search?format=json",
                   data: {
                      q: $('.map-input').val()
                   },
@@ -167,6 +173,18 @@ define([
 
     },
 
+    checkPosition: function(lat,lng,distance){
+      var latLong = Math.abs(lat-this.status.lat);
+      var lngLong = Math.abs(lng-this.status.lng);
+      var distance = distance || 0.005;
+      if(latLong > distance || lngLong > distance){
+         return true;
+      }else{
+         return false;
+      }
+
+    },
+
     bindEvents: function(){
       var _this = this;
       var time;
@@ -179,13 +197,9 @@ define([
             newChihuo.map && newChihuo.map.on('moveend',function(ev){
                clearTimeout(time);
               time = setTimeout(function() {    
-                _this.status.sendRequest && _this.initData(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng);
+                _this.status.sendRequest && _this.checkPosition(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng) && _this.initData(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng);
               },800);             
             });
-            // newChihuo.mapListener && google.maps.event.removeListener(newChihuo.mapListener);
-            // newChihuo.mapListener = google.maps.event.addListener(newChihuo.map,'center_changed',function(){
-             
-            // })
 
         },
         onSlideChangeStart: function(swiper){
@@ -228,7 +242,16 @@ define([
 
       $(".right-set-info span").on('click',function(){
         if($(this).parent().hasClass('set-feature')){
-         $(this).toggleClass('cur');
+          var index = $(this).index();
+          if(index == 0){
+            $(this).addClass('cur').siblings().removeClass('cur');;
+          }else{
+             $(this).toggleClass('cur');
+             $(this).parent().children().eq(0).removeClass('cur');
+            if($(this).parent().find('.cur').length == 0){
+             $(this).addClass('cur');
+            }
+          }
           _this.status.st = 0;
           _this.initData();
          return;
@@ -244,12 +267,12 @@ define([
       });
 
       $(".hover-map").on('click',function(){
-         $(".map-mask").show();
+         $(".map-mask,.search-set-fix").show();
           _this.search.showPop = true;
       });
 
       $(".close-map-mask").on('click',function(){
-         $(".map-mask").hide();
+         $(".map-mask,.search-set-fix").hide();
           _this.search.showPop = false;
       });
 
@@ -259,12 +282,15 @@ define([
 
       $(".select-dish-mask").on('click',function(){
          $(".dish-mask-list,.search-mask").show();
+         $(".search-set-fix").hide();
       });
 
        $(".dish-mask-list p").on('click',function(){
           $(this).addClass('cur').siblings().removeClass('cur');
           $(".search-mask,.dish-mask-list").hide();
           $('.select-dish-mask').eq(0).find(".set-floor-select").text($(this).text());
+          _this.status.st = 0;
+         _this.initData();
       });
 
     }

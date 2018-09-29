@@ -34,6 +34,7 @@ define([
                      if(data.status == 0){
                       initData.chatAddData.data = data.data;
                         newChihuo.getPage('chatAdd') && _this.$el.html(_.template(chatAddTemplate,initData.chatAddData));
+                        newChihuo.getPage('chatAdd') && !initData.chatAddData.data.length && chihuo.setNoDataInfo();
                      }
                   } 
               });   

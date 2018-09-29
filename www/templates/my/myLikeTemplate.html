@@ -4,8 +4,7 @@
 		<h3><%=newChihuo.localize('profile_footprint_likes_header')%></h3>
 	</nav>
 	<div class="food-list-nav clearfix" id="likeTab">
-		<a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
-		<a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
+		<a href="javascript:;" class="cur" style="width:40%; margin:0 30%;"><%=newChihuo.localize('global_var_restaurants')%></a>
 	</div>
 </div>
 <div class="rest-list-wrap" style="padding-bottom:70px;">
@@ -29,45 +28,28 @@
 				</div>
 			</div>
 			<%})%>
-			 <div class="loading-wrap" id='specialLoad'>
-			    <p class="loading-step1" style="display:none;">加载更多</p>
-				<p class="loading-step2">加载中</p>
-				<p class="loading-step3" style="display:none;">没有更多了~~</p>
+			<div class="loading-wrap" id='specialLoad'>
+			    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+				<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+				<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 			</div>
 			<%}else{%>
 			<div class="whoops"></div>
 			<%}%>
 	    	</div>
 	    </div>
-	    <div class="swiper-slide">
-	    	<div class="tab-swiper-wrap">
-		    	<div class="wrap-border clearfix">
-					<div class="food-list-icon8">
-					半小时 <%=newChihuo.localize('global_var_ago')%>
-					</div>
-					<div class="food-img">
-						<img src="imgs/map-img.jpg">
-					</div>
-					<div style="margin-left:100px;">
-						<h3 class="rest-name-title">小柔回锅肉</h3>
-						<p class="rest-info-show" style="padding-top:5px;">全聚德总店<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>89% <%=newChihuo.localize('global_var_like')%><br>川菜 800cals  100mg
-						<br></p>
-					</div>
-				</div>
-	   		</div>
-		</div>
 	</div>
 </div>	    		
 </div>
 <div class="rest-fix-bottom">
-    <ul class="clearfix">
+   <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -76,12 +58,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind" class="cur">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
@@ -90,13 +72,13 @@
   </div>
 </div>
 <script type="text/javascript">
-	var swiperLike = new Swiper('#like-swiper', {
-        slidesPerView: 'auto',
-        onSlideChangeEnd: function(swiper){
-        	$("#likeTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
-        }
+	// var swiperLike = new Swiper('#like-swiper', {
+ //        slidesPerView: 'auto',
+ //        onSlideChangeEnd: function(swiper){
+ //        	$("#likeTab a").eq(swiper.activeIndex).addClass('cur').siblings().removeClass('cur');
+ //        }
 
-    });
+ //    });
 </script>	
 
 

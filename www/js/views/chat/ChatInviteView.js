@@ -76,10 +76,10 @@ define([
                           for( var i = 0; i < data.data.length; i++){
                           html += '<div class="chat-people-list" style="margin:5px 12px;">'
                                   +'<div class="rest-comment-head clearfix">'
-                                      +'<a href="#chatApply/'+data.data[i].customer_id+'/'+encodeURIComponent($('.invite-input').val())+'">'+ (data.data[i].following_flg == 'N' ? '<button class="chat-add-button" customer="'+ data.data[i].customer_id +'">invite</button>' : '<span class="chat-add-word">已添加</span>') +'</a>'
+                                      +'<a href="#chatApply/'+data.data[i].customer_id+'/'+encodeURIComponent($('.invite-input').val())+'">'+ (data.data[i].following_flg == 'N' ? '<button class="chat-add-button" customer="'+ data.data[i].customer_id +'">add</button>' : '<span class="chat-add-word">added</span>') +'</a>'
                                     +'<img src='+(data.data[i].profile_photo_url ? data.data[i].profile_photo_url : "imgs/photo.png") +' class="comment-left-img">' 
                                       +'<div class="comment-right-info">'
-                                        +'<h3 style="background:none;" class="search-name-show">'+$('.invite-input').val()+'</h3>'        
+                                        +'<h3 style="background:none;" class="search-name-show">'+(data.data[i].display_name ? data.data[i].display_name : $('.invite-input').val())+'</h3>'        
                                       +'</div>'
                                   +'</div>'
                               +'</div>'
@@ -88,7 +88,7 @@ define([
                           $('.search-chihuo-list').html(html);
 
                         }else{
-                          newChihuo.showPopInfo('搜索结果为空');
+                          newChihuo.showPopInfo(newChihuo.localize('no_results'));
                           $('.search-chihuo-list').html('');
                         }
                         
@@ -125,7 +125,7 @@ define([
                     }
 
                     if(data.data.length == 0){
-                      newChihuo.showPopInfo('通讯录中暂无馋猴好友');
+                      newChihuo.showPopInfo(newChihuo.localize('no_foodies_in_pb'));
                     }
                     
                   }

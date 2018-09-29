@@ -18,10 +18,11 @@ require.config({
     mobiscroll: '../mobiscroll/js/mobiscroll',
     slotmachine: 'jquery.slotmachine',
     iscroll: 'iscroll',
-    radialIndicator:'radialIndicator',
-    touche:'touche',
-    pullRefresh:'p-pull-refresh',
+    radialIndicator: 'radialIndicator',
+    touche: 'touche',
+    pullRefresh: 'p-pull-refresh',
     auth0cordova: 'auth0cordova',
+    cordovaAuth0plugin: 'cordova-auth0-plugin'
   }
 
 });

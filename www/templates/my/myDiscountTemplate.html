@@ -52,17 +52,14 @@
 	</div>
 </div>
 <%}else{%>
-<div class="whoops">
-   <p>It looks like you don't have any data yet.</p>
-   <span>let's change that!<b>start exploring dishes and place now</b>& well save it here for later.</span>
-   <a href="#index">Begin Exploring</a>
-</div>
+<div class="whoops"></div>
 <%}%>
 </div>		
 <div class="search-mask">
+<a href="javascript:;" class="close-map-mask close-index-city" style="right:240px;">+</a>
     <div class="city-mask-list" id="discountCity">
     <%_.each(cityData, function(d,i) {%>
-      <p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p>
+      <%if(d){%><p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p><%}%>
     <%})%>
     </div>
 </div>
@@ -73,8 +70,8 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -83,12 +80,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

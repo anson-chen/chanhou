@@ -30,7 +30,7 @@ define([
        pop.html(info).addClass('pop-info-show');
        $(".error-pop .close-pop").on('click',function(){
            pop.removeClass('pop-info-show').html('');
-           newChihuo.showPopInfo("Not problem my friend,  you can change it anytime you want, it helps you to gain another 100 points!",1200);
+           newChihuo.showPopInfo(newChihuo.localize('okay_to_change_later'),1200);
                 setTimeout(function(){
                  app_router.navigate('Index',{
                   trigger: true
@@ -77,12 +77,21 @@ define([
             if (data.status == 0) {
               if(data.data[0].status_code == 0){
                 newChihuo.customerId = data.data[0].customer_id;
+                newChihuo.customer = data.data[0].display_name;
                 newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
                 newChihuo.setLocalStorage('email_address',data.data[0].email_address);
                 newChihuo.setLocalStorage('password',password);
-                 newChihuo.showPopInfo("Congrats, my friend! Welcome to Foodymonkey！",1200);
+                newChihuo.setLocalStorage('loginType','chanhou');
+                 newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
                 setTimeout(function(){
-                 _this.loginPopInfo();
+                   if(data.data[0].display_name){
+                    app_router.navigate('Index',{
+                      trigger: true
+                    });
+                  }else{
+                    _this.loginPopInfo();
+                  }
+                 
                 },1400);
                 
               }else if(data.data[0].status_code == 10061){ 
@@ -92,12 +101,12 @@ define([
                 newChihuo.setLocalStorage('password','');
                _this.emailPopInfo();               
               }else if(data.data[0].status_code == 1003){ 
-                newChihuo.showPopInfo("账号密码不匹配",1200);             
+                newChihuo.showPopInfo(newChihuo.localize('username_password_not_match'),1200);             
               }else{
-               newChihuo.showPopInfo("登录失败",1200); 
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_login'),1200); 
               }
             }else{
-              newChihuo.showPopInfo("登录失败",1200);
+              newChihuo.showPopInfo(newChihuo.localize('fail_to_login'),1200);
             }
           },
           error: function () {
@@ -105,7 +114,7 @@ define([
           }
         });
       }else{
-         newChihuo.showPopInfo("请填写信息完整",1200);
+         newChihuo.showPopInfo(newChihuo.localize('need_to_enter_all'),1200);
         return false;
       }
     },
@@ -124,7 +133,7 @@ define([
               if(data.data[0].status_code == 0){
                 newChihuo.customerId = data.data[0].customer_id;
               }else{
-               newChihuo.showPopInfo("登录失败",1200);             
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_login'),1200);             
               }
             }
           },

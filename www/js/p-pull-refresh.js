@@ -7,7 +7,7 @@
 		isTouching = false,	// 触摸中标识
 		isEfec = false,	// 触摸是否生效
 		isDestory = false, 	// 是否销毁
-		startX, startY, disY = 0,	// 起始触摸X、y坐标， 移动Y坐标
+		startX, startY, disY, scrollTop = 0,	// 起始触摸X、y坐标， 移动Y坐标
 		loadingH = 0,	// laodingEl高度
 		options = {
 			$el: $('body'),	// 默认容器
@@ -19,7 +19,7 @@
 			// 浏览器中下拉默认事件一旦触发后，就不能再通过冒泡阻止此事件。
 			// chrome浏览器中大概是15PX左右的下拉后触发默认刷新，微信中大概是6像素左右。
 			// 如需在微信中使用，建议设置为6像素
-			startPX: 10, 	
+			startPX: 40, 	
 			callbacks: {
 				pullStart: null,	// 拖动开始
 				start: null,	// 开始请求数据
@@ -49,7 +49,7 @@
 	var reset = function(isAnim) {
 		isValid = false,	// 是否生效
 		isEfec = false,	// 触摸是否生效
-		startX, startY, disY = 0;
+		startX, startY, disY,scrollTop = 0;
 		isTouching = false;
     	runCb('end');
     	;
@@ -59,7 +59,7 @@
      *下拉刷新
      */
 	var touchStart = function(evt) {
-		var scrollTop = parseInt($(window).scrollTop());
+		scrollTop = parseInt($(window).scrollTop());
 		if(scrollTop > 0) return;
 		if(isDestory) return;
 		if(isTouching) return;
@@ -75,6 +75,7 @@
         //记录触点初始位置
         startX = x;
         startY = y;
+
 	}
 	
 	/**
@@ -90,7 +91,7 @@
         	y = parseInt(touch.pageY), //页面触点Y坐标
         	t = y - startY;			// 触摸距离isEfec
         //  距离必须大于灵敏距离触摸才生效
-        if(!isValid && t > options.startPX) {
+        if(!isValid && scrollTop==0 && t > options.startPX) {
         	isValid = true;
         	runCb('pullStart');
         }
@@ -145,11 +146,7 @@
 
 	    // 拖动高度未超过刷新显示容器高度
 	    if(t <= loadingH){
-	    	// $loadingEl.css('margin-top', -(loadingH-t));
-	    	// $loadingEl.height(loadingH);
-	    	// $loadingEl.animate({'margin-top': -loadingH}, 200, function() {
-	    	// 	isTouching = false;
-	    	// });
+	    	
 	    }
 	    
 	    // 拖动高度超过刷新显示容器高度

@@ -24,7 +24,7 @@ define([
       $("#email").on("blur",function(){
         if($.trim($("#email").val())){
           if(!_this.isEmail($(this).val())){
-            newChihuo.showPopInfo("请填写正确格式邮箱",1200);
+            newChihuo.showPopInfo(newChihuo.localize('please_enter_email_in_correct_format'),1200);
             return false;
           }
           // _this.validateEmail();
@@ -62,15 +62,26 @@ define([
       var email=$("#email").val();
       var password=$("#password").val();
       var repassword=$("#repassword").val();
+      var firstName=$("#firstName").val();
+      var lastName=$("#lastName").val();
+      var nickName=$("#nickName").val();
+      if(!$('.agree-check')[0].checked){
+         newChihuo.showPopInfo('请勾选声明选框',1200);
+         return false;
+      }
+      if($.trim(firstName).length < 3 ){
+          newChihuo.showPopInfo('firstName不能少于三个字符',1200);
+          return false;
+      }
      
      if($.trim(email)&& password && repassword){
         if(password!=repassword){
-           newChihuo.showPopInfo("密码输入不一致",1200);
+           newChihuo.showPopInfo(newChihuo.localize("password_doesn't match"),1200);
           return false;
         }
 
         if( password.length < 6){
-         newChihuo.showPopInfo("密码不能少于6位",1200);
+         newChihuo.showPopInfo(newChihuo.localize('minimum_password_length'),1200);
           return false;
         } 
       chihuo.wkAjax({
@@ -79,6 +90,9 @@ define([
         data:{
           acct: email,
           pass: password,
+          usrnickname: nickName,
+          usrfirstname: firstName,
+          usrlastname: lastName,
           lat: newChihuo.lat,
           lng: newChihuo.lon,
           locale: 'en'
@@ -86,16 +100,42 @@ define([
         success: function (data) {
           if (data.status == 0) {
             if(data.data[0].status_code == 0 || data.data[0].status_code){
-              newChihuo.showPopInfo("注册成功,请注意查收验证邮件",1200);
-              // newChihuo.customerId = data.data[0].customer_id;
-              // _this.confirmCust();
-              setTimeout(function(){
-                  app_router.navigate('Index',{
-                  trigger: true
-                });
-                },2000);
+              if(data.data[0].status_code==1001){
+                newChihuo.showPopInfo('Account has been registered ',1200);
+              }else{
+                 chihuo.wkAjax({
+                    type: 'POST',
+                    url: chihuo.getApiUri('rcLogin.json'),
+                    data:{
+                      acct: email,
+                      pass: password,
+                      lat: newChihuo.lat,
+                      lng: newChihuo.lon,
+                      locale: 'en'
+                    },
+                    success: function (data) {
+                      if (data.status == 0) {
+                        if(data.data[0].status_code == 0){
+                          newChihuo.customerId = data.data[0].customer_id;
+                          newChihuo.customer = data.data[0].display_name;
+                          newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
+                          newChihuo.setLocalStorage('email_address',email);
+                          newChihuo.setLocalStorage('password',password);
+                          newChihuo.setLocalStorage('loginType','chanhou');
+                          newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
+                          setTimeout(function(){
+                          app_router.navigate('myIndex',{
+                          trigger: true
+                            });
+                          },1400);
+                          
+                        }
+                    }
+                  }
+                  });   
+              }  
             }else{
-               newChihuo.showPopInfo("注册失败");
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
             }
     
           }
@@ -105,7 +145,7 @@ define([
         }
       });
      }else{
-       newChihuo.showPopInfo("请填写信息完整");
+       newChihuo.showPopInfo(newChihuo.localize('need_to_enter_all'));
        return false;
      }
    },
@@ -127,7 +167,7 @@ define([
               //     trigger: true
               // });
             }else{
-               newChihuo.showPopInfo("注册失败");
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
             }
     
           }

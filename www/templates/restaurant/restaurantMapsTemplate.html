@@ -9,6 +9,7 @@
 		
 	</div>
 </div>
+<%if(data[0]){%>
 <div class="map-fix-rest">
 <div class="swiper-container" id="restaurantMaps-swiper">
    <div class="swiper-wrapper" >
@@ -16,12 +17,6 @@
 	    	<div class="tab-swiper-wrap" style="padding-top:10px;">
 				<div class="wrap-border clearfix" style="position:relative; padding-bottom:0;">
 				    <div class="rest-fav-this"></div>
-					<div class="radius-like" style="margin-right:0;">
-						<div class="radius-num-show">
-							<span><%=parseInt(data[0].total_rest_compliments_perc)%></span>%<br><%=newChihuo.localize('global_var_like')%>
-						</div>	
-					</div>
-
 					<div class="map-rest-img">
 						<%if(data[0].concat_prof_photo_url_keyval){%>
 							<img src="<%=data[0].concat_prof_photo_url_keyval.split(',')[0]%>">
@@ -30,25 +25,29 @@
 						<%}%>
 						<i></i>
 					</div>
-					<div style="margin-left:110px;">
-					<h3 class="rest-name-title"><%=data[0].rest_name%></h3>
-					<p class="rest-info-show" style="padding-top:5px;"><%=data[0].cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=data[0].price_level%></span><br><%=newChihuo.showDistanceInfo(data[0].chihuo_distance.toFixed(1))%></p>
-					</div>
+					<div style="margin:0 5px 0 100px; position:relative;">
+		              <h3 class="rest-name-title go-direction" style="margin-right:10px;" lat=<%=data[0].addr_lat%> lng=<%=data[0].addr_lng%> name="<%=data[0].rest_name%>"><%=data[0].rest_name%></h3>
+		              <p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+		              <%if(data[0].total_rest_compliments_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(data[0].total_rest_compliments_perc)%>%</span><%}%>
+		              <span style="color:#ff8b4c; padding-right:10px;"><%=data[0].price_level%></span><br><%=data[0].cuisine_type%> <%if(data[0].chihuo_distance){%><%=newChihuo.showDistanceInfo(data[0].chihuo_distance)%><%}%></p>
+		              <p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(data[0].addr){%><b class="address-set"><%=data[0].addr%></b><%}%></p>
+		           </div>
 				</div>
 			</div>
 		</div>
 		</div>
 	</div>		
 </div>	
+<%}%>
 <div class="rest-fix-bottom">
-    <ul class="clearfix">
+     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li id="msgRemind">
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -57,12 +56,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li>
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

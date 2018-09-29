@@ -6,7 +6,7 @@
 </div>
 <div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
-		<div class="wrap-border clearfix">
+		<div class="wrap-border set-city-bg clearfix">
            <a href="#restaurantList2/<%=newChihuo.city%>/<%=d.cuisine_type%>">
             <div class="food-img">
                 <img src="<%if(d.cuisine_profile_purl){%><%=d.cuisine_profile_purl%><%}else{%>imgs/map-img.jpg<%}%>" class="banner-img">
@@ -24,7 +24,7 @@
 	<%})%>	
 </div>
 <div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+    <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+    <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 </div>

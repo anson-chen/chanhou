@@ -1,6 +1,7 @@
 <div class="set-bg" style="padding-bottom:120px;">
 	<div class="food-bg opacity-bg">
 		<nav class="common-title">
+			<a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a>
 			<a href="#map" class="head-rest-icon"></a>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<h3><%=newChihuo.localize('nearby_restaurants')%></h3>
@@ -17,12 +18,12 @@
 		<div class="wrap-border clearfix">
 		<a href="#restaurant/<%=d.rest_id%>">
 			<div class='clearfix'>
-			
 			   <div class="food-img">
 	                <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
+	                <%if(d.ad_flag == 'y' || d.ad_flag == 'Y'){%><span class="ad-flag">Ad</span><%}%>
 	           </div>
 	           <div style="margin:0 5px 0 100px; position:relative;">
-	                <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance.toFixed(1))%></span><%}%>
+	                <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%>
 	                <h3 class="rest-name-title" style="margin-right:60px;"><%=i+1%>. <%=d.rest_name%></h3>
 					<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
 					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
@@ -38,20 +39,20 @@
 	</div>
 	</div>
 	<div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
+	    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+		<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+		<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 	</div>
 	<div class="rest-fix-right"></div>
 	<div class="rest-fix-bottom">
-    <ul class="clearfix">
+     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li id="msgRemind">
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -60,12 +61,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li>
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
@@ -73,15 +74,18 @@
     </ul>
   </div>
 </div>
+<div class="search-set-fix">
+	<button class="clear-option" style="width:100%">Clear</button>
+	<button class="set-sure" id='setSure' style="display:none;">ok</button>
+</div>
 <div class="map-mask">
 	<a href="javascript:;" class="close-map-mask">+</a>
 	<div class="map-mask-cont">
 	    <div class="map-mask-head">
-	    	<!-- <a href="javascript:;" class="head-search-icon">阿拉伯特色</a> -->
-	    	<h3>餐馆搜索</h3>
+	    	<h3><%=newChihuo.localize('customize_filter')%></h3>
 	    </div>
 	    <div>
-			<div class="search-set-input">
+			<div class="search-set-input" style="display: none;">
 				<i></i>
 				<div style="margin:0 30px 0 20px;">
 					<input type="text" name="" value="" placeholder="请输入地址" class="address-filter">
@@ -118,24 +122,14 @@
 				<span class="set-floor-title"><%=newChihuo.localize('customize_cuisine')%></span>
 				<p class="set-floor-select" id="cuisine">all</p>
 			</div>
-			<div class="set-floor pop-time clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
-				<span class="set-floor-title"><%=newChihuo.localize('customize_open')%></span>
-				<p class="set-floor-select"><input class="time-demo2" placeholder="选择时间" style="max-width:80px; text-align:right;" /></p>
-				<div class="set-time"><img src="imgs/open-icon.png"></div>
-				
-			</div>
 			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
-				<span class="set-floor-title">餐馆特性</span>
+				<span class="set-floor-title"><%=newChihuo.localize('customize_tag')%></span>
 				<div class="right-set-info set-feature clearfix" id='feature'>
 					<%_.each(filterData,function(d,i){%>
 					    <%if(d.custom_category == 'feature'){%>
 						<span><%=d.name%></span>
 					<%}})%>
 				</div>
-			</div>
-			<div class="search-set-fix">
-				<button class="clear-option" style="width:100%">Clear</button>
-				<button class="set-sure" id='setSure' style="display:none;">确认</button>
 			</div>
 		</div>
 	</div>
@@ -149,6 +143,9 @@
     </div>	
 </div>
 <div class="return-top-icon"></div>
+<style type="text/css">
+	#returnIcon { top: 50px; }
+</style>
 <%if(data && data.length){%>
 <script>
     var swiper1 = new Swiper('.rest-list-swiper', {

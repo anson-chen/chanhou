@@ -1,9 +1,8 @@
 <div class="search-bg">
 	<div class="food-bg" style="position:relative;z-index:10;">
 		<nav class="common-title">
-			<a href="javascript:;" class="head-search-icon"><%=newChihuo.city%></a>
-			<div class="search-common" style="margin-right:80px;">
-			    <i></i>
+			<div class="search-common" style="margin-right:15px;">
+			    <i class="clear-input-value"></i>
 				<a href="javascript:history.go(-1);" class="common-return"></a>
 				<div style="margin:0 30px 0 40px;">
 				<form id='searchInit2'>
@@ -13,7 +12,7 @@
 			</div>
 		</nav>
 		<div class="food-list-nav clearfix" style="margin-top:20px;" id="searchInit2Tab">
-			 <a href="javascript:;" class="cur" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_restaurants')%></a>
+			 <a href="javascript:;" class="cur" style="width:30%; margin:0 10%;"><%=newChihuo.localize('global_var_restaurants')%></a>
         <a href="javascript:;" style="width:20%; margin:0 15%;"><%=newChihuo.localize('global_var_dishes')%></a>
 		</div>
 	</div>
@@ -23,9 +22,9 @@
 	    	<div class="tab-swiper-wrap">	
 				<div class="search-wrap">
 					<h3 class="search-sec-title"><%=newChihuo.localize('search_trends')%></h3>
-					<div class="search-hot set-hot clearfix">
+					<div class="detail-border trend-search" style="border:0; padding-bottom:0;">
 					<%_.each(restHot,function(d,i){%>
-						<%if(d.rest_name){%><span><%=d.rest_name%></span><%}%>
+						<%if(d.rest_name){%><span class="feature-tags"><%=decodeURIComponent(d.rest_name)%></span><%}%>
 					<%})%>
 					</div>
 					<h3 class="search-sec-title"><%=newChihuo.localize('search_history')%></h3>
@@ -42,9 +41,9 @@
 	    	<div class="tab-swiper-wrap">	
 				<div class="search-wrap">
 					<h3 class="search-sec-title"><%=newChihuo.localize('search_trends')%></h3>
-					<div class="search-hot set-hot clearfix">
+					<div class="detail-border trend-search" style="border:0; padding-bottom:0;">
 						<%_.each(miHot,function(d,i){%>
-						<%if(d.mi_name){%><span><%=d.mi_name%></span><%}%>
+						<%if(d.mi_name){%><span class="feature-tags"><%=decodeURIComponent(d.mi_name)%></span><%}%>
 					<%})%>
 					</div>
 					<h3 class="search-sec-title"><%=newChihuo.localize('search_history')%></h3>

@@ -24,7 +24,7 @@ define([
       $("#email").on("blur",function(){
         if($.trim($("#email").val())){
           if(!_this.isEmail($(this).val())){
-            newChihuo.showPopInfo("请填写正确格式邮箱",1200);
+            newChihuo.showPopInfo(newChihuo.localize('please_enter_email_in_correct_Format'),1200);
             return false;
           }
           // _this.validateEmail();
@@ -65,7 +65,7 @@ define([
       var renewpassword = $("#renew-password").val();
      if($.trim(email)&& password && repassword && renewpassword){
         if(renewpassword!=repassword){
-           newChihuo.showPopInfo("新密码两次输入不一致",1200);
+           newChihuo.showPopInfo(newChihuo.localize("password_doesn't match"),1200);
           return false;
         }
       chihuo.wkAjax({
@@ -82,10 +82,10 @@ define([
         success: function (data) {
           if (data.status == 0) {
             if(data.data[0].status_code == 0){
-              newChihuo.showPopInfo("修改密码成功");
+              newChihuo.showPopInfo(newChihuo.localize('successfully_change_password'));
             
             }else{
-               newChihuo.showPopInfo("修改密码失败");
+               newChihuo.showPopInfo(newChihuo.localize('change_password_unsuccessful'));
             }
     
           }
@@ -95,7 +95,7 @@ define([
         }
       });
      }else{
-       newChihuo.showPopInfo("请填写信息完整");
+       newChihuo.showPopInfo(newChihuo.localize('need_to_enter_all'));
        return false;
      }
    },
@@ -117,7 +117,7 @@ define([
               //     trigger: true
               // });
             }else{
-               newChihuo.showPopInfo("注册失败");
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
             }
     
           }

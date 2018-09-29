@@ -5,8 +5,7 @@
             <h3><%=newChihuo.localize('profile_footprint_followings_header')%></h3>
         </nav>
         <div class="food-list-nav clearfix" id="">
-            <a href="javascript:;" class="cur" style="width:40%; margin:0 1%;"><%=newChihuo.localize('global_var_restaurants')%></a>
-            <a href="javascript:;" style="width:56%; margin:0 1%;"><%=newChihuo.localize('profile_footprint_followings_users')%></a>
+            <a href="javascript:;" class="cur" style="width:40%; margin:0 30%;"><%=newChihuo.localize('global_var_restaurants')%></a>
         </div>
     </div>
     <div class="rest-list-wrap" style="padding-bottom:70px;">
@@ -30,35 +29,20 @@
         </div>
     <%})%>    
     </div>
-     <div class="tab-signin-wrap" style="display:none;">
-        <div class="wrap-border clearfix">
-            <div class="food-list-icon4">
-            半小时前
-            </div>
-            <div class="food-img">
-                <img src="imgs/map-img.jpg">
-            </div>
-            <div style="margin-left:100px;">
-            <h3 class="rest-name-title">重庆水煮鱼</h3>
-            <p class="rest-info-show" style="padding-top:5px;">北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>800cals  100mg
-<br>89%喜欢</p>
-            </div>
-        </div>
-    </div>
     <%}else{%>
     <div class="whoops"></div>
     <%}%>
 </div>  
 </div>
  <div class="rest-fix-bottom">
-    <ul class="clearfix">
+   <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -67,12 +51,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind" class="cur">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

@@ -52,7 +52,7 @@ define([
                         initData.userMiCommentsData.data =[...initData.userMiCommentsData.data,...data.data];
                         newChihuo.getPage('userMiComments') && _this.$el.html(_.template(userMiCommentsTemplate,initData.userMiCommentsData));
                          _this.bindEvents();
-                        if(data.data.length == 0){
+                        if(data.data.length == 0 || data.data.length < _this.status.ct){
                             _this.status.isEnd = true;
                              $('.loading-step3').show();
                              $('.loading-step1,.loading-step2').hide();
@@ -87,10 +87,9 @@ define([
       $(event.currentTarget).find('.chat-input').blur();
       $(event.currentTarget).find('.chat-input').val().length && chihuo.wkAjax({
                   type: 'POST',
-                  url: chihuo.getApiUri('addCustRestReviewComment.json'),
+                  url: chihuo.getApiUri('addCustRMiRevComment.json'),
                   data: {
-                     restreviewid: $(event.currentTarget).find('.chat-input').attr('review'),
-                     restId: initData.userCommentsData.id,
+                     mireviewId: $(event.currentTarget).find('.chat-input').attr('review'),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',

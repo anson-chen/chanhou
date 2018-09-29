@@ -24,7 +24,7 @@ define([
       }else{
         initData.myIndexData.id = newChihuo.customerId || newChihuo.getLocalStorage('customer_id');
       }
-      
+      initData.myIndexData.addFriend = true;
       this.$el.html(_.template(myIndexTemplate,initData.myIndexData));
       this.initData(id);
       this.bindEvents();
@@ -47,8 +47,10 @@ define([
                         initData.myIndexData.data = data.data;
                         newChihuo.getPage('myIndex') && _this.$el.html(_.template(myIndexTemplate,initData.myIndexData));
                         newChihuo.getPage('myIndex') && _this.bindEvents();
-                        if(initData.myIndexData.id == newChihuo.customerId || newChihuo.getLocalStorage('customer_id')){
+                        if(initData.myIndexData.id == (newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))){
                           newChihuo.customer = data.data[0].display_name;
+                          newChihuo.setLocalStorage('welcomeName',newChihuo.customer ? newChihuo.customer : '');
+                          newChihuo.setLocalStorage('fullName',data.data[0].first_name + data.data[0].last_name);
                         }
                      }
                   } 
@@ -76,6 +78,7 @@ define([
               });  
 
       });
+
     }
 
 

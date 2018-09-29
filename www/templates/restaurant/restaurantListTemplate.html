@@ -25,7 +25,7 @@
                   <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
              </div>
              <div style="margin:0 5px 0 100px; position:relative;">
-                  <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance.toFixed(1))%></span><%}%>
+                  <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%>
                   <h3 class="rest-name-title" style="margin-right:60px;"><%=d.rest_name%></h3>
           <p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
           <%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
@@ -39,16 +39,15 @@
         </div>
 	<%})%>	
 	</div>
-	<div class="rest-fix-right"></div>
 	<div class="rest-fix-bottom">
-    <ul class="clearfix">
+     <ul class="clearfix">
       <li>
-        <a href="#"><img src="imgs/bottom-red1.png">
+        <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li id="msgRemind">
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -57,12 +56,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li>
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
@@ -70,6 +69,9 @@
     </ul>
   </div>
 </div>
+<style type="text/css">
+  #returnIcon { top: 50px; }
+</style>
 <script>
     var swiper1 = new Swiper('.rest-list-swiper', {
         pagination: '.swiper-pagination',

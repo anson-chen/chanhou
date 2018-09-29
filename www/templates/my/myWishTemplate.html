@@ -25,7 +25,7 @@
                         </div>
                         <div style="margin-left:100px;margin-right:70px;">
                         <h3 class="rest-name-title" style="margin-right:0;"><%=d.rest_name%></h3>
-                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%> <%if(d.price_level){%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><%}%><%if(d.cust_distance){%><span><%=d.cust_distance%></span><%}%><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%> <%if(d.price_level){%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><%}%><%if(d.cust_distance){%><span><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
                         </div>
                     </a>
                 </div>
@@ -62,19 +62,19 @@
     </div>
 </div>
  <div class="loading-wrap" id='specialLoad'>
-            <p class="loading-step1" style="display:none;">加载更多</p>
-            <p class="loading-step2">加载中</p>
-            <p class="loading-step3" style="display:none;">没有更多了~~</p>
+        <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+        <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+        <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
     </div>
      <div class="rest-fix-bottom">
-    <ul class="clearfix">
+     <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -83,13 +83,13 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind" class="cur">
-        <a href="javascript:;"><img src="imgs/bottom-h4.png">
+      <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

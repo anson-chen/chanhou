@@ -80,9 +80,9 @@
 	</div>
 	</div>
 	<div class="loading-wrap" id='specialLoad'>
-		    <p class="loading-step1" style="display:none;">加载更多</p>
-			<p class="loading-step2">加载中</p>
-			<p class="loading-step3" style="display:none;">没有更多了~~</p>
+	    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+		<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+		<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
 	</div>
 	<%}else{%>
 	<div class="whoops"></div>
@@ -93,14 +93,14 @@
 		<div class="chat-input-wrap"><input type="text" name="" class="chat-input"></div>
 	</div>
 	<div class="rest-fix-bottom">
-    <ul class="clearfix">
+   <ul class="clearfix">
       <li>
         <a href="#"><img src="imgs/bottom-h1.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li>
-        <a href="#chatAdd"><img src="imgs/detail-icon10.png">
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
@@ -109,12 +109,12 @@
         <div class="rest-bottom-middle"></div>
         </a>
       </li>
-      <li class="cur">
+       <li id="msgFeeds" class="cur<%if(newChihuo.activityNum){%> message-remind<%}%>">
         <a href="#myMessage2"><img src="imgs/bottom-h3.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>
-      <li id="msgRemind">
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
         <a href="#myIndex"><img src="imgs/bottom-h4.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>

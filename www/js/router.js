@@ -71,7 +71,9 @@ define([
   'views/photo/DishHot3View',
   'views/photo/DishHot4View',
   'views/comment/UserMiCommentsView',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView) {
+  'views/my/MyRewardsView',
+  'views/chat/ChatEmailView',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -84,6 +86,7 @@ define([
       'restaurantList/:name':'showRestaurantList',
       'restaurantList/:name/:wish':'showRestaurantList',
       'restaurantList2/:city/:ctype':'showRestaurantList2',
+      'restaurantList2/:city/:ctype/:college':'showRestaurantList2',
       // 'restaurantList':'showRestaurantList',
       'restaurantMaps':'showRestaurantMaps', 
       'userComments/:id':'showUserComments', 
@@ -136,9 +139,11 @@ define([
       'chatAdd':'showChatAdd',
       'chatRequest':'showChatRequest',
       'chatMessage':'showChatMessage',
-      'chatApply/:id/:name':'showChatApply', 
+      'chatApply/:id/:name':'showChatApply',
+      'chatApply/:id/:name/:from':'showChatApply', 
       'cuisineList/:city':'showCuisineList', 
       'cityList/:city':'showCityList', 
+      'cityList/:city/:college':'showCityList', 
       'praviteSetting':'showPraviteSetting',
       'aboutUs':'showAboutUs',
       'appUpdate':'showAppUpdate',
@@ -150,8 +155,11 @@ define([
       'forgetPassword':'showForgetPassword', 
       'dishHot1':'showDishHot1',
       'dishHot2/:name':'showDishHot2',
+      'dishHot2/:name/:from':'showDishHot2',
       'dishHot3/:level':'showDishHot3',
       'dishHot4/:level/:name':'showDishHot4',
+      'myRewards':'showMyRewards',
+      'chatEmail':'showChatEmail',
       // Default
       '*actions': 'defaultAction'//'defaultAction'
     }
@@ -160,7 +168,8 @@ define([
   var initialize = function(){
 
     var app_router = new AppRouter;
-    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView;
+    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView,myRewardsView,
+     chatEmailView;
 
     app_router.on('route:showLogin', function (actions) {
         loginView = loginView || new LoginView();
@@ -176,6 +185,7 @@ define([
         passwordView = passwordView || new PasswordView();
         passwordView.render();
     });
+
 
     app_router.on('route:showRestaurant', function (actions,from) {
        // We have no matching route, lets display the home page 
@@ -199,10 +209,10 @@ define([
         
     });
 
-     app_router.on('route:showRestaurantList2', function (actions,city) {
+     app_router.on('route:showRestaurantList2', function (actions,city,college) {
        // We have no matching route, lets display the home page 
         restaurantList2View = restaurantList2View || new RestaurantList2View();
-        restaurantList2View.render(actions,city);
+        restaurantList2View.render(actions,city,college);
         
     });
 
@@ -446,10 +456,14 @@ define([
         photoListView.render();
     });
 
-    app_router.on('route:showChatApply', function (actions,name) {
+    app_router.on('route:showChatApply', function (actions,name,from) {
        // We have no matching route, lets display the home page 
         chatApplyView = chatApplyView || new ChatApplyView();
-        chatApplyView.render(actions,name);
+        if(from){
+            chatApplyView.render(actions,name,from);
+        }else{
+            chatApplyView.render(actions,name);
+        }
     });
 
     app_router.on('route:showChatAdd', function (actions) {
@@ -506,10 +520,12 @@ define([
         cuisineListView.render(actions);
     });
 
-    app_router.on('route:showCityList', function (actions) {
+    app_router.on('route:showCityList', function (actions,college) {
        // We have no matching route, lets display the home page 
         cityListView = cityListView || new CityListView();
-        cityListView.render(actions);
+        
+        cityListView.render(actions,college);
+        
     });
 
      app_router.on('route:showMyProfile', function (actions) {
@@ -578,10 +594,10 @@ define([
        dishHot1View.render();
     });
 
-     app_router.on('route:showDishHot2', function (actions) {
+     app_router.on('route:showDishHot2', function (actions,from) {
        // We have no matching route, lets display the home page 
        dishHot2View = dishHot2View || new DishHot2View();
-       dishHot2View.render(actions);
+       dishHot2View.render(actions,from);
     });
 
       app_router.on('route:showDishHot3', function (actions) {
@@ -590,10 +606,20 @@ define([
        dishHot3View.render(actions);
     });
 
-       app_router.on('route:showDishHot4', function (actions,name) {
+    app_router.on('route:showDishHot4', function (actions,name) {
        // We have no matching route, lets display the home page 
        dishHot4View = dishHot4View || new DishHot4View();
        dishHot4View.render(actions,name);
+    });
+
+    app_router.on('route:showMyRewards', function (actions) { 
+        myRewardsView = myRewardsView || new MyRewardsView();
+        myRewardsView.render();
+    });
+
+    app_router.on('route:showChatEmail', function (actions) { 
+        chatEmailView = chatEmailView || new ChatEmailView();
+        chatEmailView.render();
     });
 
 
@@ -603,6 +629,8 @@ define([
         homeView = homeView || new HomeView();
         homeView.render();
     });
+
+
    
 
 

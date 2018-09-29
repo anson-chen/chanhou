@@ -1,0 +1,64 @@
+<div class="set-bg">
+<div class="food-bg" style="padding-bottom:15px;">
+    <nav class="common-title">
+        <a href="javascript:history.go(-1);" class="common-return"></a>
+        <h3><%=newChihuo.localize('profile_invite')%></h3>
+    </nav>
+</div>
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" style="line-height:30px;">
+          <a href="sms:?body=<%=shortMessage%>" class="sms-invite"><i class="chat-index-icon chat-icon5"></i>短信邀请好友</a>
+      </h4>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title" style="line-height:30px;">     
+        <i class="chat-index-icon chat-icon1"></i><%=newChihuo.localize('invitefriends_email')%>
+      </h4>
+    </div>
+    <div class="panel-collapse collapse in">
+    <%if(data.length){%>
+      <div class="panel-body">
+       <%_.each(data,function(d,i){%>
+       <%if(d.emails){%>
+         <div class="email-invite clearfix">
+          <a href="mailto:<%=d.emails[0].value%>?&body=<%=encodeURIComponent(emailMessage)%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey" >Invite</a>
+              <p><span><%=d.name.givenName%> <%=d.name.familyName%></span><br><%=d.emails[0].value%></p>
+          </div>
+       <%}})%>
+    </div>
+    <%}%>
+  </div>
+</div>   
+<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li class="<%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%> cur" id="msgRemind">
+         <a href="#chatAdd"><img src="imgs/sdx.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li style="width:24%; position:relative;">
+        <a href="#chatChoose">
+        <div class="rest-bottom-middle"></div>
+        </a>
+      </li>
+      <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>

@@ -1,22 +1,22 @@
 <div class="food-bg" style="padding-bottom:20px;">
 	<nav class="common-title">
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3><%=newChihuo.localize('citylist_header')%></h3>
+		<h3><%if(!initData.cityListData.title){%><%=newChihuo.localize('citylist_header')%><%}else{%>UC List<%}%></h3>
 	</nav>
 </div>
 <div class="rest-list-wrap">
 	<%_.each(data,function(d,i){%>
-		<div class="wrap-border clearfix" style="padding-top:0; position:relative;">
-		<a href="#restaurantList2/<%=d.othercity_name%>/null">
-			<img src="<%if(d.othercity_profile_purl){%><%=d.othercity_profile_purl%><%}else{%>imgs/pt3.png<%}%>" class="banner-img" style="margin-bottom:5px;">
+		<div class="wrap-border set-city-bg clearfix" style="padding-top:0; position:relative;">
+		<a href="<%if(!initData.cityListData.title){%>#restaurantList2/<%=encodeURIComponent(d.othercity_name)%>/null<%}else{%>#restaurantList2/<%=encodeURIComponent(d.uc_city)%>/<%=encodeURIComponent(d.uc_name)%>/college<%}%>">
+			<img src="<%if(d.othercity_profile_purl){%><%=d.othercity_profile_purl%><%}else if(d.uc_profile_purl){%><%=d.uc_profile_purl%><%}else{%>imgs/pt3.png<%}%>" class="banner-img" style="margin-bottom:5px;">
 		    <%if(d.total_rests_cnt){%><span class="reset-style1 reset-bg4" style="float:right;"><%=d.total_rests_cnt%></span><%}%>
-			<h3 class="rest-name-title" style="height:25px;"><%=d.othercity_name%></h3>
+			<h3 class="rest-name-title" style="height:25px;"><%=d.othercity_name || d.uc_name%></h3>
 			</a>
 		</div>
 	<%})%>	
 </div>
 <div class="loading-wrap" id='specialLoad'>
-	    <p class="loading-step1" style="display:none;">加载更多</p>
-		<p class="loading-step2">加载中</p>
-		<p class="loading-step3" style="display:none;">没有更多了~~</p>
-</div>
+	    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+		<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+		<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
+	</div>

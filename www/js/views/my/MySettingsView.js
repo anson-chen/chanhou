@@ -30,7 +30,7 @@ define([
              locale: 'en',
           },
           success: function (data) {
-            if (data.status == 0) { 
+            if (data.status == 0 && data.data.length) { 
                 initData.mySettingsData = JSON.parse(data.data[0].setting_text);
                 newChihuo.getPage('mySettings') && _this.$el.html(_.template(mySettingsTemplate,initData.mySettingsData));
             }
@@ -42,17 +42,21 @@ define([
 
     },
 
-    logout: function(){
+    logout: function(e){
+      if($(e.currentTarget).hasClass('no-effect-quit')){
+         return;
+      }
        chihuo.wkAjax({
           type: 'GET',
           url: chihuo.getApiUri('logout.json'),
           success: function (data) {
             if (data.status == 0) { 
-               newChihuo.showPopInfo("退出成功",1200);
+               newChihuo.showPopInfo(newChihuo.localize('logout_successfully'),1200);
                 newChihuo.customerId = null;
                 newChihuo.removeLocalStorage('customer_id');
                 newChihuo.removeLocalStorage('password');
                 newChihuo.removeLocalStorage('email_address');
+                $(e.currentTarget).addClass('no-effect-quit');
             }
           },
           error: function () {

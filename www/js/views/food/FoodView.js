@@ -62,7 +62,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('added checkin');
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_checkin'));
                         $('.rest-icon1').find('.rest-status').addClass('done');
                         var num = parseInt($('.rest-icon1').find('span').text());
                          $('.rest-icon1').find('span').text(++num);
@@ -89,7 +89,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                         newChihuo.showPopInfo('added a like');
+                         newChihuo.showPopInfo(newChihuo.localize('add_a_like'));
                         $('.rest-icon2').find('.rest-status').addClass('done');
                         var num = parseInt($('.rest-icon2').find('span').text());
                          $('.rest-icon2').find('span').text(++num);
@@ -117,7 +117,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                       newChihuo.showPopInfo('added following');
+                       newChihuo.showPopInfo(newChihuo.localize('add_a_following'));
                         $('.rest-icon3').find('img').attr('src',staticSource.restIcon3);
                         var num = parseInt($('.rest-icon3').find('span').text());
                          $('.rest-icon3').find('span').text(++num);
@@ -147,7 +147,7 @@ define([
                   success: function(data){
                      if(data.status == 0){
                         
-                        newChihuo.showPopInfo('added a favourite');
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_favorite'));
                         $(_this).addClass('fav-rest-add');
                      }
                   } 

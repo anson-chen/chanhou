@@ -51,9 +51,8 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                      initData.dishHot3Data.data = [...data.data];
-                      newChihuo.getPage('dishHot3') && _this.$el.html(_.template(dishHot3Template,initData.dishHot3Data));
-                       
+                      initData.dishHot3Data.data = data.data;
+                      newChihuo.getPage('dishHot3') && _this.$el.html(_.template(dishHot3Template,initData.dishHot3Data));                   
                       newChihuo.getPage('dishHot3') && _this.bindEvent();
                      }
                   } 

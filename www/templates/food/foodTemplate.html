@@ -12,8 +12,6 @@
 		    <div class="swiper-container" id="rest-banner">
 		        <div class="swiper-wrapper food-img-slide">
 		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
-		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
-		            <div class="swiper-slide"><a href="#"><img src="imgs/photo-pt2.jpg" class="banner-img"><i></i></a></div>
 		        </div>
 		        <!-- Add Pagination -->
 		        <div class="swiper-pagination"></div>
@@ -31,16 +29,16 @@
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
 				<li class="rest-icon1"><div class="rest-status <%if(d.mi_checkin_flg !='N'){%>done<%}%>"><img src="<%=staticSource.restIcon1%>"></div>
-				<p><span><%=(d.total_rest_checkins || 0)%> </span><%=newChihuo.localize('restaurant_checkin')%><%if(d.total_rest_checkins > 1){%>s<%}%></p></li>
+				<p><span><%=(d.mi_tot_checkins || 0)%> </span><%=newChihuo.localize('restaurant_checkin')%><%if(d.mi_tot_checkins > 1){%>s<%}%></p></li>
 				<li class="rest-icon2"><div class="rest-status <%if(d.mi_compliment_flg != 'N'){%>done<%}%>"><img src="<%=staticSource.restIcon2%>"></div>
-				<p><span><%=(d.total_rest_compliments || 0)%> </span>like<%if(d.total_rest_compliments > 1){%>s<%}%></p></li>
-				<li><div class="food-btn-more">M</div><p>More</p></li>
+				<p><span><%=(d.mi_tot_likes || 0)%> </span>like<%if(d.mi_tot_likes > 1){%>s<%}%></p></li>
+				<li style="display:none;"><div class="food-btn-more">M</div><p>More</p></li>
 			</ul>
 			<div class="food-info-show"></div>
 		</div>
 		<div class="wrap-border clearfix">
 			<div class="rest-detail">
-				<a href="#restaurant/<%=d.rest_id%>" class="enter-rest">进入餐馆</a>
+				<a href="#restaurant/<%=d.rest_id%>" class="enter-rest"><%=newChihuo.localize('go_to_restaurant')%></a>
 			</div>
 		</div>
 		<!-- <div class="wrap-border clearfix">
@@ -118,15 +116,15 @@
 			   <%}%>
 			<%}})%>
 			</ul>
-			<a href="#submitMiComment/<%=d.rest_id%>/<%=d.rest_menu_item_id%>" class="comment-edit">发布评论</a>
+			<a href="<%if(newChihuo.getLocalStorage('customer_id') || newChihuo.customerId){%>#submitMiComment/<%=d.rest_id%>/<%=d.rest_menu_item_id%><%}else{%>javascript:;<%}%>" class="comment-edit"></a>
 		</div>
 	</div>
 	<%}})%>
 </div>
 <div class="photo-select-wrap">
 	<ul>
-		<li class="photo-action1">拍照</li>
-		<li class="photo-action2">从手机相册选择</li>
+		<li class="photo-action1"><%=newChihuo.localize('photo_source_camera')%></li>
+		<li class="photo-action2"><%=newChihuo.localize('photo_source_photo_librarry')%></li>
 	</ul>
 	<form id="usr-formPhoto" style="display:none;">
 		

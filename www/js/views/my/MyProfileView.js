@@ -58,14 +58,14 @@ define([
               if(data.data[0].status_code == 0){
                 newChihuo.customerId = data.data[0].customer_id;
                 newChihuo.customer = data.data[0].display_name;
-                newChihuo.showPopInfo("update successfully",1200);
+                newChihuo.showPopInfo(newChihuo.localize('update_successful'),1200);
                  setTimeout(function(){
                  app_router.navigate('myIndex',{
                   trigger: true
                 });
                 },1400);
               }else{
-               newChihuo.showPopInfo("failed to update",1200);
+               newChihuo.showPopInfo(newChihuo.localize('update_unsuccessful'),1200);
               }
             }else{
               newChihuo.showPopInfo(data.errorMsg,1200);
@@ -76,7 +76,7 @@ define([
           }
         });
       }else{
-         newChihuo.showPopInfo("请填写用户名",1200);
+         newChihuo.showPopInfo(newChihuo.localize('please_enter_username'),1200);
         return false;
       }
     },

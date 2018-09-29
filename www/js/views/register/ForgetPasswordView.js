@@ -40,12 +40,12 @@ define([
         success: function (data) {
           if (data.status == 0) {
             if(data.data[0].ret_code == 0){
-              newChihuo.showPopInfo("邮件发送成功");
+              newChihuo.showPopInfo(newChihuo.localize('mail_sent_successfully'));
               // app_router.navigate('Index',{
               //     trigger: true
               // });
             }else{
-               newChihuo.showPopInfo("邮件发送失败，错误码"+data.data[0].ret_code);
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_send_mail_code')+data.data[0].ret_code);
             }
     
           }
@@ -55,7 +55,7 @@ define([
         }
       });
      }else{
-       newChihuo.showPopInfo("请填写邮箱");
+       newChihuo.showPopInfo(newChihuo.localize('please_enter_email'));
        return false;
      }
    },

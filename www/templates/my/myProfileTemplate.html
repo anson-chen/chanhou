@@ -9,15 +9,18 @@
          <input type="text" name="" id="profileName" placeholder="输入用户名" value="<%=d.display_name%>">
        </div>
     <%})%>
-        <div class="quit-setting" style="background: #fb6700; margin:0 0 20px;" id="setProfile">确定</div>
+        <div class="quit-setting" style="background: #fb6700; margin:0 0 20px;" id="setProfile"><%=newChihuo.localize('global_okbutton')%></div>
     </div>
 </div> 
 <div class="photo-select-wrap">
     <ul>
-        <li class="photo-action1">拍照</li>
-        <li class="photo-action2">从手机相册选择</li>
+       <li class="photo-action1"><%=newChihuo.localize('photo_source_camera')%></li>
+        <li class="photo-action2"><%=newChihuo.localize('photo_source_photo_librarry')%></li>
     </ul>
     <form id="usr-formPhoto" style="display:none;">
         
     </form> 
-</div>   
+</div> 
+<style type="text/css">
+    #returnIcon { display: none; }
+</style>> 
