@@ -1,33 +1,39 @@
-<div id="navbar" class="wk-navbar-collapse wk-sidebar">
-    <div style="padding-left:4px;">
-        <i class="wk-icon-sidebar wk-icon-logo"></i>
-        <div class="row" style="padding-left: 20px;">
-            <div class="col-xs-6" style="padding: 0;"><a id="login">登录</a></div>
-            <div class="col-xs-6" style="padding: 0;"><a id="register">注册</a></div>
-        </div>
-    </div>
-    <ul class="nav navbar-nav">
-        <li style="border-top: 1px solid #949494;border-bottom: 1px solid #949494;">
-            <a class="wk-icon-index">首页</a>
-        </li>
-        <li>
-            <a class="wk-icon-favorite" href="#fastSearch/4">收藏</a>
-        </li>
-        <li>
-            <a class="wk-icon-prompt" href="#fastSearch/1">提示</a>
-        </li>
-        <li>
-            <a class="wk-icon-record" href="#fastSearch/2">记录</a>
-        </li>
-        <li>
-            <a class="wk-icon-evaluate" href="#fastSearch/3">评论</a>
-        </li>
-        <li>
-            <a class="wk-icon-sign" href="#fastSearch/3">签到</a>
-        </li>
-        <li style="border-top: 1px solid #949494;">
-            <a id="setting"><i class="wk-icon-sidebar wk-icon-setting"></i>设置</a>
-        </li>
-    </ul>
+<div class="side-bg">
+    <nav class="common-title">
+        <a href="javascript:;" class="common-return close-big-modal"></a>
+        <h3><%=newChihuo.localize('review_photos_details_header')%></h3>
+    </nav>
 </div>
-
+<div class="photo-show-wrap" style="position:absolute;">
+<%if(photoUrl){%>
+        <span class="photo-swiper-btn photo-left-btn"></span>
+        <span class="photo-swiper-btn photo-right-btn"></span>
+        <div class="swiper-container" id="photoDetail">
+                <div class="swiper-wrapper">
+                    <%_.each(photoUrl.split(','),function(d,i){%>
+                        <div class="swiper-slide index-dish-img"><img src="<%=d%>" style='height: auto;'></div>
+                    <%})%>
+                </div>
+        </div>
+<%}%>       
+</div>
+<!-- <div class="photo-num">
+    <span>15</span>/30
+</div> -->
+<div class="bottom-photo" style="display:none;">
+    <div class="right-photo-info">
+        <img src="imgs/round-icon2.png"><span>1850</span>
+    </div>
+    <img src="imgs/photo.png" class="user-photo-bottom">
+    <p class="photo-bottom-para"><span>刘林峰</span><br>上传于2017-05-02</p>
+</div>
+<%if(photoUrl){%>
+<script>
+     var swiperRest2 = new Swiper('#photoDetail', {
+        initialSlide:<%=photoIndex%>,
+        slidesPerView: 'auto',
+        nextButton: '.photo-right-btn',
+        prevButton: '.photo-left-btn',
+    });
+</script>  
+<%}%>    

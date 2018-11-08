@@ -22,7 +22,8 @@ require.config({
     touche: 'touche',
     pullRefresh: 'p-pull-refresh',
     auth0cordova: 'auth0cordova',
-    cordovaAuth0plugin: 'cordova-auth0-plugin'
+    cordovaAuth0plugin: 'cordova-auth0-plugin',
+    lazyLoad: 'jquery.lazyload.min'
   }
 
 });

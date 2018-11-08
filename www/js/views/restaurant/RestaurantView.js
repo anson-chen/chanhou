@@ -4,7 +4,7 @@ define([
   'backbone',
   'text!templates/restaurant/restaurantTemplate.html',
   'swiper'
-], function($, _, Backbone, restaurantTemplate){
+], function($, _, Backbone, restaurantTemplate,SidebarView){
 
   var RestaurantView = Backbone.View.extend({
     el: $("#page"),
@@ -23,7 +23,6 @@ define([
       this.$el.html(_.template(restaurantTemplate,initData.restaurantData));
       this.findRestDetailById(id);
       this.bindEvents(id);
-
     },
 
     checkPermission: function(){
@@ -177,9 +176,17 @@ define([
            if(url){
             initData.photoData.photoUrl = url;
             initData.photoData.photoIndex = index;
-            app_router.navigate('photoDetail', {
-              trigger: true
-            });
+            window.modalPhoto.render();
+           }
+      });
+
+      $('.review-photo-urls img').on('click',function(){
+           var url = $(".review-photo-urls").attr('photo');
+           var index = $(this).index();
+           if(url){
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
+            window.modalPhoto.render();
            }
       });
 

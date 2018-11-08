@@ -67,7 +67,7 @@
 				    <%if(d.contact_phone_no){%>
 					<span class="connect-info" style="padding-right:30px;"><i class="detail-icon-common detail-icon3"></i><a href="tel:<%=d.contact_phone_no%>"><%=d.contact_phone_no%></a></span>
 					<%}%>
-					<span class="connect-info"><i class="detail-icon-common detail-icon5"></i><%=d.weburl%></span>
+					<%if(d.weburl){%><a href="<%=newChihuo.setRestUrl(d.weburl)%>"><span class="connect-info"><i class="detail-icon-common detail-icon5"></i><%=d.weburl%></span></a><%}%>
 				</div>
 				<%if(d.feature_tags){%>
 				<div class="detail-border" style="padding-bottom:0;">
@@ -76,7 +76,6 @@
 					<%})%>
 				</div>
 				<%}%>
-				<a href="#" class="more-btn"><%=newChihuo.localize('restaurant_more_info')%></a>
 			</div>
 		</div>
 		<%if(d.concat_menu_keyval){%>
@@ -109,12 +108,12 @@
 			<div class="swiper-container" id="rest-photo" photo='<%=d.rest_photo_urls%>'>
 			    <div class="swiper-wrapper">
 			    	<%_.each(d.rest_photo_urls.split(','),function(d,i){%>
-			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i></i></div>
+			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i style="display:none;"></i></div>
 			        <%})%>
 			    </div>
     		</div>
     		<%}else{%>
-    		<p class="photo-word-show">To be the first foody adding a photo to earn a 100 points</p>
+    		<p class="photo-word-show">To be the first foody adding a photo to earn points</p>
     		<%}%>
     		<div class="comment-photo-wrap img-rest-photo clearfix" rest="<%=d.rest_id%>">
     			
@@ -143,13 +142,13 @@
 						  <%}%>
 						</a>
 						<div class="comment-right-info">
-							<h3><%=d.reviewer_name%></h3>
-							<p><span class="comment-time"><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span><span class="comment-location"><%=d.reviewer_city%> <%=d.reviewer_country%></span></p>
+							<h3 style="background:none;"><%=d.reviewer_name%></h3>
+							<p><span><%=chihuo.getLastTime(d.review_datetime)%> <%=newChihuo.localize('global_var_ago')%></span></p>
 						</div>
 					</div>
 					<p class="comment-cont"><%=d.last_review_details%></p>
 					<%if(d.review_photo_urls){%>
-						<div class="review-photo-urls clearfix">
+						<div class="review-photo-urls clearfix" photo="<%=d.review_photo_urls%>">
 							<%_.each(d.review_photo_urls.split(','),function(d,i){%>
 								<img src="<%=d%>">
 							<%})%>

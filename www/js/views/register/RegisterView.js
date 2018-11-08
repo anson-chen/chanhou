@@ -66,7 +66,7 @@ define([
       var lastName=$("#lastName").val();
       var nickName=$("#nickName").val();
       if(!$('.agree-check')[0].checked){
-         newChihuo.showPopInfo('请勾选声明选框',1200);
+         newChihuo.showPopInfo(newChihuo.localize("click_to_confirm"),1200);
          return false;
       }
       if($.trim(firstName).length < 3 ){
@@ -138,7 +138,9 @@ define([
                newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
             }
     
-          }
+          }else{
+               newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
+            }
         },
         error: function () {
 

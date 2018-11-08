@@ -8,20 +8,26 @@
     <link rel="stylesheet" href="css/swiper.min.css">
     <link rel="stylesheet" href="css/mobiscroll.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js" integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q==" crossorigin=""></script>
+    <!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>-->
+    <!--<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js" integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q==" crossorigin=""></script>-->
+    <link rel="stylesheet" href="css/MarkerCluster.css">
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="css/leaflet-1.3.3.css">
+    <script src="js/leaflet-1.3.3.js"></script>
+    <script src="js/leaflet.markercluster-src.js"></script>
     <script data-main="js/main" src="js/libs/require/require.js"></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
-
+    <script src="js/libs/jquery/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-    <div id="page" class="page"></div>
+    <div id="page" class="page">
+      <div id="splash"><p><img src="imgs/logo.png"><img src="imgs/banner-word.png"></p></div>       
+    </div>
     <div id="sidebar"></div>
     <div id="footer"></div>
     <div id="popInfo"></div>
     <!--<div id="returnIcon"><a href="javascript:history.go(-1);"></a></div>-->
-    <div id="reload"></div>
-    <div id="splash"><p><img src="imgs/logo.png"><img src="imgs/foodymonkey.jpg"></p></div>
+    <div id="reload"></div>  
     <div id="appLaunch"></div>
     <style>
         #splash {
@@ -30,13 +36,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 2000;
-            background: rgba(255,255,255,.95);
-            display: none;
+            z-index: 200;
         }
         #splash p {
             position: absolute;
-            top: 50%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%,-50%);
             animation: splash 2.5s infinite;
@@ -49,10 +53,10 @@
         @keyframes splash
         {
             0%   {opacity:1;}
-            25%  {opacity:.5;}
-            50%  {opacity:.15;}
-            75%  {opacity:.5;}
-            100% {opacity:.8;}
+            25%  {opacity:.7;}
+            50%  {opacity:.3;}
+            75%  {opacity:.7;}
+            100% {opacity:.9;}
         }
     </style>
     <script src="cordova.js"></script>

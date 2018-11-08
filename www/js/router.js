@@ -17,6 +17,7 @@ define([
   'views/my/MyShakeView',
   'views/search/SearchInitView',
   'views/map/MapView',
+  'views/map/MapSearchView',
   'views/map/Map2View',
   'views/map/Map3View',
   'views/search/SearchHotView',
@@ -73,7 +74,8 @@ define([
   'views/comment/UserMiCommentsView',
   'views/my/MyRewardsView',
   'views/chat/ChatEmailView',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView) {
+  'views/sidebar/SidebarView',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,MapSearchView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView,SidebarView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -106,11 +108,13 @@ define([
       'myShake':'showMyShake', 
       'searchInit':'showSearchInit',
       'map':'showMap',
+      'mapSearch':'showMapSearch',
       'map2':'showMap2',
       'map3':'showMap3',
       'searchHot':'showSearchHot',
       'restaurantWishes':'showRestaurantWishes',
       'restaurantNear':'showRestaurantNear',
+      'restaurantNear/:lat/:lng':'showRestaurantNear',
       'mySettings':'showMySettings', 
       'myFocus':'showMyFocus', 
       'myLike':'showMyLike',  
@@ -137,7 +141,7 @@ define([
       'chatChoose':'showChatChoose',
       'chatContent/:id/:name':'showChatContent',
       'chatAdd':'showChatAdd',
-      'chatRequest':'showChatRequest',
+      'chatRequest/:type':'showChatRequest',
       'chatMessage':'showChatMessage',
       'chatApply/:id/:name':'showChatApply',
       'chatApply/:id/:name/:from':'showChatApply', 
@@ -167,8 +171,20 @@ define([
   
   var initialize = function(){
 
+    function transitionEffect(time){
+       var transition = $('.transition-mask');
+       var time = time || 1200;
+       if(transition.length){
+         transition.addClass('transition-begin');
+       }else{
+        $('body').append('<div class="transition-mask"><div class="jump-logo"></div><p><span class="load1"></span><span class="load2"></span><span class="load3"></span><span class="load4"></span><span class="load5"></span></p></div>');
+        $('.transition-mask').addClass('transition-begin');
+       }
+       setTimeout(function(){$('.transition-mask').fadeOut(400,function(){$('.transition-mask').remove()})},time);
+    };
+
     var app_router = new AppRouter;
-    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView,myRewardsView,
+    var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, mapSearchView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView,myRewardsView,
      chatEmailView;
 
     app_router.on('route:showLogin', function (actions) {
@@ -212,6 +228,7 @@ define([
      app_router.on('route:showRestaurantList2', function (actions,city,college) {
        // We have no matching route, lets display the home page 
         restaurantList2View = restaurantList2View || new RestaurantList2View();
+        transitionEffect();
         restaurantList2View.render(actions,city,college);
         
     });
@@ -222,11 +239,11 @@ define([
         restaurantMapsView.render();
     });
 
-    app_router.on('route:showRestaurantNear', function (actions) {
+    app_router.on('route:showRestaurantNear', function (lat,lng) {
        // We have no matching route, lets display the home page 
         restaurantNearView = restaurantNearView || new RestaurantNearView();
-       
-        restaurantNearView.render();
+        transitionEffect();
+        restaurantNearView.render(lat,lng);
         
     });
 
@@ -296,6 +313,12 @@ define([
         mapView = mapView || new MapView ();
         mapView.render();
     });
+
+      app_router.on('route:showMapSearch', function (actions) {
+          // We have no matching route, lets display the home page
+          mapSearchView = mapSearchView || new MapSearchView ();
+          mapSearchView.render();
+      });
 
     app_router.on('route:showMap2', function (actions) {
        // We have no matching route, lets display the home page 
@@ -411,6 +434,7 @@ define([
     app_router.on('route:showMyMessage', function (actions) {
        // We have no matching route, lets display the home page 
         myMessageView = myMessageView || new MyMessageView();
+        transitionEffect();
         myMessageView.render();
     });
 
@@ -441,6 +465,7 @@ define([
     app_router.on('route:showMyMessage2', function (actions) {
        // We have no matching route, lets display the home page 
         myMessage2View = myMessage2View || new MyMessage2View();
+        transitionEffect();
         myMessage2View.render();
     });
 
@@ -493,7 +518,7 @@ define([
     app_router.on('route:showChatRequest', function (actions) {
        // We have no matching route, lets display the home page 
         chatRequestView = chatRequestView || new ChatRequestView();
-        chatRequestView.render();
+        chatRequestView.render(actions);
     });
 
      app_router.on('route:showChatMessage', function (actions) {
@@ -517,6 +542,7 @@ define([
     app_router.on('route:showCuisineList', function (actions) {
        // We have no matching route, lets display the home page 
         cuisineListView = cuisineListView || new CuisineListView();
+        transitionEffect();
         cuisineListView.render(actions);
     });
 
@@ -591,24 +617,28 @@ define([
     app_router.on('route:showDishHot1', function (actions) {
        // We have no matching route, lets display the home page 
        dishHot1View = dishHot1View || new DishHot1View();
+       transitionEffect();
        dishHot1View.render();
     });
 
      app_router.on('route:showDishHot2', function (actions,from) {
        // We have no matching route, lets display the home page 
        dishHot2View = dishHot2View || new DishHot2View();
+       transitionEffect();
        dishHot2View.render(actions,from);
     });
 
       app_router.on('route:showDishHot3', function (actions) {
        // We have no matching route, lets display the home page 
        dishHot3View = dishHot3View || new DishHot3View();
+       transitionEffect();
        dishHot3View.render(actions);
     });
 
     app_router.on('route:showDishHot4', function (actions,name) {
        // We have no matching route, lets display the home page 
        dishHot4View = dishHot4View || new DishHot4View();
+       transitionEffect();
        dishHot4View.render(actions,name);
     });
 
@@ -630,10 +660,7 @@ define([
         homeView.render();
     });
 
-
-   
-
-
+    window.modalPhoto =  window.modalPhoto || new SidebarView();
     window.app_router = app_router;
     Backbone.history.start();
   };

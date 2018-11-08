@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/aboutUsTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, aboutUsTemplate){
+], function($, _, Backbone, aboutUsTemplate){
 
   var AboutUsView = Backbone.View.extend({
     el: $("#page"),

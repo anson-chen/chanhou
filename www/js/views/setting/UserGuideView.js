@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/userGuideTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, userGuideTemplate){
+], function($, _, Backbone, userGuideTemplate){
 
   var UserGuideView = Backbone.View.extend({
     el: $("#page"),

@@ -16,19 +16,10 @@
             </a>
         </div>
         <div class="setting-li clearfix">
-         <a href="#langSetting">
+         <a href="javascript:;">
             <span class="set-floor-title" style="color:#333;width:10em;"><%=newChihuo.localize('profile_settings_language')%></span>
             <p class="set-floor-select" style="margin-right:0;">
-               <%if(language == 1){%>English
-                <%}else if(language == 2){%>
-                简体中文
-                <%}else if(language == 3){%>
-                繁体中文
-                 <%}else if(language == 4){%>
-                Francais
-                <%}else{%>
-                Espanol
-                <%}%>
+               English
             </p>
             </a>
         </div>  
@@ -49,7 +40,25 @@
             <span class="set-floor-title" style="color:#333; width: 10em;"><%=newChihuo.localize('profile_settings_security_policy')%></span>
             <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
             </a>
-        </div>  
+        </div>
+        <div class="setting-li clearfix">
+         <a href="#aboutUs">
+            <span class="set-floor-title" style="color:#333; width: 10em;">About Us</span>
+            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+            </a>
+        </div>
+        <div class="setting-li clearfix">
+         <a href="mailto:info@wookoncorp.com">
+            <span class="set-floor-title" style="color:#333; width: 10em;">Contact Us</span>
+            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+            </a>
+        </div>
+         <div class="setting-li clearfix">
+          <a href="javascript:;">
+            <span class="set-floor-title" style="color:#333;width:10em;">Current Version</span>
+            <p class="set-floor-select" style="margin-right:0; background:none; padding-right:0;"><%=newChihuo.wkAppVersion%></p>
+            </a>
+        </div>    
     </div>
     <div class="quit-setting <%if(!newChihuo.getLocalStorage('customer_id')){%>no-effect-quit<%}%>" id='logout'><%=newChihuo.localize('profile_settings_logout')%></div>
     <div class="rest-fix-bottom">
@@ -64,9 +73,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
        <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

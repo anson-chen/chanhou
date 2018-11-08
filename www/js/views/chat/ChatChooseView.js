@@ -8,11 +8,9 @@ define([
   var ChatChooseView = Backbone.View.extend({
     el: $("#page"),
     events: {
-     'click #addressMore':'showMoreAddress',
-     'click #userComments .comment-cont':'showMoreComment',
      'click .go-message':'showMessage',
-     'click .search-set-input i':'clearInput',
-     'submit #chatChooseForm': 'chatChoose'
+     'click .choose-clear':'clearInput',
+     'submit #chatChooseForm': 'searchFilter'
     },
 
     render: function(){
@@ -47,6 +45,24 @@ define([
                      }
                   } 
               });   
+    },
+
+    searchFilter: function(){
+       var _this = this;
+       var word = $('.invite-input').val().toLowerCase();
+       var len = $('.rest-comment-head').length;
+      event.preventDefault();
+      if(word.length && len ){
+          for(var i=0; i<len; i++){
+            var name = $('.rest-comment-head').eq(i).removeClass('no-show').find('h3').text().toLowerCase();
+            if(name.indexOf(word)==-1){
+               $('.rest-comment-head').eq(i).addClass('no-show');
+            }
+            
+            }
+
+          }
+
     },
 
     chatChoose: function(event){
@@ -89,14 +105,6 @@ define([
               });  
     },
 
-    showMoreAddress: function(){
-      $(".address-detail").toggleClass('address-more');
-    },
-
-    showMoreComment: function(e){
-      var obj=$(e.currentTarget);
-      obj.toggleClass('comment-cont-more');
-    },
 
     showMessage: function(e){
       var obj = $(e.currentTarget);
@@ -112,6 +120,7 @@ define([
 
     clearInput: function(e){
       $(e.currentTarget).parent().find('input').val('');
+      $('.rest-comment-head').removeClass('no-show');
     }
 
   });

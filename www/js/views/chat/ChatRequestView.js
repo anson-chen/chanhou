@@ -18,15 +18,22 @@ define([
       ct: 20
     },
 
-    render: function(){
+    render: function(type){
       newChihuo.setPage('chatRequest');
       newChihuo.windowInit();
+      initData.chatRequestData.showToData = type == 1 ? true : false;
       this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
-      newChihuo.requestList = {};//清空好友请求消息列表
-      this.initData(0);
+      newChihuo.requestList = {};//清空好友请求消息列表      
+      if(type == 1){
+        this.initDataIncoming(0);
+      }
+      if(type == 2){
+        this.initDataOutgoing(0);
+      }
+      
     },
 
-    initData: function(num){
+    initDataIncoming: function(num){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -43,11 +50,13 @@ define([
                       initData.chatRequestData.toData = data.data;                      
                       // alert(JSON.stringify(initData.chatRequestData.data));
                       newChihuo.getPage('chatRequest') && _this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
+                      newChihuo.getPage('chatRequest') && !initData.chatRequestData.toData.length && chihuo.setNoDataInfo($('.toData'));
                   }
                 }
               });  
-
-      
+},
+     initDataOutgoing: function(num){
+      var _this = this; 
       chihuo.wkAjax({
                   type: 'GET',
                   url: chihuo.getApiUri('getAllFriendReq.json'),
@@ -62,6 +71,7 @@ define([
                      if(data.status == 0){
                       initData.chatRequestData.fromData = data.data;                      
                       newChihuo.getPage('chatRequest') && _this.$el.html(_.template(chatRequestTemplate,initData.chatRequestData));
+                      newChihuo.getPage('chatRequest') && !initData.chatRequestData.fromData.length && chihuo.setNoDataInfo($('.fromData'));
                   }
                   
                 }

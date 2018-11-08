@@ -5,6 +5,8 @@
 	        <h3><%=newChihuo.localize('profile_friendrequest_header')%></h3>
 	    </nav>
 	</div>
+	<%if(initData.chatRequestData.showToData){%>
+	<%if(toData && toData.length){%>
 	<%_.each(toData,function(d,i){%>
 	<div class="chat-people-list" style="margin:5px 12px;">
 		<div class="rest-comment-head clearfix">
@@ -17,18 +19,25 @@
 		</div>
 	</div>
 	<%})%>
-
-	<%_.each(fromData,function(d,i){%>
-	<div class="chat-people-list" style="margin:5px 12px;">
-		<div class="rest-comment-head clearfix">
-		    <%if(d.request_status_id == 0){%><span class="chat-add-word go-message2" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.requester_cust_photo_url || '')%> >added</span><%}else{%><span class="chat-add-word" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.requester_cust_photo_url || '')%> ><%=d.request_status_name%></span><%}%>
-			<img src="<%if(d.requester_cust_photo_url){%><%=d.requester_cust_photo_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
-				<div class="comment-right-info">
-					<h3 style="background:none;"><%=d.requester_display_name%></h3>
-					<p><%=chihuo.getLastTime(d.request_datetime)%> ago</p>
-				</div>
+	<%}else{%>
+	<div class="whoops toData"></div>
+	<%}%>
+    <%}else{%>
+    <%if(fromData && fromData.length){%>
+		<%_.each(fromData,function(d,i){%>
+		<div class="chat-people-list" style="margin:5px 12px;">
+			<div class="rest-comment-head clearfix">
+			    <%if(d.request_status_id == 0){%><span class="chat-add-word go-message2" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.requester_cust_photo_url || '')%> >added</span><%}else{%><span class="chat-add-word" id="<%=d.requester_id%>" name=<%=d.requester_display_name%> src=<%=(d.requester_cust_photo_url || '')%> ><!-- <%=d.request_status_name%> -->Awaiting approval</span><%}%>
+				<img src="<%if(d.requester_cust_photo_url){%><%=d.requester_cust_photo_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+					<div class="comment-right-info">
+						<h3 style="background:none;"><%=d.requester_display_name%></h3>
+						<p><%=chihuo.getLastTime(d.request_datetime)%> ago</p>
+					</div>
+			</div>
 		</div>
-	</div>
-	<%})%>
-
+		<%})%>
+	<%}else{%>
+	<div class="whoops fromData"></div>
+	<%}%>
+    <%}%>
 </div>

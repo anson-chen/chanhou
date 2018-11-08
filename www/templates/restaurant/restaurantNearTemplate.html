@@ -19,7 +19,7 @@
 		<a href="#restaurant/<%=d.rest_id%>">
 			<div class='clearfix'>
 			   <div class="food-img">
-	                <img src="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
+	                <img class="lazy" data-original="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
 	                <%if(d.ad_flag == 'y' || d.ad_flag == 'Y'){%><span class="ad-flag">Ad</span><%}%>
 	           </div>
 	           <div style="margin:0 5px 0 100px; position:relative;">
@@ -56,9 +56,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
        <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

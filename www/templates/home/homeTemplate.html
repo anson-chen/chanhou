@@ -42,7 +42,7 @@
               <a href="#searchSet"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a>
             </div>  
             <div class="swiper-slide">
-             <a href="#map"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
+             <a href="#mapSearch"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
             </div>
              <div class="swiper-slide">
               <a href="#restaurantNear"><img src="imgs/nav-icon6.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a>
@@ -60,7 +60,7 @@
               <a href="#searchSet"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a>
             </div>
              <div class="swiper-slide">
-             <a href="#map"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
+             <a href="#mapSearch"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
             </div>
            
             <div class="swiper-slide">
@@ -242,9 +242,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

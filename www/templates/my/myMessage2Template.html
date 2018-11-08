@@ -48,7 +48,7 @@
 					</div>
 					<%}%>
 					<%if(d.review_concat_photo_urls){%>
-					<div class="comment-img-show clearfix">
+					<div class="comment-img-show clearfix" photo="<%=d.review_concat_photo_urls%>">
 					   <%_.each(d.review_concat_photo_urls.split(','),function(d,i){%>
 						<img src="<%=d%>">
 						<%})%>
@@ -103,9 +103,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
        <li id="msgFeeds" class="cur<%if(newChihuo.activityNum){%> message-remind<%}%>">

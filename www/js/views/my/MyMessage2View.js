@@ -16,7 +16,7 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 10,
+      ct: 50,
       tips: null
     },
 
@@ -42,17 +42,17 @@ define([
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
-                     st: num*_this.status.ct+1,
-                     ct: _this.status.ct,
+                     st: 1,
+                     ct: (num+1)*_this.status.ct,
                   },
                   success: function(data){
                      if(num == 0){
                       initData.myMessage2Data.data = [];
                      }
                      if(data.status == 0){
-                        initData.myMessage2Data.data = [...initData.myMessage2Data.data,...data.data];
+                        initData.myMessage2Data.data = data.data;
                         newChihuo.getPage('myMessage2') && _this.$el.html(_.template(myMessage2Template,initData.myMessage2Data));
-                        if(data.data.length == 0){
+                        if(data.data.length < (num+1)*_this.status.ct){
                             _this.status.isEnd = true;
                              $('.loading-step3').show();
                              $('.loading-step1,.loading-step2').hide();
@@ -123,7 +123,17 @@ define([
          $('#reload').addClass('show-reload');          
           setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
           _this.initData(0);
-      })
+      });
+
+      $('.comment-img-show img').on('click',function(){
+           var url = $(this).parent().attr('photo');
+           var index = $(this).index();
+           if(url){
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
+            window.modalPhoto.render();
+           }
+      });
     },  
 
     showMoreComment: function(e){

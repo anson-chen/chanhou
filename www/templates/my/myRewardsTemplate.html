@@ -21,8 +21,9 @@
     <div class="panel-collapse collapse in">
       <div class="panel-body">
         <%if(data[0] && data[0].realized_score){%>
+          <p class="rewards-para" style="background-position:0 5px;"><span>100</span>Signup bonus</p>
         	<%_.each(JSON.parse(data[0].realized_score),function(d,i){%>
-        	  <%if(d.total_points){%><p class="rewards-para rewards-icon-<%=d.type%>"><span><%=d.total_points%></span><%=d.cnt%> <%if(d.type == 'follower'){%>friend<%}else{%><%=d.type%><%}%><%if(d.cnt>1 && d.type != 'likes'){%>s<%}%> <em>x</em> <%=d.unit_point%></p><%}%>
+        	  <%if(d.total_points){%><p class="rewards-para rewards-icon-<%=d.type%>"><span><%=d.total_points%></span><%=d.cnt%> <%=d.type%><%if(d.cnt>1 && d.type != 'likes'){%>s<%}%> <em>x</em> <%=d.unit_point%></p><%}%>
         	<%})%>
         	<p class="rewards-tips">* Points will take up to 2 business days to be posted to your account. </p>
         <%}else{%>

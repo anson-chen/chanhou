@@ -20,14 +20,14 @@
 					</div>
 					<p class="comment-cont"><%=d.review_details && d.review_details.split('~~~')[0]%></p>
 					<%if(d.review_concat_photo_urls){%>
-						<div class="review-photo-urls clearfix">
+						<div class="review-photo-urls clearfix" photo="<%=d.review_concat_photo_urls%>">
 							<%_.each(d.review_concat_photo_urls.split(','),function(d,i){%>
 								<img src="<%=d%>">
 							<%})%>
 						</div>
 					<%}%>
 					<div class="rest-comment-bottom">
-						<div class="comment-operation"><span class="share-icon">share</span></div>
+						<div class="comment-operation" style="display:none;"><span class="share-icon">share</span></div>
 						<div class="comment-operation"><span class="good-icon" review=<%=d.cust_rest_review_id%>><%=d.review_likes_cnt%></span></div>
 						<div class="comment-operation user-page"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>><%=newChihuo.localize('activitity_reply')%></span></div>			
 					</div>

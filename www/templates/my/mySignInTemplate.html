@@ -42,17 +42,19 @@
              <%if(miData.length){%>
             <%_.each(miData,function(d,i){%>
                 <div class="wrap-border clearfix">
-                    <div class="food-list-icon4" style="margin:0;">
-                    <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
-                    </div>
-                    <div class="food-img">
-                        <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
-                    </div>
-                    <div style="margin-left:100px;">
-                    <h3 class="rest-name-title"><%=d.mi_name%></h3>
-                    <p class="rest-info-show" style="padding-top:5px; margin-right:80px;"><%=d.cuisine_type%> <span style="color:#0bbc13;"><%=d.mi_unit_price%></span><br><%=newChihuo.showDistanceInfo(d.cust_distance)%>
-                    </p>
-                    </div>
+                   <a href="#food/<%=d.rest_id%>/<%=d.rest_menu_item_id%>">
+                        <div class="food-list-icon4" style="margin:0;">
+                        <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
+                        </div>
+                        <div class="food-img">
+                            <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
+                        </div>
+                        <div style="margin-left:100px;">
+                        <h3 class="rest-name-title"><%=d.mi_name%></h3>
+                        <p class="rest-info-show" style="padding-top:5px; margin-right:80px;"><%=d.cuisine_type%> <span style="color:#0bbc13;"><%=d.mi_unit_price%></span><br><%=newChihuo.showDistanceInfo(d.cust_distance)%>
+                        </p>
+                        </div>
+                    </a>
                 </div>
             <%})%>
             <%}else{%>
@@ -74,9 +76,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
        <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/praviteSettingTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, praviteSettingTemplate){
+], function($, _, Backbone,praviteSettingTemplate){
 
   var PraviteSettingView = Backbone.View.extend({
     el: $("#page"),

@@ -9,7 +9,7 @@ define([
   var MyPhotosView = Backbone.View.extend({
     el: $("#page"),
     events: {
-     
+     'click .my-photos li':'showBigImg'
     },
     status: {
       st: 0,
@@ -75,6 +75,23 @@ define([
           }
         }); 
     },
+
+    showBigImg: function(e){
+      var index = $(e.currentTarget).index();
+      if(initData.myPhotosData.data.length){
+        var url = [];
+        for(var i=0; i<initData.myPhotosData.data.length; i++){
+          initData.myPhotosData.data[i].rest_review_photo_url ? url.push(initData.myPhotosData.data[i].rest_review_photo_url) : null;
+        }
+      }
+      if(url.length){
+      initData.photoData.photoUrl = url.join(',');
+      initData.photoData.photoIndex = index;
+      app_router.navigate('photoDetail', {
+        trigger: true
+      });
+      }
+    }
 
 
 

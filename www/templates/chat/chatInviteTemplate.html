@@ -2,56 +2,39 @@
 	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
 	    <nav class="common-title">
 	        <a href="javascript:history.go(-1);" class="common-return"></a>
-	        <h3><%=newChihuo.localize('chat_addcontacts')%></h3>
+	        <h3><%=newChihuo.localize('')%>Contacts</h3>
 	    </nav>
 	</div>  
-	<div class="chat-apply-wrap" style="padding:15px 0;">
+	<div class="chat-apply-wrap" style="padding:8px 0;">
 		<div class="search-set-input" style="background: #f2f6f9; position:relative;">
 		    <img src="imgs/search-index.png" class="chat-search-icon">
-			<i class="clear-input-value"></i>
+			<i class="clear-input-value invite-clear"></i>
 			<div style="margin:0 30px;">
 				<form id="chihuoSearch">
-					<input type="text" name="" class="invite-input" value="" placeholder="<%=newChihuo.localize('profile_search_foodies')%>">
+					<input type="text" name="" class="invite-input" value="" placeholder="<%=newChihuo.localize('')%>Search Contacts">
 				</form>
 			</div>		
 		</div>
 	</div>
-	<div class="fix-name-list" style="display:none;">
-		<span>#</span>
-		<span>A</span>
-		<span>B</span>
-		<span>C</span>
-		<span>D</span>
-		<span>E</span>
-		<span>F</span>
-		<span>G</span>
-		<span>H</span>
-		<span>I</span>
-		<span>J</span>
-		<span>K</span>
-		<span>L</span>
-		<span>M</span>
-		<span>N</span>
-		<span>O</span>
-		<span>P</span>
-		<span>Q</span>
-		<span>R</span>
-		<span>S</span>
-		<span>T</span>
-		<span>U</span>
-		<span>V</span>
-		<span>W</span>
-		<span>X</span>
-		<span>Y</span>
-		<span>Z</span>
-	</div>
-	<p class="friend-request-title"><a href="#chatEmail"><%=newChihuo.localize('')%>短信或者邮件邀请好友</a></p>
-	<p class="friend-request-title <%if(!$.isEmptyObject(newChihuo.requestList)){%>request-point<%}%>" id="msgPoint2"><a href="#chatRequest"><%=newChihuo.localize('profile_my_friend_request')%></a></p>
-	<div class="search-chihuo-list">
-		
-	</div>
-	<p class="friend-request-title" style="background:#fff;"><a href="#chatRequest">my phonebook contacts</a></p>
+	<p class="friend-request-title"><a href="#chatEmail"><%=newChihuo.localize('')%>Invite Friends</a></p>
+	<p class="friend-request-title <%if(!$.isEmptyObject(newChihuo.requestList)){%>request-point<%}%>" id="msgPoint2"><a href="#chatRequest/1"><%=newChihuo.localize('')%>Incoming friend request</a></p>
+	<p class="friend-request-title" id="msgPoint2"><a href="#chatRequest/2"><%=newChihuo.localize('')%>Outgoing friend request</a></p>
+	<div class="chat-people-list" style="margin-top:0;">
+	<%if(data && data.length){%>
 	<%_.each(data,function(d,i){%>
+		<div class="rest-comment-head clearfix">
+			<a href="javascript:;" class="go-message" id="<%=d.friend_cust_id%>" name=<%=d.friend_cust_name%> src=<%=(d.friend_cust_url || '')%>>
+				<img src="<%if(d.friend_cust_url){%><%=d.friend_cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+					<div class="comment-right-info">
+						<h3 style="background:none;"><%=d.friend_cust_name%></h3>
+						<p></p>
+					</div>
+			</a>
+		</div>
+	<%})%>	
+	<%}%>    
+	</div>      
+	<!-- <%_.each(data,function(d,i){%>
 	<%if(d.reg_flag){%>
 	<div class="chat-people-list <%if(d.friend_flag){%>added-this<%}%>" style="margin:5px 12px;" name='<%=d.display_name%>' id='<%=d.customer_id%>' src='<%=d.profile_photo_url%>'>
 		<div class="rest-comment-head clearfix">
@@ -64,7 +47,7 @@
 				</div>
 		</div>
 	</div>
-	<%}})%>
+	<%}})%> -->
 </div>
 <div class="rest-fix-bottom">
     <ul class="clearfix">
@@ -73,14 +56,14 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li class="<%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%> cur" id="msgRemind">
+      <li class="<%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%>" id="msgRemind">
          <a href="#chatAdd"><img src="imgs/sdx.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+     <li class="cur">
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

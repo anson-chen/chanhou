@@ -20,6 +20,11 @@ define([
 
     sendchatInvite: function(e){
       var id = $(e.currentTarget).attr('cust') || '';
+      if($(e.currentTarget).hasClass('done-effect')){
+        return;
+      }else{
+         $(e.currentTarget).addClass('done-effect');
+      }
       id && chihuo.wkAjax({
           type: 'POST',
           url: chihuo.getApiUri('sendFriendReq.json'),

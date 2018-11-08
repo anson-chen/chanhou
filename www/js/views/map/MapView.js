@@ -17,9 +17,11 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 20,
+      ct: 50,
       lat: null,
       lng: null,
+      swiper: null,
+      slideTMOuts: []
     },
      search: {
        showPop: false,
@@ -29,7 +31,8 @@ define([
        price : 0,
        cuisine : '',
        openhours : '',
-       features : [0]
+       features : [0],
+         maxmaplevel: 18,
     },
 
     render: function(){
@@ -37,14 +40,14 @@ define([
       newChihuo.windowInit();
       this.$el.html(_.template(mapTemplate,initData.restaurantNearData));
       if(initData.restaurantNearData.data.length == 0){
-        this.initData(0);
+        this.initData();
         this.filter();
       }else{
         this.bindEvents();
       }       
     },
 
-    initData: function(lat,lng,num){
+    initData: function(num,lat,lng){
       var _this = this;
       var num = num || 0;
       var addr = $.trim($('.address-filter').val()) || 'null';
@@ -86,8 +89,8 @@ define([
                      lat: lat || newChihuo.lat,
                      lng: lng || newChihuo.lon,
                      locale: 'en',
-                     st: num*_this.status.ct+1,
-                     ct: _this.status.ct,
+                     st: 1,
+                     ct: (num+1)*_this.status.ct,
                      filters: filters
                   },
                   beforeSend: function (xhr) {},
@@ -107,7 +110,8 @@ define([
                         initData.restaurantNearData.data = data.data || initData.restaurantNearData.data;
                         if(newChihuo.getPage('map')){
                           _this.$el.html(_.template(mapTemplate,initData.restaurantNearData));
-                          _this.bindEvents();
+                          var index = num==0 ? 0 : num*_this.status.ct;
+                          _this.bindEvents(index);
                           _this.statusSave();
                           _this.status.lat = lat || newChihuo.lat;
                           _this.status.lng = lng || newChihuo.lon;
@@ -184,35 +188,96 @@ define([
       }
 
     },
-
-    bindEvents: function(){
+      clearSlideTMOuts: function() {
+          if (! this.status.slideTMOuts || this.status.slideTMOuts.length <1) {
+              return;
+          }
+          var i;
+          for (i=0; i < this.status.slideTMOuts.length; i++) {
+              console.log('try to clear timeout: ' + this.status.slideTMOuts[i]);
+              clearTimeout(this.status.slideTMOuts[i]);
+          }
+          this.status.slideTMOuts = [];
+      },
+    bindEvents: function(index){
       var _this = this;
       var time;
-      if(initData.restaurantNearData.data.length){
-      var swiperMap =  new Swiper('#map-swiper', {
+      var len = initData.restaurantNearData.data.length;
+      if(len){  
+      this.status.swiper =  new Swiper('#map-swiper', {   
+        initialSlide:index ? index : 0,
         slidesPerView: 'auto',
         onInit: function(swiper){
             chihuo.initMapOption(initData.restaurantNearData.data);
             newChihuo.map && chihuo.initMapShow(initData.restaurantNearData.data,swiper.activeIndex);
-            newChihuo.map && newChihuo.map.on('moveend',function(ev){
-               clearTimeout(time);
-              time = setTimeout(function() {    
-                _this.status.sendRequest && _this.checkPosition(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng) && _this.initData(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng);
-              },800);             
-            });
+            for (var i= 0; i< initData.restaurantNearData.data.length; i++) {
+              (function(i){
+                newChihuo.markerWrap[i].on('click',function(){
+                _this.status.swiper.slideTo(i);
+              })
+              }(i)); 
+            }
+            // newChihuo.map && newChihuo.map.on('moveend',function(ev){
+            //    clearTimeout(time);
+            //   time = setTimeout(function() {    
+            //     _this.status.sendRequest && _this.checkPosition(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng) && _this.initData(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng);
+            //   },800);             
+            // });
 
         },
         onSlideChangeStart: function(swiper){
+            _this.clearSlideTMOuts();
            _this.status.sendRequest = false;
-           newChihuo.map && newChihuo.map.panTo({lat:initData.restaurantNearData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantNearData.data[swiper.activeIndex].address_longitude});
-           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex-1 > 0 ? swiper.activeIndex-1 : 0].setIcon(newChihuo.myIcon2);
-           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex+1 < newChihuo.markerWrap.length ? swiper.activeIndex+1 : swiper.activeIndex].setIcon(newChihuo.myIcon2);
-           newChihuo.map && newChihuo.markerWrap[swiper.activeIndex].setIcon(newChihuo.myIcon1).openPopup();               
+          if(len > newChihuo.markerWrap.length){
+            this.onInit(swiper);
+          }
+          //if(swiper.activeIndex < len){
+            // newChihuo.map && newChihuo.map.panTo({lat:initData.restaurantNearData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantNearData.data[swiper.activeIndex].address_longitude});
+            // newChihuo.map && newChihuo.markerWrap[swiper.activeIndex-1 > 0 ? swiper.activeIndex-1 : 0].setIcon(newChihuo.myIcon2);
+            // newChihuo.map && newChihuo.markerWrap[swiper.activeIndex+1 < newChihuo.markerWrap.length ? swiper.activeIndex+1 : swiper.activeIndex].setIcon(newChihuo.myIcon2);
+            // newChihuo.map && newChihuo.markerWrap[swiper.activeIndex].setIcon(newChihuo.myIcon1).openPopup();
+            //}
+            if(swiper.activeIndex < len) {
+                 newChihuo.map && newChihuo.map.panTo({lat:initData.restaurantNearData.data[swiper.activeIndex].address_latitude,lng:initData.restaurantNearData.data[swiper.activeIndex].address_longitude});
+                var activemarker = newChihuo.markerWrap[swiper.activeIndex];
+                var parent = null;
+                if (newChihuo.clusterMarkers) {
+                    parent = newChihuo.clusterMarkers.getVisibleParent(activemarker);
+                }
+                var k;
+                for (k = 0; k < newChihuo.markerWrap.length; k++) {
+                    var _marker = newChihuo.markerWrap[k];
+                    if (k == swiper.activeIndex) {
+                        _marker.setIcon(newChihuo.myIcon1);
+                        if (parent && parent === activemarker) {
+                            _marker.openPopup();
+                        }
+                    } else {
+                        _marker.setIcon(newChihuo.myIcon2);
+                        _marker.closePopup();
+                    }
+                }
+                if (parent && parent !== activemarker) {
+                    if (newChihuo.clusterMarkers) {
+                        parent.spiderfy();
+                    }
+                    var tmout1 = setTimeout(function () {// moveend event doesn't work well !!!
+                        if(!activemarker.isPopupOpen()) {
+                            activemarker.openPopup();
+                        }
+                    }, 500);
+                    _this.status.slideTMOuts.push(tmout1);
+                }
+            }
         },
         onSlideChangeEnd: function(swiper){
           if(!_this.status.sendRequest){
               clearTimeout(time);
               _this.status.sendRequest = true;
+          }
+          if(swiper.activeIndex >= len-1){
+            var num = Math.ceil(len/_this.status.ct);
+            _this.initData(num);
           }
         }
       });

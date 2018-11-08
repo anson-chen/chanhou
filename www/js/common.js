@@ -1,18 +1,24 @@
 var newChihuo = {
-    address: "http://app.foodymonkey.com",//"http://staging.wookongcorp.com:9099"
+    address: "http://app.foodymonkey.com",//http://staging.wookongcorp.com:9099"
     appname: "wkfdmk",
     geosrvUrl: "http://geosrv.foodymonkey.com/geosrv",
     textShowLength: 80,
     showMorePara: function(str, kind){
        if(str && str.length && str.length > this.textShowLength ){
         if(kind == 2){
-            return str.slice(0,this.textShowLength)+'<b>'+str.slice(this.textShowLength)+'</b><span>... ...全文</span>&nbsp;&nbsp;';
+            return str.slice(0,this.textShowLength)+'<b>'+str.slice(this.textShowLength)+'</b><span>... ...all</span>&nbsp;&nbsp;';
         }else{
-         return str.slice(0,this.textShowLength)+'<b>'+str.slice(this.textShowLength)+'</b><span>... ...更多</span>&nbsp;&nbsp;';
+         return str.slice(0,this.textShowLength)+'<b>'+str.slice(this.textShowLength)+'</b><span>... ...more</span>&nbsp;&nbsp;';
         }
        }else{
         return str;
        }
+    },
+    isMobileDevice: function() {
+        var u = navigator.userAgent
+        var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        var Android = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+        return iOS || Android;
     },
     showPopInfo: function(info, time, cb){ 
        var pop = $('#popInfo');
@@ -159,6 +165,7 @@ var newChihuo = {
                 newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
                 newChihuo.setLocalStorage('loginType','3rd');
                 newChihuo.setProfile(uid);
+    
               }else{
                newChihuo.showPopInfo(newChihuo.localize('login_fail'),1200);
               }
@@ -175,7 +182,7 @@ var newChihuo = {
           type: 'POST',
           url: chihuo.getApiUri('updateProfile.json'),
           data:{
-            name: uid.nickname || uid.name,
+            name: uid.name || uid.nickname,
             purl: uid.picture,
             lat: newChihuo.lat,
             lng: newChihuo.lon,
@@ -185,8 +192,8 @@ var newChihuo = {
             if (data.status == 0) {
               if(data.data[0].status_code == 0){
                 initData.myIndexData.data.profile_photo_url = uid.picture;
-                initData.myIndexData.data.display_name = uid.nickname || uid.name;
-                newChihuo.customer = data.data[0].display_name || uid.nickname || uid.name;
+                initData.myIndexData.data.display_name = uid.name || uid.nickname;
+                newChihuo.customer = data.data[0].display_name || uid.name || uid.nickname;
                 app_router.navigate('myIndex',{
                   trigger: true
                 });
@@ -228,6 +235,19 @@ var newChihuo = {
         window.open('http://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
     }
     },
+    setRestUrl: function(url){
+      var url = url.toLowerCase();
+      if(url.indexOf('http')>=0){
+        return url;
+      }else{
+        return 'http://'+url;
+      }
+    },
+    isIOS: function(){
+      var u = navigator.userAgent
+      var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      return iOS;
+    },
     locale: 'en-CA',
     motionStatus: false,
     shakeTrigger: 1,
@@ -243,8 +263,10 @@ var newChihuo = {
     longSpeed: 1000*20,
     shortSpeed: 1000*3,
     map: null,
+    maplastcenter: null,
+    maplastlevel: null,
     mapListener: null,
-    positionSpeed: 1000*60,
+    positionSpeed: 1000*20,
     globalStatus: false,
     positionTime: null,
     positionChanged: false,
@@ -256,8 +278,8 @@ var newChihuo = {
     activityObj:null,
     lock: null,
     indexTimeout: null,
-    wkAppVersion: '3.0.21',
-    wkAppBuild: '221',
+    wkAppVersion: '3.1.3',
+    wkAppBuild: '250',
 };
 //静态资源路径
 var staticSource = {
@@ -576,7 +598,7 @@ var WKStorageManager = {
     clear : function() {
         this.clearLogTyp();
         this.clearTpUsrInfo();
-        this.clearCustInfo;
+        this.clearCustInfo();
     },
     setCustDetail : function() {
         WKStorageUtils.saveJson(this.custdetailkey);
@@ -719,7 +741,9 @@ var wkActionHelper = {
             }
             tid = setTimeout(callback,_interval);
             this.setTimeoutID(actionId,tid);
+            return tid;
         }
+        return null;
     }
 };
 
@@ -1398,6 +1422,7 @@ var ajaxHelper = {
 
 //通用方法
 var chihuo = {
+    mapMinQueryDistance: 500,
   picQuality: 0.90,
   picMaxSize: 10 * 1024 * 1024,
   picWidth: 1080,
@@ -1440,7 +1465,7 @@ var chihuo = {
 
   getOpenStatus: function(hours){
     var begin,end;
-    if(hours.indexOf('24小时')>=0){
+    if(hours.indexOf('24小时')>=0 || hours.indexOf('24 hours')>=0){
         return true;
     }
     if(hours && hours.indexOf('–')>=0){
@@ -1472,7 +1497,7 @@ var chihuo = {
     }
   },
 
-  timestampToTime: function(timestamp) {
+ timestampToTime: function(timestamp) {
         var now = new Date();
         var date = new Date(timestamp);
         var y = new Date(timestamp+3600*1000*24);
@@ -1483,10 +1508,10 @@ var chihuo = {
         m = date.getMinutes() + ':';
         s = date.getSeconds();
         if(now.valueOf() > timestamp){
-           if(date.getDate() == now.getDate()){
-              return 'Today';
+           if(date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getFullYear() == now.getFullYear()){
+               return 'Today';
            }
-           if(y.getDate() == now.getDate()){
+           if(y.getDate() == now.getDate() && y.getMonth() == now.getMonth() && y.getFullYear() == now.getFullYear()){
                return 'Yesterday';
            }
         }
@@ -1542,11 +1567,11 @@ var chihuo = {
      $.ajaxSetup({
                 //发送请求前触发
                 beforeSend: function (xhr) {
-                    var html='<div id="maskScreen" mask="1" style="position: fixed;width: 100%; height: 100%; left: 0; top: 0; background: #000; opacity: 0.5; z-index:1000; color: #fff;"><p style="text-align: center; padding-top: 100px;">loading...</p></div>';
-                    if($("#maskScreen").length){
-                        var index=parseInt($("#maskScreen").attr("mask"));
-                        $("#maskScreen").attr("mask",++index);
-                       
+                    var html='<div id="maskScreen" mask="1" style="position: fixed;width: 100%; height: 100%; left: 0; top: 0; background: rgba(255,255,255,.98); z-index:1000;"><div class="logo-animation"></div><p style="text-align: center; padding-top: 190px; font-size:24px; color:#ff4200;">......</p></div>';
+                    var $mask = $("#maskScreen");
+                    if($mask.length){
+                        var index=parseInt($mask.attr("mask"));
+                        $mask.attr("mask",++index);  
                     }else{
                         $("body").append(html);
                     }
@@ -1554,14 +1579,15 @@ var chihuo = {
                 },
                 //完成请求后触发。即在success或error触发后触发
                 complete: function (xhr, status) {
-                    if($("#maskScreen").length){
-                        var index=parseInt($("#maskScreen").attr("mask"));
-                        $("#maskScreen").attr("mask",--index);
+                    var $mask = $("#maskScreen");
+                    if($mask.length){
+                        var index=parseInt($mask.attr("mask"));
+                        $mask.attr("mask",--index);
                         if(index==0){
-                            $("#maskScreen").remove();
+                            $mask.fadeOut(800,function(){$mask.remove()});
                         }
                     }else{
-                        $("#maskScreen").remove();
+                        $mask.remove();
                     }
                 },
                 error: function(xhr){
@@ -1602,7 +1628,9 @@ var chihuo = {
   },
 
   positionChange: function(newLat, newLon,lastLat,lastLon){
-      if(newLat != lastLat || newLon != lastLon){
+      var locChanged = WKMapShouldQuery([lastLat, lastLon], [newLat, newLon], 10);
+      if (locChanged) {
+          console.log('onchanged')
          newChihuo.lat = newLat;
          newChihuo.lon = newLon;
          newChihuo.setLocalStorage('lat',newChihuo.lat);
@@ -1680,7 +1708,7 @@ var chihuo = {
         StatusBar && StatusBar.overlaysWebView(false);
 
         chihuo.getPosition(template);
-        cordova.plugins.notification.badge.requestPermission(function(granted){});
+        newChihuo.isMobileDevice() && cordova.plugins.notification.badge.requestPermission(function(granted){});
         
     }
 
@@ -1692,6 +1720,14 @@ var chihuo = {
       }    
     }
 
+  },
+
+  imgLazyLoad: function(){
+   $("img.lazy").lazyload({
+      placeholder : "imgs/grey.gif", //用图片提前占位 
+      effect: "fadeIn", // 载入使用何种效果
+      threshold: 100, 
+    });
   },
 
   splashShow: function(func,time){
@@ -1753,7 +1789,7 @@ var chihuo = {
   getPosition: function(template,refresh){
      navigator.geolocation.getCurrentPosition(onSuccess, onError);
      clearInterval(newChihuo.positionTime);
-     newChihuo.positionTime = setInterval(function(){navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);  
+     newChihuo.positionTime = setInterval(function(){console.log('timer');navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);
     // onSuccess Geolocation
     function onSuccess(position){
       var newLat = position.coords.latitude;
@@ -1925,12 +1961,12 @@ var chihuo = {
 
                               if(!$.isEmptyObject(newChihuo.requestList) || !$.isEmptyObject(newChihuo.msgList) || newChihuo.activityNum){
                                 var allNum = newChihuo.activityNum + Object.keys(newChihuo.requestList).length + Object.keys(newChihuo.msgList).length;
-                                cordova.plugins.notification.badge.hasPermission(function (granted) {
-                                  cordova.plugins.notification.badge.set(allNum);
+                                  newChihuo.isMobileDevice() && cordova.plugins.notification.badge.hasPermission(function (granted) {
+                                    cordova.plugins.notification.badge.set(allNum);
                                 });
                               }else{
-                                 cordova.plugins.notification.badge.hasPermission(function(granted) {
-                                  cordova.plugins.notification.badge.clear();
+                                  newChihuo.isMobileDevice() && cordova.plugins.notification.badge.hasPermission(function(granted) {
+                                    cordova.plugins.notification.badge.clear();
                                 });
                               }    
                               
@@ -2046,28 +2082,112 @@ var chihuo = {
          $('.rank-ul li').eq(index).removeClass('toggle');
       }
     },
-
-    initMapOption:function(mapData){
-    newChihuo.map = L.map('leafletMap').setView([mapData[0].address_latitude,mapData[0].address_longitude], 15);
-
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets',
-		// retina: '@2x',
-		detectRetina: true
-      }).addTo(newChihuo.map);
+    _getOSMLayer: function() {
+        return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            detectRetina: true
+        });
     },
-
+    _getGoogleLayer: function() {
+        return L.tileLayer('http://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 18,
+            attribution: 'Google Maps',
+            // retina: '@2x',
+            detectRetina: true
+        })
+    },
+    _getMapBoxLayer: function() {
+        return L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1Ijoid29va29uZ2NvcnAiLCJhIjoiY2puZmxxcnRyMWdyMjNxcDhxd2wzbHluYiJ9.TabL0cfDyl9TrcCEwHzgEg', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+              '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+              'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets',
+            // retina: '@2x',
+            detectRetina: true
+        })
+    },
+    getTileLayer: function() {
+        //return chihuo._getOSMLayer();
+        return chihuo._getMapBoxLayer();
+        //return chihuo._getGoogleLayer();
+    },
+    initMapOption:function(mapData,clatlon){
+        newChihuo.allMarkerWrap = [];
+        var _clatlon = clatlon || [mapData[0].address_latitude,mapData[0].address_longitude];
+        var _level = newChihuo.maplastlevel || 14;
+        console.log(_level);
+        newChihuo.map = L.map('leafletMap').setView(_clatlon, _level);
+        newChihuo.baselayer = chihuo.getTileLayer();
+        newChihuo.baselayer && !newChihuo.map.hasLayer(newChihuo.baselayer) && newChihuo.baselayer.addTo(newChihuo.map);
+        //newChihuo.myIcon0 = newChihuo.myIcon0 || L.icon({
+        //        iconUrl: 'imgs/pin50.png',
+        //        iconSize: [50, 45],  // [45, 50],
+        //        iconAnchor: [26, 45], // [22, 94],
+        //        popupAnchor:  [0, -45], // [0, -90],
+        //        className: 'dot'
+        //    });
+        //var myLocationMarker = L.marker(_clatlon,{icon: newChihuo.myIcon0 });
+        ////myLocationMarker.on('click', function() {
+        ////    $(myLocationMarker._icon).addClass('dot');
+        ////});
+        //myLocationMarker.addTo(newChihuo.map);
+        newChihuo.curQueryCenterPoint = _clatlon;
+        var myLocationMarker0 = new L.Marker(_clatlon, {
+            icon: L.divIcon({
+                className: 'dot',
+                iconAnchor: [20, 20],
+                iconSize: [40, 40],
+            }),
+                opacity: 1,
+                zIndexOffset: -100  // -16 at least
+        });
+        //myLocationMarker0.on('click', onMarkerClick);
+        newChihuo.map.addLayer(myLocationMarker0);
+        newChihuo.allMarkerWrap.push(myLocationMarker0);
+    },
+    rmAMarker: function(marker) {
+        if (newChihuo.map && marker) {
+            newChihuo.map.removeLayer(marker); // remove
+        }
+    },
+    rmNewCenterMarker: function() {
+        chihuo.rmAMarker(newChihuo.newCenterMarkerLayer);
+    },
+    setQueryCenterMarker: function(markerOnClick, newlatlng, popinfo) {
+        if (!newChihuo.map) {
+            return;
+        }
+        newChihuo.newCenterIcon =  newChihuo.newCenterIcon || L.icon({
+                iconUrl: 'imgs/arrow-dong.gif',
+                iconSize: [40, 34], // [24, 40],
+                iconAnchor: [20, 34], // [22, 94],
+                popupAnchor:  [0, -34], //  [-10, -90],
+            });
+        chihuo.rmAMarker(newChihuo.newCenterMarkerLayer);
+        var _newpoint = newlatlng || newChihuo.map.getCenter();
+        newChihuo.newCenterMarkerLayer = L.marker(_newpoint, {icon: newChihuo.newCenterIcon}).on('click', function() {
+            markerOnClick && markerOnClick(_newpoint);
+        }).addTo(newChihuo.map);
+        var popup = popinfo || 'Click & Get new search';
+        newChihuo.newCenterMarkerLayer.bindPopup(popup, {autoPan:false, autoClose: false}).openPopup();
+        setTimeout(function() {
+            newChihuo.newCenterMarkerLayer && newChihuo.newCenterMarkerLayer.closePopup();
+        }, 3000);
+    },
+  mapFitBounds: function(markers) {
+      if(newChihuo.map && markers && markers.length > 0) {
+          var markersFeatureGroup = L.featureGroup(markers);  //.addTo(newChihuo.map);
+          newChihuo.map && newChihuo.map.fitBounds(markersFeatureGroup.getBounds());
+      }
+  },
   initMapShow: function(mapData,index){
     newChihuo.markerWrap = [];
     if(mapData && mapData.length){
      newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
           iconUrl: 'imgs/marker2.png',
           iconSize: [40, 40],  // [45, 50],
-          iconAnchor: [22, 40], // [22, 94],
+          iconAnchor: [20, 40], // [22, 94],
           popupAnchor:  [0, -40], // [0, -90],
           className: 'set-index'
       });
@@ -2075,20 +2195,95 @@ var chihuo = {
       newChihuo.myIcon2 =  newChihuo.myIcon2 || L.icon({
           iconUrl: 'imgs/marker.png',
           iconSize: [20, 34], // [24, 40],
-          iconAnchor: [11, 34], // [22, 94],
+          iconAnchor: [10, 34], // [22, 94],
           popupAnchor:  [0, -34], //  [-10, -90],
       });
-       for (var i= 0; i< mapData.length; i++) {
-      var mark = L.marker([mapData[i].address_latitude,mapData[i].address_longitude],{icon: i==index ? newChihuo.myIcon1 : newChihuo.myIcon2 }).addTo(newChihuo.map);
-          newChihuo.markerWrap.push(mark);
-          if(i==index){
-            mark.bindPopup('<span class="get-direction go-direction" lat ="'+mapData[i].address_latitude+'" lng="'+mapData[i].address_longitude+'"  name = "'+mapData[i].rest_name+'">'+mapData[i].rest_name+'<br>Get Directions</span>').openPopup();
-          }else{
-            mark.bindPopup('<span class="get-direction go-direction" lat ="'+mapData[i].address_latitude+'" lng="'+mapData[i].address_longitude+'"  name = "'+mapData[i].rest_name+'">'+mapData[i].rest_name+'<br>Get Directions</span>');
-          }
-      }  
+
+        newChihuo.clusterMarkers = L.markerClusterGroup();
+        var marker0 = null;
+        for (var i = 0; i < mapData.length; i++) {
+            var lat = mapData[i].address_latitude;
+            var lon = mapData[i].address_longitude;
+            var title = mapData[i].rest_name;
+            var popup = '<span class="get-direction go-direction" lat ="' + mapData[i].address_latitude + '" lng="' + mapData[i].address_longitude + '"  name = "' + mapData[i].rest_name + '">' + mapData[i].rest_name + '<br>Get Directions</span>';
+            var marker = L.marker(new L.LatLng(lat, lon), { title: title, icon: i==index ? newChihuo.myIcon1 : newChihuo.myIcon2});
+            if (i == index) {
+                marker0 = marker;
+            }
+            marker.bindPopup(popup, {autoPan:false});
+            newChihuo.markerWrap.push(marker);
+            newChihuo.clusterMarkers.addLayer(marker);
+        }
+
+        newChihuo.map.addLayer(newChihuo.clusterMarkers);
+        newChihuo.allMarkerWrap.push.apply(newChihuo.allMarkerWrap, newChihuo.markerWrap);
+        chihuo.mapFitBounds(newChihuo.allMarkerWrap);
+
+        //if (newChihuo.clusterMarkers && marker0) {
+        //    setTimeout(function() {
+        //        var parent = newChihuo.clusterMarkers.getVisibleParent(marker0);
+        //        if (parent && parent !== marker0) {
+        //            parent.spiderfy();
+        //        }
+        //        setTimeout(function () {
+        //            marker0 && marker0.openPopup();
+        //        }, 1500);
+        //    },1500);
+        //}
     }
-  }, 
+  },
+    initMapShow2: function(mapData,index){
+        newChihuo.markerWrap2 = [];
+        if(mapData && mapData.length){
+            newChihuo.myIcon1 = newChihuo.myIcon1 || L.icon({
+                    iconUrl: 'imgs/marker2.png',
+                    iconSize: [40, 40],  // [45, 50],
+                    iconAnchor: [20, 40], // [22, 94],
+                    popupAnchor:  [0, -40], // [0, -90],
+                    className: 'set-index'
+                });
+
+            newChihuo.myIcon2 =  newChihuo.myIcon2 || L.icon({
+                    iconUrl: 'imgs/marker.png',
+                    iconSize: [20, 34], // [24, 40],
+                    iconAnchor: [10, 34], // [22, 94],
+                    popupAnchor:  [0, -34], //  [-10, -90],
+                });
+
+            newChihuo.clusterMarkers = L.markerClusterGroup();
+            var marker0 = null;
+            for (var i = 0; i < mapData.length; i++) {
+                var lat = mapData[i].address_latitude;
+                var lon = mapData[i].address_longitude;
+                var title = mapData[i].rest_name;
+                var popup = '<span class="get-direction go-direction" lat ="' + mapData[i].address_latitude + '" lng="' + mapData[i].address_longitude + '"  name = "' + mapData[i].rest_name + '">' + mapData[i].rest_name + '<br>Get Directions</span>';
+                var marker = L.marker(new L.LatLng(lat, lon), { title: title, icon: i==index ? newChihuo.myIcon1 : newChihuo.myIcon2});
+                if (i == index) {
+                    marker0 = marker;
+                }
+                marker.bindPopup(popup, {autoPan:false});
+                newChihuo.markerWrap2.push(marker);
+                newChihuo.clusterMarkers.addLayer(marker);
+            }
+
+            newChihuo.map.addLayer(newChihuo.clusterMarkers);
+
+            newChihuo.allMarkerWrap.push.apply(newChihuo.allMarkerWrap, newChihuo.markerWrap2);
+            newChihuo.markerWrap2 = newChihuo.allMarkerWrap;
+            //chihuo.mapFitBounds(newChihuo.allMarkerWrap);
+            //if (newChihuo.clusterMarkers && marker0) {
+            //    setTimeout(function() {
+            //        var parent = newChihuo.clusterMarkers.getVisibleParent(marker0);
+            //        if (parent && parent !== marker0) {
+            //            parent.spiderfy();
+            //        }
+            //        setTimeout(function () {
+            //            marker0 && marker0.openPopup();
+            //        }, 1500);
+            //    },1500);
+            //}
+        }
+    },
 
   WKPicCompress:  function(img, fileType,w,h,q,cv) {
     var canvas;
@@ -2152,14 +2347,15 @@ var photoUse={
      doUploadPhoto: function(cb) {
         var formSelector = "#usr-formPhoto";
         if (!document.getElementById('usrFile')) {
-          $(formSelector).append("<input id='usrFile' type='file' name='file' accept='image/*'/>").find("input").click();
+          $(formSelector).append("<input id='usrFile' type='file' name='file[]' accept='image/*' multiple/>").find("input").click();
         } else {
           $(formSelector).find("input").click();
         }
         var filechooser = document.getElementById('usrFile');
         filechooser.onchange = function () {
           var files = this.files;
-          var file = files[0];
+          for(var i=0; i< files.length; i++){ //尝试多图上传
+          var file = files[i];
 
           if(!file || $.trim(file.name).length == 0) {
             $(formSelector + " input").remove();
@@ -2240,6 +2436,7 @@ var photoUse={
             img.src = result;
           };
           reader.readAsDataURL(file);
+        }
           $(formSelector + " input").remove();
         };
     },
@@ -2524,3 +2721,49 @@ var WK_OPEN_MAP_APP = function (lat, lng, label) {
 
 
 
+//-----------calculate distance between 2 points-----------
+//http://stackoverflow.com/questions/1502590/calculate-distance-between-two-points-in-google-maps-v3
+var WKMathRad = function(x) {
+    return x * Math.PI / 180;
+};
+var WKMathGetDistance = function(p1, p2) {
+    var R = 6378137; // Earth’s mean radius in meter
+    var dLat = WKMathRad(p2[0] - p1[0]);
+    var dLong = WKMathRad(p2[1] - p1[1]);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(WKMathRad(p1[0])) * Math.cos(WKMathRad(p2[0])) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d; // returns the distance in meter
+};
+//-----------calculate distance between 2 points-----------
+// 现在WKMapShouldQuery只是一个基本工具型函数了，只是判断2点距离是否大于阈值，
+// 如果想要避免每次总是一点一点的变化而导致永远不被通知的情况请像WKGpsInfoNotifier里一样，
+// 另做一个函数并用一个变量保存上次一通知时的位置即可而不用像下面的注释里那样麻烦
+var WKMapShouldQuery = function(preCenter,curCenter,minDistance) {
+    //var d1 = WKMathGetDistance(usrCenter,curCenter);
+    //var d2 = WKMathGetDistance(usrCenter,preCenter);
+    var d3 = WKMathGetDistance(preCenter,curCenter);
+    var threshold = chihuo.mapMinQueryDistance;
+    if(!!minDistance && typeof minDistance === 'number' && minDistance >= 5) {
+        threshold = minDistance;
+    }
+    // 只考虑一定要更新情况：一切从简只考虑这次和上次的变动问题，用以过滤一些太频繁的更新请求，
+    // 放弃C2判断，如果用户非要一点一点的只有靠加点击事件人为触发查询请求
+    // 只要上一次中心点和当前中心距离超过阈值就必须更新
+    var c1 = d3 > threshold;
+    // 尽管上一次中心点和当前中心距离没有超过阈值，但是如果用户位置点与当前中心点距离超过阈值，
+    // 且用户位置与上一次中心点距离没用超过阈值，则必须更新。
+    // 另一种情况：上一次中心与用户位置距离大于阈值则说明上一次已经做过查询而不必再因为这次很小的位置变动再查询了。
+    // 还有如果3个距离都小于阈值一定不必更新，而d1和d3小于阈值而d2大于阈值则说明上次要更新这次也不用更新
+    //var c2 = d1 > threshold && d2 < threshold;//此条件防止一点一点移中心点的情况，只要当前点与用户位置距离超过阈值，且d2小于阈值
+    //console.log("distance=" + d3 + " threshold="+threshold);
+    if (c1 ) {
+        console.log("should query." + d3 + " " + threshold);
+        return true;
+    } else {
+        console.log("skip query." + d3 + " " + threshold);
+        return false;
+    }
+};

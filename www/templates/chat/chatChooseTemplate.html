@@ -5,10 +5,10 @@
 	        <h3><%=newChihuo.localize('chat_addchats')%></h3>
 	    </nav>
 	</div>  
-	<div class="chat-apply-wrap" style="padding:15px 0;">
+	<div class="chat-apply-wrap" style="padding:8px 0;">
 		<div class="search-set-input" style="background: #f2f6f9; position:relative;">
 		    <img src="imgs/search-index.png" class="chat-search-icon">
-			<i></i>
+			<i class="choose-clear"></i>
 			<div style="margin:0 30px;">
 				<form id="chatChooseForm">
 					 <input type="text" name="" value="" class="invite-input" placeholder="Enter partial user or display name">
@@ -19,7 +19,7 @@
 	<div class="search-chihuo-list">
 		
 	</div>
-	<div class="chat-people-list">
+	<div class="chat-people-list" style="margin-top:0;">
 	<%if(data && data.length){%>
 	<%_.each(data,function(d,i){%>
 		<div class="rest-comment-head clearfix">

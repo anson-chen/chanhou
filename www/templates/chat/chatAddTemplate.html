@@ -8,7 +8,7 @@
 </div>
 <div class="chat-zone">
 	<p><a href="#chatChoose"><%=newChihuo.localize('chat_newchat')%></a></p>
-	<p><a href="#chatIndex"><%=newChihuo.localize('chat_addcontacts')%></a></p>
+	<p><a href="#chatInvite"><%=newChihuo.localize('profile_contacts')%></a></p>
 </div>  
 <div class="chat-people-list" style="margin-top:20px;">
 <%if(data && data.length){%>
@@ -41,9 +41,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

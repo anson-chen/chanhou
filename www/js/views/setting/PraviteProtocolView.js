@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/praviteProtocolTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, praviteProtocolTemplate){
+], function($, _, Backbone, praviteProtocolTemplate){
 
   var PraviteProtocolView = Backbone.View.extend({
     el: $("#page"),

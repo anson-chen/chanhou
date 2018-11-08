@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/messageRemindTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, messageRemindTemplate){
+], function($, _, Backbone, messageRemindTemplate){
 
   var MessageRemindView = Backbone.View.extend({
     el: $("#page"),

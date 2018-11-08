@@ -1,4 +1,3 @@
-// Filename: app.js
 define([
   'jquery', 
   'underscore', 
@@ -8,8 +7,8 @@ define([
   'auth0cordova',
   'common',
   'radialIndicator',
-  'touche',
-  'jqueryMove'
+  'jqueryMove',
+  'lazyLoad'
   // 'lock',
 ], function($, _, Backbone, Router){
   var initialize = function(){

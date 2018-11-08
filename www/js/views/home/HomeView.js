@@ -37,8 +37,8 @@ define([
             newChihuo.windowInit();
             initData.homeData.template = homeTemplate;
             this.$el.html(_.template(homeTemplate, initData.homeData));
-            this.status.start && chihuo.getPosition(homeTemplate);
             this.appStart(this.status.start);
+            this.status.start && chihuo.getPosition(homeTemplate);
             !this.status.tips && newChihuo.showReloadInfo(this.status,'home');
       },
 
@@ -48,7 +48,9 @@ define([
             chihuo.ajaxSetup();
             chihuo.initApp(homeTemplate);
             setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
-            this.auth0init();
+            if(newChihuo.isMobileDevice()) {
+                this.auth0init();
+            }
             this.status.start = true;
           }
       },
@@ -68,8 +70,8 @@ define([
             initData.restaurantList2Data.bg = src;
         },
         auth0LockShow: function () {
-            //this.showUserInfo();  // 如果已经login则直接取userinfo，以后用userinfo做foodymonkeyr tpLogin操作，如果没有login则调用auth0cordova做login操作。
-            this.auth0login()
+            //this.showUserInfo();  // 如果已经login则直接取userinfo，以后用userinfo做foodymonkeyr tpLogin操作，如果没有login则调用auth0cordova做login操作。ii
+            this.auth0login();
         },
         showUserInfo: function () { // 以后换成foodymonkey的tpLoging登陆操作
             this.auth0getUserInfo(function (err, profile) {

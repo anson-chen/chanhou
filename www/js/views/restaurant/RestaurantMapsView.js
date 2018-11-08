@@ -28,7 +28,7 @@ define([
           onInit: function(swiper){
               newChihuo.map = L.map('leafletMap').setView([initData.restaurantData.data[0].addr_lat,initData.restaurantData.data[0].addr_lng], 15);
 
-              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1Ijoid29va29uZ2NvcnAiLCJhIjoiY2puZmxxcnRyMWdyMjNxcDhxd2wzbHluYiJ9.TabL0cfDyl9TrcCEwHzgEg', {
                 maxZoom: 15,
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                   '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +

@@ -1,7 +1,7 @@
 <div class="set-bg">
 <div class="food-bg" style="padding-bottom:15px;">
 	<nav class="common-title">
-		<a href="#myRewards" class="my-rewards">Rewards</a>
+		<%if ((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) && (newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%><a href="#myRewards" class="my-rewards">Rewards</a><%}%>
 		<a href="#" class="common-return"></a>
 		<h3><%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))!== id){%><%if(data[0]){%><%=data[0].display_name%><%}}else{%><%=newChihuo.localize('profile_me')%><%}%></h3>
 	</nav>
@@ -55,7 +55,7 @@
 				<li style="border:none;">
 				    <a href="javascript:;">
 						<img src="imgs/my-icon1.png">
-						<p><%=newChihuo.localize('')%>friends<br><span><%=d.total_cfollowings_cnt || 0%></span></p>
+						<p><%=newChihuo.localize('')%>Friends<br><span><%=d.friends_count%></span></p>
 					</a>
 				</li>
 				<li class="index-focus">
@@ -142,9 +142,9 @@
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-      <li style="width:24%; position:relative;">
-        <a href="#chatChoose">
-        <div class="rest-bottom-middle"></div>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
         </a>
       </li>
        <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>

@@ -16,8 +16,10 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 20,
-      tips: null
+      ct: 50,
+      tips: null,
+      lat: null,
+      lng: null,
     },
 
     search: {
@@ -31,13 +33,20 @@ define([
        features : [0]
     },
 
-    render: function(){
+    render: function(lat,lng){
       newChihuo.setPage('restaurantNear');
       newChihuo.windowInit();
-      !this.status.tips && newChihuo.showReloadInfo(this.status,'restaurantNear');
-      if(initData.restaurantNearData.lat != newChihuo.lat || initData.restaurantNearData.lon != newChihuo.lon){
-         initData.restaurantNearData.data = [];
+      if(lat || lng){
+        this.status.lat = lat;
+        this.status.lng = lng;
+      }else{
+        this.status.lat = null;
+        this.status.lng = null;
       }
+      !this.status.tips && newChihuo.showReloadInfo(this.status,'restaurantNear');
+      // if(initData.restaurantNearData.lat != newChihuo.lat || initData.restaurantNearData.lon != newChihuo.lon){
+      //    initData.restaurantNearData.data = [];
+      // }
       this.$el.html(_.template(restaurantNearTemplate,initData.restaurantNearData));
       var len = initData.restaurantNearData.data.length;
       if(len == 0){
@@ -117,11 +126,11 @@ define([
                   url: chihuo.getApiUri('findNearbyRestsWithRange2.json'),
                   data: {
                      distance: 20,
-                     lat: newChihuo.lat,
-                     lng: newChihuo.lon,
+                     lat: this.status.lat || newChihuo.lat,
+                     lng: this.status.lng || newChihuo.lon,
                      locale: 'en',
-                     st: num*_this.status.ct+1,
-                     ct: _this.status.ct,
+                     st: 1,
+                     ct: (num+1)*_this.status.ct,
                      filters: filters
                   },
                   beforeSend: function (xhr) {},
@@ -131,12 +140,12 @@ define([
                       if(num == 0){
                         initData.restaurantNearData.data = [];
                       }
-                        initData.restaurantNearData.data =[...initData.restaurantNearData.data,...data.data] ;
+                        initData.restaurantNearData.data = data.data ;
                         if(newChihuo.getPage('restaurantNear')){                 
                           _this.$el.html(_.template(restaurantNearTemplate,initData.restaurantNearData));
                           initData.restaurantNearData.lat = newChihuo.lat;
                           initData.restaurantNearData.lon = newChihuo.lon;  
-                           if(data.data.length == 0){
+                           if(data.data.length < (num+1)*_this.status.ct){
                             _this.status.isEnd = true;
                              $('.loading-step3').show();
                              $('.loading-step1,.loading-step2').hide();
@@ -307,6 +316,7 @@ define([
 
 
       newChihuo.returnToTop();
+      chihuo.imgLazyLoad();
     }
    
 

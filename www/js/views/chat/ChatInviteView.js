@@ -8,8 +8,9 @@ define([
   var ChatInviteView = Backbone.View.extend({
     el: $("#page"),
     events: {
-      'submit #chihuoSearch':'showNewChihuo',
-      'click .added-this':'showMessage'
+      'submit #chihuoSearch':'searchFilter',
+      'click .go-message':'showMessage',
+      'click .invite-clear':'clearInput',
     },
     status: {
       st: 0,
@@ -22,26 +23,30 @@ define([
       newChihuo.setPage('chatInvite');
       newChihuo.windowInit();
       this.$el.html(_.template(chatInviteTemplate,initData.chatInviteData));
-      // this.initData(0);
-      this.getContact();
+      this.initData(0);
     },
 
     initData: function(num){
       var _this = this;
-      chihuo.wkAjax({
-                  type: 'POST',
-                  url: chihuo.getApiUri("lstCustByPB.json"),
+       (newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) &&
+            chihuo.wkAjax({
+                  type: 'GET',
+                  url: chihuo.getApiUri('getAllFriends.json'),
                   data: {
-                     pb:JSON.stringify([{ id: 'name', email: 'ray@chanhou.com',social_media:'test'}]),
+                     tid: newChihuo.customerId || newChihuo.getLocalStorage('customer_id'),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
-                     locale: 'en-CA'
+                     locale: 'en',
+                     st: 1,
+                     ct: 100
                   },
                   success: function(data){
+                     if(data.status == 0){
                       initData.chatInviteData.data = data.data;
-                      $("#page").html(_.template(chatInviteTemplate,initData.chatInviteData));
-                  }
-                });
+                      newChihuo.getPage('chatInvite') &&  _this.$el.html(_.template(chatInviteTemplate,initData.chatInviteData));
+                     }
+                  } 
+              });   
 
     },
 
@@ -55,6 +60,24 @@ define([
        app_router.navigate('chatMessage',{
                   trigger: true
                 });
+    },
+
+     searchFilter: function(){
+       var _this = this;
+       var word = $('.invite-input').val().toLowerCase();
+       var len = $('.rest-comment-head').length;
+      event.preventDefault();
+      if(word.length && len ){
+          for(var i=0; i<len; i++){
+            var name = $('.rest-comment-head').eq(i).removeClass('no-show').find('h3').text().toLowerCase();
+            if(name.indexOf(word)==-1){
+               $('.rest-comment-head').eq(i).addClass('no-show');
+            }
+            
+            }
+
+          }
+
     },
 
     showNewChihuo: function(event){
@@ -97,44 +120,9 @@ define([
               });  
     },
 
-    showContact: function(data){
-      var t = [];
-      for(var i=0; i< data.length; i++){
-        if(data[i].emails && data[i].emails.length > 0){
-         t.push({
-          "id":(data[i].name.givenName === undefined ? " ":data[i].name.givenName) + " " + (data[i].name.familyName=== undefined ? " ": data[i].name.familyName),
-          "email":data[i].emails[0].value,
-          "social_media":""
-         });
-        }
-      }
-
-      t.length && chihuo.wkAjax({
-                  type: 'POST',
-                  url: chihuo.getApiUri('lstCustByPB.json'),
-                  data: {
-                     pb: JSON.stringify(t),
-                     lat: newChihuo.lat,
-                     lng: newChihuo.lon,
-                     locale: 'en-CA'
-                  },
-                  success: function(data){
-                    if(data.status == 0 && data.data && data.data.length > 0){
-                      initData.chatInviteData.data = data.data;
-                      $("#page").html(_.template(chatInviteTemplate,initData.chatInviteData));
-                    }
-
-                    if(data.data.length == 0){
-                      newChihuo.showPopInfo(newChihuo.localize('no_foodies_in_pb'));
-                    }
-                    
-                  }
-                });
-      
-    },
-
-    getContact: function(){
-      contact.init(this.showContact);
+    clearInput: function(e){
+      $(e.currentTarget).parent().find('input').val('');
+      $('.rest-comment-head').removeClass('no-show');
     }
 
   });

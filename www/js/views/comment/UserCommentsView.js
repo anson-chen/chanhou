@@ -51,14 +51,14 @@ define([
                       }
                         initData.userCommentsData.data =[...initData.userCommentsData.data,...data.data];
                         newChihuo.getPage('userComments') && _this.$el.html(_.template(userCommentsTemplate,initData.userCommentsData));
-                        _this.status.loading = false;
-                        $('.loading-step1').show();
-                        $('.loading-step2,.loading-step3').hide();
+                         if(data.data.length < _this.status.ct){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
+                           }
+                        _this.status.loading =false;
                         _this.bindEvents();
-                        // var all = data.data[0].total_review_cnt;
-                        // if(all){
-
-                        // }
+                        
                      }
                   } 
               });  
@@ -134,6 +134,17 @@ define([
               });  
          
       });
+
+      $('.review-photo-urls img').on('click',function(){
+           var url = $(".review-photo-urls").attr('photo');
+           var index = $(this).index();
+           if(url){
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
+            window.modalPhoto.render();
+           }
+      });
+
     },
 
      showMoreComment: function(e){

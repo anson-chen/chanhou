@@ -493,6 +493,24 @@ input::-webkit-input-placeholder{
     position: relative;
     z-index: 10;
 }
+.side-bg {
+    background:url(../imgs/top-bg.png) no-repeat;
+    background-size: 100% auto;
+    padding-bottom: 20px;
+}
+#sidebar {
+    position: fixed;
+    z-index: 10000;
+    height: 100%;
+    width: 100%;
+    left: 110%;
+    top: 0;
+    transition: left .3s;
+    overflow-y: hidden;
+}
+#sidebar.show-big-modal {
+    left: 0;
+}
 .food-bg {
     background: -webkit-linear-gradient(top, #fe812d 0, #ff9c59 100%);
     background-size: 100% auto;
@@ -524,7 +542,7 @@ input::-webkit-input-placeholder{
     background-size: 100%;
 
 }
-.common-title .head-rest-icon { 
+.head-rest-icon { 
     float: right;
     margin: 7px 15px 0 0;
     background: url(../imgs/head-right-icon1.png) no-repeat;
@@ -1230,7 +1248,7 @@ input::-webkit-input-placeholder{
     padding-top: 2px;
 }
 .rest-fix-bottom li {
-    width: 19%;
+    width: 20%;
     float: left;
     text-align: center;
     min-height: 20px;
@@ -1289,8 +1307,20 @@ input::-webkit-input-placeholder{
 .map-rest-img img {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
+    border-radius: 10px;
 }
+
+.map-rest-img i-0 {
+    background: url(../imgs/fav.png) no-repeat;
+    background-size: 100%;
+    width: 15px;
+    height: 18px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+}
+
 .map-rest-img i,.hot-fav-icon {
     background: url(../imgs/fav-hover.png) no-repeat;
     background-size: 100%;
@@ -1549,6 +1579,7 @@ input::-webkit-input-placeholder{
     height: 80px;
     margin-right: 15px;
     border-radius: 5px;
+    margin-top: 5px;
 }
 .user-comment li {
     margin: 0 15px;
@@ -2292,7 +2323,7 @@ input::-webkit-input-placeholder{
     float: left;
     width: 50%; 
     margin-bottom: 12px;
-    height:220px;
+    min-height: 30vw;
     overflow: hidden;
     text-align: center;
 }
@@ -2510,7 +2541,7 @@ input::-webkit-input-placeholder{
     border:1px solid #999;
     border-radius: 10px;
     padding: 10px 0 14px;
-    width: 240px;
+    width: 200px;
     margin:0 auto;
     background:#8cc7f9;
     box-shadow: inset 0 -4px 0 #60a6e2;
@@ -2624,15 +2655,18 @@ input::-webkit-input-placeholder{
     color: #999;
 }
 .chat-people-list {
-    margin: 15px 12px;
+    margin: 8px 12px;
     background: #fff;
     box-shadow: 1px 1px 3px 3px #eef2f5;
     padding: 0 12px;
     border-radius: 5px;
 }
 .chat-people-list .rest-comment-head {
-    padding: 15px 0;
+    padding: 8px 0;
     border-bottom: 1px solid #dee6ed;
+}
+.chat-people-list .rest-comment-head.no-show {
+    display: none;
 }
 .chat-people-list .rest-comment-head:last-child {
     border-bottom: none;
@@ -3484,36 +3518,7 @@ input::-webkit-input-placeholder{
     overflow: hidden;
     font-weight: normal;
 }
-#splash {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2000;
-    background: rgba(255,255,255,.95);
-    display: none;
-}
-#splash p {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    animation: splash 2.5s infinite;
-    text-align: center;
-}
-#splash p img {
-    padding-bottom: 20px;
-    max-width: 90%;
-}
-@keyframes splash
-{
-0%   {opacity:1;}
-25%  {opacity:.5;}
-50%  {opacity:.15;}
-75%  {opacity:.5;}
-100% {opacity:.8;}
-}
+
 .new-set-bg {
     background: rgba(255,255,255,.5);
 }
@@ -3678,7 +3683,7 @@ input::-webkit-input-placeholder{
     background: url(../imgs/detail-icon16.png) no-repeat 95% center #fff; 
     padding: 10px 15px;
     background-size: auto 16px;
-    margin: 10px 12px;
+    margin: 4px 12px;
 }
 .request-point {
     position: relative;
@@ -3776,7 +3781,217 @@ input::-webkit-input-placeholder{
 .rewards-icon-likes {
     background-position: 0 -200px;
 }
+.done-effect {
+    color: #ccc;
+}
+.set-hover-map {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.7);
+}
+.set-hover-map .head-rest-icon {
+    float: none;
+    margin: 4px auto;
+    display: block;
+}
+
+/* Map search box drop down style*/
+.map-search-show {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    width: 100%;
+    /*max-height: 50%;*/
+    max-height: 200px;
+    background: rgba(0,0,0,.6);
+    z-index: 5;
+    display: none;
+}
+.map-search-show ul {
+    max-height: 80%;
+    overflow: auto;
+    background: #fff;
+    border: none;
+}
+.map-search-show ul li {
+    margin: 0 15px;
+    border-bottom: 1px solid #ccc;
+    height: 50px;
+    line-height: 50px;
+    color: #666;
+    overflow: hidden;
+}
+.map-search-show ul li:last-child {
+    border: none;
+}
+.map-search-show ul li span {
+    float: right;
+    color: #999;
+    overflow: hidden;
+}
+.map-search-show ul li em {
+    font-style: normal;
+}
+.transition-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255,255,255,.95);
+    z-index: 1000;
+    transition: opacity .4s;
+    opacity: 0;
+}
+.transition-mask p {
+    text-align: center; 
+    padding-top: 240px; 
+    font-size:24px; 
+    color:#ff4200;
+}
+.transition-mask p span {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    margin: 0 3px;
+    transform: translateX(-80vw);
+}
+.load1 {
+    animation: k-loadingP 2.4s infinite;
+    animation-delay: .5s;
+    background:#cddc39;
+}
+.load2 {
+    animation: k-loadingP 2.4s infinite;
+    animation-delay: .4s;
+    background:#ffeb3b; 
+}
+.load3 {
+    animation: k-loadingP 2.4s infinite;
+    animation-delay: .3s;
+    background:#ffc107;
+}
+.load4 {
+    animation: k-loadingP 2.4s infinite;
+    animation-delay: .2s;
+    background: #ff9800;
+}
+.load5 {
+    animation: k-loadingP 2.4s infinite;
+    animation-delay: .1s;
+    background:#ff5722;
+}
+@keyframes k-loadingP {
+    40% {
+    transform:translateX(0);
+    opacity:.8
+}
+100% {
+    transform:translateX(80vw);
+    opacity:0
+}
+}
+.transition-begin {
+    opacity: 1;
+}
+.logo-animation,.transition-begin .jump-logo {
+    background: url(../imgs/logo.png) no-repeat;
+    background-size: 100%;
+    width: 90px;
+    height: 60px;
+    position: absolute;
+    top:140px;
+    left: 50%;
+    margin-left: -30px;
+    animation: jump 1.2s ease-in-out 0s infinite;
+}
+
+img.lazy {
+    background: url(../imgs/logo.png) no-repeat center center #fcfcfc;
+    background-size: 50% 35%;
+}
+
+@keyframes jump {
+    0% {
+        top:140px;
+    }   
+    
+    50% {
+        top:120px;
+    }   
+    
+    100% {
+        top:140px;
+    }
+}
 
 
+/*dosen't' work on img but div????*/
+.dot:before{
+    content:' ';
+    position: absolute;
+    /*z-index:1000;*/
+    left: 15px;
+    top: 15px;
+    width:10px;
+    height:10px;
+    background-color: #ff4200;
+    border-radius: 50%;
+}
+.dot:after {
+    content:' ';
+    position: absolute;
+    /*z-index:1000;*/
+    left:15px; /* need this */
+    top:15px;
+    width:10px;
+    height:10px;
+    background-color: #ffff00;
+    border-radius: 80%;
+    box-shadow: 0 0 10px rgba(0,0,0,.3) inset;
+    -webkit-backface-visibility: hidden; /* https://www.cnblogs.com/gaoxue/archive/2012/07/24/2606563.html */
+    -webkit-transform-style: preserve-3d; /* https://www.cnblogs.com/gaoxue/archive/2012/07/24/2606563.html */
+    -webkit-animation: ripple 4s ease-in-out 0s infinite;
+    -moz-animation: ripple 38s ease-in-out 0s infinite;
+    -ms-animation: ripple 3s ease-in-out 1s infinite;
+    -o-animation: ripple 3s ease-in-out 0s infinite;
+    animation: ripple 4s ease-in-out 0s infinite;
+    /*-webkit-animation-name:'ripple';!*动画属性名，也就是我们前面keyframes定义的动画名*!*/
+    /*-webkit-animation-duration: 3s;!*动画持续时间*!*/
+    /*-webkit-animation-timing-function: ease; !*ease;动画频率，和transition-timing-function是一样的*!*/
+    /*-webkit-animation-delay: 1s;!*动画延迟时间*!*/
+    /*-webkit-animation-iteration-count: infinite;!*定义循环资料，infinite为无限次*!*/
+    /*-webkit-animation-direction: normal;!*定义动画方式*!*/
+    /*!* IOS 下闪烁bug   http://www.it610.com/article/276132.htm*!   [无效]*/
+    /*-webkit-backface-visibility: hidden;!*方法二（设置进行转换的元素的背面在面对用户时是否可见：隐藏）*!*/
+    /*-webkit-transform-style: preserve-3d;!*方法一 设置内嵌的元素在 3D 空间如何呈现：保留 3D*!*/
+}
+@keyframes ripple {
+    0% {
+        left:20px;  /* dot left + dot width/2  or the div's center e.g. 40,40 div center is 20*/
+        top:20px;
+        opcity:75;
+        width:0; /* min ripple */
+        height:0;
+        /*-webkit-transform: translate3d(0,0,0);  !*  https://www.jianshu.com/p/5a8881d1093b doesn't work *!*/
+    }
+    100% {
+        left:-80px; /* ripple left - width/2  */
+        top:-80px;
+        opacity: 0;
+        width:200px; /* max */
+        height:200px;
+    }
+}
+/* Map search box drop down style*/
 
-
+.leaflet-control-zoom {
+    top: 80px;
+}

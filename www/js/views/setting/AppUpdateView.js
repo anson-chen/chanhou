@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/appUpdateTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, appUpdateTemplate){
+], function($, _, Backbone, appUpdateTemplate){
 
   var AppUpdateView = Backbone.View.extend({
     el: $("#page"),

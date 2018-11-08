@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/sidebar/SidebarView',
   'text!templates/setting/langSettingTemplate.html',
   'bootstrap'
-], function($, _, Backbone, SidebarView, langSettingTemplate){
+], function($, _, Backbone, langSettingTemplate){
 
   var LangSettingView = Backbone.View.extend({
     el: $("#page"),
