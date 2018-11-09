@@ -29,24 +29,23 @@
 					<div class="rest-comment-bottom">
 						<div class="comment-operation" style="display:none;"><span class="share-icon">share</span></div>
 						<div class="comment-operation"><span class="good-icon" review=<%=d.cust_rest_review_id%>><%=d.review_likes_cnt%></span></div>
-						<div class="comment-operation user-page"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>><%=newChihuo.localize('activitity_reply')%></span></div>			
+						<div class="comment-operation user-page"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>>comment</span></div>			
 					</div>
 					<%if(d.review_details && d.review_details.indexOf('~~~')>0){%>
 					<div class="communication">
 					<%_.each(JSON.parse(d.review_details.split('~~~')[1]),function(d,i){%>
 						<p><b class="comment-time-right"><%=chihuo.commentTime(d.created_datetime)%></b><span><%=d.display_name%>：</span><%=d.comment_details%></p>
-						<!-- <p><span>一枚吃货</span>回复<span>刘仙姑：</span>谢谢领导夸奖</p> -->
 					<%})%>
 					</div>
 					<%}%>
 					<div class="fix-comment-bottom user-recall">
-					<a href="javascript:;" class="bottom-left"><img src="imgs/face-icon.png"></a>
-					<div class="chat-input-wrap">
-						<form class="userComments-form">
-							<input type="text" name="" class="chat-input">
-						</form>
+						<a href="javascript:;" class="bottom-left"><img src="imgs/face-icon.png"></a>
+						<div class="chat-input-wrap">
+							<form class="userComments-form">
+								<input type="text" name="" class="chat-input">
+							</form>
+						</div>
 					</div>
-			</div>
 				</li>
 		<%})%>		
 		</ul>

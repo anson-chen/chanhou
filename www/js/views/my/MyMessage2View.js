@@ -10,7 +10,9 @@ define([
     el: $("#page"),
     events: {
      'click .comment-effect6 .comment-cont':'showMoreComment',
-     'click #feedsTab a':'showTabWrap' 
+     'click #feedsTab a':'showTabWrap',
+     'click .message-reply' : 'showToggleInput',
+     'submit .activityComments-form':'submitComment', 
     },
     status: {
       st: 0,
@@ -63,6 +65,33 @@ define([
                   } 
             });  
     },
+
+    submitComment: function(event){
+      var _this = this;
+      event.preventDefault();
+      $(event.currentTarget).find('.chat-input').blur();
+      $(event.currentTarget).find('.chat-input').val().length && chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri('addCustRestReviewComment.json'),
+                  data: {
+                     restreviewid: $(event.currentTarget).find('.chat-input').attr('review'),
+                     restId: $(event.currentTarget).find('.chat-input').attr('rest'),
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     comment: $(event.currentTarget).find('.chat-input').val()
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                       data.data && data.data.length && $('.reply').parent().next().show().append('<p><span>' + data.data[0].rsp_msg +'：</span>'+ data.data[0].comment_details+'</p>');
+                       $('.reply').parent().parent().find('.user-recall').hide();
+                       $('.reply').removeClass('reply');
+                        _this.initData(initData.userCommentsData.id,0);
+                       
+                     }
+                  } 
+              });  
+      },
 
      showTabWrap: function(e){
       var obj=$(e.currentTarget);
@@ -134,11 +163,42 @@ define([
             window.modalPhoto.render();
            }
       });
+
+      $('.good-icon').on('click',function(){
+        if($(this).hasClass('good-done')){
+          return;
+        }
+        var _this = this;
+              chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri('addCustRestReviewCompliment.json'),
+                  data: {
+                     restreviewid: $(_this).attr('review') || 0,
+                     restId: $(_this).attr('rest') || 0,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en'
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                        newChihuo.showPopInfo(newChihuo.localize('add_a_compliment'),1000);
+                        var num = parseInt($(_this).text()) || 0;
+                        $(_this).addClass('good-done').text(++num);
+                     }
+                  } 
+              });  
+         
+      });
     },  
 
     showMoreComment: function(e){
           var obj=$(e.currentTarget);
           obj.toggleClass('comment-cont-more');
+    },
+
+    showToggleInput: function(e){
+       var obj=$(e.currentTarget);
+       obj.parent().parent().find('.user-recall').toggle().find('.chat-input').val('').focus().attr('review',$(obj.children()[0]).attr('review'));
     }
 
   });

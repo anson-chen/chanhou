@@ -507,6 +507,7 @@ input::-webkit-input-placeholder{
     top: 0;
     transition: left .3s;
     overflow-y: hidden;
+    background:#fff;
 }
 #sidebar.show-big-modal {
     left: 0;
