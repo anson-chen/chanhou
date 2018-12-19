@@ -1,7 +1,7 @@
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="share"></a>
-		<div class="top-location discount-city" style="float:right; margin:5px 10px 0 0;"><%=newChihuo.city%></div>
+		<a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a>
+		<!-- <div class="top-location discount-city" style="float:right; margin:5px 10px 0 0;"><%=defaultCity%></div> -->
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3><%=newChihuo.localize('main_promotionwheel')%></h3>
 	</nav>
@@ -10,7 +10,7 @@
 		   	<div class="swiper-wrapper">
 				<%_.each(discountData, function(d,i) {%>
 					<div class="swiper-slide">
-						<span class="<%if(i==0){%>cur<%}%>"><%=d[0].promodaytp%></span>
+						<span class="<%if(i==0){%>cur<%}%>" style="padding:0 10px 10px;"><%=d[0].promodaytp%></span>
 					</div>
 				<%})%>
 			</div>
@@ -25,7 +25,7 @@
         <div class="swiper-slide" style="background:none;">
             <div class="tab-swiper-wrap">
             <%_.each(d, function(d,i) {%>
-				<div class="wrap-border">
+				<div class="wrap-border <%if(i==0){%>first-discount<%}%>">
           <a href="#restaurant/<%=d.rest_id%>">
   					<div class="discount-top">
   						<div class="rest-comment-head clearfix">
@@ -33,17 +33,18 @@
   							<img src="<%if(d.rest_prof_photo_urls){%><%=d.rest_prof_photo_urls.split(',')[0]%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
   							<div class="comment-right-info" style="margin-right:80px;">
   								<h3 style="background:none;"><%=d.rest_name%></h3>
-  								<p><span class="comment-location"><%=d.city_name%></span></p>
+  								<p><span class="comment-location discount-set-location"><%=d.addr%> <%=d.city_name%></span><%=newChihuo.showDistanceInfo(d.distance)%></p>
   							</div>
   						</div>	
   					</div>
             </a>
   					<div class="discount-bottom clearfix">
-  						<b><%=d.cuisine_type%></b>
-  						<p class="promotion-para"><%=d.promo_details%></p>
-  						<span><%=newChihuo.localize('promotion_expires')%>:<%=d.promo_hours%></span>
+  						<b><%=d.promo_title%></b>     
+  						<p>
+              <%=d.promo_details%>
+              </p>
+  						<span><%=newChihuo.localize('promotion_expires')%>:<%=d.promo_expiry_dt%></span>
   					</div>
-          
 				</div>
 			<%})%>
 			</div>
@@ -58,8 +59,9 @@
 <div class="search-mask">
 <a href="javascript:;" class="close-map-mask close-index-city" style="right:240px;">+</a>
     <div class="city-mask-list" id="discountCity">
+    <p class="cur"><%=defaultCity%></p>
     <%_.each(cityData, function(d,i) {%>
-      <%if(d){%><p class=" <%if(i==0){%> cur <%}%>"><%=d.cityname%></p><%}%>
+      <%if(d && d.cityname != defaultCity){%><p><%=d.cityname%></p><%}%>
     <%})%>
     </div>
 </div>

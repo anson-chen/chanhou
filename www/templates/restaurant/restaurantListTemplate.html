@@ -37,7 +37,12 @@
          <%if(d.last_review_details){%><b class="address-set" style="padding:0 10px;color:#333;"><%=d.last_review_details%></b><%}%>
         </a>
         </div>
-	<%})%>	
+	<%})%>
+  <div class="loading-wrap" id='specialLoad'>
+    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+    <p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+    <p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
+  </div>	
 	</div>
 	<div class="rest-fix-bottom">
      <ul class="clearfix">

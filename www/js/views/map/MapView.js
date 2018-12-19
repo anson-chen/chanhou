@@ -142,17 +142,23 @@ define([
       event.preventDefault();
       $('.map-input').val().length && chihuo.wkAjax({
                   type: 'GET',
-                  url: newChihuo.geosrvUrl + '/search?format=json&_mtk=wk2018', // 无法跨域传cookies // "https://nominatim.openstreetmap.org/search?format=json",
-                  data: {
-                     q: $('.map-input').val()
-                  },
-                  success: function(data){
-                     if(data && data.length){
-                        _this.initData(data[0].lat,data[0].lon,0);
-                     }
-                  } 
+                  //url: newChihuo.geosrvUrl + '/search?format=json&_mtk=wk2018', // 无法跨域传cookies // "https://nominatim.openstreetmap.org/search?format=json",
+                  //data: {
+                  //   q: $('.map-input').val()
+                  //},
+                  url: WKMapBoxHelper.getGeoCoderUrl($('.map-input').val().replace(/^\s+|\s+$/g,""), 1, 3, newChihuo.lat, newChihuo.lon),
+                  success: function (data) {
+                      var rows = WKMapBoxHelper.parseRS(data);
+                      if (rows && rows.length) {
+                          _this.initData(rows[0].lat,rows[0].lon,0);
+                      }
+                  }
+                  //success: function(data){
+                  //   if(data && data.length){
+                  //      _this.initData(data[0].lat,data[0].lon,0);
+                  //   }
+                  //}
               });  
-
     },
 
     filter: function(){

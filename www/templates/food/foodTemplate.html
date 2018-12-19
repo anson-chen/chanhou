@@ -59,7 +59,7 @@
 				</div>
 			</div>	
     		<%if(d.mi_photo_urls){%>	
-			<div class="swiper-container" id="rest-photo">
+			<div class="swiper-container" id="rest-photo" photo='<%=d.mi_photo_urls%>'>
 			    <div class="swiper-wrapper">
 			    	<%_.each(d.mi_photo_urls.split(','),function(d,i){%>
 			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i></i></div>
@@ -69,7 +69,10 @@
     		<%}else{%>
     		<p class="photo-word-show">To be the first foody adding a photo to earn a 100 points</p>
     		<%}%>
-    		<a href="javascript:;" class="more-btn add-food-photo" style="width:6em;"><%=newChihuo.localize('restaurant_addphoto')%></a>
+    		<div class="comment-photo-wrap img-rest-photo clearfix" rest="<%=d.rest_id%>">
+    			
+    		</div>	
+    		<a href="javascript:;" class="more-btn add-food-photo" style="width:6em;" item='<%=d.rest_menu_item_id%>' rest='<%=d.rest_id%>'><%=newChihuo.localize('restaurant_addphoto')%></a>
 		</div>
 		<div class="wrap-border clearfix" style="position:relative;">
 			<div class="rest-detail">
@@ -99,7 +102,7 @@
 					</div>
 					<p class="comment-cont"><%=d.last_review_details%></p>
 					<%if(d.review_photo_urls){%>
-						<div class="review-photo-urls clearfix">
+						<div class="review-photo-urls clearfix" photo="<%=d.review_photo_urls%>">
 							<%_.each(d.review_photo_urls.split(','),function(d,i){%>
 								<img src="<%=d%>">
 							<%})%>

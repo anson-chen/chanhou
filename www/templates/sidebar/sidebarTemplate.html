@@ -11,7 +11,12 @@
         <div class="swiper-container" id="photoDetail">
                 <div class="swiper-wrapper">
                     <%_.each(photoUrl.split(','),function(d,i){%>
-                        <div class="swiper-slide index-dish-img"><img src="<%=d%>" style='height: auto;'></div>
+                        <div class="swiper-slide index-dish-img">
+                            <img src="<%=d%>" style='height: auto;'>
+                            <%if(info){%>
+                            <div class="comment-operation new-set-operation" style="position:fixed; bottom:10px;"><span class="good-icon <%if(info.compliment !== 'N'){%>good-done<%}%>"><i><%=info.total%></i></span></div>
+                            <%}%>
+                        </div>
                     <%})%>
                 </div>
         </div>

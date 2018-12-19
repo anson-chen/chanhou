@@ -75,7 +75,12 @@ define([
   'views/my/MyRewardsView',
   'views/chat/ChatEmailView',
   'views/sidebar/SidebarView',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,MapSearchView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView,SidebarView) {
+  'views/restaurant/RestaurantMissingView',
+  'views/order/OrderIndexView',
+  'views/order/OrderDishView',
+  'views/order/OrderMenuView',
+  'views/order/OrderListView',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,MapSearchView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView,SidebarView,RestaurantMissingView,OrderIndexView,OrderDishView,OrderMenuView,OrderListView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -164,6 +169,8 @@ define([
       'dishHot4/:level/:name':'showDishHot4',
       'myRewards':'showMyRewards',
       'chatEmail':'showChatEmail',
+      'restaurantMissing':'showRestaurantMissing',
+      'orderIndex/:id/:name':'showOrderIndex',
       // Default
       '*actions': 'defaultAction'//'defaultAction'
     }
@@ -185,7 +192,7 @@ define([
 
     var app_router = new AppRouter;
     var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, mapSearchView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView,myRewardsView,
-     chatEmailView;
+     chatEmailView,restaurantMissingView,orderIndexView,orderDishView,orderMenuView;
 
     app_router.on('route:showLogin', function (actions) {
         loginView = loginView || new LoginView();
@@ -244,6 +251,13 @@ define([
         restaurantNearView = restaurantNearView || new RestaurantNearView();
         transitionEffect();
         restaurantNearView.render(lat,lng);
+        
+    });
+
+     app_router.on('route:showRestaurantMissing', function () {
+       // We have no matching route, lets display the home page 
+        restaurantMissingView = restaurantMissingView || new RestaurantMissingView();
+        restaurantMissingView.render();
         
     });
 
@@ -652,6 +666,11 @@ define([
         chatEmailView.render();
     });
 
+    app_router.on('route:showOrderIndex', function (actions,name) {
+        orderIndexView = orderIndexView || new OrderIndexView();
+        orderIndexView.render(actions,name);
+    });
+
 
 
     app_router.on('route:defaultAction', function (actions) {
@@ -661,6 +680,9 @@ define([
     });
 
     window.modalPhoto =  window.modalPhoto || new SidebarView();
+    window.orderDish =  window.orderDish || new OrderDishView();
+    window.orderMenu =  window.orderMenu || new OrderMenuView();
+    window.orderList =  window.orderList || new OrderListView();
     window.app_router = app_router;
     Backbone.history.start();
   };

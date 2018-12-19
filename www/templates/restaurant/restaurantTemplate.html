@@ -34,6 +34,7 @@
 			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
 			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><%if(d.chihuo_distance){%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%}%><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
+			<%if((d.rest_id == 23612) || (d.rest_id == 24063) || (d.rest_id == 23989) ){%><a href="#orderIndex/<%=d.rest_id%>/<%=d.rest_name%>" style="display:block; padding:15px;">Order</a><%}%>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
@@ -44,6 +45,17 @@
 				<li class="rest-icon3"><img src=<%if(d.following_flg == 'n'){%><%=staticSource.restIcon4%><%}else{%><%=staticSource.restIcon3%><%}%> style="width:40px;margin-top:10px;" class="<%if(d.following_flg != 'n'){%>done<%}%>"><p><span><%=(d.total_rest_followers || 0)%></span> <%=newChihuo.localize('restaurant_follower')%><%if(d.total_rest_followers > 1){%>s<%}%></p></li>			
 			</ul>
 		</div>
+		<%if(d.promo_flg == 'Y' && d.promo_details){%>
+		<div class="wrap-border clearfix">
+		    <%_.each(JSON.parse(d.promo_details),function(detail,i){%>
+  			<div class="discount-bottom clearfix" style="border-top:none;">
+  				<b><%=detail.promo_title%></b>     
+  				<p><%=detail.promo_details%></p>
+  				<span><%=newChihuo.localize('promotion_expires')%>:<%=detail.expiration_date%></span>
+  			</div>
+  			<%})%>
+		</div>
+		<%}%>
 		<div class="wrap-border clearfix">
 			<div class="rest-detail">
 			<%if(d.mon_open_hrs){%>

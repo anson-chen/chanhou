@@ -65,12 +65,13 @@ define([
       var firstName=$("#firstName").val();
       var lastName=$("#lastName").val();
       var nickName=$("#nickName").val();
+      var refererKey=$("#refererKey").val();
       if(!$('.agree-check')[0].checked){
          newChihuo.showPopInfo(newChihuo.localize("click_to_confirm"),1200);
          return false;
       }
       if($.trim(firstName).length < 3 ){
-          newChihuo.showPopInfo('firstName不能少于三个字符',1200);
+          newChihuo.showPopInfo('firstName should be more than three characters',1200);
           return false;
       }
      
@@ -95,7 +96,8 @@ define([
           usrlastname: lastName,
           lat: newChihuo.lat,
           lng: newChihuo.lon,
-          locale: 'en'
+          locale: 'en',
+          rk: refererKey,
         },
         success: function (data) {
           if (data.status == 0) {

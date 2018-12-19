@@ -216,6 +216,26 @@ define([
          
       });
 
+      $('.photo-detail-show').on('click',function(){
+           var url = $("#rest-photo").attr('photo');
+           var index = $(this).parent().index();
+           if(url){
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
+            window.modalPhoto.render();
+           }
+      });
+
+      $('.review-photo-urls img').on('click',function(){
+           var url = $(this).parent(".review-photo-urls").attr('photo');
+           var index = $(this).index();
+           if(url){
+            initData.photoData.photoUrl = url;
+            initData.photoData.photoIndex = index;
+            window.modalPhoto.render();
+           }
+      });
+
     },
 
     showMoreAddress: function(){
@@ -228,17 +248,18 @@ define([
         },
 
       photoInterface: function(){
-      chihuo.wkLoginPermission() && chihuo.wkAjax({
+       chihuo.wkAjax({
                   type: 'POST',
-                  url: chihuo.getApiUri('addCustRestPhoto.json'),
+                  url: chihuo.getApiUri('addRestMIPhoto.json'),
                   data: {
-                     restId: $('.comment-photo-wrap').attr('rest'),
+                     restId: $('.add-food-photo').attr('rest'),
+                     restmiId: $('.add-food-photo').attr('item'),
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
-                     photosize: 'big',
-                     type: 'jpg',
-                     desc: 'good food',
+                     photosize: 'small',
+                     type: 'jpeg',
+                     desc: 'pic',
                      url: $('.comment-photo-wrap').find('.comment-photo-show').eq(0).find('img').attr('src')
                   },
                   success: function(data){

@@ -1,0 +1,29 @@
+<div class="set-bg">
+	<div class="food-bg" style="padding-bottom:15px;">
+		<nav class="common-title">
+			<a href="javascript:;" class="common-return menu-return"></a>
+			<h3>Order List</h3>
+		</nav>
+	</div>
+	<div class="order-list-wrap">
+		<div class="wrap-border clearfix">
+		<%if(data && data.length){%>
+			<ul class="order-list-show clearfix">
+			<%_.each(data,function(d,i){%>
+				<li>
+					<span><%=d.num%> * <%=d.price%></span><b><%=i+1%>.</b><p><%=d.name%></p>
+					<div class="price-kind"><%=chihuo.calculatePrice(d.price,d.num)%></div>
+				</li>
+			<%})%>	
+			</ul>
+			<div class="list-all-price">All: <%=allPrice%></div>
+		<%}else{%>
+			<p class="no-order">there is no order</p>
+		<%}%>	
+		</div>	
+	</div>	
+	<div class="menu-detail-bottom">
+		<p class="menu-return go-menu">Menu</p>
+		<p class="go-pay">Go Pay</p>
+	</div>
+</div>

@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'text!templates/restaurant/restaurantNearTemplate.html',
+  'text!templates/home/tipsDetailTemplate.html',
   'swiper',
   'pullRefresh',
-], function($, _, Backbone, restaurantNearTemplate){
+], function($, _, Backbone, restaurantNearTemplate,tipsDetailTemplate){
 
   var RestaurantListView = Backbone.View.extend({
     el: $("#page"),
@@ -34,8 +35,10 @@ define([
     },
 
     render: function(lat,lng){
+      var _this = this;
       newChihuo.setPage('restaurantNear');
       newChihuo.windowInit();
+      chihuo.arrowTips('restaurantNear',tipsDetailTemplate,{text:'Once the request were accepted,a 200pts bonus would reward to requester in 2 days.',position:'left:50px;bottom:110px;'});
       if(lat || lng){
         this.status.lat = lat;
         this.status.lng = lng;
@@ -66,6 +69,10 @@ define([
 
       this.loadMore(10);
       
+    },
+
+    tips: function(){
+      $('#arrowTips').html(_.template(tipsDetailTemplate,initData.restaurantNearData)).addClass('show-set');
     },
 
     filter: function(){

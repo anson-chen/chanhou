@@ -1,0 +1,25 @@
+<div class="gw-title">
+	<h3><span class="clear-all-order">Clear All</span>your order</h3>
+</div>
+<div class="gw-data">
+<%if(data && data.length){%>
+	<ul>
+	<%_.each(data,function(d,i){%>
+		<li>
+		    <div class="gw-price"><%=d.price%></div>		    
+			<i price='<%=d.price%>' menu='<%=d.menuIndex%>' dish='<%=d.dishIndex%>' index='<%=d.index%>' class="delete-dish">+</i>
+            <p><%=d.name%></p>
+            <div class="gw-order">
+            	<div class="order-dish-num <%if(d.num){%>cur<%}%>">
+	                <span class="order-add gw-add" price='<%=d.price%>' menu='<%=d.menuIndex%>' dish='<%=d.dishIndex%>' index='<%=d.index%>'>+</span>
+	                <b class="gw-dish-num"><%=d.num%></b>
+				    <span class="order-minus gw-minus" price='<%=d.price%>' menu='<%=d.menuIndex%>' dish='<%=d.dishIndex%>' index='<%=d.index%>'>—</span>
+            	</div>
+            </div>
+		</li>
+    <%})%>				
+	</ul>
+<%}else{%>
+ <p class="no-order">there is no order</p>
+<%}%>
+</div>

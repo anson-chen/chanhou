@@ -181,7 +181,7 @@ define([
       });
 
       $('.review-photo-urls img').on('click',function(){
-           var url = $(".review-photo-urls").attr('photo');
+           var url = $(this).parent(".review-photo-urls").attr('photo');
            var index = $(this).index();
            if(url){
             initData.photoData.photoUrl = url;

@@ -1,0 +1,29 @@
+<div class="rest-bg" style="padding-bottom:80px;height:100%;">
+	<nav class="common-title">
+		<a href="javascript:;" class="common-return menu-return"></a>
+		<h3><%=data.rest_mi_name%></h3>
+	</nav>
+	<div class="rest-wrap">
+		<div class="order-dish-img">
+		  <img src="imgs/pt2.png">
+		</div>
+		<div class="wrap-border clearfix">
+			<h3 class="rest-name-title" style="height:28px;"><%=data.rest_mi_name%></h3>
+			<p class="rest-info-show"><%=data.rest_mi_desc%></p>
+			<p class="rest-info-show" style="padding-top:0px;"><span style="color:#ff8b4c;font-size:15px;"><%=data.mi_unit_price%></span><span style="color:#0bbc13; padding:0 10px;"><%=data.rest_menu_name%></span></p>			
+		</div>
+		<div class="wrap-border clearfix" style="position:relative;">
+			<p class="get-price"><%=chihuo.calculatePrice(data.mi_unit_price,orderNum)%></p>
+			<div class="order-dish-num <%if(orderNum){%>cur<%}%>" style="bottom:10px; right:10px;">
+                <span class="order-add order-add-mask" price='<%=data.mi_unit_price%>'>+</span>
+                <b class="menu-detail-num"><%if(orderNum){%><%=orderNum%><%}%></b>
+		        <span class="order-minus order-minus-mask" price='<%=data.mi_unit_price%>'>—</span>
+            </div>
+		</div>
+	</div>
+	<div class="menu-detail-bottom">
+		<p class="menu-return go-menu">Menu</p>
+		<p class="go-order">Add to order</p>
+	</div>
+</div>
+

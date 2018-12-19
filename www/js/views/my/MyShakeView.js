@@ -74,7 +74,7 @@ function deviceMotionHandler(event){
     }
     },
 
-    findNearbyRandomRest: function(){
+    findNearbyRandomRest: function(ctype,ptype,dtype,callback){
       var _this = this;
          chihuo.wkAjax({
                   type: 'GET',
@@ -83,9 +83,9 @@ function deviceMotionHandler(event){
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
-                     ctype: $('.shake1').attr('select'),
-                     ptype: $('.shake2').attr('select'),
-                     dtype: $('.shake3').attr('select'),
+                     ctype: ctype || $('.shake1').attr('select'),
+                     ptype: ptype || $('.shake2').attr('select'),
+                     dtype: dtype || $('.shake3').attr('select'),
                   },
                   success: function(data){
                      if(data.status == 0){
@@ -93,9 +93,9 @@ function deviceMotionHandler(event){
                           var d = data.data[0];
                           var imgSrc = d.rest_profile_photo_url || 'imgs/rest-list-img.jpg';
                           var html ='<a href="#restaurant/'+d.rest_id+'"><img src="'+ imgSrc +'"><h3>'+d.rest_name+'</h3><p class="rest-info-show" style="padding-top:5px;">'+d.cuisine_type+'<span style="color:#ff8b4c; padding:0 10px;">'+d.rest_avg_pricelevel_per_person+'</span><span style="color:#0bbc13;">'+newChihuo.showDiscountInfo(d.rest_dicount_save)+'</span><br>'+newChihuo.showDistanceInfo(d.cust_distance)+'<span class="like-shake-icon">'+d.total_likes_perc+'%</span></p></a>';
-                          $('.mask-shake .shake-info');
-                          $('.mask-shake .shake-info').eq(1).hide().end().eq(0).show().html(html);
-                          $('.mask-shake').show();
+                          callback && callback(d.cuisine_type,d.rest_avg_pricelevel_per_person,d.cust_distance);
+                          setTimeout(function(){$('.mask-shake .shake-info').eq(1).hide().end().eq(0).show().html(html);
+                          $('.mask-shake').show();},callback ? 2500 : 10);
                         }  
                         else{
                             $('.mask-shake .shake-info').eq(0).hide().end().eq(1).show();
@@ -125,9 +125,9 @@ function deviceMotionHandler(event){
                          initData.myShakeData.data = data.data;
                         newChihuo.getPage('myShake') && _this.$el.html(_.template(myShakeTemplate,initData.myShakeData));
                         newChihuo.getPage('myShake') && _this.bindEvents();
-                        $('.shake1').attr('select',$('#slotMachine1').children().eq(1).find('p').text());
-                        $('.shake2').attr('select',$('#slotMachine2').children().eq(1).find('p').text());
-                        $('.shake3').attr('select',$('#slotMachine3').children().eq(1).find('p').text());
+                        $('.shake1').attr('select',$('#slotMachine1').children().eq(0).find('p').text());
+                        $('.shake2').attr('select',$('#slotMachine2').children().eq(0).find('p').text());
+                        $('.shake3').attr('select',$('#slotMachine3').children().eq(0).find('p').text());
                       }
                     }
                     });
@@ -147,26 +147,63 @@ function deviceMotionHandler(event){
                    snap: '.slot3 li'
                 });
 
-        slot1.on('scrollEnd', getLockInfo1);
-        slot2.on('scrollEnd', getLockInfo2);
-        slot3.on('scrollEnd', getLockInfo3);
+        slot1.on('scrollEnd', function(){getLockInfo(1,slot1)});
+        slot2.on('scrollEnd', function(){getLockInfo(2,slot2)});
+        slot3.on('scrollEnd', function(){getLockInfo(3,slot3)});
 
-        function getLockInfo1(){
-           $('.shake1').attr('select',$('#slotMachine1').children().eq(Math.abs(slot1.y)/50+1).find('p').text());
-        }
-
-        function getLockInfo2(){
-           $('.shake2').attr('select',$('#slotMachine2').children().eq(Math.abs(slot2.y)/50+1).find('p').text());
-        }
-
-        function getLockInfo3(){
-           $('.shake3').attr('select',$('#slotMachine3').children().eq(Math.abs(slot3.y)/50+1).find('p').text());
+        function getLockInfo(id,slot){
+           var line = $('.table-cont').height() || 90;
+           $('.shake'+id).attr('select',$('#slotMachine'+id).children().eq(Math.ceil(Math.abs(slot.y)/line)).find('p').text());
         }
 
         function getRandomNum(obj){
           var length = $(obj).children().length;
           var k = parseInt(length * Math.random());
           return k > length-3 ? length-3 : k;
+        };
+
+        function matchScroll(ctype,ptype,dtype){
+          var ctype = ctype || 'All';
+          var ptype = ptype || 'All';
+          var dtype = dtype || 'All';
+          var b1 = $('#slotMachine1').children();
+          var b2 = $('#slotMachine2').children();
+          var b3 = $('#slotMachine3').children();
+          var time = 1500;
+          var line = $('.table-cont').height() || 90;
+          if($('.shake1').hasClass('unlock-icon')){
+              for(var i = 0; i<b1.length; i++){
+              if(b1.eq(i).text() == ctype){
+                slot1.scrollTo(0, -line*i, time, IScroll.utils.ease.quadratic);
+                break;
+              }
+              if(i == b1.length-1){
+                slot1.scrollTo(0, 0, time, IScroll.utils.ease.quadratic);
+                break;
+              }
+            }
+          }
+         if($('.shake2').hasClass('unlock-icon')){
+          for(var k = 0; k<b2.length; k++){
+            if(b2.eq(k).text() == $.trim(ptype)){
+              slot2.scrollTo(0, -line*k, time, IScroll.utils.ease.quadratic);
+              break;
+            }
+          }
+        }
+        if($('.shake3').hasClass('unlock-icon')){
+          for(var j = 0; j<b3.length; j++){
+            if(dtype == 'All'){
+                slot3.scrollTo(0, 0, time, IScroll.utils.ease.quadratic);
+                break;
+            }
+            if(parseFloat(b3.eq(j).text()) && parseFloat(b3.eq(j).text())>= parseFloat(dtype)){
+              slot3.scrollTo(0, -line*j, time, IScroll.utils.ease.quadratic);
+              break;
+            }
+          }
+        }
+
         };
 
         var initS1 = 0,initS2 = 0, initS3 = 0;
@@ -181,6 +218,8 @@ function deviceMotionHandler(event){
           var b1 = $('#slotMachine1').children();
           var b2 = $('#slotMachine2').children();
           var b3 = $('#slotMachine3').children();
+          var line = line || $('.table-cont').height();
+          var ctype,ptype,dtype;
 
           if($('.unlock-icon').length){
               if($(this).hasClass('going')){
@@ -192,28 +231,33 @@ function deviceMotionHandler(event){
               if($('.shake1').hasClass('unlock-icon')){
                   s1 = (s1 - initS1 !=0) ? s1 : 1; 
                   initS1 = s1;
-                 slot1.scrollTo(0, -50*s1, time, IScroll.utils.ease.quadratic);
+                 slot1.scrollTo(0, -line*s1, time, IScroll.utils.ease.quadratic);
+                 ctype ='All';
                  // $('.shake1').attr('select',b1.eq(s1+1).find('p').text());
                  ++query;
               }
               if($('.shake2').hasClass('unlock-icon')){
                 s2 = (s2 - initS2 !=0) ? s2 : 1; 
                 initS2 = s2;
-                setTimeout(function(){slot2.scrollTo(0, -50*s2, time, IScroll.utils.ease.quadratic);},query*d);
+                setTimeout(function(){slot2.scrollTo(0, -line*s2, time, IScroll.utils.ease.quadratic);},query*d);
                 // $('.shake2').attr('select',b2.eq(s2+1).find('p').text());
+                ptype ='All';
                  ++query;
               }
               if($('.shake3').hasClass('unlock-icon')){
                 s3 = (s3 - initS3 !=0) ? s3 : 1; 
                 initS3 = s3;
-                setTimeout(function(){slot3.scrollTo(0, -50*s3, time, IScroll.utils.ease.quadratic);},query*d);
+                setTimeout(function(){slot3.scrollTo(0, -line*s3, time, IScroll.utils.ease.quadratic);},query*d);
                 // $('.shake3').attr('select',b3.eq(s3+1).find('p').text());
+                dtype = 'All';
               }
+               _this.findNearbyRandomRest(ctype,ptype,dtype,matchScroll);
                setTimeout(function(){ 
                   newChihuo.shakeTrigger = 1;
-                  $(".big-shake").removeClass('going');
-                  _this.findNearbyRandomRest();
-                },time+query*d+100);
+                  $(".big-shake").removeClass('going');    
+                },time+query*d);
+          }else{
+            _this.findNearbyRandomRest();
           }
           
 

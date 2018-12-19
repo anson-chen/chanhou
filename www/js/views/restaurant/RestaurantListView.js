@@ -16,7 +16,7 @@ define([
       st: 0,
       loading: false,
       isEnd: false,
-      ct: 10
+      ct: 50
     },
 
 
@@ -26,16 +26,17 @@ define([
       newChihuo.wishSearch = wish=='wish' ? true : false;
       this.$el.html(_.template(restaurantListTemplate,initData.restaurantListData));
         if(initData.restaurantListData.name != name){
-          this.initData(name,wish);
+          this.initData(name,wish,0);
           initData.restaurantListData.name = name;
           initData.restaurantListData.city = null;
         }
 
       this.bindEvents();
+      this.loadMore(name,wish,10);
       
     },
 
-    initData: function(name,wish){
+    initData: function(name,wish,num){
       var _this = this;
       chihuo.wkAjax({
                   type: 'GET',
@@ -46,17 +47,41 @@ define([
                      lng: newChihuo.lon,
                      locale: 'en',
                      st: 1,
-                     ct: 10,
+                     ct: (num+1)*_this.status.ct,
                      filters: ''
                   },
                   success: function(data){
                      if(data.status == 0){
                       initData.restaurantListData.data = data.data;
                       newChihuo.getPage('restaurantList') && _this.$el.html(_.template(restaurantListTemplate,initData.restaurantListData));
+                      if(data.data.length < (num+1)*_this.status.ct){
+                            _this.status.isEnd = true;
+                             $('.loading-step3').show();
+                             $('.loading-step1,.loading-step2').hide();
+                        }
+                        _this.status.loading =false;
                       newChihuo.getPage('restaurantList') && _this.bindEvents();
                      }
                   } 
               });  
+    },
+
+    loadMore: function(name,wish,distance){
+      var _this = this;
+      var winheight = $(window).height();
+       $(window).off('scroll').on('scroll',function(){
+        var scroll = $(this).scrollTop();
+          chihuo.opacityBg('.opacity-bg',scroll);
+          if(_this.status.isEnd == true){
+             return;
+          }
+          if (!_this.status.loading && ($(document).height() - scroll - winheight < distance)){
+            _this.status.loading = true;
+            $('.loading-step2').show();
+            $('.loading-step1,.loading-step3').hide();
+            _this.initData(name,wish,++_this.status.st);
+          }
+        }); 
     },
 
     addWishlist: function(e){
@@ -87,18 +112,6 @@ define([
 
     bindEvents: function(){
       var _this = this;
-      $('.radius-like').each(function(){
-        var num = $(this).find('span').text();
-        var radialObj = radialIndicator(this, {
-              barColor: '#fb560a',
-              barWidth: 10,
-              radius: 30,
-              initValue: num,
-              displayNumber: false,
-              roundCorner : true
-        }); 
-        // radialObj.animate(num); 
-      });
 
       $('.rank-ul li').on('click',function(){
         var index = $(this).index();

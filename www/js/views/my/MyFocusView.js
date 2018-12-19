@@ -23,7 +23,7 @@ define([
       var _this = this;
           chihuo.wkAjax({
                   type: 'GET',
-                  url: chihuo.getApiUri('getMyFollowings.json'),
+                  url: chihuo.getApiUri('getMyRestFlws.json'),
                   data: {
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,

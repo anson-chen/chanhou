@@ -15,15 +15,15 @@
         <div class="wrap-border clearfix">
             <a href="javascript:;">
             <div class="food-list-icon3">
-            <%=chihuo.getRightTime(d.myfollowing_registered_datetime)%> <%=newChihuo.localize('global_var_ago')%>
+            <%=chihuo.getRightTime(d.created_datetime)%> <%=newChihuo.localize('global_var_ago')%>
             </div>
             <div class="food-img">
-                <img src="imgs/map-img.jpg">
+                <img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
             </div>
             <div style="margin-left:100px;">
-               <h3 class="rest-name-title"><%=d.myfollowing_display_name%></h3>
-                <p class="rest-info-show" style="padding-top:5px;"><!-- 北京菜<span style="color:#ff8b4c; padding:0 10px;">$$$</span><span style="color:#0bbc13;">20%off</span><br>重庆  980米
-                <br>89% <%=newChihuo.localize('global_var_like')%> --></p>
+               <h3 class="rest-name-title"><%=d.rest_name%></h3>
+                <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><br><%=d.city_name%>  <%=d.cust_distance%>
+                <br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
             </div>
             </a>
         </div>

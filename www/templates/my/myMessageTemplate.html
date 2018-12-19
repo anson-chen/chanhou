@@ -55,8 +55,8 @@
 					<%}%>
 					<%if(d.activity_type=='activity_type_add_review'){%>
 					<div class="rest-comment-bottom">
-						<div class="comment-operation"><span class="good-icon <%if(d.compliment_flg !== 'N'){%>good-done<%}%>" review=<%=d.cust_rest_review_id%> rest="<%=d.rest_id%>"><%=d.total_compliments%></span></div>
-						<div class="comment-operation moment-reply"><span class="wechat-icon" review=<%=d.cust_rest_review_id%>>comment</span></div>			
+						<div class="comment-operation"><span class="good-icon <%if(d.compliment_flg !== 'N'){%>good-done<%}%>" review=<%=d.activity_id%> rest="<%=d.rest_id%>"><%=d.total_compliments%></span></div>
+						<div class="comment-operation moment-reply"><span class="wechat-icon" review=<%=d.activity_id%>>comment</span></div>			
 					</div>
 					<%if(d.comments_json && d.comments_json.indexOf('~~~')>0){%>
 					<div class="communication">

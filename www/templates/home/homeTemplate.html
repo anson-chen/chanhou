@@ -15,11 +15,18 @@
   <!-- Swiper -->
     <div class="swiper-container" id="index-banner">
         <div class="swiper-wrapper">
+            <%if(bannerData && bannerData.length){%>
+               <%_.each(bannerData,function(d,i){%>
+                 <div class="swiper-slide <%if(d.event_name !=='greeting' && d.event_detail.length){%>banner-detail<%}%>" banner=<%=i%>><a href="javascript:;"><div class="index-banner-wrap"><img src="<%=d.purl%>" class="banner-img">
+                 <%if(i==0){%><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health and Trust</span></p></div><%}%></div></a></div>
+               <%})%>
+            <%}else{%>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner2_index.jpg" class="banner-img" style="opacity:.6"><p class="index-img-para">Dish Review</p></div></a></div>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner3_index.jpg" class="banner-img" style="opacity:.3"><p class="index-img-para">Restaurant Review</p></div></a></div>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner4_index.jpg" class="banner-img" style="opacity:.3"><p class="index-img-para">Social Chat</p></div></a></div>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner5_index.jpg" class="banner-img" style="opacity:.6"><p class="index-img-para2">Healthy Food and Healthy You</p></div></a></div>
+            <%}%>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination banner-pagination"></div>
@@ -269,6 +276,9 @@
     <%}%>
     </div>
 </div>
+<div id="bannerDetailWrap">
+  
+</div>
 <%if(detailData && detailData.length){%>
 <script> 
     var width=window.innerWidth; 
@@ -373,7 +383,7 @@
  var swiper1 = new Swiper('#index-banner', {
         pagination: '.swiper-pagination',
         paginationClickable: true,
-        autoplay:8000,
+        autoplay:5000,
         autoplayDisableOnInteraction: false,
         loop:true
     });
@@ -396,6 +406,8 @@
      $('#reload').addClass('show-reload');
      newChihuo.city = newChihuo.localCity ? newChihuo.localCity : newChihuo.city;
      newChihuo.setLocalStorage('city',newChihuo.city);
+     newChihuo.removeLocalStorage('bannerDate');
+     chihuo.findBannerCont(newChihuo.city,newChihuo.lat,newChihuo.lon,initData.homeData.template);
      chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,initData.homeData.template);
      chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,initData.homeData.template);
      setTimeout(function(){$('#reload').removeClass('show-reload')},1000);

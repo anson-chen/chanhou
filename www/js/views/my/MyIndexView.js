@@ -49,6 +49,8 @@ define([
                         newChihuo.getPage('myIndex') && _this.bindEvents();
                         if(initData.myIndexData.id == (newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))){
                           newChihuo.customer = data.data[0].display_name;
+                          newChihuo.refKey = data.data[0].ref_key;
+                          newChihuo.setLocalStorage('refKey',newChihuo.refKey ? newChihuo.refKey : '');
                           newChihuo.setLocalStorage('welcomeName',newChihuo.customer ? newChihuo.customer : '');
                           newChihuo.setLocalStorage('fullName',data.data[0].first_name + data.data[0].last_name);
                         }

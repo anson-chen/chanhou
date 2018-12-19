@@ -1,0 +1,66 @@
+<div class="food-bg" style="padding-bottom:5px;">
+	<nav class="common-title" style="height:45px;padding-top:5px;">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>table 10 <span class="order-rest"><%if(data && data.length){%><%=data[0][0].rest_name%><%}%></span></h3>
+	</nav>
+</div>
+<div class="order-wrap clearfix">
+	<div class="order-left">
+		<div class="order-menu" id="orderMenu">
+			<ul>
+			<%_.each(data,function(d,i){%>
+				<li <%if(i==0){%>class='cur'<%}%> menu='<%=d[0].rest_menu_name%>'>
+					<img src="imgs/order-menu-bg.png">
+					<p><%=d[0].rest_menu_name%></p>
+					<span></span>
+				</li>
+			<%})%>	
+			</ul>
+		</div>
+	</div>
+	<div class="order-right" id="orderAll">
+		<div class="order-right-wrap">
+			<div class="order-pt">
+				<img src="imgs/banner1_index.jpg">
+			</div>
+			<%_.each(data,function(menu,i){%>
+			<div class="order-menu-kind">
+			    <div class="order-menu-sub" id="<%=menu[0].rest_menu_name%>"><%=menu[0].rest_menu_name%>（<%=data[i].length%>）</div>
+			    <%_.each(menu,function(d,k){%>
+				<div class="order-menu-detail" menu ='<%=i%>' dish='<%=k%>'>
+					<div class="dish-detail-wrap clearfix">
+						<img src="imgs/pt2.png" menu ='<%=i%>' dish='<%=k%>' class="menu-dish-img"/>
+						<div class="dish-detail-right">
+							<h3><%=d.rest_mi_name%></h3>
+							<p><%=d.rest_mi_desc%></p>
+							<span class="order-dish-price"><%=d.mi_unit_price%></span>
+							<div class="gw-order">
+	                            <div class="order-dish-num">
+	                            	<span class="order-add" price='<%=d.mi_unit_price%>'>+</span>
+	                            	<b></b>
+									<span class="order-minus" price='<%=d.mi_unit_price%>'>—</span>
+	                            </div>
+                            </div>
+						</div>
+					</div>
+				</div>
+				<%})%>
+			</div>
+			<%})%>	
+		</div>
+	</div>
+</div>
+<div class="order-mask"></div>
+<div class="order-bottom">
+	<div id="gouwu"></div>
+	<div class="order-bottom-left">
+		<p></p>
+	</div>
+	<div class="order-all-price"></div>
+	<div class="order-bottom-right" id='myOrder'>
+		my order
+	</div>
+</div>
+<div id="dishDetailWrap">
+	
+</div>

@@ -1,16 +1,18 @@
-<div class="set-bg">
+<div class="set-bg" style="background:#ecfbfe">
 <div class="food-bg" style="padding-bottom:20px;">
 	<nav class="common-title">
 		<a href="javascript:history.go(-1);" class="common-return" style="position:relative; z-index:1000;"></a>
 		<h3><%=newChihuo.localize('shake_header')%></h3>
 	</nav>
 </div>
-<div class="rest-list-wrap" style="padding-bottom:0;">
-		<div class="wrap-border clearfix" style="position:relative;">
+<div class="rest-list-wrap" style="padding:0 1%;">
+		<div class="shake-new clearfix">
 			<div class="table-head clearfix">
-				<p><%=newChihuo.localize('shake_cuisine')%></p>
-				<p><%=newChihuo.localize('global_var_price')%></p>
-				<p style="width:40%;"><%=newChihuo.localize('global_var_distance')%></p>
+				<p>
+				<span><%=newChihuo.localize('shake_cuisine')%></span>
+				<span><%=newChihuo.localize('global_var_price')%></span>
+				<span><%=newChihuo.localize('global_var_distance')%></span>
+				</p>
 			</div>
 			<div class="table-cont">
 			<div class="slot1" id="slot1">
@@ -98,13 +100,13 @@
 				</ul>
 			</div>
 			</div>
-			<a href="javascript:;" class="lock-icon unlock-icon shake1" style="left:18%"></a>
-			<a href="javascript:;" class="lock-icon unlock-icon shake2" style="left:47%"></a>
-			<a href="javascript:;" class="lock-icon unlock-icon shake3" style="left:77%"></a>
+			<div class="big-shake">
+				<p></p>
+			</div>
+			<a href="javascript:;" class="lock-icon unlock-icon shake1" style="left:25%"></a>
+			<a href="javascript:;" class="lock-icon unlock-icon shake2" style="left:50%"></a>
+			<a href="javascript:;" class="lock-icon unlock-icon shake3" style="left:75%"></a>
 		</div>
-</div>
-<div class="big-shake">
-	<img src="imgs/shake-icon.png">
 </div>
 <div class="rest-fix-bottom">
     <ul class="clearfix">
@@ -141,31 +143,7 @@
 		
 	</div>
 	<div class="shake-info" style="display:none;">
-		<p class="shake-para-show">Not lucky! Restaurant not fund,please shake again.</p>
+		<p class="shake-para-show">Not lucky! Restaurant not found,please shake again.</p>
 	</div>
 	<img src="imgs/mask-shake.png" class="shake-img">
 </div>
-<%if(data.length){%>
-<script>
-	function onComplete($el, active){
-		switch($el[0].id){
-			case 'slotMachine1':
-				$("#slotMachine1").addClass('completed');
-				break;
-			case 'slotMachine2':
-				$("#slotMachine2").addClass('completed');
-				break;
-			case 'slotMachine3':
-				$("#slotMachine3").addClass('completed');
-				break;
-		}
-		if($(".completed").length == $(".unlock-icon").length){
-			$('.mask-shake').show();
-			newChihuo.shakeTrigger = 1;
-			$("#slotMachine1").removeClass('completed');
-			$("#slotMachine2").removeClass('completed');
-			$("#slotMachine3").removeClass('completed');
-	}
-}
-</script> 
-<%}%>

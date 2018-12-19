@@ -7,9 +7,10 @@ define([
     'auth0cordova',
     'auth0-js',
     'text!templates/photo/appLaunchTemplate.html',
+    'text!templates/home/bannerDetailTemplate.html',
     'cordovaAuth0plugin',
     'swiper',
-], function ($, _, Backbone, jqueryMove, homeTemplate, auth0cordova,Auth0,appLaunchTemplate) {
+], function ($, _, Backbone, jqueryMove, homeTemplate, auth0cordova,Auth0,appLaunchTemplate,bannerDetailTemplate) {
 
     var HomeView = Backbone.View.extend({
         el: $("#page"),
@@ -25,6 +26,10 @@ define([
            'click .go-direction': 'goMap',
            'click .clear-input-value':'clearValue',
            'click #msgFeeds':'clearRedPoint',
+           'click .banner-detail':'showBannerDetail',
+           'click .banner-return': function(){
+            $("#bannerDetailWrap").removeClass('show-banner-detail');
+           }
        },
 
        status: {
@@ -41,13 +46,19 @@ define([
             this.status.start && chihuo.getPosition(homeTemplate);
             !this.status.tips && newChihuo.showReloadInfo(this.status,'home');
       },
+      showBannerDetail: function(e){
+        var index = $(e.currentTarget).attr('banner');
+        var bannerDetailData =  initData.homeData.bannerData[index] || null;
+        $("#bannerDetailWrap").html(_.template(bannerDetailTemplate,bannerDetailData)).addClass('show-banner-detail');
+      },
+
 
       appStart: function(start){
           if(!start){
             chihuo.appLaunch(appLaunchTemplate);
             chihuo.ajaxSetup();
-            chihuo.initApp(homeTemplate);
             setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
+            chihuo.initApp(homeTemplate);                      
             if(newChihuo.isMobileDevice()) {
                 this.auth0init();
             }

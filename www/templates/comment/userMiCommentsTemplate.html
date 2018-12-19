@@ -20,7 +20,7 @@
 					</div>
 					<p class="comment-cont"><%=d.review_details && d.review_details.split('~~~')[0]%></p>
 					<%if(d.review_concat_photo_urls){%>
-						<div class="review-photo-urls clearfix">
+						<div class="review-photo-urls clearfix" photo="<%=d.review_concat_photo_urls%>">
 							<%_.each(d.review_concat_photo_urls.split(','),function(d,i){%>
 								<img src="<%=d%>">
 							<%})%>

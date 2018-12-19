@@ -173,16 +173,20 @@ define([
             wkActionHelper.doLast('map-search-input.geosearch', function () {
                 chihuo.wkAjax({
                     type: 'GET',
-                    url: newChihuo.geosrvUrl + '/search?format=json&_mtk=wk2018', // 无法跨域传cookies // "https://nominatim.openstreetmap.org/search?format=json",
-                    data: {
-                        q: $('.map-input').val().replace(/^\s+|\s+$/g,"")
-                    },
+                    //url: newChihuo.geosrvUrl + '/search?format=json&_mtk=wk2018', // 无法跨域传cookies // "https://nominatim.openstreetmap.org/search?format=json",
+                    //data: {
+                    //    q: $('.map-input').val().replace(/^\s+|\s+$/g,"")
+                    //},
+                    url: WKMapBoxHelper.getGeoCoderUrl($('.map-input').val().replace(/^\s+|\s+$/g,""), 1, 3, newChihuo.lat, newChihuo.lon),
                     success: function (data) {
-                        if (data && data.length) {
+                        var rows = WKMapBoxHelper.parseRS(data);
+                        if (rows && rows.length) {
+                        //if (data && data.length) {
                             var html = '';
                             var count = 0;
-                            for (var i = 0; i < data.length; i++) {
-                                var row = data[i];
+                            //for (var i = 0; i < data.length; i++) {
+                            for (var i = 0; i < rows.length; i++) {
+                                var row = rows[i];
                                 if (! row || !row.hasOwnProperty('display_name') || !row.hasOwnProperty('lat') || !row.hasOwnProperty('lon')) {
                                     console.error('content error in geo search result.');
                                     //console.log(row);

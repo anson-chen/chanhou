@@ -157,10 +157,21 @@ define([
       $('.comment-img-show img').on('click',function(){
            var url = $(this).parent().attr('photo');
            var index = $(this).index();
+           var restId = $(this).attr('restId');
+           var photoId = $(this).attr('photoId');
+           var compliment = $(this).attr('compliment');
+           var total = $(this).attr('total');
+           var info = {
+            restId : restId,
+            photoId: photoId,
+            compliment: compliment,
+            total: total
+           }
            if(url){
             initData.photoData.photoUrl = url;
             initData.photoData.photoIndex = index;
-            window.modalPhoto.render();
+            $(this).addClass('modal-photo-show');
+            window.modalPhoto.render(restId ? info : null);
            }
       });
 
@@ -168,13 +179,15 @@ define([
         if($(this).hasClass('good-done')){
           return;
         }
+        var restreviewid = $(this).attr('review');
+        var restId = $(this).attr('rest');
         var _this = this;
-              chihuo.wkAjax({
+          restreviewid  &&  restId && chihuo.wkAjax({
                   type: 'POST',
                   url: chihuo.getApiUri('addCustRestReviewCompliment.json'),
                   data: {
-                     restreviewid: $(_this).attr('review') || 0,
-                     restId: $(_this).attr('rest') || 0,
+                     restreviewid: restreviewid,
+                     restId: restId,
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en'
