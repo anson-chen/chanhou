@@ -1,0 +1,31 @@
+<div class="set-bg">
+	<div class="food-bg">
+		<nav class="common-title">
+			<a href="javascript:history.go(-1);" class="common-return"></a>
+			<h3>Past Orders</h3>
+		</nav>
+	</div>
+	<div class="payment-list-wrap">
+	<%if(data && data.length){%>
+	<%_.each(data,function(d,i){%>
+	<div class="payment-list">
+		<h3><%if(d.payment_details && JSON.parse(d.payment_details)){%><%=chihuo.timestampToTime(JSON.parse(d.payment_details).timestamp)%><%}%></h3>
+		<div class="payment-store">
+			<img src="imgs/rest-list-img.jpg">
+			<div class="payment-info clearfix">
+				<span>You paid $<%if(d.payment_details && JSON.parse(d.payment_details)){%><%=JSON.parse(d.payment_details).final_amount.toFixed(2)%><%}%></span>
+				<p><%if(d.rest_details && JSON.parse(d.rest_details)){%><%=JSON.parse(d.rest_details).rest_name%><%}%></p>
+				<b><%if(d.payment_details && JSON.parse(d.payment_details)){%><%=chihuo.timestampToTime(JSON.parse(d.payment_details).timestamp)%> <%=chihuo.getDate(JSON.parse(d.payment_details).timestamp)%><%}%></b>
+				<div class="payment-button clearfix">
+				<a href="#myReceipt/<%=d.cust_order_id%>"><button>Receipt</button></a>
+				<button>Get Help</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%})%>
+	<%}else{%>
+		<p class="no-order"></p>
+	<%}%>	
+	</div>	
+</div>

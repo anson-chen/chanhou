@@ -1,0 +1,38 @@
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>Payment</h3>
+	</nav>
+</div>
+<div class="paymethod-wrap">
+<div class="new-title-bg">
+	<p class="pay-rest-name"><%if(data.rest_info){%><%=JSON.parse(data.rest_info).rest_name%><%}%></p>
+</div>
+<%if(data){%>
+<div class="wrap-border clearfix">
+		<ul class="order-list-show clearfix">
+		<%_.each(newChihuo.dealOrderData(data.order_details,1),function(d,i){%>
+			<li>
+					<span><%=d.unit_cnt%> * $<%=d.unit_price%></span><b><%=i+1%>.</b><p><%=d.rest_menu_desc%></p>
+					<div class="price-kind">$<%=parseFloat(d.sub_total).toFixed(2)%></div>
+			</li>
+		<%})%>				
+		</ul>
+		<div class="pay-info">
+			<p class="pay-other"><span><%=data.rest_table_id%></span>Table#:</p>
+			<p class="pay-other"><span><%=data.order_id%></span>Your order No:</p>
+			<div class="pay-all-price"><span><%=initData.payMethodData.total%></span>Total:</div>
+		</div>
+		<p class="counter-desc1">You are almost done!</p>
+		<p class="counter-desc2">Your request has been sent and one of our waitor or waitress will come to you very shortly or you can show your order# and amount to the cashier to complete the payment.</p>	
+		<div class="counter-button clearfix">
+			<button class="counter-cancel">cancel</button>
+			<button id="confirm-counter">confirm</button>
+		</div> 
+</div>
+<%}%>
+</div>
+<div class="pay-wrap payment">
+	<button id="pay-from-counter">PAY FROM COUNTER</button>
+	<button id="pay-from-mobile">PAY FROM MOBILE</button>
+</div>

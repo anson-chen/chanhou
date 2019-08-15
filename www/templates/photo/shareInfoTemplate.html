@@ -1,0 +1,21 @@
+<div class="">
+    <a href="javascript:;" class="close-map-mask close-share-wrap" style="right:85%;">+</a>
+    <div class="chat-people-list share-set-list">
+    <div class="top-share-wrap"><span class="share-submit">submit</span><span class="close-share-wrap">cancel</span></div>
+    <%if(data && data.length){%>
+	<%_.each(data,function(d,i){%>
+		<div class="rest-comment-head clearfix" style="position:relative;" to="<%=d.friend_cust_id%>" name="<%=d.friend_cust_name%>">
+			<div>
+				<img src="<%if(d.friend_cust_url){%><%=d.friend_cust_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
+					<div class="comment-right-info">
+						<h3 style="background:none; line-height:40px;"><%=d.friend_cust_name%></h3>
+					</div>
+					<p class="share-select-icon">✓</p>
+			</div>
+		</div>
+	<%})%>	
+	<%}else{%>
+		<p class="share-none">there are no friends</p>	
+	<%}%>	
+	</div>
+</div>

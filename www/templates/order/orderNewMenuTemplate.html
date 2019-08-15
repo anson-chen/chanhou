@@ -1,0 +1,28 @@
+<div class="gw-title">
+	<h3><span class="clear-all-order" id="clearNewOrder">Clear All</span>your order</h3>
+</div>
+<div class="gw-data order-new-zone">
+<%if(data && data.length){%>
+	<ul>
+	<%_.each(data,function(d,i){%>
+		<li>
+		    <div class="gw-price"><%=chihuo.getLastPrice(d)%></div>		    
+			<i price='<%=d.price%>' index='<%=i%>' class="delete-dish">+</i>
+            <p class="new-special"><%=d.name%><br/><%if(d.Components){%><%=chihuo.orderNewComponents(d.Components)%><%}%><%if(d.addons){%><%=chihuo.orderNewAddon(d.addons)%><%}%><%if(d.comments){%>comments:<%=d.comments%><%}%></p>
+            <div class="gw-order">
+            	<div class="order-dish-num <%if(d.num){%>cur<%}%>">
+	                <span class="order-add gw-add order-new-add" price='<%=d.price%>' index='<%=i%>'>+</span>
+	                <b class="gw-dish-num"><%=d.num%></b>
+				    <span class="order-minus gw-minus order-new-minus" price='<%=d.price%>' index='<%=i%>'>—</span>
+            	</div>
+            </div>
+		</li>
+    <%})%>				
+	</ul>
+	<div class="order-bottom-right" id="placeNewOrder">
+		place an order
+	</div>
+<%}else{%>
+ <p class="no-order">there is no order</p>
+<%}%>
+</div>

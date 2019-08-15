@@ -1,5 +1,5 @@
 <div class="set-bg">
-	<div class="food-bg" style="padding-bottom:15px; position:relative; z-index:10;">
+	<div class="food-bg" style="position:relative; z-index:10;">
 	    <nav class="common-title">
 	        <a href="javascript:history.go(-1);" class="common-return"></a>
 	        <h3><%=newChihuo.localize('')%>Contacts</h3>
@@ -9,7 +9,7 @@
 		<div class="search-set-input" style="background: #f2f6f9; position:relative;">
 		    <img src="imgs/search-index.png" class="chat-search-icon">
 			<i class="clear-input-value invite-clear"></i>
-			<div style="margin:0 30px;">
+			<div style="margin:0 35px;">
 				<form id="chihuoSearch">
 					<input type="text" name="" class="invite-input" value="" placeholder="<%=newChihuo.localize('')%>Search Contacts">
 				</form>
@@ -57,7 +57,7 @@
         </a>
       </li>
       <li class="<%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%>" id="msgRemind">
-         <a href="#chatAdd"><img src="imgs/sdx.png">
+         <a href="#chatAdd"><img src="imgs/sdx-cur.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>

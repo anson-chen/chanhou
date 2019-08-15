@@ -19,6 +19,7 @@ define([
       newChihuo.setPage('myDiscount');
       newChihuo.windowInit();
       initData.myDiscountData.defaultCity = newChihuo.city;
+      newChihuo.setPromo = false;
       this.$el.html(_.template(myDiscountTemplate,initData.myDiscountData));
       // this.getCityList();
       // this.initData();

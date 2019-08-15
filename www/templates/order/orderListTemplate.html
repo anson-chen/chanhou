@@ -1,29 +1,41 @@
 <div class="set-bg">
-	<div class="food-bg" style="padding-bottom:15px;">
+	<div class="food-bg">
 		<nav class="common-title">
-			<a href="javascript:;" class="common-return menu-return"></a>
+			<%if(filter!=='bottom'){%><a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a><%}%>
+			<%if(filter!=='bottom'){%><a href="javascript:;" class="common-return menu-return"></a><%}else{%>
+			<a href="javascript:history.go(-1);" class="common-return"></a>
+			<%}%>
 			<h3>Order List</h3>
 		</nav>
 	</div>
 	<div class="order-list-wrap">
-		<div class="wrap-border clearfix">
-		<%if(data && data.length){%>
-			<ul class="order-list-show clearfix">
-			<%_.each(data,function(d,i){%>
+	<%if(data && data.length){%>
+	<%_.each(data,function(detail,i){%>
+		<%if(newChihuo.dealOrderData(detail.order_details,2)){%>
+		<p style="padding-top:10px;">order（<%=detail.order_id%>）status: <%=detail.order_status_desc%><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
+		<div class="wrap-border clearfix" style="position:relative;">
+			<span class="toggle-show-order"></span>
+			<ul class="order-list-show clearfix" style="display:none;">
+			<%_.each(newChihuo.dealOrderData(detail.order_details,1),function(d,i){%>
 				<li>
-					<span><%=d.num%> * <%=d.price%></span><b><%=i+1%>.</b><p><%=d.name%></p>
-					<div class="price-kind"><%=chihuo.calculatePrice(d.price,d.num)%></div>
+					<span><%=d.unit_cnt%> * $<%=d.unit_price%></span><b><%=i+1%>.</b><p><%=d.rest_menu_desc%><%if(d.components){%><br/><%=d.components%><%}%><%if(d.comments){%><br/>comments:<%=d.comments%><%}%></p>
+					<div class="price-kind">$<%=parseFloat(d.sub_total).toFixed(2)%></div>
 				</li>
 			<%})%>	
 			</ul>
-			<div class="list-all-price">All: <%=allPrice%></div>
-		<%}else{%>
-			<p class="no-order">there is no order</p>
-		<%}%>	
-		</div>	
+			<div class="list-all-price">All: $<%=newChihuo.dealOrderData(detail.order_details,2).toFixed(2)%></div>
+			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>">proceed to checkout</span>
+			<!-- <p class="no-order">there is no order</p> -->	
+		</div>
+		<%}})%>
+	<%}else{%>
+		<p class="no-order"></p>
+	<%}%>	
 	</div>	
+	<%if(filter!=='bottom'){%>
 	<div class="menu-detail-bottom">
 		<p class="menu-return go-menu">Menu</p>
-		<p class="go-pay">Go Pay</p>
+		<a href="javascript:;"><p class="go-pay">Require to Pay</p></a>
 	</div>
+	<%}%>
 </div>

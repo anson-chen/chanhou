@@ -12,9 +12,11 @@ define([
       'click #orderMenu li': 'showMenu',
       'click .order-bottom-left': 'showOrderDetail',
       'click #myOrder': 'goOrderList',
+      'click #placeOrder': 'addOrder',
       'click .menu-return': function(){
         $("#dishDetailWrap").removeClass('show-menu-dish');
         $('.menu-operating').removeClass('menu-operating');
+        newChihuo.setPage('orderIndex');
       },
     },
 
@@ -62,9 +64,61 @@ define([
        window.orderMenu.render(info);
     },
 
-    goOrderList: function(){
+    goOrderList: function(e){
+      var $obj=$(e.currentTarget);
+      if(!$obj.hasClass('disable-order')){
+        window.orderList.render();
+      }
+    },
+
+    getDetailAll: function(){
        var info = this.getOrderInfo();
-       window.orderList.render(info);
+       var detail = [];
+       var total = 0;
+       console.log(info);
+       for(var i=0; i<info.length; i++){
+          var obj= {};
+          obj["menu_item_id"] = info[i].menuId;
+          obj["menu_desc"] = info[i].name;
+          obj["unit_price"] = parseFloat(info[i].price.substring(1));
+          obj["unit_cnt"] = info[i].num;
+          obj["sub_total"] = obj["unit_price"] * obj["unit_cnt"];
+          obj["comments"] = info[i].comments || '';
+          detail.push(obj);
+          total+=obj["sub_total"];
+       }
+       detail.push({"tip_amount":0,"tax_amount":0,"total_amount":total.toFixed(2)});
+       return detail;
+    },
+
+    addOrder: function(e){
+      var _this = this;
+      var restId = $(".order-dish-num").eq(0).attr('rest');
+      var tabId = 1;
+      var detail = this.getDetailAll();
+      // if($(e.currentTarget).hasClass('disable-order')){
+      //   return;
+      // }
+      chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri3('submitOrder.json'),
+          data: {
+              restId: restId,
+              tabId:tabId,
+              detail:JSON.stringify(detail),
+              lat: newChihuo.lat,
+              lng: newChihuo.lon,
+              locale: 'en'
+          },
+          success: function(data){
+              if(data.status == 0){
+                newChihuo.showPopInfo('Order was sent successfully.',1500);
+                $("#myOrder").removeClass('disable-order');
+                $('.clear-all-order').click();
+                $('.order-bottom-left').click();
+              }
+            }
+          });
     },
 
     getOrderInfo: function(){
@@ -76,6 +130,7 @@ define([
           var $obj = $order.eq(i);
             if($obj.find('.cur').length){
               var dish = {};
+              dish.menuId = $obj.attr('menuId');
               dish.menuIndex = $obj.attr('menu');
               dish.dishIndex = $obj.attr('dish');
               dish.price = $obj.find('.order-dish-price').text();
@@ -117,15 +172,6 @@ define([
 
     bindEvents: function(){
       var _this = this;
-      // var slotMenu = new IScroll('#orderMenu',{
-      //              snap: '#orderMenu li',
-      //              // scrollX: false,
-      //              // scrollY: true,
-      //              // click: true,
-      //              // mouseWheel: true
-                    
-      // });  
-
       $('.menu-dish-img').on('click',function(){
         var menuNum = $(this).attr('menu');
         var dishNum = $(this).attr('dish');
@@ -175,6 +221,7 @@ define([
           }else{
             $('.order-bottom-left p').text('').hide();
             $('.order-all-price').text('');
+            $("#placeOrder").addClass('disable-order');
           }
 
       });

@@ -38,7 +38,7 @@ define([
       var _this = this;
       newChihuo.setPage('restaurantNear');
       newChihuo.windowInit();
-      chihuo.arrowTips('restaurantNear',tipsDetailTemplate,{text:'Once the request were accepted,a 200pts bonus would reward to requester in 2 days.',position:'left:50px;bottom:110px;'});
+      chihuo.arrowTips('restaurantNear',tipsDetailTemplate,{text:'Tips: if your restaurant is missing here, click + to add and win 200 reward pts.',position:'left:50px;bottom:110px;'});
       if(lat || lng){
         this.status.lat = lat;
         this.status.lng = lng;

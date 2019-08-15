@@ -1,0 +1,24 @@
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="javascript:;" class="school-save" id="confirmVerify">confirm</a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>Verify Mobile</h3>
+	</nav>
+</div>
+<div class="school-wrap">
+	<div class="wrap-border clearfix" style="padding:15px 15px 0;"> 
+       <b style="font-size:20px;">Your mobile number is:</b>  
+       <h3 style="font-size:20px; text-align:center; padding-top:20px;" id="custMobile"><%if(data && data.cust_mobile_no){%><%=data.cust_mobile_no%><%}%></h3>
+        <p class="phone-para">You should receive a verification code shortly. Please enter the code you have received below. </p>
+       <div class="quit-setting" style="background: #fb6700;" id="resendVC">Resend Verification Code</div>
+       <b style="font-size:20px;">Please enter 6 digits code you received:</b>   
+       <div class="login-wrap" style="position:relative; margin-top:20px;">
+          <i class="clear-input-val" id="clearVerificationCode"></i>
+         <input type="number" name="" id="verificationCode" placeholder="Verification Code" style="padding-right:40px;" value="<%if(data.verifynum || verifyNum){%><%=data.verifynum || verifyNum%><%}%>">
+         <span>*</span>
+       </div>
+        <p class="phone-para">Congrats,your mobile number has been verified successfully, and you are now eligible to enjoy school lunch order service for your school kids.</p>
+    </div>
+</div>  
+</div>
+	

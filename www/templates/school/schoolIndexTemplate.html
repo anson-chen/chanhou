@@ -1,0 +1,26 @@
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="#childDetail/add" class="add-new">+</a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>My child list</h3>
+	</nav>
+</div>
+<div class="school-wrap">
+	<a href="#phoneList" style="float:right;">mobile number set</a>
+	<a href="#childSelect">select child for lunch</a>
+	<%if(data){%>
+	<%if(data.length){%>
+	<%_.each(data,function(d,i){%>
+	<%if(d.child_info){%>
+	<div class="wrap-border clearfix">
+		<a href="#childDetail/edit/<%=i+1%>">
+			<p class="child-info"><%=i+1%>. <span><%=JSON.parse(d.child_info).grade_name%></span><b><%=JSON.parse(d.child_info).first_name%> <%=JSON.parse(d.child_info).last_name%></b><br/> <%=JSON.parse(d.child_info).school_name%><br/><%=JSON.parse(d.child_info).teacher_name%></p>
+		</a>
+	</div>
+	<%}%>
+	<%})%>
+	<%}else{%>
+		<p class="phone-para"><b>No Child Record</b><br/>Please start to enjoy school lunch order service by adding your school child profile, and we never ever share your child privacy with any other third parties.</p>
+	<%}}%>
+</div>
+	

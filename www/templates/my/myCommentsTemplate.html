@@ -1,4 +1,4 @@
-<div style="background:#f4f8fb;" class="comment-effect1">
+<div class="comment-effect1">
 	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -16,7 +16,7 @@
             <div class="tab-swiper-wrap">
             <%if(restData.length){%>
             <%_.each(restData,function(d,i){%>
-			<div class="wrap-border clearfix" style="margin:15px 12px 0; padding:10px;">
+			<div class="wrap-border clearfix" style="margin:15px 0 0; padding:10px;">
 			<div class="rest-comment-head clearfix">
 					<a href="#myIndex/<%=d.customer_id%>">
 						<img src="<%if (d.profile_photo_url){%><%=d.profile_photo_url%><%}else{%>imgs/photo.png<%}%>" class="comment-left-img"> 
@@ -123,7 +123,7 @@
         </a>
       </li>
       <li id="msgIndex" class="cur <%if(!$.isEmptyObject(newChihuo.requestList)){%>message-remind<%}%>">
-        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <a href="#myIndex"><img src="imgs/bottom-h4-cur.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

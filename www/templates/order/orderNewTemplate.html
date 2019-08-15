@@ -1,0 +1,30 @@
+<nav class="common-title">
+	<a href="javascript:history.go(-1);" class="common-return"></a>
+	<h3><%=initData.orderNewData.info.name%></h3>
+</nav>
+<div class="new-title-bg">
+	<span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span>
+	<p class="order-new-option"><span class="menu-index">menu</span>please select your options</p>
+	<%if(tabId){%><p class="order-new-option" id="table" num='<%=tabId%>'>Table Number: <%=tabId%></p><%}%>
+</div>
+<div class="order-new-wrap">
+	<ul class="order-new-list">
+	<%_.each(data,function(d,i){%>
+		<li class="<%if(d.children){%>next-level<%}%>" query="<%=i%>"><%=d.name%><%if(d.price && d.price !='$0'){%><span><%=d.price%></span><%}%> <%if(d.children){%>(<%=d.children.length%>)<%}%></li>
+	<%})%>	
+	</ul>
+</div>
+<div class="order-mask"></div>
+<div class="order-bottom">
+	<div id="gouwu"></div>
+	<div class="order-bottom-left" id="orderNewList">
+		<p></p>
+	</div>
+	<div class="order-all-price"></div>
+	<div class="order-bottom-right">
+		<a href="#myOrder" style="color:#fff;">my order</a>
+	</div>
+</div>
+<div id="dishDetailWrap" style="background:#fff;">
+	
+</div>

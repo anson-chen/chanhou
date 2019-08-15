@@ -342,7 +342,9 @@ define([
               // 但因为何时点这个marker是不确定，也许当点它的时候，它已经不在中心位，这时会有不一致情况，所以上面要加gotolocation
           }, null, popinfo);  // 这里设null意味着将在当前的地图点上放新检索标记
       },
-      rmDragSearchAction: function() {
+      rmDragSearchAction: function(clearall) {
+          // 任何拖动或缩放开始前也要清理长按搜索定时器，否则只要手一直在屏幕上不管拖还是缩放也都会被认为是长按！！！
+          clearTimeout(this.status.longpressTMOut);
           if (! this.status.dragsearchtmout || this.status.dragsearchtmout.length <1) {
               return;
           }
@@ -391,26 +393,36 @@ define([
                     })
                 }(i));
             }
+            newChihuo.map && newChihuo.map.on('zoomstart',function(ev) {
+                _this.rmDragSearchAction();
+                newChihuo.mapbeforelevel = newChihuo.map.getZoom();
+            });
             newChihuo.map && newChihuo.map.on('zoomend',function(ev) {
+                _this.rmDragSearchAction();
                 newChihuo.maplastlevel = newChihuo.map.getZoom();
             });
             newChihuo.map && newChihuo.map.on('dragstart',function(ev) {
                 _this.rmDragSearchAction();
+                newChihuo.mapbeforelevel = newChihuo.map.getZoom();
             });
             newChihuo.map && newChihuo.map.on('movestart',function(ev) {
+                newChihuo.mapbeforelevel = newChihuo.map.getZoom();
                 //chihuo.rmNewCenterMarker();
                 _this.rmDragSearchAction();
             });
             newChihuo.map && newChihuo.map.on('dragend',function(ev) {
+                if (newChihuo.mapbeforelevel !== newChihuo.maplastlevel) {
+                    return ;
+                }
                 //_this.doSearchAction(300);
                 _this.rmDragSearchAction();
                 if (newChihuo.map && _this.checkPosition(newChihuo.map.getCenter().lat,newChihuo.map.getCenter().lng,_this.search.mindragdist)) {
-                    var tmout1 =wkActionHelper.doLast('dragend.putnewcentermarker',function() {
+                    var tmout1 =wkActionHelper.doLast('dragend .putnewcentermarker',function() {
                         _this.showTargetIcon('Hold 3 seconds & start new search...');
                         setTimeout(function(){ // 不管怎样1秒后清理searching图标
                             chihuo.rmNewCenterMarker();
                         }, 1000);
-                        var tmout2 = wkActionHelper.doLast('dragend.dosearch',function() {
+                        var tmout2 = wkActionHelper.doLast('dragend .dosearch',function() {
                             _this.showTargetIcon('Searching...');
                             _this.doSearchAction(10);
                         }, 3000);
@@ -420,6 +432,8 @@ define([
                 }
             });
             var doPressStart = function (ev) {
+                // 每个新的长按开始都应清除之前的定时器这样才能保证每次长按都是从它自己的长按开始而计时的
+                clearTimeout(_this.status.longpressTMOut);
                 var newsearchpoint = ev.latlng;
                 if (newsearchpoint) {
                     _this.status.longpressTMOut = setTimeout(function(){
@@ -430,15 +444,19 @@ define([
                 }
             }
             newChihuo.map && newChihuo.map.on('mousedown',function(ev) {
+                // 每次按压开始都重新认作是（可能的）长压开始（开始前总清除之前的定时器），而不过滤多次按压的情况，否则有可能会有漏清的长按定时器！
+                //doPressStart(ev);
                 wkActionHelper.doFirst('map.press.start', function() {
                     doPressStart(ev);
-                }, 200);
+                }, 10);
             });
             // leaflet 1.3.3 已经包含了need https://github.com/lee101/Leaflet/blob/add-mobile-touch-events/src/map/handler/Map.Tap.js
             newChihuo.map && newChihuo.map.on('touchstart',function(ev) {
+                // 每次按压开始都重新认作是（可能的）长压开始（开始前总清除之前的定时器），而不过滤多次按压的情况，否则有可能会有漏清的长按定时器！
+                //doPressStart(ev);
                 wkActionHelper.doFirst('map.press.start', function() {
                     doPressStart(ev);
-                }, 200);
+                }, 10);
             });
 
             var doPressEnd = function(ev) {

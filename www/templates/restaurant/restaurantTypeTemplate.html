@@ -1,0 +1,166 @@
+<div class="set-bg" style="padding-bottom:120px;">
+	<div class="food-bg opacity-bg">
+		<nav class="common-title">
+			<a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a>
+			<a href="#map" class="head-rest-icon"></a>
+			<a href="javascript:history.go(-1);" class="common-return"></a>
+			<h3><%=title%> Restaurants</h3>
+		</nav>
+		<ul class="rank-ul clearfix">
+			<li><p><img src="imgs/icon_like.png"><i></i><i></i></p></li>
+    		<li><p><img src="imgs/nearbypage_sort_by_price.png"><i></i><i></i></p></li>
+    		<li class="cur toggle"><p><img src="imgs/restdetail_page_address.png"><i></i><i></i></p></li>
+		</ul>
+	</div>
+	<div class="container-down">
+	<div class="rest-list-wrap" style="padding:0;">
+	<%_.each(data, function(d,i) {%>
+		<div class="wrap-border clearfix" style="border-radius:0;">
+		<a href="#restaurant/<%=d.rest_id%>">
+			<div class='clearfix'>
+			   <div class="food-img">
+	                <img class="lazy" data-original="<%if(d.rest_profile_photo_url){%><%=d.rest_profile_photo_url.split(',')[0]%><%}else{%>imgs/map-img.jpg<%}%>">
+	                <%if(d.ad_flag == 'y' || d.ad_flag == 'Y'){%><span class="ad-flag">Ad</span><%}%>
+	           </div>
+	           <div style="margin:0 5px 0 100px; position:relative;">
+	                <%if(d.cust_distance){%><span class="position-distance"><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%>
+	                <h3 class="rest-name-title" style="margin-right:60px;"><%=i+1%>. <%=d.rest_name%></h3>
+					<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
+					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
+					<%if(d.total_other_custs){%><span class="reset-style reset-bg6" style="float:right; margin-top:1px;"><%=d.total_other_custs%></span><%}%>
+					<span style="padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span>
+					<%if(d.promo_flg == 'Y'){%><span class="yhj-flag"><img src="imgs/icon_rest_promo.png"/></span><%}%>
+					<br><%=d.cuisine_type%></p>
+					<p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(d.address){%><b class="address-set"><%=d.address%></b><%}%></p>
+	           </div>
+         </div>
+         <%if(d.last_review_details){%><b class="address-set" style="padding:0 10px;color:#333;"><%=d.last_review_details%></b><%}%>
+		</a>
+		</div>
+	<%})%>
+	</div>
+	</div>
+	<div class="loading-wrap" id='specialLoad'>
+	    <p class="loading-step1" style="display:none;"><%=newChihuo.localize('global_loading_more')%></p>
+		<p class="loading-step2"><%=newChihuo.localize('global_loading')%></p>
+		<p class="loading-step3" style="display:none;"><%=newChihuo.localize('global_loading_nomore')%></p>
+	</div>
+	<div class="rest-fix-right"></div>
+	<div class="rest-fix-bottom">
+     <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
+        </a>
+      </li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+      <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="search-set-fix">
+	<button class="clear-option" style="width:100%">Clear</button>
+	<button class="set-sure" id='setSure' style="display:none;">ok</button>
+</div>
+<div class="map-mask">
+	<a href="javascript:;" class="close-map-mask">+</a>
+	<div class="map-mask-cont">
+	    <div class="map-mask-head">
+	    	<h3><%=newChihuo.localize('customize_filter')%></h3>
+	    </div>
+	    <div>
+			<div class="search-set-input" style="display: none;">
+				<i></i>
+				<div style="margin:0 30px 0 20px;">
+					<input type="text" name="" value="" placeholder="请输入地址" class="address-filter">
+				</div>		
+			</div>
+			<div class="set-floor clearfix">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_distance')%></span>
+				<div class="right-set-info clearfix" id='distance'>
+					<%_.each(filterData,function(d,i){%>
+					    <%if(d.custom_category == 'distance'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_rest_type')%></span>
+				<div class="right-set-info clearfix" id='resttype'>
+					<%_.each(filterData,function(d,i){%>
+					    <%if(d.custom_category == 'facilitytp'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_price')%></span>
+				<div class="right-set-info clearfix" id='price'>
+					<%_.each(filterData,function(d,i){%>
+					    <%if(d.custom_category == 'price'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+			<div class="set-floor clearfix select-dish-mask" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;" query=1>
+				<span class="set-floor-title"><%=newChihuo.localize('customize_cuisine')%></span>
+				<p class="set-floor-select" id="cuisine">all</p>
+			</div>
+			<div class="set-floor clearfix" style="border-bottom:1px solid #e1e8ee; padding-bottom:5px;">
+				<span class="set-floor-title"><%=newChihuo.localize('customize_tag')%></span>
+				<div class="right-set-info set-feature clearfix" id='feature'>
+					<%_.each(filterData,function(d,i){%>
+					    <%if(d.custom_category == 'feature'){%>
+						<span><%=d.name%></span>
+					<%}})%>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="search-mask">
+ 	<div class="dish-mask-list">
+    	<%_.each(filterData,function(d,i){%>
+			<%if(d.custom_category == 'cuisine'){%>
+				<p><%=d.name%></p>
+		<%}})%>
+    </div>	
+</div>
+<div class="return-top-icon"></div>
+<a href="#restaurantMissing"><div class="add-missing"></div></a>
+<style type="text/css">
+	#returnIcon { top: 50px; }
+</style>
+<%if(data && data.length){%>
+<script>
+    var swiper1 = new Swiper('.rest-list-swiper', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+
+    var setTime = $('.time-demo2').mobiscroll().time({
+        theme: 'ios',
+        display: 'bottom',
+        headerText: false,
+        maxWidth: 90
+    });
+</script>
+<%}%>    	

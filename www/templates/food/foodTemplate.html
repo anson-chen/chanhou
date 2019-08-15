@@ -1,6 +1,6 @@
 <div class="rest-bg comment-effect2" style="padding-bottom:80px;">
 	<nav class="common-title">
-		<a href="javascript:;" class="share"></a>
+		<a href="javascript:;" class="share share-food" style="display:block;"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3><%if(data[0]){%><%=data[0].rest_mi_name%><%}%></h3>
 	</nav>
@@ -133,6 +133,9 @@
 		
 	</form>	
 </div>
+<div id='shareWrap' share="food">
+	
+</div>	
 <script>
  	var width=window.innerWidth; 
     var swiperRest1 = new Swiper('#rest-banner', {

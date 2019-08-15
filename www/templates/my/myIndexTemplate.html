@@ -1,9 +1,9 @@
 <div class="set-bg">
-<div class="food-bg" style="padding-bottom:15px;">
+<div class="food-bg">
 	<nav class="common-title">
 		<%if ((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) && (newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%><a href="#myRewards" class="my-rewards">Rewards</a><%}%>
 		<a href="#" class="common-return"></a>
-		<h3><%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))!== id){%><%if(data[0]){%><%=data[0].display_name%><%}}else{%><%=newChihuo.localize('profile_me')%><%}%></h3>
+		<h3 id="test-qrscanner"><%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))!== id){%><%if(data[0]){%><%=data[0].display_name%><%}}else{%><%=newChihuo.localize('profile_me')%><%}%></h3>
 	</nav>
 </div>	
 	<div class="rest-list-wrap" style="padding-bottom:0px;">
@@ -54,25 +54,25 @@
 			<ul class="my-index clearfix">
 				<li style="border:none;">
 				    <a href="javascript:;">
-						<img src="imgs/my-icon1.png">
+						<img src="imgs/mepage_myfriends.png">
 						<p><%=newChihuo.localize('')%>Friends<br><span><%=d.friends_count%></span></p>
 					</a>
 				</li>
 				<li class="index-focus">
 					<a href="javascript:;">
-						<img src="imgs/my-icon2.png">
+						<img src="imgs/mepage_following.png">
 						<p><%=newChihuo.localize('profile_following')%><br><span><%=d.total_followings_cnt%></span></p>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:;">
-						<img src="imgs/my-icon3.png">
+						<img src="imgs/mepage_review.png">
 						<p><%=newChihuo.localize('profile_review')%><br><span><%=d.total_reviews_cnt%></span></p>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:;">
-						<img src="imgs/my-icon4.png">
+						<img src="imgs/restdetail_page_photo.png">
 						<p><%=newChihuo.localize('profile_photo')%><br><span><%=d.total_photos_cnt%></span></p>
 					</a>
 				</li>
@@ -86,44 +86,66 @@
 		<div class="wrap-border clearfix" style="padding:0 15px;">   
 	        <div class="setting-li clearfix">
 	        	<a href="#login">
-		            <i class="my-index-icon index-icon1"></i><span class="set-floor-title" style="color:#333;width: 6em;"><%=newChihuo.localize('profile_login')%></span>
+		            <img src="imgs/mepage_login.png"/><span class="set-floor-title" style="color:#333;width: 6em;"><%=newChihuo.localize('profile_login')%></span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div>
 	        <div class="setting-li clearfix">
 	        	<a href="#myFootprint">
-		            <i class="my-index-icon index-icon2"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_footprint')%></span>
+		            <img src="imgs/mepage_browsing_history.png"/><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_footprint')%></span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div>  
 	        <div class="setting-li clearfix">
 	        	<a href="#myMessage">
-		            <i class="my-index-icon index-icon3"></i><span class="set-floor-title" style="color:#333; width:160px;"><%=newChihuo.localize('')%>Friend Moment</span>
+		            <img src="imgs/mepage_friend_moment.png"/><span class="set-floor-title" style="color:#333; width:160px;"><%=newChihuo.localize('')%>Friend Moment</span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div> 
 	        <div class="setting-li clearfix" style="display:none;">
 	        	<a href="#chatAdd">
-		            <i class="my-index-icon index-icon4"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('main_chatbutton')%></span>
+		            <img src="imgs/mepage_login.png"/><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('main_chatbutton')%></span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div> 
 	        <div class="setting-li clearfix" style="display:none;">
 	        	<a href="#chatIndex">
-		            <i class="my-index-icon index-icon5"></i><span class="set-floor-title" style="color:#333; width:7em;"><%=newChihuo.localize('profile_invite')%></span>
+		            <img src="imgs/mepage_login.png"/><span class="set-floor-title" style="color:#333; width:7em;"><%=newChihuo.localize('profile_invite')%></span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div> 
 	        <div class="setting-li">
 	        	<a href="#chatInvite">
-		            <i class="my-index-icon index-icon6"></i><span class="set-floor-title <%if(!$.isEmptyObject(newChihuo.requestList)){%>floor-point<%}%>" id="msgPoint" style="color:#333;"><%=newChihuo.localize('profile_contacts')%></span>
+		           <img src="imgs/button_chatpage_contacts.png"/><span class="set-floor-title <%if(!$.isEmptyObject(newChihuo.requestList)){%>floor-point<%}%>" id="msgPoint" style="color:#333;"><%=newChihuo.localize('profile_contacts')%></span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+		            <div class="clear"></div>
+	            </a>
+	        </div> 
+	        <div class="setting-li">
+	        	<a href="#myOrder">
+		            <img src="imgs/mepage_order_history.png"/><span class="set-floor-title" style="color:#333; width:auto;">Order History</span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+		            <div class="clear"></div>
+	            </a>
+	        </div> 
+	        
+	         <div class="setting-li">
+	        	<a href="#myPayment">
+		            <img src="imgs/mepage_order_history.png"/><span class="set-floor-title" style="color:#333; width:auto;">Payment history</span>
+		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
+		            <div class="clear"></div>
+	            </a>
+	        </div> 
+	        <div class="setting-li">
+	        	<a href="#myScan">
+		            <img src="imgs/mepage_order_history.png"/><span class="set-floor-title" style="color:#333; width:auto;">Scan</span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 		            <div class="clear"></div>
 	            </a>
 	        </div> 
 	        <div class="setting-li clearfix" style="border:none; clear:both;">
 	        <a href="#mySettings">
-	            <i class="my-index-icon index-icon7"></i><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_settings')%></span>
+	            <img src="imgs/mepage_settings.png"/><span class="set-floor-title" style="color:#333;"><%=newChihuo.localize('profile_settings')%></span>
 	            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>
 	            </a>
 	        </div>        
@@ -153,7 +175,7 @@
         </a>
       </li>
        <li id="msgIndex" class="<%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%>cur<%}%><%if(!$.isEmptyObject(newChihuo.requestList)){%> message-remind<%}%>">
-        <a href="<%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%>javascript:;<%}else{%>#myIndex<%}%>"><img src="imgs/bottom-h4.png">
+        <a href="<%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%>javascript:;<%}else{%>#myIndex<%}%>"><img src="imgs/bottom-h4-cur.png">
         <p><%=newChihuo.localize('main_profilebutton')%></p>
         </a>
       </li>

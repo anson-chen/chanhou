@@ -10,8 +10,11 @@ define([
     events: {
      'click #addressMore':'showMoreAddress',
      'click #userComments .comment-cont':'showMoreComment',
-     'submit #chatForm': 'sendData'
-     
+     'submit #chatForm': 'sendData', 
+     'click .bottom-add-more':'toggleInput',
+     'click .share-other-wrap img':'shareFunc',
+     'click #reloadContent':'reloadContent',
+     'click .cont-img':'showBigImg'    
     },
 
     render: function(toId,name){
@@ -20,10 +23,77 @@ define([
       initData.chatContentData.custId = toId;
       initData.chatContentData.name = name;
       initData.chatContentData.hisData = [];
+      initData.chatContentData.callback = this.initData;
       this.$el.html(_.template(chatContentTemplate,initData.chatContentData));
       chihuo.deleteMsgRemind(toId);
+      this.initData(toId); 
+    },
+    toggleInput: function(){
+      $('.fix-comment-bottom').toggleClass('toggle-share-wrap')
+    },
+
+    reloadContent: function(){
+      var toId = $('#chatForm').attr('to');
       this.initData(toId);
-      
+    },
+
+    showBigImg: function(e){
+      var index=$(e.currentTarget).index('.cont-img');
+      var url = '';
+      var img = [];
+      $('.cont-img').each(function(){
+        var src = $(this).attr('src');
+        src && img.push(src);
+      }) 
+      url = img.join(',');     
+      if(url){
+        initData.photoData.photoUrl = url;
+        initData.photoData.photoIndex = index;
+        window.modalPhoto.render();
+      }     
+    },
+
+    sendImg: function(src){
+      var _this = this;
+      var msg = {"type":"image","content":{"url": src}};     
+      var toId = $('#chatForm').attr('to');
+          src.length && chihuo.wkAjax({
+                  type: 'POST',
+                  url: chihuo.getApiUri('addCustChatMsg.json'),
+                  data: {
+                     to: toId ,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en',
+                     msg: JSON.stringify(msg),
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                      window.chatContent.initData(toId);
+                     }
+                  } 
+              });   
+       
+    },
+
+    
+    shareFunc: function(e){
+      var type = parseInt($(e.currentTarget).attr('func'));
+      if(type==1){
+        photoUse.shareImg(this.sendImg,1);
+
+      }else if(type==2){
+        photoUse.shareImg(this.sendImg,2);
+
+      }else if(type==3){
+        window.shareChat.render('rest');
+
+      }else if(type==4){
+        window.shareChat.render('dish');
+      }else{
+
+      }
+
     },
 
     initData: function(toId){
@@ -42,8 +112,10 @@ define([
                   success: function(data){
                      if(data.status == 0){
                       initData.chatContentData.hisData = data.data;
-                        newChihuo.getPage('chatContent') && _this.$el.html(_.template(chatContentTemplate,initData.chatContentData));
-                        window.scrollTo(0,100000);   
+                      if(!$("#chatValue").val().length){
+                        newChihuo.getPage('chatContent') && $("#page").html(_.template(chatContentTemplate,initData.chatContentData));
+                        $('.chat-container')[0].scrollTo(0,100000);
+                      } 
                      }
                   } 
               });  
@@ -53,6 +125,7 @@ define([
     sendData: function(){
       var _this = this;
       var content = $("#chatValue").val();
+      var msg = {"type":"text","content":{"body": content}};     
       var toId = $('#chatForm').attr('to');
           content.length && chihuo.wkAjax({
                   type: 'POST',
@@ -62,10 +135,11 @@ define([
                      lat: newChihuo.lat,
                      lng: newChihuo.lon,
                      locale: 'en',
-                     msg: content
+                     msg: JSON.stringify(msg),
                   },
                   success: function(data){
                      if(data.status == 0){
+                      $("#chatValue").val('');
                       _this.initData(toId);
                      }
                   } 

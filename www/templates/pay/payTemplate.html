@@ -1,0 +1,42 @@
+<div class="new-title-bg">
+	<p class="pay-rest-name"><%if(data.rest_info){%><%=JSON.parse(data.rest_info).rest_name%><%}%></p>
+	<span class="pay-rest-addr"><%if(data.rest_info){%><%=JSON.parse(data.rest_info).addr%><%}%></span>
+	<div class="pay-nav clearfix">
+		<span>ready in 10-15 min</span>
+		<p onclick="javascript:history.go(-1);">view menu</p>
+	</div>
+</div>
+<%if(data){%>
+<div class="wrap-border clearfix">
+		<ul class="order-list-show clearfix">
+		<%_.each(newChihuo.dealOrderData(data.order_details,1),function(d,i){%>
+			<li>
+					<span><%=d.unit_cnt%> * $<%=d.unit_price%></span><b><%=i+1%>.</b><p><%=d.rest_menu_desc%></p>
+					<div class="price-kind">$<%=parseFloat(d.sub_total).toFixed(2)%></div>
+			</li>
+		<%})%>				
+		</ul>
+		<div class="pay-info">
+		<div class="pay-discount">
+			<span>-$5.00</span>First Order Credits 
+		</div>
+		<p class="pay-other"><span>$<em class="pre-get"><%if(newChihuo.dealOrderData(data.order_details,3).pre_tax){%><%=newChihuo.dealOrderData(data.order_details,3).pre_tax.toFixed(2)%><%}%></em></span>Subtotal:</p>
+		<p class="pay-other"><span>$<em class="tax-get"><%if(newChihuo.dealOrderData(data.order_details,3).tax_amount && newChihuo.dealOrderData(data.order_details,3).tax_amount['TOTAL TAX']){%><%=newChihuo.dealOrderData(data.order_details,3).tax_amount['TOTAL TAX']%><%}else{%>0<%}%></em></span>Tax:</p>
+		<p class="pay-other"><span class="tip-num-set">$<em class="tip-get">0</em></span>Tip:</p>
+		<div class="pay-all-price"><span>$<em class="total-get"><%if(data.order_details){%><%=newChihuo.orderTotalData(newChihuo.dealOrderData(data.order_details,3)).toFixed(2)%><%}else{%>0<%}%></em></span>Total</div>
+		<div class="pay-method">
+			<span>Add/change</span>
+			Payment Method 
+		</div>
+		<div class="pay-rewards">
+			<h3><span>235pts</span>Rewards</h3>
+			<div>
+			<p><span>235pts</span>Bonus Points</p>
+			<p><span>235pts</span>Bonus Points</p>
+			</div>
+		</div>
+		<div class="pay-tip">Add a tip <span class="tip-select">none</span><span class="tip-select">10%</span><span class="tip-select">15%</span><span class="tip-select">20%</span></div>
+		</div>	 
+</div>
+<div class="pay-button" rest="<%=data.rest_id%>" table="<%=data.rest_table_id%>">PAY  NOW<span>$<em class="total-get"><%=newChihuo.orderTotalData(newChihuo.dealOrderData(data.order_details,3)).toFixed(2)%></span></em></div>
+<%}%>

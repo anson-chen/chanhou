@@ -7,15 +7,15 @@
 			<h3><%=newChihuo.localize('nearby_restaurants')%></h3>
 		</nav>
 		<ul class="rank-ul clearfix">
-			<li><p><%=newChihuo.localize('global_var_like_percentage')%><i></i><i></i></p></li>
-    		<li><p><%=newChihuo.localize('global_var_price')%><i></i><i></i></p></li>
-    		<li class="cur toggle"><p><%=newChihuo.localize('global_var_distance')%><i></i><i></i></p></li>
+			<li><p><img src="imgs/icon_like.png"><i></i><i></i></p></li>
+    		<li><p><img src="imgs/nearbypage_sort_by_price.png"><i></i><i></i></p></li>
+    		<li class="cur toggle"><p><img src="imgs/restdetail_page_address.png"><i></i><i></i></p></li>
 		</ul>
 	</div>
 	<div class="container-down">
-	<div class="rest-list-wrap" style="padding-bottom:0;">
+	<div class="rest-list-wrap" style="padding:0;">
 	<%_.each(data, function(d,i) {%>
-		<div class="wrap-border clearfix">
+		<div class="wrap-border clearfix" style="border-radius:0;">
 		<a href="#restaurant/<%=d.rest_id%>">
 			<div class='clearfix'>
 			   <div class="food-img">
@@ -28,8 +28,8 @@
 					<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">
 					<%if(d.total_likes_perc){%><span class="reset-style reset-bg3" style="float:right; margin-top:1px;"><%=parseInt(d.total_likes_perc*100)%>%</span><%}%>
 					<%if(d.total_other_custs){%><span class="reset-style reset-bg6" style="float:right; margin-top:1px;"><%=d.total_other_custs%></span><%}%>
-					<span style="color:#ff8b4c; padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span>
-					<%if(d.promo_flg == 'Y'){%><span class="yhj-flag"><img src="imgs/yhj.svg"/></span><%}%>
+					<span style="padding-right:10px;"><%=d.rest_avg_pricelevel_per_person%></span><span style="color:#0bbc13;"><%if(d.rest_dicount_save){%><%=d.rest_dicount_save%>off<%}%></span>
+					<%if(d.promo_flg == 'Y'){%><span class="yhj-flag"><img src="imgs/icon_rest_promo.png"/></span><%}%>
 					<br><%=d.cuisine_type%></p>
 					<p class="rest-info-show"  style="padding-top:0; font-size:12px; line-height:20px;"><%if(d.address){%><b class="address-set"><%=d.address%></b><%}%></p>
 	           </div>
@@ -145,7 +145,7 @@
     </div>	
 </div>
 <div class="return-top-icon"></div>
-<div class="add-missing"><a href="#restaurantMissing">+</a></div>
+<a href="#restaurantMissing"><div class="add-missing"></div></a>
 <style type="text/css">
 	#returnIcon { top: 50px; }
 </style>

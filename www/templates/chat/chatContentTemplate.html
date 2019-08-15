@@ -1,31 +1,57 @@
 <div class="set-bg">
-<div class="food-bg" style="padding-bottom:15px; position:fixed; top:0;left:0;width:100%;">
+<div class="food-bg" style="position:fixed; top:0;left:0;width:100%;">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
         <h3><%=decodeURI(name)%></h3>
     </nav>
 </div>  
-<div class="rest-list-wrap" style="padding-bottom:0px; margin-top:75px;">
+<div class="rest-list-wrap chat-container">
   <%_.each(hisData,function(d,i){%>
   <div class="chat-time-set"><%=chihuo.timestampToTime(d.created_datetime)%> <%=chihuo.getDate(d.created_datetime)%></div>
   <%if(d.from_customer_id == custId){%>
    <div class="other-say">
-  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>">
+  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>" class="chat-atavar">
   	<div class="other-info">
-  		<p><%=d.chat_msg_detail%></p>
+  		<%=newChihuo.contentInfoShow(d.chat_msg_detail)%>
   	</div>
   	</div>
     <%}else{%>
   <div class="myself-say">
-  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>">
+  	<img src="<%if(d.from_cust_url){%><%=d.from_cust_url%><%}else{%>imgs/photo.png<%}%>" class="chat-atavar">
   	<div class="myself-info">
-  		<p><%=d.chat_msg_detail%></p>
+  		<%=newChihuo.contentInfoShow(d.chat_msg_detail)%>
   	</div>
   </div>
   <%}})%>
 </div>      
 </div>
 <div class="fix-comment-bottom">
-		<a href="#" class="bottom-left"><img src="imgs/face-icon.png"></a>
-		<div class="chat-input-wrap"><form id='chatForm' to=<%=custId%>><input type="text" name="" class="chat-input" id='chatValue'></form></div>
-	</div>
+		<!-- <a href="javascript:;" class="bottom-left"><img src="imgs/face-icon.png"></a> -->
+    <span class="bottom-add-more">+</span>
+		<div class="chat-input-wrap" style="margin:15px 60px 0 15px;"><form id='chatForm' to=<%=custId%>><input type="text" name="" class="chat-input" id='chatValue'></form></div>
+    <div class="share-other-wrap">
+      <ul class="clearfix">
+        <li>
+          <img src="imgs/my-icon4.png" func="1">
+          <span>Album</span>
+        </li>
+        <li>
+          <img src="imgs/photo-go.png" func="2">
+          <span>Camera</span>
+        </li>
+        <li>
+          <img src="imgs/fav-rest.png" style="height:46px;" func="3">
+          <span>Restaurant</span>
+        </li>
+        <li>
+          <img src="imgs/detail-icon20.png" style="height:46px;" func="4">
+          <span>Dish</span>
+        </li>
+      </ul>
+      <form id="usr-formPhoto" style="display:none;"></form> 
+    </div>
+</div>
+<span id="reloadContent" style="display:none;"></span>
+<div id="shareChatWrap">
+  
+</div>

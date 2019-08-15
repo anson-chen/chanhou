@@ -12,9 +12,11 @@ define([
       'submit #searchInit2':'showInfo',
     },
 
-    render: function(status){
+    render: function(status,type){
       newChihuo.setPage('searchInit2');
       newChihuo.windowInit();
+      initData.searchInit2Data.swiperEffect = type ? false : true;
+      initData.searchInit2Data.type = type;
       this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
      
       this.findCustRestSearchHis(status);
@@ -23,7 +25,12 @@ define([
      
       this.findCustRestSearchHotKW(status);
       
-      this.findCustMiSearchHotKW(status);      
+      this.findCustMiSearchHotKW(status); 
+
+      if(type){  
+        this.findHotspotDetails(status); 
+      }
+      
     },
 
     showInfo: function(event){
@@ -83,8 +90,31 @@ define([
             });  
             event.preventDefault();
           }
-
     },
+
+    findHotspotDetails: function(status){
+      var _this = this;
+                chihuo.wkAjax({
+                    type: 'GET',
+                    url: chihuo.getApiUri('findHotspotDetails.json'),
+                    data: {
+                      city: newChihuo.city,
+                      lat: newChihuo.lat,
+                      lng: newChihuo.lon,
+                      locale: 'en'
+                    },
+                    success: function(data){
+                      if(data.status == 0){
+                        if(data.data && data.data.length){
+                          initData.searchInit2Data.detailData = chihuo.dealData(data.data,'categoryid');
+                        }
+                       
+                        newChihuo.getPage('searchInit2') && _this.$el.html(_.template(searchInit2Template,initData.searchInit2Data));
+                        newChihuo.getPage('searchInit2') && _this.bindEvents(status);
+                      }
+                    }
+                });
+  },
 
     findCustRestSearchHis: function(status){
       var _this = this;
@@ -268,7 +298,11 @@ define([
        });  
        $("#searchInit").on('keyup',function(e){
           var value = $.trim($(this).val());
-          var index = $('#searchInit2Tab .cur').index();
+          if(status == 'city'){
+            var index = initData.searchInit2Data.type == 'rest' ? 0 : 1;
+          }else{
+            var index = $('#searchInit2Tab .cur').index();
+          }
           if(value && e.keyCode!=13){
             var url = index == 0 ? 'addCustRestByName.json' : 'addCustRestMIByName.json';
             var option = index == 0 ? {

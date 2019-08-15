@@ -3,12 +3,11 @@
   <div class="index-search">
     <input type="text" name="" placeholder="<%=newChihuo.localize('main_searchbutton')%>">
   </div>
-  <!-- <img src="imgs/index-logo.png" class="index-logo"> -->
   <div class="top-location home-top-location" style="margin-left:5px;"><%if(cityData){%><%=cityData[0].cityname%><%}%></div>
-</nav>
- <div class="welcome-tips">
+  <div class="welcome-tips">
     <%=newChihuo.welcome(newChihuo.customer)%>
   </div>
+</nav>
 <div class="container-down" style="margin-top:60px;">
 <div class="index-banner" style="position:relative; margin-top:0;"> 
  
@@ -16,9 +15,9 @@
     <div class="swiper-container" id="index-banner">
         <div class="swiper-wrapper">
             <%if(bannerData && bannerData.length){%>
+             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>
                <%_.each(bannerData,function(d,i){%>
-                 <div class="swiper-slide <%if(d.event_name !=='greeting' && d.event_detail.length){%>banner-detail<%}%>" banner=<%=i%>><a href="javascript:;"><div class="index-banner-wrap"><img src="<%=d.purl%>" class="banner-img">
-                 <%if(i==0){%><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health and Trust</span></p></div><%}%></div></a></div>
+                 <div class="swiper-slide <%if(d.event_name !=='greeting' && d.event_detail.length){%>banner-detail<%}%>" banner=<%=i%>><a href="javascript:;"><div class="index-banner-wrap"><img src="<%=d.purl%>" class="banner-img"></div></a></div>
                <%})%>
             <%}else{%>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>
@@ -33,57 +32,16 @@
     </div>
 </div>
 <div class="index-round">
-    <audio src="swiperplugin/sound.mp3" controls="controls" preload id="bottomAudio" loop hidden></audio>
-     <div class="swiper-container" id="index-round">
-        <div class="swiper-wrapper">
-           <div class="swiper-slide">
-             <a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-             <a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-              <a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#searchSet"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a>
-            </div>  
-            <div class="swiper-slide">
-             <a href="#mapSearch"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-              <a href="#restaurantNear"><img src="imgs/nav-icon6.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a>
-            </div>
-            <div class="swiper-slide">
-             <a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-             <a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-              <a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-              <a href="#searchSet"><img src="imgs/nav-icon5.png"><span><%=newChihuo.localize('main_customizewheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-             <a href="#mapSearch"><img src="imgs/nav-icon4.png"><span><%=newChihuo.localize('main_mapwheel')%></span></a>
-            </div>
-           
-            <div class="swiper-slide">
-              <a href="#restaurantNear"><img src="imgs/nav-icon6.png"><span><%=newChihuo.localize('main_nearbywheel')%></span></a>
-            </div>
-             <div class="swiper-slide">
-             <a href="#myShake"><img src="imgs/nav-icon2.png"><span><%=newChihuo.localize('main_shakewheel')%></span></a>
-            </div>
-              <div class="swiper-slide">
-             <a href="#restaurantWishes"><img src="imgs/nav-icon3.png"><span><%=newChihuo.localize('main_wishlistwheel')%></span></a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#myDiscount"><img src="imgs/nav-icon1.png"><span><%=newChihuo.localize('main_promotionwheel')%></span></a>
-            </div>
-        </div>
-    </div>
+    <ul class="new-index-nav clearfix">
+      <li><a href="#searchInit2/city/dish"><img src="imgs/icons8-food.png"><p>Dish</p></a></li>
+      <li><a href="#searchInit2/city/rest"><img src="imgs/icons8-restaurant.png"><p>Restaurant</p></a></li>
+      <li><a href="#myDiscount"><img src="imgs/icons8-deal.png"><p>Deal</p></a></li>
+      <li><a href="#restaurantNear"><img src="imgs/icons8-nearby.png"><p>Nearby</p></a></li>
+      <li><a href="#myShake"><img src="imgs/icons8-shake.png"><p>Shake</p></a></li>
+      <li><a href="#restaurantType/1"><img src="imgs/icons8-takeout.png"><p>Takeout</p></a></li>
+      <li><a href="#restaurantType/2"><img src="imgs/icons8-dinein.png"><p>Dine-in</p></a></li>
+      <li><a href="#restaurantType/3"><img src="imgs/icons8-schoollunch.png"><p>School Lunch</p></a></li>
+    </ul>
 </div>
 <div class="index-new-wrap">
 <%if(detailData !== null){%>
@@ -210,9 +168,9 @@
                     <div class="rest-like">
                       <p class="para-set"><%=d.facilityname%><%if(d.restpermitpassflg=='Y'){%><i class="pass-icon"></i><%}%></p>
                       <div class="like-para">
-                        <span style="color:#ff8b4c; padding:0 5px 0 0;"><%=d.restavgprice%></span>
+                        <span style="padding:0 5px 0 0;"><%=d.restavgprice%></span>
                         <span class="reset-bg5" style="padding-left:18px;"><%=d.totlikespct || 60%>%</span>
-                        <img src="<%if(d.restfollowingflg == 'Y'){%><%=staticSource.restIcon3%><%}else{%><%=staticSource.restIcon4%><%}%>" class="hot-set-img <%if(d.restfollowingflg == 'Y'){%>hot-follow-done<%}else{%>hot-follow<%}%>" rest=<%=d.facilityid%> />
+                        <img src="imgs/icon_favorite_32.png" class="hot-set-img" rest=<%=d.facilityid%> />
                       </div>
                     </div>
                     </div>
@@ -240,7 +198,7 @@
 <div class="rest-fix-bottom">
     <ul class="clearfix">
       <li class="cur">
-        <a href="#"><img src="imgs/bottom-h1.png">
+        <a href="#"><img src="imgs/bottom-h1-cur.png">
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>

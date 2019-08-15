@@ -9,8 +9,14 @@ define([
   var MyIndexView = Backbone.View.extend({
     el: $("#page"),
     events: {
+        'click #test-qrscanner':'testQRScanner',
      
-     
+    },
+
+    testQRScanner: function() {
+      QRUtils.scan(function() {
+              alert('Yeah');
+      })
     },
 
     render: function(id){

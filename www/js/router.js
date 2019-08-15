@@ -80,7 +80,25 @@ define([
   'views/order/OrderDishView',
   'views/order/OrderMenuView',
   'views/order/OrderListView',
-], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,MapSearchView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView,SidebarView,RestaurantMissingView,OrderIndexView,OrderDishView,OrderMenuView,OrderListView) {
+  'views/order/OrderPayView',
+  'views/photo/ShareInfoView',
+  'views/my/MyOrderView',
+  'views/photo/ShareChatView',
+  'views/pay/PayView',
+  'views/pay/PayMethodView',
+  'views/my/MyPaymentView',
+  'views/my/MyReceiptView',
+  'views/order/OrderNewView',
+  'views/my/MyScanView',
+  'views/restaurant/RestaurantTypeView',
+  'views/school/SchoolIndexView',
+  'views/school/SchoolDetailView',
+  'views/school/SchoolInfoView',
+  'views/school/SchoolOrderView',
+  'views/phone/PhoneIndexView',
+  'views/phone/PhoneDetailView',
+  'views/phone/PhoneVerifyView',
+], function($, _, Backbone, HomeView,RestaurantView,RestaurantListView,RestaurantList2View,RestaurantMapsView,UserCommentsView,SubmitCommentView,SearchView,SearchSetView,FoodMenuView,MyHistoryView,MyShakeView,SearchInitView,MapView,MapSearchView,Map2View,Map3View,SearchHotView,RestaurantWishesView,SearchInit2View,FoodListView,FoodMapsView,FoodView,PhotoListView,PhotoDetailView,CuisineListView,CityListView,MyWishView,MySettingsView,MyLikeView,MySignInView,MyFocusView,MyFansView,MyPhotosView,MyCommentsView,MyIndexView,MyRankView,MyMessageView,LoginView,RegisterView,MyMessage2View,MyFootprintView,MyDiscountView,ChatIndexView,ChatInviteView,ChatChooseView,ChatContentView,ChatAddView,ChatApplyView,ChatRequestView,RestaurantNearView,PasswordView,MyProfileView,PraviteSettingView,AboutUsView,AppUpdateView,LangSettingView,MessageRemindView,PraviteProtocolView,SafeProtocolView,UserGuideView,ChatMessageView,ForgetPasswordView,SubmitMiCommentView,DishHot1View,DishHot2View,DishHot3View,DishHot4View,UserMiCommentsView,MyRewardsView,ChatEmailView,SidebarView,RestaurantMissingView,OrderIndexView,OrderDishView,OrderMenuView,OrderListView,OrderPayView,ShareInfoView,MyOrderView,ShareChatView,PayView,PayMethodView,MyPaymentView,MyReceiptView,OrderNewView,MyScanView,RestaurantTypeView,SchoolIndexView,SchoolDetailView,SchoolInfoView,SchoolOrderView,PhoneIndexView,PhoneDetailView,PhoneVerifyView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -136,6 +154,7 @@ define([
       'myMessage':'showMyMessage',
       'searchInit2':'showSearchInit2',
       'searchInit2/:wish':'showSearchInit2',
+      'searchInit2/:city/:type':'showSearchInit2',
       'photoList':'showPhotoList',  
       'photoDetail':'showPhotoDetail',
       'myMessage2':'showMyMessage2',
@@ -171,6 +190,24 @@ define([
       'chatEmail':'showChatEmail',
       'restaurantMissing':'showRestaurantMissing',
       'orderIndex/:id/:name':'showOrderIndex',
+      'orderPay':'showOrderPay',
+      'myOrder':'showMyOrder',
+      'pay/:id':'showPay',
+      'payMethod':'showPayMethod',
+      'myPayment':'showMyPayment',
+      'myReceipt/:id':'showMyReceipt',
+      'orderNew/:id':'showOrderNew',
+      'orderNew/:id/:tabId':'showOrderNew',
+      'myScan':'showMyScan',
+      'restaurantType/:type':'showRestaurantType',
+      'childList':'showSchoolIndex',
+      'childDetail/:type':'showSchoolDetail',
+      'childDetail/:type/:index':'showSchoolDetail',
+      'childSelect':'showSchoolInfo',
+      'childOrder':'showSchoolOrder',
+      'phoneList':'showPhoneList',
+      'phoneDetail/:type':'showPhoneDetail',
+      'phoneVerify':'showPhoneVerify',
       // Default
       '*actions': 'defaultAction'//'defaultAction'
     }
@@ -192,7 +229,7 @@ define([
 
     var app_router = new AppRouter;
     var homeView, restaurantView,  restaurantListView, restaurantList2View,  restaurantMapsView, userCommentsView, submitCommentView,searchView, foodListView, myShakeView, mySettingsView, myFocusView, myLikeView, myFansView, myHistoryView, myPhotosView, mySignInView, myWishView, searchView, searchSetView, foodListView, foodMenuView, searchInitView, mapView, mapSearchView, map2View, map3View, searchHotView, restaurantWishesView,restaurantNearView, searchInit2View ,foodView ,foodMapsView,photoDetailView,photoListView,myFocusView,myFansView,myPhotosView, loginView, registerView, myCommentsView,myIndexView, myRankView, myMessageView, myMessage2View,myFootprintView, myDiscountView, chatIndexView, chatInviteView, chatChooseView, chatContentView,chatAddView, chatApplyView,cuisineListView,cityListView,passwordView,myProfileView,praviteSettingView,chatRequestView,aboutUsView,appUpdateView,langSettingView,messageRemindView,praviteProtocolView,safeProtocolView,userGuideView,chatMessageView,forgetPasswordView,submitMiCommentView,dishHot1View,dishHot2View,dishHot3View,dishHot4View,userMiCommentsView,myRewardsView,
-     chatEmailView,restaurantMissingView,orderIndexView,orderDishView,orderMenuView;
+     chatEmailView,restaurantMissingView,orderIndexView,orderDishView,orderMenuView,orderPayView,myOrderView,payView,payMethodView,myPaymentView,myReceiptView,orderNewView,myScanView,restaurantTypeView,schoolIndexView,schoolDetailView,schoolInfoView,schoolOrderView,phoneVerifyView,phoneIndexView,phoneDetailView;
 
     app_router.on('route:showLogin', function (actions) {
         loginView = loginView || new LoginView();
@@ -254,6 +291,13 @@ define([
         
     });
 
+     app_router.on('route:showRestaurantType', function (actions) {
+       // We have no matching route, lets display the home page 
+        restaurantTypeView = restaurantTypeView || new RestaurantTypeView();
+        restaurantTypeView.render(actions);
+        
+    });
+
      app_router.on('route:showRestaurantMissing', function () {
        // We have no matching route, lets display the home page 
         restaurantMissingView = restaurantMissingView || new RestaurantMissingView();
@@ -303,10 +347,10 @@ define([
         searchInitView.render();
     });
 
-     app_router.on('route:showSearchInit2', function (actions) {
+     app_router.on('route:showSearchInit2', function (actions,type) {
        // We have no matching route, lets display the home page 
         searchInit2View = searchInit2View || new SearchInit2View();
-        searchInit2View.render(actions);
+        searchInit2View.render(actions,type);
     });
 
     app_router.on('route:showSearchHot', function (actions) {
@@ -515,6 +559,7 @@ define([
        // We have no matching route, lets display the home page 
         chatContentView = chatContentView || new ChatContentView();
         chatContentView.render(actions,name);
+        window.chatContent = chatContentView;
     });
 
     app_router.on('route:showChatChoose', function (actions) {
@@ -671,6 +716,81 @@ define([
         orderIndexView.render(actions,name);
     });
 
+     app_router.on('route:showOrderPay', function (actions,name) {
+        orderPayView = orderPayView || new OrderPayView();
+        orderPayView.render();
+    });
+
+     app_router.on('route:showMyOrder', function (actions,name) {
+        myOrderView = myOrderView || new MyOrderView();
+        myOrderView.render();
+    });
+
+    app_router.on('route:showPay', function (actions,name) {
+        payView = payView || new PayView();
+        payView.render(actions);
+    }); 
+
+    app_router.on('route:showPayMethod', function (actions,name) {
+        payMethodView = payMethodView || new PayMethodView();
+        payMethodView.render();
+    }); 
+
+    app_router.on('route:showMyPayment', function (actions,name) {
+        myPaymentView = myPaymentView || new MyPaymentView();
+        myPaymentView.render();
+    }); 
+
+    app_router.on('route:showMyReceipt', function (actions,name) {
+        myReceiptView = myReceiptView || new MyReceiptView();
+        myReceiptView.render(actions);
+    }); 
+
+    app_router.on('route:showOrderNew', function (actions,name) {
+        orderNewView = orderNewView || new OrderNewView();
+        orderNewView.render(actions,name);
+    }); 
+
+    app_router.on('route:showMyScan', function (actions,name) {
+        myScanView = myScanView || new MyScanView();
+        myScanView.render(actions);
+    }); 
+
+    app_router.on('route:showSchoolIndex', function (actions,name) {
+        schoolIndexView = schoolIndexView || new SchoolIndexView();
+        schoolIndexView.render(actions);
+    }); 
+
+    app_router.on('route:showSchoolDetail', function (actions,name) {
+        schoolDetailView = schoolDetailView || new SchoolDetailView();
+        schoolDetailView.render(actions,name);
+    }); 
+
+    app_router.on('route:showSchoolInfo', function (actions,name) {
+        schoolInfoView = schoolInfoView || new SchoolInfoView();
+        schoolInfoView.render(actions);
+    }); 
+
+    app_router.on('route:showSchoolOrder', function (actions,name) {
+        schoolOrderView = schoolOrderView || new SchoolOrderView();
+        schoolOrderView.render(actions);
+    }); 
+
+    app_router.on('route:showPhoneList', function (actions,name) {
+        phoneIndexView = phoneIndexView || new PhoneIndexView();
+        phoneIndexView.render(actions);
+    }); 
+
+    app_router.on('route:showPhoneDetail', function (actions,name) {
+        phoneDetailView = phoneDetailView || new PhoneDetailView();
+        phoneDetailView.render(actions);
+    }); 
+
+    app_router.on('route:showPhoneVerify', function (actions,name) {
+        phoneVerifyView = phoneVerifyView || new PhoneVerifyView();
+        phoneVerifyView.render(actions);
+    }); 
+
 
 
     app_router.on('route:defaultAction', function (actions) {
@@ -683,6 +803,8 @@ define([
     window.orderDish =  window.orderDish || new OrderDishView();
     window.orderMenu =  window.orderMenu || new OrderMenuView();
     window.orderList =  window.orderList || new OrderListView();
+    window.shareInfo =  window.shareInfo || new ShareInfoView();
+    window.shareChat =  window.shareChat || new ShareChatView();
     window.app_router = app_router;
     Backbone.history.start();
   };

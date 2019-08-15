@@ -1,0 +1,46 @@
+<div class="food-bg" style="padding-bottom:15px;">
+	<nav class="common-title">
+		<span class="submit-share">submit</span>
+		<a href="javascript:;" class="common-return chat-return"></a>
+		<h3><%if(type=='rest'){%>Restaurant Wishlist<%}else{%>Dish Wishlist<%}%></h3>
+	</nav>
+</div>
+<div class="chat-share-wrap">
+	<div class="share-box" <%if(type=='rest'){%>style="display:block;"<%}%>>
+		 <%if(restData && restData.length){%>
+            <%_.each(restData,function(d,i){%>
+                <div class="wrap-border clearfix">                   
+                        <p class="share-select-icon">✓</p>
+                        <div class="food-img">
+                            <img src="<%if(d.rest_photo_url){%><%=d.rest_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
+                        </div>
+                        <div style="margin-left:100px;margin-right:70px;">
+                        <h3 class="rest-name-title" style="margin-right:0;"><%=d.rest_name%></h3>
+                        <p class="rest-info-show" style="padding-top:5px;"><%=d.cuisine_type%> <%if(d.price_level){%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><%}%><%if(d.cust_distance){%><span><%=newChihuo.showDistanceInfo(d.cust_distance)%></span><%}%><br><%=d.total_rest_likes_perc%> <%=newChihuo.localize('global_var_like')%></p>
+                        </div>
+                </div>
+                <%})%>
+                <%}else{%>           
+                    <div class="whoops restdata-wrap"></div>
+                <%}%>
+	</div>
+	<div class="share-box" <%if(type=='dish'){%>style="display:block;"<%}%>>
+	 <%if(dishData.length){%>
+            <%_.each(dishData,function(d,i){%>
+            <div class="wrap-border clearfix">
+                   <p class="share-select-icon">✓</p>
+                    <div class="food-img">
+                         <img src="<%if(d.mi_photo_url){%><%=d.mi_photo_url%><%}else{%>imgs/map-img.jpg<%}%>">
+                    </div>
+                    <div style="margin-left:100px;">
+                    <h3 class="rest-name-title"><%=d.mi_name%></h3>
+                    <p class="rest-info-show" style="padding-top:5px;margin-right:80px;"><%=d.cuisine_type%> <span style="color:#0bbc13;"><%=d.mi_unit_price%></span></p>
+                    </div>
+            </div>
+            <%})%>
+            <%}else{%>
+               <div class="whoops midata-wrap"></div>
+            <%}%>		
+	</div>
+
+</div>

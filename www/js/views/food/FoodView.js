@@ -12,6 +12,7 @@ define([
      'click #addressMore2':'showMoreAddress',
      'click .comment-effect2 .comment-cont':'showMoreComment',
      'click .add-food-photo': 'addPhoto',
+     'click .share-food':'shareFood',
     },
 
     render: function(restId,miId){
@@ -20,6 +21,10 @@ define([
       this.$el.html(_.template(foodTemplate,initData.foodData)); 
       this.initData(restId,miId);
       this.bindEvents(restId,miId);   
+    },
+
+    shareFood: function(){
+      window.shareInfo.render();
     },
 
     initData: function(restId,miId){

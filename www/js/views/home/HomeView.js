@@ -15,7 +15,7 @@ define([
     var HomeView = Backbone.View.extend({
         el: $("#page"),
         events: {
-           'focus .index-search input':'searchLink',
+           'click .index-search':'searchLink',
            'click .comment-operation':'showInput',
            'click .home-top-location': 'showCity',
            'click #homeCity p': 'changeCity',
@@ -37,7 +37,10 @@ define([
         start: false
        },
 
-      render: function(){ 
+      render: function(){
+          // if (newChihuo.hasCordova() && cordova.plugins.notification && cordova.plugins.notification.badge) {
+          //     cordova.plugins.notification.badge.clear();
+          // }
             newChihuo.setPage('home');
             newChihuo.windowInit();
             initData.homeData.template = homeTemplate;
@@ -57,20 +60,20 @@ define([
           if(!start){
             chihuo.appLaunch(appLaunchTemplate);
             chihuo.ajaxSetup();
-            setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
-            chihuo.initApp(homeTemplate);                      
-            if(newChihuo.isMobileDevice()) {
+            newChihuo.msgTime = setInterval(chihuo.getMsgNum, newChihuo.longSpeed);
+            chihuo.initApp(homeTemplate);
+            if(newChihuo.hasCordova()) {
                 this.auth0init();
             }
             this.status.start = true;
           }
       },
-      
+
        auth0init: function () {
             function handlerUrl(url) {
                 auth0cordova.onRedirectUri(url);
             }
-            if(cordova){
+            if(newChihuo.hasCordova()){
               window.open = cordova.InAppBrowser.open;
             }
             window.handleOpenURL = handlerUrl;
@@ -121,7 +124,7 @@ define([
                     }
                 });
             } catch (err) {
-                
+
             }
         },
 
@@ -159,15 +162,15 @@ define([
                         newChihuo.showPopInfo(newChihuo.localize('add_a_following'));
                         obj.attr('src',staticSource.restIcon3).removeClass('hot-follow');
                      }
-                  } 
-              });  
+                  }
+              });
         },
 
 
 
         searchLink: function(){
             app_router.navigate('searchInit2', {
-                trigger: true    
+                trigger: true
             });
         },
 
@@ -189,7 +192,7 @@ define([
              $('.city-mask-list').show();
           }else{
             newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh_no_result'));
-          }     
+          }
         },
 
         changeCity: function(e){
@@ -202,7 +205,7 @@ define([
             newChihuo.city = $(e.currentTarget).text();
             newChihuo.setLocalStorage('city',newChihuo.city);
             newChihuo.setCity = true;
-           
+
         },
 
         closeCity: function(){
@@ -227,10 +230,10 @@ define([
         clearRedPoint: function(){
           newChihuo.activityNum=0;
         }
-    
 
-           
-              
+
+
+
     });
 
     return HomeView;

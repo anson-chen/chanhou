@@ -1,5 +1,5 @@
 <div class="set-bg">
-<div class="food-bg" style="padding-bottom:15px;">
+<div class="food-bg">
     <nav class="common-title">
         <a href="javascript:history.go(-1);" class="common-return"></a>
         <h3><%=newChihuo.localize('profile_invite')%></h3>
@@ -23,21 +23,21 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title" style="line-height:30px;">
-          <a href="<%if(newChihuo.isIOS()){%>sms:&body=<%=shortMessage%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey<%}else{%>sms:?body=<%=shortMessage%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey<%}%>" class="sms-invite"><i class="chat-index-icon chat-icon5"></i>Invite by SMS</a>
+          <a href="<%if(newChihuo.isIOS()){%>sms:&body=<%=shortMessage%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey<%}else{%>sms:?body=<%=shortMessage%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey<%}%>" class="sms-invite"><img src="imgs/icon_bysms.png" style="height: 24px; margin-right:10px;"/>Invite by SMS</a>
       </h4>
     </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title" style="line-height:30px;">     
-         <a href="mailto:?&body=<%=encodeURIComponent(emailMessage)%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey" ><i class="chat-index-icon chat-icon1"></i><%=newChihuo.localize('invitefriends_email')%></a>
+         <a href="mailto:?&body=<%=encodeURIComponent(emailMessage)%>&subject=<%=newChihuo.customer || newChihuo.getLocalStorage('welcomeName')%> sent a chat invitation to you on Foodymonkey" ><img src="imgs/icon_bymail.png"  style="height: 24px; margin-right:10px;"/><%=newChihuo.localize('invitefriends_email')%></a>
       </h4>
     </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading invite-contact">
       <h4 class="panel-title" style="line-height:30px;">     
-        <i class="chat-index-icon chat-icon1"></i>Invite Mobile Contact
+        <img src="imgs/icon_bycontacts.png"  style="height: 24px; margin-right:10px;"/>Invite Mobile Contact
       </h4>
     </div>
     <div class="panel-collapse collapse">
@@ -69,12 +69,12 @@
         <p><%=newChihuo.localize('home')%></p>
         </a>
       </li>
-      <li class="<%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%>" id="msgRemind">
-         <a href="#chatAdd"><img src="imgs/sdx.png">
+      <li class="cur <%if(!$.isEmptyObject(newChihuo.msgList)){%>message-remind<%}%>" id="msgRemind">
+         <a href="#chatAdd"><img src="imgs/sdx-cur.png">
         <p><%=newChihuo.localize('main_homebutton')%></p>
         </a>
       </li>
-     <li class="cur">
+     <li>
          <a href="#mapSearch"><img src="imgs/map-button.png">
          <p>Map</p>
         </a>

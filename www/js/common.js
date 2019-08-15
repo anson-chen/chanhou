@@ -1,5 +1,10 @@
+var GEO_LOCATION_SETTINGS = {
+    enableHighAccuracy:true,
+    maximumAge:30 * 1000,
+    timeout:27 * 1000
+};
 var newChihuo = {
-    address: "http://app.foodymonkey.com",//http://staging.wookongcorp.com:9099"
+    address: "https://app.foodymonkey.com",//http://staging.wookongcorp.com:9099"
     appname: "wkfdmk",
     geosrvUrl: "http://geosrv.foodymonkey.com/geosrv",
     textShowLength: 80,
@@ -14,13 +19,19 @@ var newChihuo = {
         return str;
        }
     },
+    hasCordova: function() {
+        return typeof cordova !== 'undefined' && null != cordova && !!cordova;
+    },
+    hasStatusBar: function() {
+        return typeof StatusBar !== 'undefined' && null != StatusBar && !!StatusBar;
+    },
     isMobileDevice: function() {
         var u = navigator.userAgent
         var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         var Android = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
         return iOS || Android;
     },
-    showPopInfo: function(info, time, cb){ 
+    showPopInfo: function(info, time, cb){
        var pop = $('#popInfo');
        var time = time || 2000;
        pop.html(info).addClass('pop-info-show');
@@ -136,7 +147,7 @@ var newChihuo = {
         }
       }else{
         return true;
-      } 
+      }
     },
     tpLogin: function(uid){
       if(uid && uid.sub){
@@ -165,7 +176,7 @@ var newChihuo = {
                 newChihuo.setLocalStorage('customer_id',newChihuo.customerId);
                 newChihuo.setLocalStorage('loginType','3rd');
                 newChihuo.setProfile(uid);
-    
+
               }else{
                newChihuo.showPopInfo(newChihuo.localize('login_fail'),1200);
               }
@@ -174,7 +185,7 @@ var newChihuo = {
           error: function () {
 
           }
-        });  
+        });
     },
 
     setProfile: function(uid){
@@ -248,6 +259,121 @@ var newChihuo = {
       var iOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       return iOS;
     },
+    contentInfoShow: function(data){
+      try{
+        var info = JSON.parse(data);
+      }catch(e){
+        var info = data;
+      }
+
+      if(typeof(info) == 'object' && info.type){
+        if(info.type == 'text'){
+
+          return '<p class="chat-para">'+info.content.body+'</p>';
+
+        }else if(info.type == 'image'){
+          return '<img src="'+info.content.url+'" class="cont-img"/>';
+
+        }else if(info.type == 'restaurant'){
+          return '<div class="wrap-border clearfix" style="text-align:left;">'+
+                  '<a href="#restaurant/'+info.content.rest_id+'">'+
+                  '<div class="clearfix">'+
+                   '<div class="food-img">'+
+                      '<img src="'+(info.content.concat_prof_photo_url_keyval || "imgs/map-img.jpg")+'"/>'+
+                    '</div>'+
+                    '<div style="margin:0 5px 0 100px; position:relative;">'+
+                            '<h3 class="rest-name-title" style="margin-right:0px;">'+info.content.rest_name+'</h3>'+
+                    '<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">'+
+                    '<span class="reset-style reset-bg3" style="float:right; margin-top:1px;">'+info.content.total_likes_perc+'%</span>'+
+                    '<span style="color:#ff8b4c; padding-right:10px;">'+info.content.price_level +'</span>'+ info.content.cuisine_type+'<br>'+info.content.city_name+'</p>'+
+                       '</div>'+
+                    '</div>'+
+                    '</a>'+
+                  '</div>';
+
+        }else if(info.type == 'dish'){
+          return '<div class="wrap-border clearfix" style="text-align:left;">'+
+                  '<a href="#food/'+info.content.rest_id+'/'+info.content.rest_menu_item_id+'">'+
+                  '<div class="clearfix">'+
+                   '<div class="food-img">'+
+                      '<img src="'+(info.content.concat_prof_photo_url_keyval || "imgs/map-img.jpg")+'"/>'+
+                    '</div>'+
+                    '<div style="margin:0 5px 0 100px; position:relative;">'+
+                            '<h3 class="rest-name-title" style="margin-right:0px;">'+info.content.rest_mi_name+'</h3>'+
+                    '<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">'+
+                      '<span style="color:#ff8b4c; padding-right:10px;">'+info.content.mi_unit_price +'</span>'+ info.content.cuisine_type+'</p>'+
+                       '</div>'+
+                    '</div>'+
+                    '</a>'+
+                  '</div>';
+
+        }else{
+
+        }
+      }else{
+        return '<p class="chat-para">'+(info || ' ')+'</p>';
+      }
+
+    },
+    chatListShow: function(data){
+      try{
+        var info = JSON.parse(data);
+      }catch(error){
+        var info = data;
+      }
+
+      if(typeof(info) == 'object' && info.type){
+        if(info.type == 'text'){
+
+          return '<p>'+info.content.body+'</p>';
+
+        }else if(info.type == 'image'){
+          return '<img src="imgs/share-chat-bg.png" class="chat-cont-img"/><img src="imgs/share-img-bg.png" class="chat-cont-img"/>';
+
+        }else if(info.type == 'restaurant'){
+          return '<img src="imgs/share-chat-bg.png" class="chat-cont-img"/><img src="imgs/detail-icon29.png" class="chat-cont-img2"/><span>'+ info.content.rest_name+'</span>';
+
+        }else if(info.type == 'dish'){
+          return '<img src="imgs/share-chat-bg.png" class="chat-cont-img"/><img src="imgs/index-icon4.png" class="chat-cont-img3"/><span>'+ info.content.rest_mi_name+'</span>';
+
+        }else{
+
+        }
+      }else{
+        return '<p>'+(info || ' ')+'</p>';
+      }
+
+    },
+    dealOrderData: function(data,status){
+      try{
+          var detail = JSON.parse(data);
+        }catch(error){
+          var detail = [];
+        }
+      if(status == 1){
+          detail.pop();
+          return detail;
+      }else if(status==2){
+        var all = detail.pop().pre_tax;
+         return parseFloat(all) || 0;
+      }else {
+        var all = detail.pop();
+         return all || {};
+      }
+
+    },
+    orderTotalData: function(data){
+      if(data){
+        return parseFloat(data.Total);
+        var a = parseFloat(data.pre_tax) || 0;
+        var b = parseFloat(data.tax_amount['TOTAL TAX']) || 0;
+        if(a || b ){
+          return  a+b;
+        }
+        return 0;
+      }
+      return 0;
+    },
     locale: 'en-CA',
     motionStatus: false,
     shakeTrigger: 1,
@@ -264,6 +390,7 @@ var newChihuo = {
     shortSpeed: 1000*3,
     map: null,
     maplastcenter: null,
+    mapbeforelevel: null,
     maplastlevel: null,
     mapListener: null,
     positionSpeed: 1000*20,
@@ -281,9 +408,10 @@ var newChihuo = {
     nearbyPromo: null,
     refKey: null,//本人的推荐码
     refererKey: null,//推荐人的推荐码
+    wkAppVersion: '3.3.2',
+    wkAppBuild: '340',
     notifyTime: 11, //banner活动推送的时间，上午11点
-    wkAppVersion: '3.1.5',
-    wkAppBuild: '275',
+    msgTime: null,
 };
 //静态资源路径
 var staticSource = {
@@ -314,6 +442,13 @@ var initData = {
     lon: null,
     filterData: []
   },//附近数据
+  restaurantTypeData: {
+    data: [],
+    lat: null,
+    lon: null,
+    title:'',
+    filterData: []
+  },//餐馆数据
   restaurantListData: {
     data: [],
     city: null,
@@ -329,7 +464,10 @@ var initData = {
     restHot: [],
     restHis: [],
     miHis: [],
-    miHot: []
+    miHot: [],
+    detailData: null,
+    swiperEffect: false,
+    type: null,
   },
   chatAddData:{
     data:[]
@@ -438,7 +576,7 @@ var initData = {
   myPhotosData: {
     data:[]
   },
-   myLikeData: {
+  myLikeData: {
     data:[]
   },
   photoData:{
@@ -477,8 +615,59 @@ var initData = {
   },
   orderListData: {
     data: [],
-  }
+    filter:null,
+  },
+  myOrderData: {
+    data: [],
+    filter:'bottom'
+  },
+  shareData:{
+    data: null
+  },
+  chatWishData:{
+    restData:[],
+    dishData:[],
+    type:null
+  },
+  payData:{
+    data:[]
+  },
+  payMethodData:{
+  },
+  myPaymentData:{
+        data:[]
+  },
+  myReceiptData: {
+        payment_details: {},
+        order_details: [],
+        rest_details: {},
+  },
+  orderNewData:{
+    info: {}
+  },
+  schoolDetailData: {
+    type: null,
+    index: null,
+    school: [],
+    grade: [],
+    info: {},
+  },
+  schoolIndexData: {
+    data: null,
+  },
+  schoolInfoData: {
+    grade: [],
+    school: [],
+  },
+  phoneDetailData: {
+    type: null,
+  },
+  phoneIndexData: {
+    data: null,
+    verifyNum: null
+  },
 };
+
 
 //============enhancement for request============
 //如果是单纯的网页浏览模式时是永远不会到这一步的，因为没有cordova.js支持，此flag用于判断是否可以获得cordova.js支持
@@ -1193,7 +1382,11 @@ var jsonUtils = {
     },
     toJson : function(jstr) {
         if(this.isJsonString(jstr)) {
-            return JSON.parse(jstr);
+            try {
+                return JSON.parse(jstr);
+            } catch(e) {
+                return null;
+            }
         }
         return null;
     },
@@ -1462,7 +1655,7 @@ var chihuo = {
           newChihuo.setLocalStorage('appLaunch',true);
       });
     }
-    
+
   },
   getApiUri: function(api){
       return newChihuo.address+'/wkfdmk/v2/'+ api;
@@ -1470,6 +1663,12 @@ var chihuo = {
 
   getApiUri2: function(api){
       return newChihuo.address+'/wkfdmk/'+ api;
+  },
+  getApiUri3: function(api){
+      return newChihuo.address+'/wkfdmk/selforder/'+ api;
+  },
+  getApiUri4: function(api){
+      return newChihuo.address+'/wkfdmk/schoollunch/'+ api;
   },
 
   getWeekTime:function(day){
@@ -1485,6 +1684,50 @@ var chihuo = {
 
   },
 
+  getLastPrice: function(data){
+    if(data['addons']){ 
+        var addons = 0;
+        data['addons'].map(function(addon,index){
+          addons+=parseFloat(addon.price.replace('/$/g',''));
+        });
+        var last = parseFloat(data.price.replace('/$/g','')) + addons;
+        return last.toFixed(2);
+    }
+      return data.price.replace('/$/g','');
+  },
+  orderNewComponents: function(data){
+    var html='';
+    function showInfo(info){
+      if(typeof(info) == 'object'){
+        var cont='';
+        info.map(function(d,i){
+            cont+=`${d}<br/>`;
+        });
+        return cont;
+      }else{
+        return info;
+      }
+    }
+    if(data && typeof(data) == 'object'){
+      for(var i in data){
+        html+=i+':'+showInfo(data[i])+'<br/>';
+      }
+    }
+    return html;
+  },
+
+  orderNewAddon: function(data){
+    var html = 'addons:<br/>';
+     if(data && data.length){
+      data.map(function(d,i){
+          if(typeof(d) == 'object'){
+            html+=`${d.name} (${d.num}) ${d.price}<br/>`;
+          }
+        })
+    }
+    return html;
+  },
+
   setNoDataInfo: function(obj){
     var $obj = obj || $('.whoops');
     $obj.length && $obj.html("<p>It looks like you don't have any data yet.</p><span>Let's change that. Start exploring dishes and place now and will save it here for later.</span><a href='#index'>Begin Exploring</a>").show();
@@ -1496,7 +1739,7 @@ var chihuo = {
         return true;
     }
     if(hours && hours.indexOf('–')>=0){
-      begin = parseInt(hours.split('–')[0].split(':')[0]);     
+      begin = parseInt(hours.split('–')[0].split(':')[0]);
       end = parseInt(hours.split('–')[1].split(':')[0]);
       var now = new Date().getHours();
       if(begin || end){
@@ -1524,7 +1767,7 @@ var chihuo = {
     }
   },
 
- timestampToTime: function(timestamp) {
+ timestampToTime: function(timestamp,from) {
         var now = new Date();
         var date = new Date(timestamp);
         var y = new Date(timestamp+3600*1000*24);
@@ -1534,7 +1777,7 @@ var chihuo = {
         h = date.getHours() + ':';
         m = date.getMinutes() + ':';
         s = date.getSeconds();
-        if(now.valueOf() > timestamp){
+        if(now.valueOf() > timestamp && !from){
            if(date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getFullYear() == now.getFullYear()){
                return 'Today';
            }
@@ -1571,8 +1814,8 @@ var chihuo = {
       if(s > (24*1000*60*60*365)) {
          var year = Math.ceil(s/(24*1000*60*60*365)) >1 ? 'years' : 'year' ;
          n = Math.ceil(s/(24*1000*60*60*365))+ ' ' +(newChihuo.locale == 'en-CA' ? year : '年');
-      }else if(s > (24*1000*60*60*30)){ 
-         var month = Math.ceil(s/(24*1000*60*60*30)) > 1 ? 'months': 'month '; 
+      }else if(s > (24*1000*60*60*30)){
+         var month = Math.ceil(s/(24*1000*60*60*30)) > 1 ? 'months': 'month ';
          n = Math.ceil(s/(24*1000*60*60*30))+ ' ' +(newChihuo.locale == 'en-CA' ? month : '月');
       }else if(s > (24*1000*60*60*7)){
          var week = Math.ceil(s/(24*1000*60*60*7)) > 1 ? 'weeks' : 'week';
@@ -1589,7 +1832,7 @@ var chihuo = {
       }
       return n;
   },
-  
+
   ajaxSetup: function(){
      $.ajaxSetup({
                 //发送请求前触发
@@ -1598,7 +1841,7 @@ var chihuo = {
                     var $mask = $("#maskScreen");
                     if($mask.length){
                         var index=parseInt($mask.attr("mask"));
-                        $mask.attr("mask",++index);  
+                        $mask.attr("mask",++index);
                     }else{
                         $("body").append(html);
                     }
@@ -1656,7 +1899,7 @@ var chihuo = {
   },
 
   positionChange: function(newLat, newLon,lastLat,lastLon){
-      var locChanged = WKMapShouldQuery([lastLat, lastLon], [newLat, newLon], 10);
+      var locChanged = WKMapShouldQuery([lastLat, lastLon], [newLat, newLon], 60);
       if (locChanged) {
           console.log('onchanged')
          newChihuo.lat = newLat;
@@ -1669,7 +1912,7 @@ var chihuo = {
         newChihuo.positionChanged= false;
         return false;
       }
-      
+
   },
 
   initApp: function(template){
@@ -1732,19 +1975,29 @@ var chihuo = {
      //document.addEventListener("resume", resumeReady, false);//app从后台运行时重新获取监听的事件
     //device APIs are available
     function onDeviceReady() {
-        StatusBar && StatusBar.backgroundColorByHexString("#fe812d"); 
-        StatusBar && StatusBar.overlaysWebView(false);
+        // StatusBar && StatusBar.backgroundColorByHexString("#ccc");
+        newChihuo.hasStatusBar() && StatusBar.styleDefault();
+        newChihuo.hasStatusBar() && StatusBar.overlaysWebView(false);
 
         chihuo.getPosition(template);
-        newChihuo.isMobileDevice() && cordova.plugins.notification.badge.requestPermission(function(granted){});
+        newChihuo.hasCordova() && cordova.plugins.notification.badge.requestPermission(function(granted){});
 
-        if (cordova && cordova.plugins.backgroundMode) {
+        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
             //cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true, silent: true });
             cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true});
             cordova.plugins.backgroundMode.enable();
             //ToastUtils.showToast('try to enable background mode...');
             cordova.plugins.backgroundMode.on('activate', function() {
                 //ToastUtils.showToast('background mode on activate');
+                chihuo.changeMode(90,9);//时间设置放缓90倍(大约30分钟)180(1hrs)和6倍(大约2分钟) 9 (3 min)
+                //chihuo.changeMode(4320,6);//时间设置放缓90倍(大约30分钟)4320(24hrs)和6倍(大约2分钟)
+                //cordova.plugins.backgroundMode.disableWebViewOptimizations();
+                cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                //ToastUtils.showToast('background mode disableWebViewOptimizations');
+            });
+            cordova.plugins.backgroundMode.on('deactivate', function() {
+                //ToastUtils.showToast('background mode on activate');
+                chihuo.changeMode(1,1);
                 cordova.plugins.backgroundMode.disableWebViewOptimizations();
                 //ToastUtils.showToast('background mode disableWebViewOptimizations');
             });
@@ -1754,18 +2007,18 @@ var chihuo = {
     function resumeReady() {
       if(!newChihuo.resumeOff){
          setTimeout(function(){
-          chihuo.splashShow(function(){chihuo.getPosition(template)});        
+          chihuo.splashShow(function(){chihuo.getPosition(template)});
         },0);
-      }    
+      }
     }
 
   },
 
   imgLazyLoad: function(){
    $("img.lazy").lazyload({
-      placeholder : "imgs/grey.gif", //用图片提前占位 
+      placeholder : "imgs/grey.gif", //用图片提前占位
       effect: "fadeIn", // 载入使用何种效果
-      threshold: 100, 
+      threshold: 100,
     });
   },
 
@@ -1773,7 +2026,7 @@ var chihuo = {
 
   arrowTips: function(page,template,opt,timeShow,timeClose){
     var opt = opt || { text:'',postion:'left:50px;bottom:110px;'};
-    var timeShow = timeShow || 1000*90;//提示信息出现的时间
+    var timeShow = timeShow || 1000*10;//提示信息出现的时间
     var timeClose = timeClose || 1000*4;//提示信息停留多久消失
     function closeTips(){
       setTimeout(function(){
@@ -1784,7 +2037,7 @@ var chihuo = {
       newChihuo.getPage(page) && $('#arrowTips').html(_.template(template,opt)).addClass('show-set');
       closeTips();
     },timeShow);
-    
+
   },
 
   splashShow: function(func,time){
@@ -1795,7 +2048,7 @@ var chihuo = {
          trigger: true
           });
         }
-     
+
       newChihuo.splash = true;
       $splash.html('<p><img src="imgs/logo.png"><img src="imgs/foodymonkey.jpg"></p>').show();
       // func && func();
@@ -1803,7 +2056,7 @@ var chihuo = {
         $splash.hide().html('');
         newChihuo.splash = false;
       },time || 2500);
-    } 
+    }
   },
 
   matchCityInfo: function(city,template){
@@ -1823,7 +2076,7 @@ var chihuo = {
            newChihuo.splash = false;
            newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
            newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
-          
+
        });
   },
 
@@ -1843,17 +2096,47 @@ var chihuo = {
     }
   },
 
-  getPosition: function(template,refresh){
-     navigator.geolocation.getCurrentPosition(onSuccess, onError);
-     clearInterval(newChihuo.positionTime);
-     newChihuo.positionTime = setInterval(function(){console.log('timer');navigator.geolocation.getCurrentPosition(onSuccess, onError)},newChihuo.positionSpeed);
+  changeMode: function(positionSet,msgSet){
+    clearInterval(newChihuo.positionTime);
+    clearInterval(newChihuo.msgTime);
+    newChihuo.positionTime = setInterval(function(){
+        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+            cordova.plugins.backgroundMode.disableWebViewOptimizations();
+        }
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, GEO_LOCATION_SETTINGS)
+    },newChihuo.positionSpeed*positionSet);//位置获取时间扩大30倍
+
+    newChihuo.msgTime = setInterval(chihuo.getMsgNum, newChihuo.longSpeed*msgSet);//消息获取时间扩大5倍
     // onSuccess Geolocation
     function onSuccess(position){
       var newLat = position.coords.latitude;
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
-      (change || newChihuo.setCity) && newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);     
-    }  
+        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+            cordova.plugins.backgroundMode.enableWebViewOptimizations();
+        }
+    }
+    // onError Callback receives a PositionError object
+    function onError(error) {
+      console.log(error);
+        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+            cordova.plugins.backgroundMode.enableWebViewOptimizations();
+        }
+    }
+
+  },
+
+  getPosition: function(template,refresh){
+     navigator.geolocation.getCurrentPosition(onSuccess, onError, GEO_LOCATION_SETTINGS);
+     clearInterval(newChihuo.positionTime);
+     newChihuo.positionTime = setInterval(function(){console.log('timer');navigator.geolocation.getCurrentPosition(onSuccess, onError, GEO_LOCATION_SETTINGS)},newChihuo.positionSpeed);
+    // onSuccess Geolocation
+    function onSuccess(position){
+      var newLat = position.coords.latitude;
+      var newLon = position.coords.longitude;
+      var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
+      (change || newChihuo.setCity) && newChihuo.getPage('home') && chihuo.openStreetMap(newChihuo.lat,newChihuo.lon,template,refresh);
+    }
 
     function setTimeoutIndex(){
       newChihuo.city = newChihuo.getLocalStorage('city');
@@ -1867,12 +2150,12 @@ var chihuo = {
     }
 
     setTimeoutIndex();
-           
+
     // onError Callback receives a PositionError object
     function onError(error) {
       console.log(error);
     }
-     
+
   },
 
   openStreetMap: function(lat, lon, template,refresh){
@@ -1889,7 +2172,7 @@ var chihuo = {
           },
           beforeSend:function(){},
           complete: function (xhr, status) {},
-          success: function (data) { 
+          success: function (data) {
               newLocation = data.address.city || data.address.state_district || 'Toronto';
               newChihuo.localCity = newLocation;
                if(refresh || newChihuo.localCity){
@@ -1903,7 +2186,7 @@ var chihuo = {
                   newChihuo.getPage('home') && chihuo.findAllCities(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
                   newChihuo.getPage('home') && chihuo.findHotspotDetails(newChihuo.city,newChihuo.lat,newChihuo.lon,template);
                 }
-               }       
+               }
             },
           error: function () {
               newChihuo.city = newChihuo.city == null ? 'Toronto' : newChihuo.city;
@@ -1932,19 +2215,20 @@ var chihuo = {
                   success: function(data){
                      if(data.status == 0){
                         initData.homeData.bannerData = data.data;
+                        initData.homeData.bannerNotifyData = null;
                         for(var i=0; i< data.data.length; i++){
                            if(data.data[i]['event_name'] !='greeting' && data.data[i]['event_detail'].length){
                               initData.homeData.bannerNotifyData = data.data[i]['event_subject'];
                            }
                         }
                         newChihuo.setLocalStorage('bannerDate',d);
-                        newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData)); 
+                        newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData));
                      }
                   },
                  error: function(){
                     newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh_network'));
-                  } 
-              });        
+                  }
+              });
   },
 
   findAllCities: function(city,lat,lon,template){
@@ -1960,13 +2244,13 @@ var chihuo = {
                   success: function(data){
                      if(data.status == 0){
                         initData.homeData.cityData = data.data;
-                        newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData)); 
+                        newChihuo.getPage('home') && $("#page").html(_.template(template,initData.homeData));
                      }
                   },
                  error: function(){
                     newChihuo.showPopInfo(newChihuo.localize('scroll_down_to_refresh_network'));
-                  } 
-              });        
+                  }
+              });
   },
 
   findHotspotDetails: function(city,lat,lon,template){
@@ -2005,19 +2289,24 @@ var chihuo = {
     var d = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
     if(hour == time && date !=d && initData.homeData.bannerNotifyData){
       var cont = {
-                  //id: 1,
-                  title: 'Cool!',                                      
+                  id: 1,
+                  title: '',
                   text: initData.homeData.bannerNotifyData,
                   icon:  'imgs/logo.png',
-                  smallIcon: 'imgs/logo.png',                                      
-                  // data: {rest: data.pr[0]}
+                  smallIcon: 'imgs/logo.png',
+                  data: {banner: 'banner'},
+                  sound: true,
+                  vibrate: false,
+                  foreground: true
                   };
-        console.log(initData.homeData.bannerNotifyData);          
         WKNotifier.notify(cont);
         newChihuo.setLocalStorage('bannerNotify',d);
     }
   },
   getMsgNum: function(){//非注册用户也可以接受信息
+      if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+          cordova.plugins.backgroundMode.disableWebViewOptimizations();
+      }
              chihuo.wkAjax({
                             type: 'GET',
                             url: chihuo.getApiUri2('msgver.json'),
@@ -2033,85 +2322,117 @@ var chihuo = {
                             },
                             beforeSend: function (xhr) {},
                            //完成请求后触发。即在success或error触发后触发
-                            complete: function (xhr, status) {},
+                            complete: function (xhr, status) {
+                                //if (cordova && cordova.plugins.backgroundMode) {
+                                //    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                                //}
+                            },
                             success: function(data){
                                chihuo.bannerNotify(newChihuo.notifyTime);//
                                if(data.pr && data.pr.length){
                                 //newChihuo.nearbyPromo = data.pr[0].split(',')[0];
                                 if(newChihuo.nearbyPromo != data.pr[0].split(',')[0]){
                                    newChihuo.showPopInfo('Found promos!');
+                                   newChihuo.setPromo = true;
                                    newChihuo.nearbyPromo = data.pr[0].split(',')[0];
                                     var cont = {
-                                        //id: 1,
-                                        title: 'Cool!',
+                                        id: 2,
+                                        title: 'Wow, found promos near you',
                                         //text: 'Nearby rest:' + data.pr[0].split(',')[0] + ' distance: ' + data.pr[0].split(',')[1] + 'm',
                                         //text: 'A promotion is within ' + Math.round(parseFloat(data.pr[0].split(',')[1])) + 'm.[' + newChihuo.lat + ',' + newChihuo.lon + ']' + data.pr[0].split(',')[0],
-                                        text: 'Found a promotion close to you.',
+                                        text: '',
                                         icon:  'imgs/logo.png',
                                         smallIcon: 'imgs/logo.png',
-                                        //sound: null,
+                                        sound: true,
+                                        vibrate: false,
+                                        foreground: true,
                                         //badge: 1,
                                         data: {rest: data.pr[0]}
                                     };
                                     WKNotifier.notify(cont);
-                                } 
-                               } 
-                              
-                               if(data.pp){
-                                 var msg = data.pp['1'];
-                                 msg && msg.length && $.each( msg, function(index,value){
-                                     newChihuo.msg += parseInt(value['v']);
-                                     if(newChihuo.msgList.hasOwnProperty(value['s'])){
-                                      newChihuo.msgList[value['s']] += parseInt(value['v']);
-                                     }else{
-                                      newChihuo.msgList[value['s']] = parseInt(value['v']);
-                                     }
-                                
+                                }
+                               }
 
-                                 });
-                                 if(newChihuo.msg > 0){
-                                    $('#msgRemind').addClass('message-remind');
-                                 }
-                                 //好友请求消息提醒
-                                 var friendReq = data.pp['29'];
-                                 friendReq && friendReq.length && $.each( friendReq, function(index,value){
-                                     newChihuo.friendReq += parseInt(value['v']);
-                                     if(newChihuo.requestList.hasOwnProperty(value['s'])){
-                                      newChihuo.requestList[value['s']] += parseInt(value['v']);
-                                     }else{
-                                      newChihuo.requestList[value['s']] = parseInt(value['v']);
-                                     }
-
-                                 });
-                                 if(newChihuo.friendReq > 0){
-                                    $('#msgIndex').addClass('message-remind');
-                                    $('#msgPoint').addClass('floor-point');
-                                    $('#msgPoint2').addClass('request-point');
-                                 }
-
-                              }
+                               WKPPMsgHelper.checkAndNotify(data); // p2 notification
+                              // if(data.pp){
+                              //   var msg = data.pp['1'];
+                              //   msg && msg.length && $.each( msg, function(index,value){
+                              //       newChihuo.msg += parseInt(value['v']);
+                              //       if(newChihuo.msgList.hasOwnProperty(value['s'])){
+                              //        newChihuo.msgList[value['s']] += parseInt(value['v']);
+                              //       }else{
+                              //        newChihuo.msgList[value['s']] = parseInt(value['v']);
+                              //       }
+                              //
+                              //   });
+                              //   if(msg && msg.length && ((newChihuo.isMobileDevice() && cordova && cordova.plugins.backgroundMode && cordova.plugins.backgroundMode.isActive()) || !newChihuo.getPage('chatContent'))){
+                              //    var cont = {
+                              //          id: 3,
+                              //          title: 'there are some message to you from your friend',
+                              //          text: '',
+                              //          icon:  'imgs/logo.png',
+                              //          sound: true,
+                              //          vibrate: false,
+                              //          foreground: true,
+                              //          smallIcon: 'imgs/logo.png',
+                              //          data: {chat: 'message'},//todo 后期可以优化具体的id
+                              //      };
+                              //      WKNotifier.notify(cont);//如果有好友发送消息，会出现推送通知
+                              //
+                              //   }
+                              //   if(newChihuo.msg > 0){
+                              //      $('#msgRemind').addClass('message-remind');
+                              //      //如果在聊天界面，添加自动刷新功能
+                              //      if(newChihuo.msgList.hasOwnProperty(initData.chatContentData.custId)){
+                              //         newChihuo.getPage('chatContent') && initData.chatContentData.callback(initData.chatContentData.custId);
+                              //      }
+                              //
+                              //   }
+                              //   //好友请求消息提醒
+                              //   var friendReq = data.pp['29'];
+                              //   friendReq && friendReq.length && $.each( friendReq, function(index,value){
+                              //       newChihuo.friendReq += parseInt(value['v']);
+                              //       if(newChihuo.requestList.hasOwnProperty(value['s'])){
+                              //        newChihuo.requestList[value['s']] += parseInt(value['v']);
+                              //       }else{
+                              //        newChihuo.requestList[value['s']] = parseInt(value['v']);
+                              //       }
+                              //
+                              //   });
+                              //   if(newChihuo.friendReq > 0){
+                              //      $('#msgIndex').addClass('message-remind');
+                              //      $('#msgPoint').addClass('floor-point');
+                              //      $('#msgPoint2').addClass('request-point');
+                              //   }
+                              //
+                              //}
                               if(data.bc && !$.isEmptyObject(data.bc)){
                                if(!_.isEqual(newChihuo.activityObj,data.bc)){
                                 newChihuo.activityObj = data.bc;
                                 newChihuo.activityNum++;
                                 $('#msgFeeds').addClass('message-remind');
-                               }                            
+                               }
                               }
 
                               if(!$.isEmptyObject(newChihuo.requestList) || !$.isEmptyObject(newChihuo.msgList) || newChihuo.activityNum){
                                 var allNum = newChihuo.activityNum + Object.keys(newChihuo.requestList).length + Object.keys(newChihuo.msgList).length;
-                                  newChihuo.isMobileDevice() && cordova.plugins.notification.badge.hasPermission(function (granted) {
+                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function (granted) {
                                     cordova.plugins.notification.badge.set(allNum);
                                 });
                               }else{
-                                  newChihuo.isMobileDevice() && cordova.plugins.notification.badge.hasPermission(function(granted) {
+                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function(granted) {
                                     cordova.plugins.notification.badge.clear();
                                 });
-                              }    
-                              
+                              }
+                                if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                                }
                             },
                             error: function(xhr){
                                 // newChihuo.errorPopInfo();
+                                if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                                }
                             }
 
                         });
@@ -2122,7 +2443,7 @@ var chihuo = {
        return true;
     }else{
       return false;
-    } 
+    }
   },
 
   deleteMsgRemind: function(id){
@@ -2130,7 +2451,7 @@ var chihuo = {
        delete newChihuo.msgList[id];
     }else{
        return;
-    } 
+    }
   },
 
   dealData: function(data,status){
@@ -2163,19 +2484,19 @@ var chihuo = {
          if (a === b) {
            return 0;
          }
-         
+
          if (typeof a === "string" && a.indexOf('$') >= 0 && b.indexOf('$') >= 0){
            return  a.length < b.length ? -1 : 1;
          }
          if (parseFloat(a) != null && parseFloat(b) != null){
            return  parseFloat(a) < parseFloat(b) ? -1 : 1;
          }
-         
+
        }
        else {
          return 0;
        }
- 
+
     }
 
   },
@@ -2200,17 +2521,17 @@ var chihuo = {
       if(index == 0){
           $('.rank-ul li').eq(1).removeClass('cur toggle');
           $('.rank-ul li').eq(2).removeClass('cur toggle');
-          chihuo.sortData(data,like,query); 
+          chihuo.sortData(data,like,query);
         }else if(index == 1){
           $('.rank-ul li').eq(0).removeClass('cur toggle');
           $('.rank-ul li').eq(2).removeClass('cur toggle');
-          chihuo.sortData(data,price,query); 
+          chihuo.sortData(data,price,query);
         }else{
           $('.rank-ul li').eq(1).removeClass('cur toggle');
           $('.rank-ul li').eq(0).removeClass('cur toggle');
-          chihuo.sortData(data,distance,query); 
+          chihuo.sortData(data,distance,query);
         }
-    return data;    
+    return data;
   },
 
    sortAll: function(index,toggle,template,data,obj){
@@ -2480,12 +2801,12 @@ var chihuo = {
 
   },
 
-  imgstrupload: function() { 
+  imgstrupload: function() {
 
     return newChihuo.address + "/wkfdmk/imagestrupload.j";
   },
 
-  uploadusrphotostr: function() { 
+  uploadusrphotostr: function() {
     return this.getApiUri2() + "/upload_user_photostr.json";
   }
 
@@ -2504,9 +2825,18 @@ var photoUse={
         photoUse.doUploadPhoto(cb);
         $('.photo-select-wrap').toggleClass('show-photo-select');
       });
-
     },
-     doUploadPhoto: function(cb) {
+
+    shareImg: function(cb,type){
+      if(type==1){
+        photoUse.doUploadPhoto(cb);
+      }
+      if(type==2){
+        photoUse.init(cb);
+      }
+    },
+
+    doUploadPhoto: function(cb) {
         var formSelector = "#usr-formPhoto";
         if (!document.getElementById('usrFile')) {
           $(formSelector).append("<input id='usrFile' type='file' name='file[]' accept='image/*' multiple/>").find("input").click();
@@ -2540,7 +2870,7 @@ var photoUse={
             }
             img.onload = function () {
               var q = chihuo.picQuality;
-              var w = chihuo.usrLogoWidth;
+              var w = img.width > 1080 ? chihuo.usrLogoWidth : img.width;
               var h = w * img.height / img.width;
               var ftyp = 'image/jpeg';
               var compressedDataUrl = chihuo.WKPicCompress(img,ftyp,w,h,q);
@@ -2561,7 +2891,7 @@ var photoUse={
                        cb && cb(src);
                        newChihuo.resumeOff = false;
                     } else {
-                      
+
                     }
               };
 
@@ -2592,7 +2922,7 @@ var photoUse={
                           }else{
                             callback(false,data.errorMsg);
                           }
-                        } 
+                        }
                     });
             };
             img.src = result;
@@ -2620,7 +2950,7 @@ var photoUse={
         function onPhotoURISuccess(imageURI) {
 
             var source = new Image();
-          
+
             source.onload = function() {
                 var quality = chihuo.picQuality;//0.92;
                 var w = chihuo.picWidth;//800;
@@ -2666,14 +2996,14 @@ var photoUse={
                         onError(result);
                     }
                 };
-                
+
                 chihuo.wkAjax({
                     type: 'POST',
                     url: chihuo.imgstrupload(),
                     data: payload,
                     success: function(data){
                      callback(true,data);
-                    } 
+                    }
                 });
             };
 
@@ -2787,7 +3117,7 @@ var photoUse={
                         data: payload,
                         success: function(data){
                          callback();
-                        } 
+                        }
                     });
                 };
                 img.src = result;
@@ -2819,8 +3149,8 @@ var contact = {
       // console.log("gotContacts, number of results "+c.length);
       initData.contactData.data = c;
       (c.length > 0) && cb && cb(c);
-      
-      
+
+
       // for(var i=0, len=c.length; i<len; i++) {
         // console.dir(c[i]);
 
@@ -2847,7 +3177,7 @@ var contact = {
       // }
       //contactDiv.innerHTML+="<tr> <td>"+"aaa"+"</td><td>"+ "bbb" +"</td></tr>";
 
-      // innerHTML+="</tbody></table>"; 
+      // innerHTML+="</tbody></table>";
        // $('#ceshi').html(innerHTML);
 
     // }
@@ -2914,7 +3244,7 @@ var WKMapShouldQuery = function(preCenter,curCenter,minDistance) {
     // 只考虑一定要更新情况：一切从简只考虑这次和上次的变动问题，用以过滤一些太频繁的更新请求，
     // 放弃C2判断，如果用户非要一点一点的只有靠加点击事件人为触发查询请求
     // 只要上一次中心点和当前中心距离超过阈值就必须更新
-    var c1 = d3 > threshold;
+    var c1 = (d3 > threshold);
     // 尽管上一次中心点和当前中心距离没有超过阈值，但是如果用户位置点与当前中心点距离超过阈值，
     // 且用户位置与上一次中心点距离没用超过阈值，则必须更新。
     // 另一种情况：上一次中心与用户位置距离大于阈值则说明上一次已经做过查询而不必再因为这次很小的位置变动再查询了。
@@ -3000,7 +3330,7 @@ var WKNotifier = {
         WKNotifier.isPluginAvailable() && cordova.plugins.notification.local.hasPermission(function (_granted) {
             if (!_granted) {
                 cordova.plugins.notification.local.requestPermission(function (granted) {
-                    ToastUtils.showToast(granted ? 'Yes' : 'No');
+                    // ToastUtils.showToast(granted ? 'Yes' : 'No');
                     if (granted) {
                         if (onSuc) {
                             onSuc();
@@ -3021,6 +3351,7 @@ var WKNotifier = {
     notify: function (cont) {
         WKNotifier.checkAndAskPerm(function () {
             cordova.plugins.notification.local.schedule(cont);
+            //cordova.plugins.notification.local.update(cont);
         });
     },
     // Update notification text
@@ -3034,7 +3365,7 @@ var WKNotifier = {
         WKNotifier.checkAndAskPerm(function () {
             cordova.plugins.notification.local.getIds(function (ids) {
                 console.log(ids);
-                ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
+                // ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
                 if (callback) {
                     callback(ids);
                 }
@@ -3061,7 +3392,7 @@ var WKNotifier = {
         });
         cordova.plugins.notification.local.on('update', function (obj) {
             console.log('update', arguments);
-            ToastUtils.showToast('updated: ' + obj.id);
+            // ToastUtils.showToast('updated: ' + obj.id);
         });
         cordova.plugins.notification.local.on('trigger', function (obj) {
             console.log('trigger', arguments);
@@ -3085,12 +3416,27 @@ var WKNotifier = {
             //        location = '#restaurant/' + id;
             //    }
             //}
+            if (obj.hasOwnProperty('data')) {
+               var data = obj['data'];
+               if (data.hasOwnProperty('chat')) {
+                   location = '#chatAdd';
+                   return;
+               }
+                if (data.hasOwnProperty('friendreq')) {
+                    location = '#chatRequest/1';
+                    return;
+                }
+               if (data.hasOwnProperty('banner')) {
+                   location = '#home';
+                   return;
+               }
+            }
             location = '#myDiscount';
 
         });
         cordova.plugins.notification.local.on('cancel', function (obj) {
             console.log('cancel', arguments);
-            ToastUtils.showToast('canceled: ' + obj.id);
+            // ToastUtils.showToast('canceled: ' + obj.id);
         });
         cordova.plugins.notification.local.on('clear', function (obj) {
             console.log('clear', arguments);
@@ -3098,23 +3444,23 @@ var WKNotifier = {
         });
         cordova.plugins.notification.local.on('cancelall', function () {
             console.log('cancelall', arguments);
-            ToastUtils.showToast('canceled all');
+            // ToastUtils.showToast('canceled all');
         });
         cordova.plugins.notification.local.on('clearall', function () {
             console.log('clearall', arguments);
-            ToastUtils.showToast('cleared all');
+            // ToastUtils.showToast('cleared all');
         });
         cordova.plugins.notification.local.on('like', function () {
             console.log('like', arguments);
-            ToastUtils.showToast('liked');
+            // ToastUtils.showToast('liked');
         });
         cordova.plugins.notification.local.on('dislike', function () {
             console.log('dislike', arguments);
-            ToastUtils.showToast('disliked');
+            // ToastUtils.showToast('disliked');
         });
         cordova.plugins.notification.local.on('feedback', function (obj, e) {
             console.log('feedback', arguments);
-            ToastUtils.showToast('Feedback: ' + e.text);
+            // ToastUtils.showToast('Feedback: ' + e.text);
         });
     },
 };
@@ -3246,25 +3592,25 @@ var WKNotiHelper = {
     // If the notifcation is scheduled or triggered
     isPresent: function () {
         cordova.plugins.notification.local.isPresent(1, function (present) {
-            ToastUtils.showToast(present ? 'Yes' : 'No');
+            // ToastUtils.showToast(present ? 'Yes' : 'No');
         });
     },
     // If the notifcation is scheduled
     isScheduled: function () {
         cordova.plugins.notification.local.isScheduled(1, function (scheduled) {
-            ToastUtils.showToast(scheduled ? 'Yes' : 'No');
+            // ToastUtils.showToast(scheduled ? 'Yes' : 'No');
         });
     },
     // If the notifcation is triggered
     isTriggered: function () {
         cordova.plugins.notification.local.isTriggered(1, function (triggered) {
-            ToastUtils.showToast(triggered ? 'Yes' : 'No');
+            // ToastUtils.showToast(triggered ? 'Yes' : 'No');
         });
     },
     // Get the type of the notification
     type: function () {
         cordova.plugins.notification.local.getType(1, function (type) {
-            ToastUtils.showToast(type);
+            // ToastUtils.showToast(type);
         });
     },
 
@@ -3272,55 +3618,55 @@ var WKNotiHelper = {
     scheduledIds: function () {
         cordova.plugins.notification.local.getScheduledIds(function (ids) {
             console.log(ids);
-            ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
+            // ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
         });
     },
     // Get all notification ids
     triggeredIds: function () {
         cordova.plugins.notification.local.getTriggeredIds(function (ids) {
             console.log(ids);
-            ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
+            // ToastUtils.showToast(ids.length === 0 ? '- none -' : ids.join(' ,'));
         });
     },
     // Get all scheduled notifications
     scheduledNots: function () {
         cordova.plugins.notification.local.getScheduled(function (nots) {
             console.log(nots);
-            ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
+            // ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
         });
     },
     // Get all triggered notifications
     triggeredNots: function () {
         cordova.plugins.notification.local.getTriggered(function (nots) {
             console.log(nots);
-            ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
+            // ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
         });
     },
     // Get a single notification
     notification: function () {
         cordova.plugins.notification.local.get(1, function (obj) {
             console.log(obj);
-            ToastUtils.showToast(obj ? obj.toString() : '- none -');
+            // ToastUtils.showToast(obj ? obj.toString() : '- none -');
         });
     },
     // Get multiple notifications
     multipleNots: function () {
         cordova.plugins.notification.local.get([1, 2], function (nots) {
             console.log(nots);
-            ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
+            // ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
         });
     },
     // Get all notifications
     notifications: function () {
         cordova.plugins.notification.local.getAll(function (nots) {
             console.log(nots);
-            ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
+            // ToastUtils.showToast(nots.length === 0 ? '- none -' : nots.join(' ,'));
         });
     },
     // Set another default title
     setDefaultTitle: function () {
         cordova.plugins.notification.local.setDefaults({title: 'New Default Title'});
-        ToastUtils.showToast('New Default Title');
+        // ToastUtils.showToast('New Default Title');
     }
 };
 
@@ -3362,5 +3708,253 @@ var WKMapBoxHelper = {
             }
         }
         return rs;
+    }
+}
+
+var WKPPMsgHelper = {
+    msgtype: {
+        p2p: '1',
+        req: '29',
+    },
+    datakey: {
+        '3': 'chat',
+        '9': 'friendreq',
+    },
+    notifyconf: {
+        p2p:{
+            nid: 3,
+            title: 'there are some message to you from your friend'
+        },
+        req: {
+            nid: 9,
+            title: 'got new friend request',
+        }
+    },
+    makekey: function(pptype, sender) {
+        return 'PP' + '#' + pptype + '#' + sender;
+    },
+    saveMsgVer: function(pptype, sender, val) {
+        localStorage.setItem(WKPPMsgHelper.makekey(pptype, sender), val);
+    },
+    countMsg: function (pptype, sender, val) {
+        if (!val) {
+            return 0;
+        }
+        var vjson = jsonUtils.toJson(val);
+        if (!vjson) {
+            return 0;
+        }
+        var vcts = 0;
+        var vcver = 0;
+        var vmnum = 0;
+        // 预留字段，若服务端可以通过读聊天内容事件监听器精准计算仍未读的消息总数，则将会有此字段，而且将优先以此字段值作为新消息数通知app
+        if (vjson.hasOwnProperty('n')) {
+            vmnum = vjson['n'];
+            if (!!vmnum && vmnum > 0) {
+                return vmnum;
+            }
+        }
+        // 如果服务端发来的时间戳有误直接返回0
+        if (vjson.hasOwnProperty('cts')) {
+            vcts = vjson['cts'];
+            if (vcts <= 0) {
+                return 0;
+            }
+            if (vjson.hasOwnProperty('cver')) {
+                vcver = vjson['cver'];
+                if (vcver <= 0) {
+                    return 0;
+                }
+            }
+        }
+        var oval = localStorage.getItem(WKPPMsgHelper.makekey(pptype, sender));
+        // 读在客户端已保存的值
+        // 如果没有保存的值或错误值，直接返回服务端发来的版本数
+        if (!oval) {
+            return vcver;
+        }
+        var ojson = jsonUtils.toJson(oval);
+        if (!ojson) {
+            return vcver
+        }
+        var octs = 0;
+        var ocver = 0;
+        // 首先比对本地时间戳和服务端时间戳
+        if (ojson.hasOwnProperty('cts')) {
+            octs = ojson['cts'];
+            if (octs >= vcts) { // 一定没有新消息
+                return 0;
+            } else { // 服务端时间戳新说明一定有新消息，但不一定能算清有多少个新消息
+                if (ojson.hasOwnProperty('cver')) {
+                    ocver = ojson['cver'];
+                    if (ocver >= vcver) { // 可能是服务端清过版本信息，算不清多个消息数
+                        return 1;
+                    } // 如果服务端清过版本信息，将算不清具体有多少新消息数（除非以后服务端记录已读消息的版本号）
+                    return (vcver - ocver);
+                }
+                return 1;
+            }
+        }
+        return 0;
+    },
+    notify: function(nid, ntitle, nmsg) {
+        var msgdata = {};
+        //console.log(nid + '');
+        var dkey = WKPPMsgHelper.datakey[nid + '']
+        msgdata[dkey] = nmsg;
+        //console.log(dkey);
+        var cont = {
+            id: nid,
+            title: ntitle,
+            text: '',
+            icon:  'imgs/logo.png',
+            sound: true,
+            vibrate: false,
+            foreground: true,
+            smallIcon: 'imgs/logo.png',
+            data: msgdata,//todo 后期可以优化具体的id
+        };
+        //console.log(msgdata);
+        //console.log(cont);
+        newChihuo.hasCordova() && WKNotifier.notify(cont);//如果有好友发送消息，会出现推送通知
+    },
+    checkAndNotify: function(d) {
+        if (d.hasOwnProperty('p2') && d.p2) {
+            if (d.p2.hasOwnProperty(WKPPMsgHelper.msgtype.p2p)) {
+                var msg = d.p2[WKPPMsgHelper.msgtype.p2p];
+                var msgcount = 0;
+                msg && msg.length && $.each(msg, function (index, value) {
+                    var sender = value['s'];
+                    var val = value['v'];
+                    var scount = WKPPMsgHelper.countMsg(WKPPMsgHelper.msgtype.p2p, sender, val);
+                    if (scount > 0) {
+                        newChihuo.msgList[sender] = scount;
+                        msgcount += scount;
+                        WKPPMsgHelper.saveMsgVer(WKPPMsgHelper.msgtype.p2p, sender, val);
+                    }
+                });
+                newChihuo.msg = msgcount;
+                if (msgcount > 0 && ((newChihuo.hasCordova() && cordova.plugins.backgroundMode && cordova.plugins.backgroundMode.isActive()) || !newChihuo.getPage('chatContent'))) {
+                    WKPPMsgHelper.notify(WKPPMsgHelper.notifyconf.p2p.nid, WKPPMsgHelper.notifyconf.p2p.title, 'msg');
+                }
+            }
+
+            if (newChihuo.msg > 0) {
+                $('#msgRemind').addClass('message-remind');
+                //如果在聊天界面，添加自动刷新功能
+                if (newChihuo.msgList.hasOwnProperty(initData.chatContentData.custId)) {
+                    newChihuo.getPage('chatContent') && initData.chatContentData.callback(initData.chatContentData.custId);
+                }
+            }
+
+            //好友请求消息提醒
+            if (d.p2.hasOwnProperty(WKPPMsgHelper.msgtype.req)) {
+                var friendReq = d.p2[WKPPMsgHelper.msgtype.req];
+                var reqcount = 0;
+                friendReq && friendReq.length && $.each(friendReq, function (index, value) {
+                    var sender = value['s'];
+                    var val = value['v'];
+                    var rcount = WKPPMsgHelper.countMsg(WKPPMsgHelper.msgtype.req, sender, val);
+                    if (rcount > 0) {
+                        newChihuo.requestList[sender] = rcount;
+                        reqcount += rcount;
+                        WKPPMsgHelper.saveMsgVer(WKPPMsgHelper.msgtype.req, sender, val);
+                    }
+                });
+                newChihuo.friendReq = reqcount
+                if (newChihuo.friendReq > 0) {
+                    $('#msgIndex').addClass('message-remind');
+                    $('#msgPoint').addClass('floor-point');
+                    $('#msgPoint2').addClass('request-point');
+                    if (newChihuo.hasCordova()) {
+                        WKPPMsgHelper.notify(WKPPMsgHelper.notifyconf.req.nid, WKPPMsgHelper.notifyconf.req.title);
+                    }
+                }
+            }
+        }
+    },
+}
+
+
+var QRUtils = {  // ref: https://github.com/bitpay/cordova-plugin-qrscanner
+    mHasWinQRScaner: function() {
+        return typeof window.QRScanner !== 'undefined' && null != window.QRScanner && !!window.QRScanner;
+    },
+    mHasQRScanner: function() {
+        return typeof QRScanner !== 'undefined' && null != QRScanner && !!QRScanner;
+    },
+    hasQRScanner: function() {
+        return QRUtils.mHasQRScanner() || QRUtils.mHasWinQRScaner();
+    },
+    getQRScanner: function() {
+        if (QRUtils.mHasQRScanner()) {
+            return QRScanner;
+        }
+        if (QRUtils.mHasWinQRScaner()) {
+            return window.QRScanner;
+        }
+    },
+    _prepare: function(doScan, cb) {
+        if (!QRUtils.hasQRScanner()) {
+            alert('sorry, do not suport the QR Scanner.');
+            console.warn('do not support QRScanner.');
+            return;
+        }
+        var onDone = function(err, status) {
+            if (err) {
+                // here we can handle errors and clean up any loose ends.
+                console.error(err);
+            }
+            if (status.authorized) {
+                // W00t, you have camera access and the scanner is initialized.
+                // QRscanner.show() should feel very fast.
+                if (doScan) {
+                    doScan(cb);
+                }
+
+            } else if (status.denied) {
+                // The video preview will remain black, and scanning is disabled. We can
+                // try to ask the user to change their mind, but we'll have to send them
+                // to their device settings with `QRScanner.openSettings()`.
+                console.error('status.denie');
+                QRUtils.getQRScanner().openSettings();
+            } else {
+                // we didn't get permission, but we didn't get permanently denied. (On
+                // Android, a denial isn't permanent unless the user checks the "Don't
+                // ask again" box.) We can ask again at the next relevant opportunity.
+                console.error('No permission to open camera');
+                alert('No permission to open camera for scanning. Please modify the permission settings.');
+            }
+        }
+        QRUtils.getQRScanner().prepare(onDone);
+    },    
+    _doScan: function(cb) {
+        var _displayContents = function(err, text) {
+            if (err) {
+                // an error occurred, or the scan was canceled (error code `6`)
+                //alert('error:' + err);
+                cb && cb(0, err);
+            } else {
+                // The scan completed, display the contents of the QR code:
+                //alert(text);
+                cb && cb(1, text)
+            }
+        }
+        QRUtils.getQRScanner().scan(_displayContents);
+        // Make the webview transparent so the video preview is visible behind it.
+        QRUtils.getQRScanner().show();
+        // Be sure to make any opaque HTML elements transparent here to avoid
+        // covering the video.
+    },
+    scan: function(cb) {
+        QRUtils._prepare(QRUtils._doScan, cb);
+    },
+    exit: function(cb) {
+        QRUtils.hasQRScanner() && QRUtils.getQRScanner().destroy(function(status){
+            console.log(status);
+            if (cb) {
+                cb(status)
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-<div style="background:#f4f8fb; padding-bottom: 70px;" class="comment-effect6">
+<div style="padding-bottom: 70px;" class="comment-effect6">
 	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a>
@@ -10,7 +10,7 @@
 			<a href="javascript:;" style="width:40%; margin:0 5%;"><%=newChihuo.localize('activitity_notifications')%></a>
 		</div>
 	</div>
-	<div class="wrap-border clearfix" style="position:relative; margin:15px 12px;">
+	<div class="wrap-border clearfix" style="position:relative; margin:15px 0px;">
 	<%if(data.length){%>
 	<div class="swiper-container" id="feeds-swiper">
   	 <div class="swiper-wrapper">
@@ -87,15 +87,22 @@
 	</div>
 	 <div class="swiper-slide">
 		 <div class="short-message-wrap">
+		 <%_.each(initData.homeData.bannerData,function(d,i){%>
+		 <%if(d.event_name !='greeting' && d.event_detail.length){%>
+		    <div class="short-message">		    	
+		    	<%=d.event_subject%>    	
+		    </div>
+		    <%}%>
+		 <%})%>	
 		 <%_.each(data,function(d,i){%>
 		    <div class="short-message">
-		    	<%if(d.profile_photo_url){%>
 		    	<a href="#myIndex/<%=d.customer_id%>">
-							<img src="<%=d.profile_photo_url.split(',')[0]%>" class="comment-left-img">
-							<%}else{%>
-							  <img src="imgs/photo.png" class="comment-left-img"> 
-							<%}%>
-							</a>
+		    		<%if(d.profile_photo_url){%>
+						<img src="<%=d.profile_photo_url.split(',')[0]%>" class="comment-left-img">
+						<%}else{%>
+						<img src="imgs/photo.png" class="comment-left-img"> 
+					<%}%>
+				</a>
 		    	<p><b><%=d.display_name%></b> <%=d.rsp_msg%></p>
 		    	<p style="color:#999;"><%=chihuo.getRightTime(d.created_datetime)%>  <%=newChihuo.localize('global_var_ago')%></p>
 		    </div>
@@ -131,7 +138,7 @@
         </a>
       </li>
        <li id="msgFeeds" class="cur<%if(newChihuo.activityNum){%> message-remind<%}%>">
-        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <a href="#myMessage2"><img src="imgs/bottom-h3-cur.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>

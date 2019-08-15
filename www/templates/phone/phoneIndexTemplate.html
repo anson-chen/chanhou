@@ -1,0 +1,28 @@
+<div class="food-bg">
+	<nav class="common-title">
+	<%if(data){%>
+		<%if(data.cust_mobile_no){%>
+			<a href="#phoneDetail/edit" class="school-save">edit</a>
+		<%}else{%>
+			<a href="#phoneDetail/add" class="add-new">+</a>
+		<%}%>
+	<%}%>	
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<h3>My Mobile</h3>
+	</nav>
+</div>
+<div class="phone-wrap">
+<%if(data){%>
+	<%if(data.cust_mobile_no){%>
+		<div class="wrap-border clearfix">
+			<p class="child-info"><span><%if(data.verifyflg){%>Verified<%}else{%>Not Verified<%}%></span><b><%=data.cust_mobile_no%></b></p>
+			<%if(!data.verifyflg){%>
+				<a href="#phoneVerify"><div class="quit-setting" style="background: #fb6700;">Verify Mobile</div></a>
+			<%}%>
+		</div>
+	<%}else{%>
+		<p class="phone-para"><b>No Mobile Number</b><br>We use your mobile number to secure your order and payment. We never ever share your pravicy with any other three parties.</p>
+	<%}%>
+<%}%>	
+</div>
+	

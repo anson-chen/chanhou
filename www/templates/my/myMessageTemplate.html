@@ -1,4 +1,4 @@
-<div style="background:#f4f8fb;padding-bottom: 70px;" class="comment-effect4">
+<div style="padding-bottom: 70px;" class="comment-effect4">
 	<div class="food-bg opacity-bg">
 		<nav class="common-title">
 			<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -9,7 +9,7 @@
 			<a href="javascript:;" style="width:50%; margin:0 ;"> <%=newChihuo.localize('profile_followings_announcements')%></a>
 		</div>
 	</div>
-	<div class="wrap-border clearfix" style="position:relative; margin:15px 12px;">
+	<div class="wrap-border clearfix" style="position:relative; margin:15px 0;">
 	<%if(data.length){%>
 	<div class="swiper-container" id="followings-swiper">
   	 <div class="swiper-wrapper">
@@ -129,7 +129,7 @@
         </a>
       </li>
        <li id="msgFeeds" class="cur<%if(newChihuo.activityNum){%> message-remind<%}%>">
-        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <a href="#myMessage2"><img src="imgs/bottom-h3-cur.png">
         <p><%=newChihuo.localize('main_activitybutton')%></p>
         </a>
       </li>

@@ -13,7 +13,8 @@ define([
      'click .comment-effect3 .comment-cont':'showMoreComment',
      'click .add-rest-photo': 'addPhoto',
      'click .comment-edit': 'checkPermission',
-     'click .week-time':'showWeekTime'
+     'click .week-time':'showWeekTime',
+     'click .share-rest':'shareRest',
     },
 
     render: function(id,from){
@@ -23,6 +24,10 @@ define([
       this.$el.html(_.template(restaurantTemplate,initData.restaurantData));
       this.findRestDetailById(id);
       this.bindEvents(id);
+    },
+
+    shareRest: function(){
+       window.shareInfo.render();
     },
 
     checkPermission: function(){

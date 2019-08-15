@@ -1,5 +1,5 @@
-<div class="food-bg" style="padding-bottom:5px;">
-	<nav class="common-title" style="height:45px;padding-top:5px;">
+<div class="food-bg">
+	<nav class="common-title">
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3>table 10 <span class="order-rest"><%if(data && data.length){%><%=data[0][0].rest_name%><%}%></span></h3>
 	</nav>
@@ -10,7 +10,6 @@
 			<ul>
 			<%_.each(data,function(d,i){%>
 				<li <%if(i==0){%>class='cur'<%}%> menu='<%=d[0].rest_menu_name%>'>
-					<img src="imgs/order-menu-bg.png">
 					<p><%=d[0].rest_menu_name%></p>
 					<span></span>
 				</li>
@@ -27,7 +26,7 @@
 			<div class="order-menu-kind">
 			    <div class="order-menu-sub" id="<%=menu[0].rest_menu_name%>"><%=menu[0].rest_menu_name%>（<%=data[i].length%>）</div>
 			    <%_.each(menu,function(d,k){%>
-				<div class="order-menu-detail" menu ='<%=i%>' dish='<%=k%>'>
+				<div class="order-menu-detail" menu ='<%=i%>' dish='<%=k%>' menuId="<%=d.rest_menu_item_id%>">
 					<div class="dish-detail-wrap clearfix">
 						<img src="imgs/pt2.png" menu ='<%=i%>' dish='<%=k%>' class="menu-dish-img"/>
 						<div class="dish-detail-right">
@@ -35,7 +34,7 @@
 							<p><%=d.rest_mi_desc%></p>
 							<span class="order-dish-price"><%=d.mi_unit_price%></span>
 							<div class="gw-order">
-	                            <div class="order-dish-num">
+	                            <div class="order-dish-num" rest="<%=d.rest_id%>">
 	                            	<span class="order-add" price='<%=d.mi_unit_price%>'>+</span>
 	                            	<b></b>
 									<span class="order-minus" price='<%=d.mi_unit_price%>'>—</span>
