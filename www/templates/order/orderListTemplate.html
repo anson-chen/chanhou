@@ -1,7 +1,10 @@
 <div class="set-bg">
 	<div class="food-bg">
 		<nav class="common-title">
-			<%if(filter!=='bottom'){%><a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a><%}%>
+			<%if(filter!=='bottom'){%><a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a><%}else{%>
+			<a href="#myIndex" class="my-rewards">Me</a>
+			<a href="javascript:;" style="margin: 5px 10px 0 0;" class="reload-top-icon"></a>
+			<%}%>
 			<%if(filter!=='bottom'){%><a href="javascript:;" class="common-return menu-return"></a><%}else{%>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
 			<%}%>
@@ -11,8 +14,12 @@
 	<div class="order-list-wrap">
 	<%if(data && data.length){%>
 	<%_.each(data,function(detail,i){%>
+	<%if(detail.order_type == 1){%>
 		<%if(newChihuo.dealOrderData(detail.order_details,2)){%>
-		<p style="padding-top:10px;">order（<%=detail.order_id%>）status: <%=detail.order_status_desc%><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
+		<p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><%if(newChihuo.dineInOrderData(detail.order_details) && newChihuo.dineInOrderData(detail.order_details)['dinein_flag'] == 'N'){%><b>takeout</b><%}else{%><b>dine-in</b><%}%> order id: <%=detail.order_id%>
+		<br/>status: <%=detail.order_status_desc%><br/>
+		<b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span>
+		</p>
 		<div class="wrap-border clearfix" style="position:relative;">
 			<span class="toggle-show-order"></span>
 			<ul class="order-list-show clearfix" style="display:none;">
@@ -24,8 +31,29 @@
 			<%})%>	
 			</ul>
 			<div class="list-all-price">All: $<%=newChihuo.dealOrderData(detail.order_details,2).toFixed(2)%></div>
-			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>">proceed to checkout</span>
-			<!-- <p class="no-order">there is no order</p> -->	
+			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+		</div>
+		<%}%>
+		<%}else{%>
+		 <p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><b>school-lunch</b> order id: <%=detail.order_id%><br/>status: <%=detail.order_status_desc%><br/><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
+		 <div class="wrap-border clearfix" style="position:relative;">
+		 <%if(detail.order_details && JSON.parse(detail.order_details)){%>
+			<span class="toggle-show-order"></span>
+			<ul class="order-list-show clearfix" style="display:none;">
+			<%_.each(JSON.parse(detail.order_details)['Orders'],function(d,i){%>
+				<li>
+					<p><span style="float:right;"><%=JSON.parse(detail.order_details)['General Information']['child name']%></span>date: <%=d.date%></p>
+					<%_.each(d.menu_items,function(menu,k){%>
+					<span><%=menu.num%> * $<%=menu.price%></span><b><%=k+1%>.</b><p><%=menu.menu_name || menu.menu_desc%></p>
+					<div class="price-kind">$<%=parseFloat(menu.sub_total).toFixed(2)%></div>
+					<%})%>
+				</li>
+			<%})%>	
+			
+			</ul>
+			<div class="list-all-price">All: $<%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax']).toFixed(2)%></div>
+			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+			<%}%>
 		</div>
 		<%}})%>
 	<%}else{%>

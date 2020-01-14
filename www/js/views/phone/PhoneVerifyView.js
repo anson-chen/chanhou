@@ -17,11 +17,11 @@ define([
      
     },
 
-    render: function(id){
+    render: function(resId){
       newChihuo.setPage('phoneVerify');
       newChihuo.windowInit();
       this.$el.html(_.template(phoneVerifyTemplate,initData.phoneIndexData));
-      this.initData(id);
+      this.resId = resId;
     },
 
     checkVerify: function(){
@@ -31,6 +31,7 @@ define([
         newChihuo.showPopInfo('please enter your verification code',1200);
         return;
       }
+      var _this = this;
       chihuo.wkAjax({
           type: 'POST',
           url: chihuo.getApiUri3('chkCustMobile.json'),
@@ -47,12 +48,22 @@ define([
                       if(info.verifyflg){
                         initData.phoneIndexData.data = data.data[0];
                         newChihuo.showPopInfo('verify successfully',1200,function(){
-                          app_router.navigate('childList',{
+                          if(_this.resId){
+                            app_router.navigate('orderType/'+_this.resId+'/takeout',{
+                              trigger: true
+                            });
+                          }else{
+                            app_router.navigate('childList/'+initData.schoolIndexData.rest,{
                             trigger: true
                           });
+                          }
+                          
                         }); 
                       }else{
                         newChihuo.showPopInfo('verification failed',1200);
+                         app_router.navigate('orderType/'+_this.resId+'/takeout',{
+                              trigger: true
+                            });
                       }
                      
                      }else{
@@ -77,7 +88,7 @@ define([
                      if(data.status == 0){
                         newChihuo.showPopInfo('resend verification code successfully',1200);
                         var code = data.data[0].verifynum;
-                        code && $("#verificationCode").val(code);
+                        // code && $("#verificationCode").val(code);
                      }else{
                         newChihuo.showPopInfo(data.errorMsg,1200); 
                      }

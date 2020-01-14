@@ -1,10 +1,10 @@
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="school-save" id="saveChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%> type="<%if(type=='edit'){%>edit<%}else{%>add<%}%>">save</a>
-		<a href="javascript:history.go(-1);" class="school-cancel">cancel</a>
+		<a href="javascript:;" class="school-save" id="saveChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%> type="<%if(type=='edit'){%>Edit<%}else{%>add<%}%>">Save</a>
+		<a href="javascript:history.go(-1);" class="school-cancel">Cancel</a>
 		<h3><%if(type=='edit'){%>Edit<%}else{%>Add<%}%> child profile</h3>
 	</nav>
-</div>
+</div>	
 <div class="school-wrap">
 	<div class="wrap-border clearfix" style="padding:15px 15px 0;">   
        <div class="login-wrap">
@@ -16,9 +16,9 @@
          <span>*</span>
        </div>
         <div class="login-wrap">
-         <select class="school-select" id="schoolId" value="<%if(info.child_info){%><%=JSON.parse(info.child_info).school_id%><%}%>">
+         <select class="school-select" id="schoolId">
          <%_.each(school,function(d,i){%>
-         	<option value='<%=JSON.parse(d.school_info)["school_id"]%>'><%=JSON.parse(d.school_info)["school_name"]%></option>
+         	<option value='<%=JSON.parse(d.school_info)["school_id"]%>' <%if(info.child_info && JSON.parse(info.child_info).school_id == JSON.parse(d.school_info)["school_id"]){%>selected<%}%> addr='<%=JSON.parse(d.school_info)["school_addr"]%>'><%=JSON.parse(d.school_info)["school_name"]%></option>
          <%})%>	
          </select>
          <span>*</span>

@@ -6,11 +6,13 @@
 		</nav>
 	</div>
 	<div class="new-title-bg">
+	<%if(cust_order_id){%><b style="font-size:16px;">order id: <%=cust_order_id%></b><%}%>
 	<%if(rest_details){%>
 	<p class="pay-rest-name"><%=rest_details.rest_name%></p>
 	<span class="pay-rest-addr"><%=rest_details.addr%> | <%=rest_details.city_name%></span>
 	<%}%>
 	</div>
+	<%if(order_details && !order_details['Orders']){%>
 	<div class="wrap-border clearfix">
 		<ul class="order-list-show clearfix">
 		<%if(order_details && order_details.length){%>
@@ -31,8 +33,32 @@
 		<p class="pay-other">charged to <%=payment_details.card_type%> -<i>****</i><%=payment_details.credit_last_4digit%></p>
 		<%}%>
 		</div>
+	</div>
+	<%}%>
+	<%if(order_details && order_details['Orders']){%>
+	<div class="wrap-border clearfix">
+		<ul class="order-list-show clearfix">
+		<%_.each(order_details['Orders'],function(d,i){%>
+				<li>
+					<p><span style="float:right;"><%=order_details['General Information']['child name']%></span>date: <%=d.date%></p>
+					<%_.each(d.menu_items,function(menu,k){%>
+					<span><%=menu.num%> * $<%=menu.price%></span><b><%=k+1%>.</b><p><%=menu.menu_name || menu.menu_desc%></p>
+					<div class="price-kind">$<%=parseFloat(menu.sub_total).toFixed(2)%></div>
+					<%})%>
+				</li>
+		<%})%>			
+		</ul>
+		<div class="pay-info">
+		<%if(payment_details && order_details['order_extra']){%>
+		<p class="pay-other"><span>$<em class="pre-get"><%=order_details['order_extra'].before_tax.toFixed(2)%></em></span>Subtotal:</p>
+		<p class="pay-other"><span>$<em class="tax-get"><%=order_details['order_extra']['tax_amount']['TOTAL_TAX']%></em></span>Tax:</p>
+		<p class="pay-other"><span>$<em class="tax-get"><%=payment_details.final_amount.toFixed(2)%></em></span>Total:</p>	
+		<p class="pay-other">charged to <%=payment_details.card_type%> -<i>****</i><%=payment_details.credit_last_4digit%></p>
+		<%}%>
+		</div>
 
 	</div>
-	<div class="pay-receipt">
+	<%}%>
+	<!-- <div class="pay-receipt">
 			Email Receipt
-	</div>
+	</div> -->

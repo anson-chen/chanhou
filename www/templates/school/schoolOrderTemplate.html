@@ -1,28 +1,45 @@
 <div class="food-bg">
 	<nav class="common-title">
+		<%if(type == 'addNew'){%>
+		<a href="#restaurant/<%=rest%>" style="float:right;"><img src="imgs/icon_popular_restaurant.png" style="margin-right:15px; width:25px;"></a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
-		<h3>Select lunch for child</h3>
+		<%}else{%>
+		<a href="javascript:;" class="school-save" id="schoolAddOrder">save</a>
+		<a href="javascript:history.go(-1);" class="school-cancel">cancel</a>
+		<%}%>
+		<h3>Select lunch for <%if(child.child_info && JSON.parse(child.child_info)){%><%=JSON.parse(child.child_info).first_name%><%}else{%>child<%}%></h3>
 	</nav>
 </div>
+<p class="school-rest-name"><%if(type == 'addNew'){%><%if(initData.restaurantData.data[0]){%><%=initData.restaurantData.data[0].rest_name%><%}}else{%><%if(addOrderInfo && addOrderInfo[0] && JSON.parse(addOrderInfo[0].rest_info)){%><%=JSON.parse(addOrderInfo[0].rest_info).rest_name%><%}}%></p>
+<p class="school-rest-info"><%if(type == 'addNew'){%><%if(initData.restaurantData.data[0]){%><span><%=initData.restaurantData.data[0].addr%></span><%}}else{%><%if(addOrderInfo &&  addOrderInfo[0] && JSON.parse(addOrderInfo[0].rest_info)){%><%=JSON.parse(addOrderInfo[0].rest_info).addr%><%}}%></p>
 <div class="school-wrap">
 	<h3 class="school-info-title">select a lunch date</h3>
 	<div class="wrap-border clearfix" style="padding:10px 15px;">		
 		<select class="school-select" id="lunchTime">
-			<option value="1">Mon - July 22,2109</option>
-			<option value="2">Mon - July 23,2109</option>
-			<option value="3">Mon - July 24,2109</option>
+		<%_.each(data,function(d,i){%>
+			<option value="<%=i%>"><%=d.available_date%></option>
+		<%})%>	
 		</select>
 	</div>
 </div>
-<h3 class="school-info-title">restaurant menu</h3>
-<ul class="order-new-list">
-	<li class="last-level" menu="220494" query="0" name="Small">Small<span class="order-new-price">0.18</span></li>
-	<li class="last-level" menu="220495" query="1" name="Medium">Medium<span class="order-new-price">0.21</span></li>
-	<li class="last-level" menu="220496" query="2" name="Large">Large<span class="order-new-price">0.24</span></li></ul>
+<h3 class="school-info-title">kids menu</h3>
+
+<%_.each(data,function(d,i){%>
+<ul class="order-new-list" <%if(i!==0){%>style="display:none;"<%}%>>
+	<%if(JSON.parse(d.menu_item_details)){%>
+	<%_.each(JSON.parse(d.menu_item_details),function(info,k){%>
+	<li class="school-last-level" menu="<%=info.kids_rest_menu_item_id%>" query="<%=i%>" num="<%=k%>" name="<%=info.rest_mi_name%>"><%=info.rest_mi_name%><span class="order-new-price"><%=info.mi_unit_price%></span></li>
+	<%})%>
+	<%}%>
+</ul>
+<%})%>		
+
 <div class="order-mask"></div>
+<%if(type == 'addNew'){%>
 <div class="order-bottom">
+	<a href="#Index"><img src="imgs/bottom-h1.png" style="position:absolute; width: 30px; top:5px;left:50%; margin-left:-15px;"></a>
 	<div id="gouwu"></div>
-	<div class="order-bottom-left" id="orderNewList">
+	<div class="order-bottom-left" id="orderSchoolList">
 		<p></p>
 	</div>
 	<div class="order-all-price"></div>
@@ -30,6 +47,14 @@
 		<a href="#myOrder" style="color:#fff;">my order</a>
 	</div>
 </div>
+<%}else{%>
+<div class="order-bottom">
+	<div id="gouwu" class="no-button"></div>
+	<div class="order-bottom-left" id="orderSchoolList">
+		<p></p>
+	</div>
+</div>
+<%}%>
 <div id="dishDetailWrap" style="background:#fff;">
 	
 </div>

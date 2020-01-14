@@ -8,7 +8,8 @@ define([
   var PayView = Backbone.View.extend({
     el: $("#page"),
     events: {
-      'click .pay-button':'goPayMethod',
+      'click #payType1':'goPayMethod',
+      'click #payType2':'goPayMethod2',
       'click .tip-select': 'setTip'
     },
 
@@ -18,7 +19,13 @@ define([
       this.$el.html(_.template(payTemplate,initData.payData));
     },
     setTip: function(e){
-      var original = newChihuo.orderTotalData(newChihuo.dealOrderData(initData.payData.data.order_details,3)).toFixed(2);
+      var original;
+      if(initData.payData.data.order_type == 1){
+          original = newChihuo.orderTotalData(newChihuo.dealOrderData(initData.payData.data.order_details,3)).toFixed(2);
+      }else{
+        original = JSON.parse(initData.payData.data.order_details)['order_extra']['total_amount'].toFixed(2);
+      }
+      
       var tip = 0;
       var index = $(e.currentTarget).index('.tip-select');
       $('.tip-select').removeClass('get-tip');
@@ -109,6 +116,51 @@ define([
             }
           });
       }
+    },
+    //school order pay method
+    goPayMethod2: function(e){
+      var restId = $(e.currentTarget).attr('rest');
+      var ordId = initData.payData.data.order_id;
+      var total = $('.total-get').eq(-1).text();
+      if(initData.payData.data && initData.payData.data.order_details){
+        var data = JSON.parse(initData.payData.data.order_details);
+        var detail = {
+          "General Information": data['General Information'],
+          "Orders": data['Orders'],
+        }
+      }
+      console.log(detail);
+      if(detail){      
+       chihuo.wkAjax({
+          type: 'POST',
+          url: chihuo.getApiUri4('checkoutKidsOrder.json'),
+          data: {
+              restId: restId,
+              ordId:ordId,
+              cont:JSON.stringify(detail),
+              lat: newChihuo.lat,
+              lng: newChihuo.lon,
+              locale: 'en'
+          },
+          success: function(data){
+              if(data.status == 0){
+                initData.payMethodData = {
+                  orderid:ordId,
+                  orderType: 2,
+                  restid:restId,
+                  total:total,
+                  detail:detail,
+                }
+                 app_router.navigate('payMethod',{
+                      trigger: true
+                  }); 
+              }else{
+                newChihuo.showPopInfo(data.errorMsg,1200);
+              }
+            }
+          });
+      }
+
     },
 
   });

@@ -1,0 +1,59 @@
+
+<div class="food-bg">
+	<nav class="common-title">
+		<a href="javascript:;" class="school-save" id="updateOrder" <%if(data && data.length){%>type="<%=data[0].order_type%>" table="<%=data[0].rest_table_id%>"<%}%>>Save</a>
+		<a href="javascript:history.go(-1);" class="common-return" id="cancelAddNew"></a>
+		<h3>Modify Order</h3>
+	</nav>
+</div>
+	<div class="order-list-wrap">
+	<%if(data && data.length){%>
+	<%_.each(data,function(detail,i){%>
+	<%if(detail.order_type == 1){%>
+		<%if(newChihuo.dealOrderData(detail.order_details,2)){%>
+		<p style="padding-top:10px;">order（<%=detail.order_id%>）status: <%=detail.order_status_desc%><br/>
+		<b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span>
+		</p>
+		<div class="wrap-border clearfix" style="position:relative;">
+			<a href="#orderNew/<%=detail.rest_id%>/<%=detail.rest_table_id%>/new"><span class="add-new-order">+</span></a>
+			<ul class="order-list-show clearfix">
+			<%_.each(newChihuo.dealOrderData(detail.order_details,1),function(d,i){%>
+				<li>
+					<span>$<%=d.unit_price%></span><b class="query"><%=i+1%>.</b><p class="order-fix<%if(d.unit_cnt == 0){%> line-through<%}%>"><em <%if(d.fix){%>style="color:#ff9c59;"<%}%>><%=d.rest_menu_desc%></em><%if(d.components){%><br/><%=d.components%><%}%><%if(d.comments){%><br/>comments:<%=d.comments%><%}%></p>
+					<div class="price-kind"><i class="order-delete" index="<%=i%>" type="1">+</i><em class="order-operate edit-minus<%if(d.unit_cnt == 0){%> disable<%}%>" price="<%=d.unit_price%>" index="<%=i%>" type="1">—</em><strong style="padding: 0 15px;" start="<%=d.origin_cnt || d.unit_cnt%>" class="<%if(d.origin_cnt && d.origin_cnt != d.unit_cnt){%>change-color<%}%>"><%=d.unit_cnt%></strong><em class="order-operate edit-add" price="<%=d.unit_price%>" index="<%=i%>" type="1">+</em></div>
+					<div class="price-kind">$<strong><%=parseFloat(d.sub_total).toFixed(2)%></strong></div>
+				</li>
+			<%})%>	
+			</ul>
+			<div class="list-all-price">All: $<b><%=newChihuo.dealOrderData(detail.order_details,2).toFixed(2)%></b></div>	
+		</div>
+		<%}%>
+		<%}else{%>
+		 <p style="padding-top:10px;">order（<%=detail.order_id%>）status: <%=detail.order_status_desc%><br/><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
+		 <div class="wrap-border clearfix" style="position:relative;">
+		 <a href="#childOrder/<%=detail.rest_id%>/new"><span class="add-new-order">+</span></a>
+		 <%if(detail.order_details && JSON.parse(detail.order_details)){%>
+			<ul class="order-list-show clearfix">
+			<%_.each(JSON.parse(detail.order_details)['Orders'],function(d,i){%>
+				<li>
+					<p <%if(d.fix){%>style="color:#ff9c59;"<%}%>><span style="float:right;"><%=JSON.parse(detail.order_details)['General Information']['child name']%></span>date: <%=d.date%></p>
+					<%_.each(d.menu_items,function(menu,k){%>
+					<div class="parent-menu">
+					<span>$<%=menu.price%></span><b class="query"><%=k+1%>.</b><p <%if(menu.fix){%>style="color:#ff9c59;"<%}%> class="order-fix<%if(menu.num == 0){%> line-through<%}%>"><%=menu.menu_name || menu.menu_desc%></p>
+					<div class="price-kind"><i class="order-delete" index="<%=i%>" type="2">+</i><em class="order-operate edit-minus<%if(menu.num == 0){%> disable<%}%>" price="<%=menu.price%>" index="<%=i%>" menu="<%=k%>" type="2">—</em><strong style="padding: 0 15px;" start="<%=menu.origin_num || menu.num%>" class="<%if(menu.origin_num && menu.origin_num != menu.num){%>change-color<%}%>"><%=menu.num%></strong><em class="order-operate edit-add" price="<%=menu.price%>" index="<%=i%>" menu="<%=k%>" type="2">+</em></div>
+					<div class="price-kind">$<strong><%=parseFloat(menu.sub_total).toFixed(2)%></strong></div>
+					</div>
+					<%})%>
+				</li>
+			<%})%>	
+			</ul>
+			<div class="list-all-price">All: $<b><%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax']).toFixed(2)%></b></div>	
+			<%}%>
+		</div>
+		<%}})%>
+		<%if(data[0].order_type == '2'){%>
+		<div class="quit-setting" style="background: #fb6700;" id="cancelOrder" type="<%=data[0].order_type%>">Cancel Order</div>
+		<%}%>
+	<%}%>
+	</div>	
+    

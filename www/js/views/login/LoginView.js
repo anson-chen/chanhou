@@ -82,7 +82,7 @@ define([
                 newChihuo.setLocalStorage('email_address',data.data[0].email_address);
                 newChihuo.setLocalStorage('password',password);
                 newChihuo.setLocalStorage('loginType','chanhou');
-                 newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
+                newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
                 setTimeout(function(){
                    if(data.data[0].display_name){
                     app_router.navigate('Index',{

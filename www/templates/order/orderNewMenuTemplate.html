@@ -19,6 +19,12 @@
 		</li>
     <%})%>				
 	</ul>
+	<%if(initData.orderNewData.typeFrom == 'takeout'){%>
+	<%if (initData.phoneIndexData.data && initData.phoneIndexData.data.cust_mobile_no){%>
+		<p>Phone No: <%=initData.phoneIndexData.data.cust_mobile_no%></p>
+	<%}else{%>
+		<a href="#phoneList">Add Mobile</a>
+	<%}}%>
 	<div class="order-bottom-right" id="placeNewOrder">
 		place an order
 	</div>

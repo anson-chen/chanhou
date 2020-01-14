@@ -9,7 +9,8 @@ define([
   var SchoolInfoView = Backbone.View.extend({
     el: $("#page"),
     events: {
-        
+      'click .child-select':'selectChild',
+      'click #goSchoolOrder':'goSchoolOrder'
      
     },
 
@@ -23,6 +24,21 @@ define([
     initData: function(){
 
     },
+    selectChild: function(e){
+      var index = $(e.currentTarget).index('input');
+      initData.schoolIndexData.selected = index;
+      $('#goSchoolOrder').addClass('can-order');
+    },
+    goSchoolOrder: function(e){
+      var $obj = $(e.currentTarget);
+      if($obj.hasClass('can-order')){
+         app_router.navigate('childOrder/'+initData.schoolIndexData.rest+'/'+initData.schoolIndexData.selected,{
+              trigger: true
+          });
+      }else{
+        newChihuo.showPopInfo('You should choose a child');
+      }
+    }
 
   });
   return SchoolInfoView;

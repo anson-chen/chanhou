@@ -43,7 +43,7 @@ define([
           if (data.status == 0) {
              if(data.exist){
                $("#findMask,.find-pop-info").show();
-               $(".error-message-show").html("此邮箱已注册");
+               $(".error-message-show").html("This email address is already registered");
                return false;
              }
           }
@@ -126,7 +126,7 @@ define([
                           newChihuo.setLocalStorage('loginType','chanhou');
                           newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
                           setTimeout(function(){
-                          app_router.navigate('myIndex',{
+                          app_router.navigate('emailVerify',{
                           trigger: true
                             });
                           },1400);
@@ -153,34 +153,6 @@ define([
        return false;
      }
    },
-
-   confirmCust: function(){
-    chihuo.wkAjax({
-        type: 'GET',
-        url: chihuo.getApiUri('confirmCust.json'),//注册接口
-        data:{
-          lat: newChihuo.lat,
-          lng: newChihuo.lon,
-          locale: 'en'
-        },
-        success: function (data) {
-          if (data.status == 0) {
-            if(data.data.status_code == 0){
-              
-              // app_router.navigate('Index',{
-              //     trigger: true
-              // });
-            }else{
-               newChihuo.showPopInfo(newChihuo.localize('fail_to_register'));
-            }
-    
-          }
-        },
-        error: function () {
-
-        }
-      });
-   }
 
   });
 

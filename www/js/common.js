@@ -350,6 +350,10 @@ var newChihuo = {
         }catch(error){
           var detail = [];
         }
+      var len = detail.length;  
+      if(detail[len-1]['dinein_flag']){
+        detail.pop();
+      }  
       if(status == 1){
           detail.pop();
           return detail;
@@ -360,6 +364,21 @@ var newChihuo = {
         var all = detail.pop();
          return all || {};
       }
+
+    },
+     dineInOrderData: function(data){
+      try{
+          var detail = JSON.parse(data);          
+        }catch(error){
+          var detail = [];
+          return detail;
+        }
+      var len = detail.length;  
+      if(len && detail[len-1]['dinein_flag']){
+         return detail.pop();
+      }else{
+        return false;
+      }  
 
     },
     orderTotalData: function(data){
@@ -422,6 +441,7 @@ var staticSource = {
 };
 //初始数据
 var initData = {
+  route: null,
   homeData: {
     cityData: [{cityname:'Toronto'}],
     detailData: null,
@@ -641,6 +661,7 @@ var initData = {
         payment_details: {},
         order_details: [],
         rest_details: {},
+        cust_order_id: null,
   },
   orderNewData:{
     info: {}
@@ -654,10 +675,15 @@ var initData = {
   },
   schoolIndexData: {
     data: null,
+    rest: null,
   },
   schoolInfoData: {
     grade: [],
     school: [],
+  },
+  schoolOrderData: {
+    data: [],
+    child: null,
   },
   phoneDetailData: {
     type: null,
@@ -666,6 +692,13 @@ var initData = {
     data: null,
     verifyNum: null
   },
+  orderEditData: {
+    data: null
+  },
+  addNewToOrderData: {
+    type: null,
+    data: null,
+  }
 };
 
 

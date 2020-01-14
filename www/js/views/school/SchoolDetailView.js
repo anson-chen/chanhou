@@ -10,7 +10,8 @@ define([
     el: $("#page"),
     events: {
       'click #saveChild':'saveChildInfo',
-      'click #deleteChild':'deleteChildInfo'
+      'click #deleteChild':'deleteChildInfo',
+      'change #schoolId': 'schoolInfoChange'
      
     },
 
@@ -30,6 +31,11 @@ define([
       }
       this.$el.html(_.template(schoolDetailTemplate,initData.schoolDetailData));
       this.initData();
+    },
+
+    schoolInfoChange: function(e){
+      var addr = $(e.currentTarget).find("option:selected").attr('addr')
+      $('#schoolAddress').val(addr);
     },
 
     saveChildInfo: function(e){
@@ -53,7 +59,7 @@ define([
       };
       chihuo.wkAjax({
           type: 'POST',
-          url: chihuo.getApiUri4(type == 'edit' ? 'updateChild.json' : 'addChild.json'),
+          url: chihuo.getApiUri4(type == 'Edit' ? 'updateChild.json' : 'addChild.json'),
           data: {
               chdId: type == 'edit' ? chdId : undefined,
               cont: JSON.stringify(detail),
@@ -63,9 +69,9 @@ define([
               },
           success: function(data){
               if(data.status == 0){
-                var str = type =='edit' ? 'Update child info successfully!' : 'Add child info successfully!';
+                var str = type =='Edit' ? 'Update child info successfully!' : 'Add child info successfully!';
                 newChihuo.showPopInfo(str,1200,function(){
-                    app_router.navigate('childList',{
+                    app_router.navigate('childList/'+initData.schoolIndexData.rest,{
                             trigger: true
                     });
                 });
@@ -92,9 +98,9 @@ define([
           success: function(data){
               if(data.status == 0){
                   newChihuo.showPopInfo('delete successfully',1200,function(){
-                          app_router.navigate('childList',{
+                          app_router.navigate('childList/'+initData.schoolIndexData.rest,{
                             trigger: true
-                          });
+                    });
                   });
               }else{
                   newChihuo.showPopInfo(data.errorMsg,1200);

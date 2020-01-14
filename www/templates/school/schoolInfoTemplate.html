@@ -5,16 +5,24 @@
 	</nav>
 </div>
 <div class="school-wrap">
-	<h3 class="school-info-title"><a href="#childDetail/add"><span>add new</span></a>choose your child</h3>
+	<h3 class="school-info-title">
+	<%if(initData.phoneIndexData.data){%>
+		<%if(initData.phoneIndexData.data.cust_mobile_no){%>
+		<a href="#childDetail/add"><span>add new</span></a>
+		<%}else{%>
+		<a href="#phoneDetail/add"><span>add new</span></a>
+		<%}%>
+	<%}%>
+	choose your child</h3>
 	<div class="wrap-border clearfix">	
 		<ul class="school-info-child">
 		<%_.each(data,function(d,i){%>
 		<%if(d.child_info){%>
-			<li class="clearfix"><input type="radio" name="child" id="child1"><label for="child1"><%=JSON.parse(d.child_info).first_name%> <%=JSON.parse(d.child_info).last_name%><br><%=JSON.parse(d.child_info).teacher_name%></label></li>
+			<li class="clearfix"><input type="radio" name="child" id="child<%=i%>" class="child-select"><label for="child<%=i%>"><%=JSON.parse(d.child_info).first_name%> <%=JSON.parse(d.child_info).last_name%><br><%=JSON.parse(d.child_info).teacher_name%></label></li>
 		<%}%>
 		<%})%>
 		</ul>
 	</div>
-	<a href="#childOrder"><div class="quit-setting" style="background: #fb6700;">go to order</div></a>
+	<div class="quit-setting" style="background: #fb6700;" id="goSchoolOrder">go to order</div>
 </div>
 	

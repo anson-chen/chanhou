@@ -17,7 +17,7 @@
 		<div class="wrap-border clearfix">
 			<p class="child-info"><span><%if(data.verifyflg){%>Verified<%}else{%>Not Verified<%}%></span><b><%=data.cust_mobile_no%></b></p>
 			<%if(!data.verifyflg){%>
-				<a href="#phoneVerify"><div class="quit-setting" style="background: #fb6700;">Verify Mobile</div></a>
+				<a href="#phoneVerify<%if(initData.route){%>/<%=initData.route%><%}%>"><div class="quit-setting" style="background: #fb6700;">Verify Mobile</div></a>
 			<%}%>
 		</div>
 	<%}else{%>

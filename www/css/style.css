@@ -626,7 +626,7 @@ input::-webkit-input-placeholder{
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
-.gw-data li i {
+.gw-data li i,.order-delete {
     float: left;
     width: 26px;
     height: 26px;
@@ -2200,6 +2200,9 @@ input::-webkit-input-placeholder{
     line-height: 45px;
     color: #333;
     font-size: 18px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .search-history li i{ 
     float: right;
@@ -4568,6 +4571,9 @@ img.lazy {
 .order-list-show li p {
     color: #666;
 }
+.order-list-show li p em {
+    font-style: normal;
+}
 .order-list-show li span {
    float: right;
    color: #666;
@@ -4923,6 +4929,14 @@ img.lazy {
 .payment-info {
     padding: 10px;
 }
+.payment-info em {
+    float: right;
+    font-style: normal;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: -3px;
+}
 .payment-store span {
     float: right;
     color: #333;
@@ -4973,11 +4987,11 @@ img.lazy {
 .order-new-mask {
     position: absolute;
     width: 100%;
-    bottom: 120px;
+    bottom: 0px;
     overflow: auto;
     top:0px;
     background: #fff;
-    padding-bottom: 25px;
+    padding-bottom: 130px;
 }
 .order-new-mask textarea {
     width: 90%;
@@ -5011,6 +5025,8 @@ img.lazy {
 .menu-index {
     float: right;
     color: #333;
+    font-weight: bold;
+    font-size: 20px;
 }
 .menu-title {
     text-align: center;
@@ -5070,7 +5086,7 @@ img.lazy {
     font-style: normal;
     font-size: 20px;
 }
-.order-new-btn {
+.order-new-btn,.school-order-btn {
     position: absolute;
     bottom: 10px;
     left: 0;
@@ -5084,7 +5100,7 @@ img.lazy {
     border-radius: 5px;
     font-size: 18px;
 }
-.order-new-btn.order-new-effect {
+.order-new-btn.order-new-effect,.school-order-btn.order-new-effect {
     background: #333;
 }
 .order-new-parent {
@@ -5415,4 +5431,126 @@ img.lazy {
     height: 22px;
     width: 22px;
     transform: rotate(45deg);
+}
+.order-link {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; 
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline-block;
+}
+.school-bottom {
+    min-height: 40px;
+    padding: 5px 15px 0;
+    margin-top: 10px;
+}
+.school-bottom img {
+    height: 30px;
+}
+.school-rest-info {
+    padding: 10px 15px 0;
+    font-size: 18px;
+}
+.school-rest-name {
+    position: absolute;
+    top: 37px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    z-index: 10;
+}
+.order-edit {
+    float: right;
+    color: #ff9c59;
+    font-size: 16px;
+    padding-right: 10px;
+}
+.order-operate {
+    width: 26px;
+    height: 26px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 18px;
+    border: 1px solid #666;
+    display: inline-block;
+}
+.order-operate.disable {
+    border-color: #ccc;
+    color: #ccc;
+}
+.add-new-order {
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 22px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: -40px;
+    right: 8px;
+    color: #fff;
+    background: #ff9c59;
+}
+.parent-menu {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.parent-menu:last-child {
+    border-bottom: none;
+}
+.no-button #placeSchoolOrder,.no-button #placeNewOrder {
+    display: none;
+}
+#school-dish,#regular-dish {
+    height: 140px;
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+}
+#school-dish .swiper-slide,#regular-dish .swiper-slide {
+    background: none;
+}
+#school-dish img,#regular-dish img {
+    height: 100%;
+    max-width: 100%;
+}
+.order-bottom-bg {
+    background: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 130px;
+}
+.order-fix.line-through {
+    text-decoration: line-through;
+    color: #f00;
+}
+.change-color {
+    color: #ff9c59;
+}
+.email-verify {
+    text-align: center;
+    padding-top: 30%;
+}
+.email-verify p {
+    padding: 0 30px;
+    color: #999;
+    font-size: 14px;
+}
+.email-verify b {
+    font-size: 18px;
+    color: #333;
+}
+.resend-email {
+    color: #fff;
+    background: -webkit-linear-gradient(left,#fe812d 0, #ff9c59 100%);
+    clear: both;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: block;
 }

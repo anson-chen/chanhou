@@ -22,11 +22,27 @@ define([
       'click #clearNewOrder': 'clearNewOrder',
       'click .order-new-zone .delete-dish': 'deleteDish',
       'click .order-dish-num span': 'operationDishNum',
+      'click #regularAddOrder':'addNewToOrder',
     },
 
     data: [],
 
   currentData: null,
+
+  addNewToOrder: function() {
+    initData.addNewToOrderData = {
+      type: 1,
+      data: this.orderData,
+    }
+    if(this.orderData.length == 0){
+        newChihuo.showPopInfo('please choose',1200);
+        return;
+      }
+    newChihuo.showPopInfo('add successfully.',1200,function(){
+      history.go(-1);
+    });
+    console.log(initData.addNewToOrderData);
+  },
 
   operationDishNum: function(e){
     var $obj = $(e.currentTarget);
@@ -65,6 +81,18 @@ define([
   addToNewOrder: function(){
     var restId = this.rest;
     var tabId = $('#table').attr('num') || 1;
+    if(initData.orderNewData.typeFrom == 'takeout' && initData.phoneIndexData.data !== null && !initData.phoneIndexData.data.cust_mobile_no){
+      newChihuo.showPopInfo('Add mobile.',1500,function(){
+         app_router.navigate('phoneList/'+restId,{
+                  trigger: true
+          });
+      });
+      return;
+    }  
+    if(initData.orderNewData.typeFrom){
+      this.orderData.push({"dinein_flag": initData.orderNewData.typeFrom == "takeout" ? "N" : "Y"})
+    }
+    
     var _this = this;
       chihuo.wkAjax({
           type: 'POST',
@@ -191,21 +219,40 @@ define([
   },
 
   detailTpl: function(){
-    return '<div class="order-new-mask"><div class="new-title-bg"><p class="pay-rest-name"><%if(initData.restaurantData.data[0].rest_id == id){%><%=initData.restaurantData.data[0].rest_name%><%}%></p><span class="pay-rest-addr"><%if(initData.restaurantData.data[0].rest_id == id){%><%=initData.restaurantData.data[0].addr%><%}%></span><div class="order-new-top" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><span><%=data.price || "$0"%></span><%=data.name%></div><div class="pay-nav clearfix"><span>ready in 10-15 min</span><p class="order-new-back">view menu</p></div></div>'+
-    '<%if(data.children && data.children.length){%><div class="order-new-parent" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><div class="order-new-detail"><%=data.name%> description</div>'+
-    '<%_.each(data.children,function(d,i){%><div class="order-new-floor"><h3 class="order-second-title"><%=d.name%><%if(d.price !="$0"){%><%=d.price%><%}%></h3><%if(d.children && d.children.length){%><%_.each(d.children,function(info,k){%><p class="order-new-last"><%if(info.price!="$0"){%><span><%=info.price%></span><%}%><%if(!info.children){%><input name="<%=d.name%>" value="<%=info.id%>" origin="<%=info.name%>" id="<%=info.id%>" <%if(d.name=="addons"){%>addon="<%=d.name%>" price="<%=info.price%>"<%}%> max="<%=d.max_selection%>" min="<%=d.min_selection%>" type="<%if(d.min_selection == 1 && d.min_selection == d.max_selection){%>radio<%}else{%>checkbox<%}%>" <%if(k==0 && d.min_selection == 1 && (d.min_selection == d.max_selection)){%>checked<%}%>/><%}%><%=info.name%></p><%if(info.children && info.children.length){%><%}%><%})}%></div><%})%></div><%}else{%><div class="order-new-detail" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><%=data.name%> description</div><%}%><textarea placeholder="please fill in your special request" class="order-comments"></textarea></div><div class="clearfix order-new-operation"><span style="float:right;" class="order-new-add order-new-common">+</span><em class="menu-num-set">0</em><span class="order-new-minus order-new-common">—</span></div><div class="order-new-btn">Add To Order</div>';
+    return '<div class="order-new-mask"><div class="new-title-bg"><p class="pay-rest-name"><%=initData.orderNewData.info.name%></p><span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span><div class="order-new-top" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><span><%=data.price || "$0"%></span><%=data.name%></div><div class="pay-nav clearfix"><p class="order-new-back">view menu</p></div></div>'+
+    '<%if(data.children && data.children.length){%><div class="order-new-parent" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>">'+this.detailImg()+'<div class="order-new-detail"><%=data.name%> description:<br/><%=data.desc%></div>'+
+    '<%_.each(data.children,function(d,i){%><div class="order-new-floor"><h3 class="order-second-title"><%=d.name%><%if(d.price !="$0"){%><%=d.price%><%}%></h3><%if(d.children && d.children.length){%><%_.each(d.children,function(info,k){%><p class="order-new-last"><%if(info.price!="$0"){%><span><%=info.price%></span><%}%><%if(!info.children){%><input name="<%=d.name%>" value="<%=info.id%>" origin="<%=info.name%>" id="<%=info.id%>" <%if(d.name=="addons"){%>addon="<%=d.name%>" price="<%=info.price%>"<%}%> max="<%=d.max_selection%>" min="<%=d.min_selection%>" type="<%if(d.min_selection == 1 && d.min_selection == d.max_selection){%>radio<%}else{%>checkbox<%}%>" <%if(k==0 && d.min_selection == 1 && (d.min_selection == d.max_selection)){%>checked<%}%>/><%}%><%=info.name%></p><%if(info.children && info.children.length){%><%}%><%})}%></div><%})%></div><%}else{%><div class="order-new-detail" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><%=data.name%> description:<br/><%=data.desc%></div><%}%><textarea placeholder="Your name, contact number and expected pickup time; Your special request of order." class="order-comments"></textarea></div><div class="order-bottom-bg"><div class="clearfix order-new-operation"><span style="float:right;" class="order-new-add order-new-common">+</span><em class="menu-num-set">0</em><span class="order-new-minus order-new-common">—</span></div><div class="order-new-btn">Add To Order</div></div>';
   },
+
+   detailImg: function(){
+      var imgHtml = '<%if(data.photo_url){%><div class="swiper-container" id="regular-dish"><div class="swiper-wrapper"><%_.each(data.photo_url.split(","), function(d,i) {%><div class="swiper-slide"><img src="<%=d%>"></div><%})%></div></div><%}%>';
+      return imgHtml;
+    },
 
   orderData: [],
 
-  render: function(id,tabId){
+  render: function(id,tabId,type){
       newChihuo.setPage('orderNew');
       if(this.rest != id){
         this.orderData = [];
+        this.data = [];
       }
       this.rest = id;
       this.tabId = tabId;
       this.currentData = this.data;
+      if(type == 'new'){
+      //通过修改订单进入下单 
+        initData.orderNewData.type = 'addOrder'; 
+        this.orderData = [];   
+      }else{
+      //正常流程下单  
+        initData.orderNewData.type = 'addNew';
+      }
+
+      initData.addNewToOrderData = {
+        type: null,
+        data: null,
+      };//每次进入清空数据
      
       if(initData.restaurantData.data[0] && initData.restaurantData.data[0].rest_id == id){
         initData.orderNewData.info = {
@@ -217,9 +264,58 @@ define([
       this.initData(id);
   },
 
+  orderTypeSet: function(id,type){
+    initData.orderNewData.typeFrom = type;
+    if(type == 'takeout'){
+       chihuo.wkAjax({
+          type: 'GET',
+          url: chihuo.getApiUri3('lstCustMobile.json'),
+          data: {
+              lat: newChihuo.lat,
+              lng: newChihuo.lon,
+              locale: 'en',
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                        initData.phoneIndexData.data = data.data[0];
+                     }else{
+                        newChihuo.showPopInfo(data.errorMsg,1200);
+                     }
+                  } 
+              }); 
+    }
+    this.render(id);
+  },
+
   initData: function(id){
     var _this = this;
-      chihuo.wkAjax({
+    if(!(initData.restaurantData.data[0] && initData.restaurantData.data[0].rest_id == id)){
+       chihuo.wkAjax({
+                  type: 'GET',
+                  url: chihuo.getApiUri('findRestDetailById.json'),
+                  data: {
+                     restId: id,
+                     lat: newChihuo.lat,
+                     lng: newChihuo.lon,
+                     locale: 'en'
+                  },
+                  success: function(data){
+                     if(data.status == 0){
+                      initData.orderNewData.info = {
+                         name: data.data[0].rest_name,
+                         address: data.data[0].addr,
+                      };
+                      newChihuo.getPage('orderNew') && _this.$el.html(_.template(orderNewTemplate,{data:_this.currentData,id:_this.rest,tabId:_this.tabId}));
+                       if(_this.orderData.length){
+                          $('#orderNewList').find('p').html(_this.orderData.length).show();
+                        }else{
+                          $('#orderNewList').find('p').hide();
+                        }
+                     }
+                  } 
+              });   
+    };
+    chihuo.wkAjax({
           type: 'GET',
           url: chihuo.getApiUri3('getRestMenuDtl.json'),
           data: {
@@ -241,7 +337,6 @@ define([
               }
           }
           });
-
   },
 
   dealData: function(data){
@@ -263,10 +358,14 @@ define([
   showDetail: function(e){
     var $obj = $(e.currentTarget);
     var index = $(e.currentTarget).attr('query');
-    console.log(this.currentData);
     var data = this.currentData[index];
     var tpl = this.detailTpl(); 
+    console.log(data);
     $("#dishDetailWrap").html(_.template(tpl,{data:data,id:this.rest,tabId:this.tabId})).addClass('show-menu-dish');
+    var swiper = new Swiper('#regular-dish', {
+        slidesPerView: 'auto',
+        paginationClickable: true
+      });
 
   },
   nextLevelShow: function(e){

@@ -1,5 +1,11 @@
 <nav class="common-title">
-	<a href="javascript:history.go(-1);" class="common-return"></a>
+	<%if(initData.orderNewData.type == 'addNew'){%>
+		<a href="#restaurant/<%=id%>" style="float:right;"><img src="imgs/icon_popular_restaurant.png" style="margin-right:15px; width:25px;"></a>
+		<a href="javascript:history.go(-1);" class="common-return"></a>
+	<%}else{%>
+		<a href="javascript:;" class="school-save" id="regularAddOrder">save</a>
+		<a href="javascript:history.go(-1);" class="school-cancel">cancel</a>
+	<%}%>
 	<h3><%=initData.orderNewData.info.name%></h3>
 </nav>
 <div class="new-title-bg">
@@ -15,7 +21,9 @@
 	</ul>
 </div>
 <div class="order-mask"></div>
+<%if(initData.orderNewData.type == 'addNew'){%>
 <div class="order-bottom">
+	<a href="#Index"><img src="imgs/bottom-h1.png" style="position:absolute; width: 30px; top:5px;left:50%; margin-left:-15px;"></a>
 	<div id="gouwu"></div>
 	<div class="order-bottom-left" id="orderNewList">
 		<p></p>
@@ -25,6 +33,14 @@
 		<a href="#myOrder" style="color:#fff;">my order</a>
 	</div>
 </div>
+<%}else{%>
+<div class="order-bottom">
+	<div id="gouwu" class="no-button"></div>
+	<div class="order-bottom-left" id="orderNewList">
+		<p></p>
+	</div>
+</div>
+<%}%>
 <div id="dishDetailWrap" style="background:#fff;">
 	
 </div>

@@ -8,7 +8,7 @@
 <div class="new-title-bg">
 	<p class="pay-rest-name"><%if(data.rest_info){%><%=JSON.parse(data.rest_info).rest_name%><%}%></p>
 </div>
-<%if(data){%>
+<%if(data && data.order_type == 1){%>
 <div class="wrap-border clearfix">
 		<ul class="order-list-show clearfix">
 		<%_.each(newChihuo.dealOrderData(data.order_details,1),function(d,i){%>
@@ -33,6 +33,8 @@
 <%}%>
 </div>
 <div class="pay-wrap payment">
+	<%if(data && data.order_type == 1){%>
 	<button id="pay-from-counter">PAY FROM COUNTER</button>
+	<%}%>
 	<button id="pay-from-mobile">PAY FROM MOBILE</button>
 </div>

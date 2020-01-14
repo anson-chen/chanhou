@@ -15,6 +15,9 @@
 			<div class="payment-info clearfix">
 				<span>You paid $<%if(d.payment_details && JSON.parse(d.payment_details)){%><%=JSON.parse(d.payment_details).final_amount.toFixed(2)%><%}%></span>
 				<p><%if(d.rest_details && JSON.parse(d.rest_details)){%><%=JSON.parse(d.rest_details).rest_name%><%}%></p>
+				<em><%if(d.order_details && JSON.parse(d.order_details).hasOwnProperty('Orders')){%>school-lunch<%}else{%>
+				<%if(newChihuo.dineInOrderData(d.order_details) && newChihuo.dineInOrderData(d.order_details)['dinein_flag'] == 'N'){%>takeout<%}else{%>dine-in<%}%>
+				<%}%> order id: <%=d.cust_order_id%></em>
 				<b><%if(d.payment_details && JSON.parse(d.payment_details)){%><%=chihuo.timestampToTime(JSON.parse(d.payment_details).timestamp)%> <%=chihuo.getDate(JSON.parse(d.payment_details).timestamp)%><%}%></b>
 				<div class="payment-button clearfix">
 				<a href="#myReceipt/<%=d.cust_order_id%>"><button>Receipt</button></a>

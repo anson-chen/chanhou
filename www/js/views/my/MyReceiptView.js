@@ -34,6 +34,7 @@ define([
                   initData.myReceiptData.order_details = JSON.parse(data.data[0].order_details);
                   initData.myReceiptData.payment_details = JSON.parse(data.data[0].payment_details);
                   initData.myReceiptData.rest_details = JSON.parse(data.data[0].rest_details);
+                  initData.myReceiptData.cust_order_id = id || data.data[0].cust_order_id;
                   console.log(initData.myReceiptData);
                 }               
                 newChihuo.getPage('myReceipt') && _this.$el.html(_.template(myReceiptTemplate,initData.myReceiptData));

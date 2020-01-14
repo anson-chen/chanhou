@@ -9,14 +9,33 @@ define([
   var MyIndexView = Backbone.View.extend({
     el: $("#page"),
     events: {
-        'click #test-qrscanner':'testQRScanner',
-     
+        'click .resend-email': 'resendEmailVerify',     
     },
 
-    testQRScanner: function() {
-      QRUtils.scan(function() {
-              alert('Yeah');
-      })
+    resendEmailVerify: function(e){
+      var $obj = $(e.currentTarget);
+      var now = new Date();
+      var d = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+      if(d == newChihuo.getLocalStorage('verifyEmail')){
+        newChihuo.showPopInfo('You can try it tomorrow!',1200);
+        return;
+      }
+      chihuo.wkAjax({
+        type: 'GET',
+        url: chihuo.getApiUri('reactivate.json'),//注册接口
+        data:{
+          acct: '543927940@qq.com' || email,
+          lat: newChihuo.lat,
+          lng: newChihuo.lon,
+          locale: 'en',
+        },
+        success: function (data) {
+          if(data.status == 0){
+            newChihuo.showPopInfo('Resend successfully!',1200);
+            newChihuo.setLocalStorage('verifyEmail',d);
+          }
+        },
+      });
     },
 
     render: function(id){

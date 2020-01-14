@@ -8,7 +8,7 @@ require.config({
     'jqueryMove': ['jquery']
   },
   paths: {
-    jquery: 'libs/jquery/jquery',
+    jquery: 'libs/jquery/jquery-2.1.4.min',
     jqueryMove: 'libs/jquery/jquery.event.move',
     bootstrap: 'libs/bootstrap/bootstrap.min',
     underscore: 'libs/underscore/underscore-min',

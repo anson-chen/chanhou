@@ -44,6 +44,12 @@
                 	<p><span style="width:<%=d.achieved_perc_to_next_level%>;"></span></p>
                 	<%if(d.total_points){%><b class="vip-level-score"><%=d.points_needed_to_next_level + d.total_points%></b>
                 	<%}%>
+                	<%if(d.email_verified_flg){%>
+                	<span style="float:left; color:#33c133;">Email has been verified!</span>
+                	<%}else{%>
+                	<span style="float:left; color:#f00;">Email has NOT been verified!</span>
+                	<button class="resend-email">Resend email</button>
+                	<%}%>
                 </div>
                 <%}else{%>
 				</p> 

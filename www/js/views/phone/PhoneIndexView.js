@@ -13,9 +13,10 @@ define([
      
     },
 
-    render: function(){
+    render: function(resId){
       newChihuo.setPage('phoneIndex');
       newChihuo.windowInit();
+      initData.route = resId ? resId : null;
       this.$el.html(_.template(phoneIndexTemplate,initData.phoneIndexData));
       this.initData();
     },

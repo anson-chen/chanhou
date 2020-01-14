@@ -8,11 +8,7 @@ define([
   var OrderListView = Backbone.View.extend({
     el: $("#page"),
     events: {
-      'click .go-order': 'goPay',
-      // 'click .go-pay-btn': 'goPayIndex',
-      'click .toggle-show-order':function(e){
-        $(e.currentTarget).toggleClass('show-next').parent().find('.order-list-show').toggle();
-      }
+      
     },
 
     render: function(info){
@@ -23,14 +19,15 @@ define([
       this.initData();
     },
 
+
     goPayIndex: function(e){
       var index = $(e.currentTarget).index('.go-pay-btn');
       var restId = 23612;
       var tabId = 1;
       var ordId = $(e.currentTarget).attr("orderId");
-      if(!$(e.currentTarget).hasClass('can-go-pay')){
-        return;
-      }
+      // if(!$(e.currentTarget).hasClass('can-go-pay')){
+      //   return;
+      // }
       if(initData.orderListData.data && initData.orderListData.data[index]){
         var data = newChihuo.dealOrderData(initData.orderListData.data[index].order_details,1);
         initData.payData.data = initData.orderListData.data[index];
@@ -104,21 +101,6 @@ define([
           });
 
     },
-
-
-    goPay: function(){
-
-    },
-
-    bindEvents: function(){
-      var _this = this;
-       $('.reload-top-icon').on('click',function(){
-         $('#reload').addClass('show-reload');          
-          setTimeout(function(){$('#reload').removeClass('show-reload')},1000);
-          _this.initData();
-      });
-      
-    }
   });
   return OrderListView;
 });

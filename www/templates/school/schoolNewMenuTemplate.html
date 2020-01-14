@@ -1,0 +1,31 @@
+<div class="gw-title">
+	<h3><span class="clear-all-order" id="clearSchoolOrder">Clear All</span>your order</h3>
+</div>
+<div class="gw-data order-new-zone">
+<%if(data.Orders && data.Orders.length){%>
+	<ul>
+	<%_.each(data.Orders,function(detail,i){%>
+		<li>
+			<div><%=detail.date%></div>
+			<%_.each(detail.menu_items,function(d,i){%>
+		    <div class="gw-price"><%=d.sub_total%></div>		    
+			<i price='<%=d.price%>' index='<%=i%>' class="delete-dish">+</i>
+            <p class="new-special"><%=d.menu_name%></p>
+            <div class="gw-order">
+            	<div class="order-dish-num <%if(d.num){%>cur<%}%>">
+	                <span class="order-add gw-add order-new-add" price='<%=d.price%>' index='<%=i%>'>+</span>
+	                <b class="gw-dish-num"><%=d.num%></b>
+				    <span class="order-minus gw-minus order-new-minus" price='<%=d.price%>' index='<%=i%>'>—</span>
+            	</div>
+            </div>
+            <%})%>
+		</li>
+    <%})%>				
+	</ul>
+	<div class="order-bottom-right" id="placeSchoolOrder">
+		place an order
+	</div>
+<%}else{%>
+ <p class="no-order">there is no order</p>
+<%}%>
+</div>

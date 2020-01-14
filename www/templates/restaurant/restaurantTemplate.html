@@ -34,9 +34,15 @@
 			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
 			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><%if(d.chihuo_distance){%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%}%><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
-			<%if(d.rest_id==69140 || d.rest_id==69153 || d.rest_id==5137){%>
-			<a href="#childList" style="padding:15px;">School Order</a>
-			<a href="#orderNew/<%=d.rest_id%>" style="padding:15px;">Regular Order</a><%}%>
+			<%if(d.services && d.services.indexOf('school_lunch')>=0){%>
+			<a href="#childList/<%=d.rest_id%>" class="order-link">School Order</a>
+			<%}%>
+			<%if(d.services && d.services.indexOf('takeout')>=0){%>
+			<a href="#orderType/<%=d.rest_id%>/takeout" class="order-link">Takeout Order</a>
+			<%}%>
+			<%if(d.services && d.services.indexOf('dine_in')>=0){%>
+			<a href="#orderType/<%=d.rest_id%>/dinein" class="order-link">Dinein Order</a>
+			<%}%>
 		</div>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
