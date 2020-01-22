@@ -17,6 +17,20 @@ define([
       this.initData(id);
     },
 
+    dealOrderData: function(data){
+      try{
+          var detail = JSON.parse(data);
+        }catch(error){
+          var detail = [];
+        }
+      var len = detail.length;  
+      if(!detail['Orders'] && detail[len-1]['dinein_flag']){
+        detail.pop();
+      }  
+      return detail;
+    },
+
+
     initData: function(id){
       var _this = this;
       chihuo.wkAjax({
@@ -31,7 +45,7 @@ define([
           success: function(data){
               if(data.status == 0){
                 if( data.data[0].status_code == 0 && id == data.data[0].cust_order_id){
-                  initData.myReceiptData.order_details = JSON.parse(data.data[0].order_details);
+                  initData.myReceiptData.order_details = _this.dealOrderData(data.data[0].order_details);
                   initData.myReceiptData.payment_details = JSON.parse(data.data[0].payment_details);
                   initData.myReceiptData.rest_details = JSON.parse(data.data[0].rest_details);
                   initData.myReceiptData.cust_order_id = id || data.data[0].cust_order_id;

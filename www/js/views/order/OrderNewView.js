@@ -81,8 +81,9 @@ define([
   addToNewOrder: function(){
     var restId = this.rest;
     var tabId = $('#table').attr('num') || 1;
-    if(initData.orderNewData.typeFrom == 'takeout' && initData.phoneIndexData.data !== null && !initData.phoneIndexData.data.cust_mobile_no){
-      newChihuo.showPopInfo('Add mobile.',1500,function(){
+    if(initData.orderNewData.typeFrom == 'takeout' && initData.phoneIndexData.data !== null && (!initData.phoneIndexData.data.cust_mobile_no || !initData.phoneIndexData.data.verifyflg)){
+      var tips = initData.phoneIndexData.data.cust_mobile_no ? 'Please verify your phone number' : 'Add mobile and verify';
+      newChihuo.showPopInfo(tips,1500,function(){
          app_router.navigate('phoneList/'+restId,{
                   trigger: true
           });
@@ -266,6 +267,7 @@ define([
 
   orderTypeSet: function(id,type){
     initData.orderNewData.typeFrom = type;
+    initData.orderNewData.restId = (id && id !== 'undefined')  ? id : initData.orderNewData.restId;
     if(type == 'takeout'){
        chihuo.wkAjax({
           type: 'GET',
@@ -284,7 +286,7 @@ define([
                   } 
               }); 
     }
-    this.render(id);
+    this.render(initData.orderNewData.restId);
   },
 
   initData: function(id){

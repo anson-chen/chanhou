@@ -2,9 +2,9 @@
 	<nav class="common-title">
 	<%if(data){%>
 		<%if(data.cust_mobile_no){%>
-			<a href="#phoneDetail/edit" class="school-save">edit</a>
+			<a href="#phoneDetail/edit<%if(initData.route){%>/<%=initData.route%><%}%>" class="school-save">Edit</a>
 		<%}else{%>
-			<a href="#phoneDetail/add" class="add-new">+</a>
+			<a href="#phoneDetail/add<%if(initData.route){%>/<%=initData.route%><%}%>" class="add-new">+</a>
 		<%}%>
 	<%}%>	
 		<a href="javascript:history.go(-1);" class="common-return"></a>

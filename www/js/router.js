@@ -212,6 +212,7 @@ define([
       'phoneList':'showPhoneList',
       'phoneList/:type':'showPhoneList',
       'phoneDetail/:type':'showPhoneDetail',
+      'phoneDetail/:type/:restId':'showPhoneDetail',
       'phoneVerify':'showPhoneVerify',
       'phoneVerify/:type':'showPhoneVerify',
       'orderEdit/:id/:restId/:index':'showOrderEdit',
@@ -792,7 +793,7 @@ define([
 
     app_router.on('route:showPhoneDetail', function (actions,name) {
         phoneDetailView = phoneDetailView || new PhoneDetailView();
-        phoneDetailView.render(actions);
+        phoneDetailView.render(actions,name);
     }); 
 
     app_router.on('route:showPhoneVerify', function (actions,name) {

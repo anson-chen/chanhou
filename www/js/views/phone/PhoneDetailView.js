@@ -14,7 +14,7 @@ define([
      'click #clearPhoneDetail': 'clearPhoneDetail',
     },
 
-    render: function(type){
+    render: function(type,resId){
       newChihuo.setPage('phoneDetail');
       newChihuo.windowInit();
       if(type=='edit'){
@@ -24,6 +24,7 @@ define([
       }
       this.$el.html(_.template(phoneDetailTemplate,initData.phoneDetailData));
       this.initData();
+      this.resId = resId ? resId : '';
     },
 
     clearPhoneDetail: function(){
@@ -32,6 +33,7 @@ define([
 
     saveMobileNumber: function(){
       var num = $.trim($('#mobileNum').val());
+      var _this = this;
       if(!num.length){
         newChihuo.showPopInfo('please enter your mobile number',1200);
         return;
@@ -53,7 +55,7 @@ define([
                         initData.phoneIndexData.verifyNum = data.data[0].verifynum;
                        }
                         newChihuo.showPopInfo(str,1200,function(){
-                          app_router.navigate('phoneList',{
+                          app_router.navigate('phoneList'+(_this.resId ? '/'+_this.resId : ''),{
                             trigger: true
                           });
                         });

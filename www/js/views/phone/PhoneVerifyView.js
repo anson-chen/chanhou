@@ -61,9 +61,6 @@ define([
                         }); 
                       }else{
                         newChihuo.showPopInfo('verification failed',1200);
-                         app_router.navigate('orderType/'+_this.resId+'/takeout',{
-                              trigger: true
-                            });
                       }
                      
                      }else{
