@@ -47,7 +47,7 @@
 				<li>
 					<p>Date: <%=d.date%></p>
 					<%_.each(d.menu_items,function(menu,k){%>
-					<span><%=menu.num%> * $<%=menu.price%></span><b><%=k+1%>.</b><p><%=menu.menu_desc%></p>
+					<span><%=menu.num%> * $<%=menu.price%></span><b><%=k+1%>.</b><p><%=menu.menu_name || menu.menu_desc%></p>
 					<div class="price-kind">$<%=parseFloat(menu.sub_total).toFixed(2)%></div>
 					<%})%>
 				</li>

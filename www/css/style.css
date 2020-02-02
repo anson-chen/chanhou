@@ -4982,7 +4982,7 @@ img.lazy {
     color: #333;
 }
 .order-new-wrap {
-
+    padding-bottom: 70px;
 }
 .order-new-mask {
     position: absolute;
