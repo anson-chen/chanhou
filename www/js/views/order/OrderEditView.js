@@ -8,7 +8,7 @@ define([
   var OrderEditView = Backbone.View.extend({
     el: $("#page"),
     events: {
-      'click #cancelOrder': 'cancelOrder',
+      'click #cancelOrder': 'showCancelInfo',
       'click .order-operate':'operationDishNum',
       'click .order-delete': 'deleteDish',
       'click #updateOrder': 'updateOrder',
@@ -251,8 +251,7 @@ define([
       });
     },
 
-    cancelOrder: function(e){
-      var $obj = $(e.currentTarget);
+    cancelOrder: function(){
       var restId = initData.orderEditData.restId;
       var ordId = initData.orderEditData.ordId;
       var _this = this;
@@ -280,6 +279,21 @@ define([
                      }
                   }
               });  
+    },
+
+    showCancelInfo: function(e){
+      var _this = this;
+       var pop = $('#popInfo');
+       var info ='<p>are you sure to cancel this order?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           _this.cancelOrder();
+       });
+
     },
 
     fixData: function(data,type){

@@ -194,7 +194,8 @@ define([
     }
     var num = $('.menu-num-set').text();
     var $obj = $('.order-new-detail');
-    var price = $obj.attr('price').substring(1);
+    var price = $obj.attr('price');
+        price = price.indexOf('$')>=0 ? price.substring(1) : price;
     var menuId = $obj.attr('menuId');
     var desc = $obj.attr('desc');
     var name = $obj.attr('name');
