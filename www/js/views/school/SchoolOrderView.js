@@ -111,9 +111,10 @@ define([
               },
           success: function(data){
               if(data.status == 0){
-                newChihuo.showPopInfo('Order was sent successfully.',1500);
+                newChihuo.showPopInfo('Order was submitted successfully. Please click on “My Order” button to browse the details and make the payment. Thanks!',3000);
                 _this.clearSchoolOrder();
                 $('#orderSchoolList').trigger('click');
+                $('.order-bottom .order-bottom-right').addClass('show-new');
               }else{
                  newChihuo.showPopInfo(data.errorMsg,1200);
               }

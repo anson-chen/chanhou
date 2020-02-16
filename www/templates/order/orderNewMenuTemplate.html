@@ -3,6 +3,15 @@
 </div>
 <div class="gw-data order-new-zone">
 <%if(data && data.length){%>
+	<%if(initData.orderNewData.typeFrom == 'takeout'){%>
+	<%if (initData.phoneIndexData.data && initData.phoneIndexData.data.cust_mobile_no){%>
+		<p>Phone No: <%=initData.phoneIndexData.data.cust_mobile_no%></p>
+	<%}else{%>
+		<a href="#phoneList">Add Mobile</a>
+	<%}}%>
+	<div class="order-bottom-right button-top" id="placeNewOrder">
+		place an order
+	</div>
 	<ul>
 	<%_.each(data,function(d,i){%>
 		<li>
@@ -19,15 +28,6 @@
 		</li>
     <%})%>				
 	</ul>
-	<%if(initData.orderNewData.typeFrom == 'takeout'){%>
-	<%if (initData.phoneIndexData.data && initData.phoneIndexData.data.cust_mobile_no){%>
-		<p>Phone No: <%=initData.phoneIndexData.data.cust_mobile_no%></p>
-	<%}else{%>
-		<a href="#phoneList">Add Mobile</a>
-	<%}}%>
-	<div class="order-bottom-right" id="placeNewOrder">
-		place an order
-	</div>
 <%}else{%>
  <p class="no-order">there is no order</p>
 <%}%>

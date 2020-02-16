@@ -2,8 +2,8 @@
 	<div class="food-bg">
 		<nav class="common-title">
 			<%if(filter!=='bottom'){%><a href="javascript:;" class="reload-top-icon" style="margin:5px 10px 0 0;"></a><%}else{%>
-			<a href="#myIndex" class="my-rewards">Me</a>
-			<a href="javascript:;" style="margin: 5px 10px 0 0;" class="reload-top-icon"></a>
+			
+			<a href="javascript:;" style="margin: 5px 0 0;" class="reload-top-icon"></a>
 			<%}%>
 			<%if(filter!=='bottom'){%><a href="javascript:;" class="common-return menu-return"></a><%}else{%>
 			<a href="javascript:history.go(-1);" class="common-return"></a>
@@ -13,6 +13,8 @@
 	</div>
 	<div class="order-list-wrap">
 	<%if(data && data.length){%>
+	<p class="payment-history-button" style="margin-right:0;"><a href="#myPayment" style="color:#fff;">Payment History</a></p>
+	<div class="clear"></div>
 	<%_.each(data,function(detail,i){%>
 	<%if(detail.order_type == 1){%>
 		<%if(newChihuo.dealOrderData(detail.order_details,2)){%>
@@ -31,15 +33,16 @@
 			<%})%>	
 			</ul>
 			<div class="list-all-price">All: $<%=newChihuo.dealOrderData(detail.order_details,2).toFixed(2)%></div>
-			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
 		</div>
 		<%}%>
 		<%}else{%>
 		 <p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><b>school-lunch</b> order id: <%=detail.order_id%><br/>status: <%=detail.order_status_desc%><br/><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
 		 <div class="wrap-border clearfix" style="position:relative;">
-		 <%if(detail.order_details && JSON.parse(detail.order_details)){%>
+		 <%if (detail.order_details && JSON.parse(detail.order_details)){%>
 			<span class="toggle-show-order"></span>
 			<ul class="order-list-show clearfix" style="display:none;">
+			<%if(JSON.parse(detail.order_details)['Orders']){%>
 			<%_.each(JSON.parse(detail.order_details)['Orders'],function(d,i){%>
 				<li>
 					<p><span style="float:right;"><%=JSON.parse(detail.order_details)['General Information']['child name']%></span>date: <%=d.date%></p>
@@ -49,10 +52,10 @@
 					<%})%>
 				</li>
 			<%})%>	
-			
+			<%}%>
 			</ul>
-			<div class="list-all-price">All: $<%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax']).toFixed(2)%></div>
-			<span class="go-pay-btn <%if(detail.order_status_code == 3){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+			<div class="list-all-price">All: $<%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax'] || 0).toFixed(2)%></div>
+			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
 			<%}%>
 		</div>
 		<%}})%>

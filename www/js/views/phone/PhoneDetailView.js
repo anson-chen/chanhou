@@ -10,7 +10,7 @@ define([
     el: $("#page"),
     events: {
      'click #saveMobile': 'saveMobileNumber',
-     'click #deleteMobile': 'deleteMobileNumber',
+     'click #deleteMobile': 'showDeleteInfo',
      'click #clearPhoneDetail': 'clearPhoneDetail',
     },
 
@@ -35,7 +35,7 @@ define([
       var num = $.trim($('#mobileNum').val());
       var _this = this;
       if(!num.length){
-        newChihuo.showPopInfo('please enter your mobile number',1200);
+        newChihuo.showPopInfo('Please enter your mobile number',1200);
         return;
       }
       chihuo.wkAjax({
@@ -66,9 +66,24 @@ define([
               });  
     },
 
+    showDeleteInfo: function(e){
+      var _this = this;
+       var pop = $('#popInfo');
+       var info ='<p>Are you sure to delete your mobile number?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           _this.deleteMobileNumber();
+       });
+
+    },
+
     deleteMobileNumber: function(){
       var num =initData.phoneIndexData.data.cust_mobile_no || $.trim($('#mobileNum').val());
-      chihuo.wkAjax({
+      num && chihuo.wkAjax({
           type: 'POST',
           url: chihuo.getApiUri3('rmCustMobile.json'),
           data: {
@@ -80,7 +95,7 @@ define([
           success: function(data){
               if(data.status == 0){
                  initData.phoneIndexData.data = null;
-                  newChihuo.showPopInfo('delete successfully',1200,function(){
+                  newChihuo.showPopInfo('Delete successfully.',1200,function(){
                           app_router.navigate('phoneList',{
                             trigger: true
                           });

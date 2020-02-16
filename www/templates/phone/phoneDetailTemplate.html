@@ -1,6 +1,8 @@
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="school-save" id="saveMobile">save</a>
+    <%if(type=='edit'){%>
+		  <a href="javascript:;" class="school-save" id="deleteMobile">Delete</a>
+    <%}%>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3><%if(type=='edit'){%>Edit<%}else{%>Add<%}%> Mobile</h3>
 	</nav>
@@ -14,10 +16,8 @@
           <span>*</span>
        </div>
         <p class="phone-para">We use your mobile number to secure your order and payment. We never ever share your pravicy with any other three parties.</p>
-    </div>
-    <%if(type=='edit'){%>
-    <div class="quit-setting" style="background: #fb6700;" id="deleteMobile">Delete</div>
-    <%}%>
+    </div>   
+    <div class="quit-setting" style="background: #fb6700;" id="saveMobile">Save</div>
 </div>  
 </div>
 	

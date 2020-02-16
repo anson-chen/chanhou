@@ -30,6 +30,9 @@
             <div style="margin-left:100px;">
              <%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%>
               <h3 class="rest-name-title" style="margin-right:0;"><a href="#myProfile" class="write-name"><%=d.display_name || 'set name'%></a><%if(d.social_media_name){%> (<%=d.social_media_name%>)<%}%></h3>
+              <%if(d.social_media_id){%>
+              <p class="rest-info-show" style="padding-top:5px; line-height:20px;"><%=d.social_media_id%></p>
+              <%}%>
              <%}else{%>
               <h3 class="rest-name-title" style="margin-right:0;"><%=d.display_name%><%if(d.social_media_name){%>(<%=d.social_media_name%>)<%}%></h3>
              <%}%>

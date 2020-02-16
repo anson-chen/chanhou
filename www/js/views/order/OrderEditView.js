@@ -268,7 +268,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('cancel successfully',1200,function(){
+                        newChihuo.showPopInfo('delete successfully',1200,function(){
                           _this.orderDataSet();
                           app_router.navigate('myOrder',{
                             trigger: true
@@ -284,7 +284,7 @@ define([
     showCancelInfo: function(e){
       var _this = this;
        var pop = $('#popInfo');
-       var info ='<p>are you sure to cancel this order?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       var info ='<p>Are you sure to delete this order?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
        pop.html(info).addClass('pop-info-show');
        $(".error-pop .close-pop").on('click',function(){
            pop.removeClass('pop-info-show').html('');
@@ -323,26 +323,32 @@ define([
           }
           return newArray;
       }else{
+        var orderLast = [];
         data['Orders'].forEach(function(item,index){
           if(item['fix']){
             delete item['fix'];
           }
           var menu = item['menu_items'];
-          for(var i=0; i<menu.length; i++){
-            if(menu[i]['fix']){
-              delete menu[i]['fix'];
+          var menuLast = [];
+          if(menu && menu.length){
+            for(var i=0; i<menu.length; i++){
+              if(menu[i]['fix']){
+                delete menu[i]['fix'];
+              }
+              if(menu[i].hasOwnProperty('origin_num')){
+                delete menu[i]['origin_num'];
+              }
+              if(menu[i]['num'] != 0){
+               menuLast.push(menu[i]);
+              } 
             }
-            if(menu[i].hasOwnProperty('origin_num')){
-              delete menu[i]['origin_num'];
-            }
-            if(menu[i]['num'] == 0){
-             menu.splice(i,1);
-            } 
-          }
-          if(item['menu_items'].length == 0){
-              data['Orders'].splice(index,1);
+            menu = menuLast;
+          }     
+          if(menu.length != 0){
+             orderLast.push(menu);
           }
         });
+        data['Orders'] = orderLast;
       }
       return data;
     },
@@ -358,17 +364,18 @@ define([
         "General Information": this.orderDetail['General Information'],
         "Orders" : this.orderDetail['Orders'],
       } : this.orderDetail;
-      
-      if(type == 2 && this.orderDetail['Orders'].length == 0){
-          newChihuo.showPopInfo('this order has nothing, you can cancel it.',1200);
-          return;
-      }
-      if(type == 1 && this.orderDetail.length == 0){
-          newChihuo.showPopInfo('this order has nothing, you can cancel it.',1200);
-          return;
-      }
+
       data = this.fixData(data,type);
       console.log(data);
+      if(type == 2 && data['Orders'].length == 0){
+          newChihuo.showPopInfo('There is nothing in this order, please delete it.',3000);
+          return;
+      }
+      if(type == 1 && data.length == 1){
+          newChihuo.showPopInfo('There is nothing in this order, please check it.',3000);
+          return;
+      }
+      
       chihuo.wkAjax({
           type: 'POST',
           url: type == 2 ? chihuo.getApiUri4('chgKidsOrder.json') : chihuo.getApiUri3('updateOrder.json'),

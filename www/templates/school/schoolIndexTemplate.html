@@ -12,10 +12,10 @@
 	</nav>
 </div>
 <div class="school-wrap" style="min-height:80vh;">
-	<a href="#phoneList" style="float:right; font-size:20px; font-weight:bold; color:#333; padding-right:10px;">Mobile number set</a>
-	<%if(data && data.length){%>
-	<a href="#childSelect" style="font-size:20px; font-weight:bold; color:#333; padding-left:10px;">Select child for lunch</a>
-	<%}%>
+	<p class="edit-mobile-button" style="margin-top:10px;">
+	<a href="#phoneList" style="color:#fff;">Edit Mobile</a>
+	</p>
+	<div class="clear"></div>
 	<%if(data){%>
 	<%if(data.length){%>
 	<%_.each(data,function(d,i){%>
@@ -27,6 +27,7 @@
 	</div>
 	<%}%>
 	<%})%>
+	<div class="quit-setting" style="background: #fb6700;"><a href="#childSelect" style="color:#fff;">Order Lunch</a></div>
 	<%}else{%>
 		<p class="phone-para"><b>No child to select for order</b><br/>Please start to enjoy school lunch order service by adding your school child profile, and we never ever share your child privacy with any other third parties.</p>
 	<%}}%>

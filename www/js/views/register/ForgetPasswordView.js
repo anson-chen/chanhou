@@ -23,7 +23,7 @@ define([
     },
 
     isEmail:function (str){
-      var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+      var reg = /^[A-Za-z0-9]+([_\-\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
       return reg.test(str);
     }, 
   
@@ -60,7 +60,7 @@ define([
             }
     
           }else{
-              newChihuo.showPopInfo(data.errorMsg);
+              newChihuo.showPopInfo('Error! Please enter your register email',2000);
           }
         },
         error: function () {
@@ -68,7 +68,7 @@ define([
         }
       });
      }else{
-       newChihuo.showPopInfo(newChihuo.localize('please_enter_email'));
+       newChihuo.showPopInfo('Please enter your register email',1200);
        return false;
      }
    },

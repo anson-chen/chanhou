@@ -1,7 +1,7 @@
 
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="school-save" id="updateOrder" <%if(data && data.length){%>type="<%=data[0].order_type%>" table="<%=data[0].rest_table_id%>"<%}%>>Save</a>
+		<%if(data[0].order_type == '2'){%><a href="javascript:;" class="school-save" id="cancelOrder" type="<%=data[0].order_type%>">Delete</a><%}%>
 		<a href="javascript:history.go(-1);" class="common-return" id="cancelAddNew"></a>
 		<h3>Modify Order</h3>
 	</nav>
@@ -34,6 +34,7 @@
 		 <a href="#childOrder/<%=detail.rest_id%>/new"><span class="add-new-order">+</span></a>
 		 <%if(detail.order_details && JSON.parse(detail.order_details)){%>
 			<ul class="order-list-show clearfix">
+			<%if(JSON.parse(detail.order_details)['Orders']){%>
 			<%_.each(JSON.parse(detail.order_details)['Orders'],function(d,i){%>
 				<li>
 					<p <%if(d.fix){%>style="color:#ff9c59;"<%}%>><span style="float:right;"><%=JSON.parse(detail.order_details)['General Information']['child name']%></span>date: <%=d.date%></p>
@@ -45,15 +46,14 @@
 					</div>
 					<%})%>
 				</li>
-			<%})%>	
+			<%})%>
+			<%}%>	
 			</ul>
-			<div class="list-all-price">All: $<b><%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax']).toFixed(2)%></b></div>	
+			<div class="list-all-price">All: $<b><%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax'] || 0).toFixed(2)%></b></div>	
 			<%}%>
 		</div>
 		<%}})%>
-		<%if(data[0].order_type == '2'){%>
-		<div class="quit-setting" style="background: #fb6700;" id="cancelOrder" type="<%=data[0].order_type%>">Cancel Order</div>
-		<%}%>
+		<div class="quit-setting" <%if(data && data.length){%>type="<%=data[0].order_type%>" table="<%=data[0].rest_table_id%>"<%}%> style="background: #fb6700;" id="updateOrder">Save Order</div>
 	<%}%>
 	</div>	
     

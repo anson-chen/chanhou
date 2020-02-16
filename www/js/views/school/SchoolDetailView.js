@@ -10,7 +10,7 @@ define([
     el: $("#page"),
     events: {
       'click #saveChild':'saveChildInfo',
-      'click #deleteChild':'deleteChildInfo',
+      'click #deleteChild':'showDeleteInfo',
       'change #schoolId': 'schoolInfoChange'
      
     },
@@ -59,7 +59,7 @@ define([
       };
       chihuo.wkAjax({
           type: 'POST',
-          url: chihuo.getApiUri4(type == 'Edit' ? 'updateChild.json' : 'addChild.json'),
+          url: chihuo.getApiUri4(type == 'edit' ? 'updateChild.json' : 'addChild.json'),
           data: {
               chdId: type == 'edit' ? chdId : undefined,
               cont: JSON.stringify(detail),
@@ -69,7 +69,7 @@ define([
               },
           success: function(data){
               if(data.status == 0){
-                var str = type =='Edit' ? 'Update child info successfully!' : 'Add child info successfully!';
+                var str = type =='edit' ? 'Update child info successfully!' : 'Add child info successfully!';
                 newChihuo.showPopInfo(str,1200,function(){
                     app_router.navigate('childList/'+initData.schoolIndexData.rest,{
                             trigger: true
@@ -84,8 +84,24 @@ define([
 
     },
 
-    deleteChildInfo: function(e){
+    showDeleteInfo: function(e){
+      var _this = this;
       var chdId = $(e.currentTarget).attr('chdId');
+       var pop = $('#popInfo');
+       var info ='<p>Are you sure to delete this child profile?</p><div class="error-pop"><span class="close-pop">cancel</span><span class="refresh">ok</span></div>'
+       pop.html(info).addClass('pop-info-show');
+       $(".error-pop .close-pop").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+       });
+       $(".error-pop .refresh").on('click',function(){
+           pop.removeClass('pop-info-show').html('');
+           _this.deleteChildInfo(chdId);
+       });
+
+    },
+
+    deleteChildInfo: function(chdId){
+      var chdId = chdId;
       chihuo.wkAjax({
           type: 'POST',
           url: chihuo.getApiUri4('rmChild.json'),

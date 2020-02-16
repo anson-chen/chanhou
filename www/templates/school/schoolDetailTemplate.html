@@ -1,6 +1,8 @@
 <div class="food-bg">
 	<nav class="common-title">
-		<a href="javascript:;" class="school-save" id="saveChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%> type="<%if(type=='edit'){%>Edit<%}else{%>add<%}%>">Save</a>
+		<%if(type=='edit'){%>
+		<a href="javascript:;" class="school-save" id="deleteChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%>> Delete</a>
+		<%}%>
 		<a href="javascript:history.go(-1);" class="school-cancel">Cancel</a>
 		<h3><%if(type=='edit'){%>Edit<%}else{%>Add<%}%> child profile</h3>
 	</nav>
@@ -40,9 +42,9 @@
        </div>
         <p class="agreement">Mandatory info,must provide correctly by parent user</p>
     </div>
-    <%if(type=='edit'){%>
-    <div class="quit-setting" style="background: #fb6700;" id="deleteChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%>>Delete</div>
-    <%}%>
+    
+    <div class="quit-setting" style="background: #fb6700;" id="saveChild" <%if(type=='edit'){%>chdId="<%=info.child_id%>"<%}%> type="<%if(type=='edit'){%>edit<%}else{%>add<%}%>">Save</div>
+    
 </div>  
 </div>
 	

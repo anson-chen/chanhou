@@ -54,9 +54,9 @@ define([
       });
     },
     isEmail:function (str){
-    var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    var reg = /^[A-Za-z0-9]+([_\-\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
     return reg.test(str);
-  },
+    },
     registerInterface:function(){
       var _this = this;
       var email=$("#email").val();

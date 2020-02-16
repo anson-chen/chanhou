@@ -3,6 +3,9 @@
 </div>
 <div class="gw-data order-new-zone">
 <%if(data.Orders && data.Orders.length){%>
+	<div class="order-bottom-right button-top" id="placeSchoolOrder">
+		place an order
+	</div>
 	<ul>
 	<%_.each(data.Orders,function(detail,i){%>
 		<li>
@@ -22,9 +25,6 @@
 		</li>
     <%})%>				
 	</ul>
-	<div class="order-bottom-right" id="placeSchoolOrder">
-		place an order
-	</div>
 <%}else{%>
  <p class="no-order">there is no order</p>
 <%}%>

@@ -618,7 +618,8 @@ input::-webkit-input-placeholder{
     padding: 10px;
 }
 .gw-data ul {
-
+    clear: both;
+    padding-top: 10px;
 }
 .gw-data li {
     position: relative;
@@ -4480,7 +4481,7 @@ img.lazy {
 }
 .order-bottom-left p {
     position: absolute;
-    background: #666;
+    background: #fb6700;
     color: #fff;
     font-size: 12px;
     padding: 3px 7px;
@@ -4496,18 +4497,38 @@ img.lazy {
     float: left;
 }
 
-.order-bottom-right {
+.order-bottom-right,.payment-history-button,.edit-mobile-button {
     float: right;
     width: 120px;
     height: 32px;
     border-radius: 16px;
-    background: -webkit-linear-gradient(top, #333 0, #aaa 100%);
-    box-shadow: 0px 1px 20px 3px #dfdfdf;
+    background: #fb6700;
     margin: 3px 15px 0 0;
     text-align: center;
     line-height: 32px;
     color: #fff;
     font-size: 16px;
+}
+.order-bottom-right.button-top {
+    margin-right: 5px;
+}
+.order-bottom .order-bottom-right.show-new {
+    position: relative;
+}
+.order-bottom .order-bottom-right.show-new:before {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    content: 'New';
+    background: #fff;
+    color: #fb6700;
+    font-size: 12px;
+    border-radius: 10px;
+    width: 30px;
+    height: 20px;
+    line-height: 20px;
+    box-shadow: 0 1px 10px 3px #fb6700;
+
 }
 .order-bottom-right.disable-order {
     background: -webkit-linear-gradient(left, #bbb 0, #ccc 100%);
@@ -4885,6 +4906,7 @@ img.lazy {
 .toggle-show-order.show-next {
     transform: rotate(0deg);
 }
+
 .payment {
 
 }
