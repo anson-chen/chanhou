@@ -17,7 +17,7 @@
             <%if(bannerData && bannerData.length){%>
              <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>
                <%_.each(bannerData,function(d,i){%>
-                 <div class="swiper-slide <%if(d.event_name !=='greeting' && d.event_detail.length){%>banner-detail<%}%>" banner=<%=i%>><a href="javascript:;"><div class="index-banner-wrap"><img src="<%=d.purl%>" class="banner-img"></div></a></div>
+                 <div class="swiper-slide <%if(d.event_name !=='greeting' && d.event_detail.length){%>banner-detail<%}%>" banner=<%=i%>><a href="<%if(d.rest_id<=0){%>javascript:;<%}else{%>#restaurant/<%=d.rest_id%><%}%>"><div class="index-banner-wrap"><img src="<%=d.purl%>" class="banner-img"></div></a></div>
                <%})%>
             <%}else{%>
             <div class="swiper-slide"><a href="javascript:;"><div class="index-banner-wrap"><img src="imgs/banner1_index.jpg" class="banner-img"><div class="ad-para"><b></b><p><i class="foody-monkey"></i><br><span>Bring You Health And Trust<br>The 1st Canadian Dish Review App</span></p></div></div></a></div>

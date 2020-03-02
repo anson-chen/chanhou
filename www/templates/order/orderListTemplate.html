@@ -13,14 +13,14 @@
 	</div>
 	<div class="order-list-wrap">
 	<%if(data && data.length){%>
-	<p class="payment-history-button" style="margin-right:0;"><a href="#myPayment" style="color:#fff;">Payment History</a></p>
+	<p class="payment-history-button" style="margin-right:0;width:130px;"><a href="#myPayment" style="color:#fff;">Payment History</a></p>
 	<div class="clear"></div>
 	<%_.each(data,function(detail,i){%>
 	<%if(detail.order_type == 1){%>
 		<%if(newChihuo.dealOrderData(detail.order_details,2)){%>
 		<p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><%if(newChihuo.dineInOrderData(detail.order_details) && newChihuo.dineInOrderData(detail.order_details)['dinein_flag'] == 'N'){%><b>takeout</b><%}else{%><b>dine-in</b><%}%> order id: <%=detail.order_id%>
-		<br/>status: <%=detail.order_status_desc%><br/>
-		<b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span>
+		<br/><b style="font-size:16px;font-weight:normal;">status: <%=detail.order_status_desc%></b><br/>
+		<a href="#restaurant/<%=detail.rest_id%>" style="color:#000;"><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span></a><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span>
 		</p>
 		<div class="wrap-border clearfix" style="position:relative;">
 			<span class="toggle-show-order"></span>
@@ -33,11 +33,11 @@
 			<%})%>	
 			</ul>
 			<div class="list-all-price">All: $<%=newChihuo.dealOrderData(detail.order_details,2).toFixed(2)%></div>
-			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>><%if(detail.order_status_code==6){%>Payment succeed<%}else{%>Proceed to checkout<%}%></span>	
 		</div>
 		<%}%>
 		<%}else{%>
-		 <p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><b>school-lunch</b> order id: <%=detail.order_id%><br/>status: <%=detail.order_status_desc%><br/><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
+		 <p style="padding-top:10px;"><%if(detail.editable == 'Y'){%><a href="#orderEdit/<%=detail.order_id%>/<%=detail.rest_id%>/<%=i%>" class="order-edit">Edit</a><%}%><b>school-lunch</b> order id: <%=detail.order_id%><br/><b style="font-size:16px; font-weight:normal;">status: <%=detail.order_status_desc%></b><br/><a href="#restaurant/<%=detail.rest_id%>" style="color:#000;"><b><%=JSON.parse(detail.rest_info)['rest_name']%></b><span style="padding-left:10px;"><%=JSON.parse(detail.rest_info)['addr']%></span></a><br/><span>create time: <%=chihuo.timestampToTime(detail.order_created_datetime,'order')%> <%=chihuo.getDate(detail.order_created_datetime)%><br/>update time: <%=chihuo.timestampToTime(detail.order_updated_datetime,'order')%> <%=chihuo.getDate(detail.order_updated_datetime)%></span></p>
 		 <div class="wrap-border clearfix" style="position:relative;">
 		 <%if (detail.order_details && JSON.parse(detail.order_details)){%>
 			<span class="toggle-show-order"></span>
@@ -55,7 +55,7 @@
 			<%}%>
 			</ul>
 			<div class="list-all-price">All: $<%=parseFloat(JSON.parse(detail.order_details)['order_extra']['before_tax'] || 0).toFixed(2)%></div>
-			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>>proceed to checkout</span>	
+			<span class="go-pay-btn <%if(detail.order_status_code == 3 || detail.order_status_code == 4){%>can-go-pay<%}%>" orderId="<%=detail.order_id%>" index=<%=i%>><%if(detail.order_status_code==6){%>Payment succeed<%}else{%>Proceed to checkout<%}%></span>	
 			<%}%>
 		</div>
 		<%}})%>
@@ -69,4 +69,33 @@
 		<a href="javascript:;"><p class="go-pay">Require to Pay</p></a>
 	</div>
 	<%}%>
+	<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
+        </a>
+      </li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+       <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

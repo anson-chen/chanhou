@@ -4814,7 +4814,6 @@ img.lazy {
 }
 .pay-method {
     border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
     height: 50px;
     line-height: 48px;
     font-size: 14px;
@@ -4824,7 +4823,7 @@ img.lazy {
     color: #ff8b4c;
 }
 .pay-rewards {
-    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
     padding: 10px 0;
 }
 .pay-rewards span {
@@ -4842,6 +4841,8 @@ img.lazy {
     font-size: 14px;
     height: 40px;
     margin-top: 15px;
+    border-top: 1px solid #ccc;
+    padding-top: 7px;
 }
 .pay-tip span {
     display: inline-block;

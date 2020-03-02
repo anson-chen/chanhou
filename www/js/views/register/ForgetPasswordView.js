@@ -23,7 +23,7 @@ define([
     },
 
     isEmail:function (str){
-      var reg = /^[A-Za-z0-9]+([_\-\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
+      var reg = /^[A-Za-z0-9_\-\.\+]+([A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
       return reg.test(str);
     }, 
   
@@ -35,7 +35,7 @@ define([
         type: 'POST',
         url: chihuo.getApiUri('reqResetPwd.json'),//修改密码接口
         data:{
-          kw: email,
+          kw: encodeURIComponent(email),
           lat: newChihuo.lat,
           lng: newChihuo.lon,
           locale: 'en'

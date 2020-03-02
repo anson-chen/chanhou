@@ -24,10 +24,10 @@
 		<p class="pay-other"><span>$<em class="tax-get"><%if(newChihuo.dealOrderData(data.order_details,3).tax_amount && newChihuo.dealOrderData(data.order_details,3).tax_amount['TOTAL TAX']){%><%=newChihuo.dealOrderData(data.order_details,3).tax_amount['TOTAL TAX']%><%}else{%>0<%}%></em></span>Tax:</p>
 		<p class="pay-other"><span class="tip-num-set">$<em class="tip-get">0</em></span>Tip:</p>
 		<div class="pay-all-price"><span>$<em class="total-get"><%if(data.order_details){%><%=newChihuo.orderTotalData(newChihuo.dealOrderData(data.order_details,3)).toFixed(2)%><%}else{%>0<%}%></em></span>Total</div>
-		<div class="pay-method">
+		<!-- <div class="pay-method">
 			<span>Add/change</span>
 			Payment Method 
-		</div>
+		</div> -->
 		<!-- <div class="pay-rewards">
 			<h3><span>235pts</span>Rewards</h3>
 			<div>
@@ -43,6 +43,7 @@
 <%if(data && data.order_type == 2){%>
 <div class="wrap-border clearfix">
 		<ul class="order-list-show clearfix">	
+			<%if(JSON.parse(data.order_details)['Orders']){%>
 			<%_.each(JSON.parse(data.order_details)['Orders'],function(d,i){%>
 				<li>
 					<p>Date: <%=d.date%></p>
@@ -51,7 +52,8 @@
 					<div class="price-kind">$<%=parseFloat(menu.sub_total).toFixed(2)%></div>
 					<%})%>
 				</li>
-			<%})%>				
+			<%})%>
+			<%}%>				
 		</ul>
 		<div class="pay-info">
 		<!-- <div class="pay-discount">
@@ -61,10 +63,10 @@
 		<p class="pay-other"><span>$<em class="tax-get"><%if(JSON.parse(data.order_details)['order_extra']['tax_amount']){%><%=JSON.parse(data.order_details)['order_extra']['tax_amount']['TOTAL_TAX']%><%}else{%>0<%}%></em></span>Tax:</p>
 		<p class="pay-other"><span class="tip-num-set">$<em class="tip-get">0</em></span>Tip:</p>
 		<div class="pay-all-price"><span>$<em class="total-get"><%if(JSON.parse(data.order_details)['order_extra']['total_amount']){%><%=JSON.parse(data.order_details)['order_extra']['total_amount'].toFixed(2)%><%}else{%>0<%}%></em></span>Total:</div>
-		<div class="pay-method">
+		<!-- <div class="pay-method">
 			<span>Add/change</span>
 			Payment Method 
-		</div>
+		</div> -->
 		<!-- <div class="pay-rewards">
 			<h3><span>235pts</span>Rewards</h3>
 			<div>
@@ -75,5 +77,5 @@
 		<!-- <div class="pay-tip">Add a tip <span class="tip-select">none</span><span class="tip-select">10%</span><span class="tip-select">15%</span><span class="tip-select">20%</span></div> -->
 		</div>	 
 </div>
-<div class="pay-button" rest="<%=data.rest_id%>" table="<%=data.rest_table_id%>" id="payType2">PAY  NOW<span>$<em class="total-get"><%=JSON.parse(data.order_details)['order_extra']['total_amount'].toFixed(2)%></span></em></div>
+<div class="pay-button" rest="<%=data.rest_id%>" table="<%=data.rest_table_id%>" id="payType2">PAY  NOW<span>$<em class="total-get"><%if(JSON.parse(data.order_details)['order_extra']['total_amount']){%><%=JSON.parse(data.order_details)['order_extra']['total_amount'].toFixed(2)%><%}else{%>0<%}%></span></em></div>
 <%}%>

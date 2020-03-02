@@ -268,7 +268,7 @@ define([
                   },
                   success: function(data){
                      if(data.status == 0){
-                        newChihuo.showPopInfo('delete successfully',1200,function(){
+                        newChihuo.showPopInfo('Delete successfully',1200,function(){
                           _this.orderDataSet();
                           app_router.navigate('myOrder',{
                             trigger: true
@@ -342,10 +342,10 @@ define([
                menuLast.push(menu[i]);
               } 
             }
-            menu = menuLast;
+            item['menu_items'] = menuLast;
           }     
-          if(menu.length != 0){
-             orderLast.push(menu);
+          if(menuLast.length != 0){
+             orderLast.push(item);
           }
         });
         data['Orders'] = orderLast;
@@ -365,8 +365,9 @@ define([
         "Orders" : this.orderDetail['Orders'],
       } : this.orderDetail;
 
+      console.log(222,data);
       data = this.fixData(data,type);
-      console.log(data);
+      console.log(333,data);
       if(type == 2 && data['Orders'].length == 0){
           newChihuo.showPopInfo('There is nothing in this order, please delete it.',3000);
           return;
