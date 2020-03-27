@@ -364,10 +364,7 @@ define([
         "General Information": this.orderDetail['General Information'],
         "Orders" : this.orderDetail['Orders'],
       } : this.orderDetail;
-
-      console.log(222,data);
       data = this.fixData(data,type);
-      console.log(333,data);
       if(type == 2 && data['Orders'].length == 0){
           newChihuo.showPopInfo('There is nothing in this order, please delete it.',3000);
           return;

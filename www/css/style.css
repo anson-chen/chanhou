@@ -530,7 +530,6 @@ input::-webkit-input-placeholder{
 .side-bg {
     background:url(../imgs/top-bg.png) no-repeat;
     background-size: 100% auto;
-    padding-bottom: 20px;
 }
 #sidebar,#dishDetailWrap,#bannerDetailWrap,#shareChatWrap {
     position: fixed;
@@ -3623,7 +3622,7 @@ input::-webkit-input-placeholder{
     box-shadow: 0 1px 10px #ddd;
     width: 100%;
     transition: all .3s;
-    z-index: 100;
+    z-index: 300;
 }
 .show-photo-select {
     bottom: 0;
@@ -4509,6 +4508,24 @@ img.lazy {
     color: #fff;
     font-size: 16px;
 }
+.restaurant-button {
+    text-align: center;
+    padding: 5px 0 10px;
+}
+.restaurant-button a {
+    height: 28px;
+    min-width: 85px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background: #fb6700;
+    margin: 5px 8px 0;
+    text-align: center;
+    line-height: 28px;
+    color: #fff;
+    font-size: 15px;
+    display: inline-block;
+}
+
 .order-bottom-right.button-top {
     margin-right: 5px;
 }
@@ -5455,14 +5472,7 @@ img.lazy {
     width: 22px;
     transform: rotate(45deg);
 }
-.order-link {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333; 
-    padding-right: 10px;
-    padding-left: 10px;
-    display: inline-block;
-}
+
 .school-bottom {
     min-height: 40px;
     padding: 5px 15px 0;

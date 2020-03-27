@@ -1,4 +1,4 @@
-<div class="rest-bg comment-effect3">
+<div class="rest-bg comment-effect3" style="padding-bottom: 50px;">
 	<nav class="common-title">
 		<a href="javascript:;" class="share share-rest" style="display:block;"></a>
 		<a href="javascript:history.go(<%if(from =='comment'){%>-3<%}else{%>-1<%}%>);" class="common-return"></a>
@@ -34,16 +34,20 @@
 			<h3 class="rest-name-title"><%=d.rest_name%></h3>
 			</div>
 			<p class="rest-info-show" style="padding-top:0;"><%=d.rest_category%><span style="color:#ff8b4c; padding:0 10px;"><%=d.price_level%></span><span style="color:#0bbc13;"><%if(d.discount){%><%}%></span><br><%=d.city_name%><%if(d.chihuo_distance){%><span style="padding-left:10px;"><%=newChihuo.showDistanceInfo(d.chihuo_distance)%></span><%}%><%if(d.total_other_custs){%><br><%=d.total_other_custs%> views in the last 10 minutes<%}%></p>
+		</div>
+		<%if(d.services){%>
+		<div class="wrap-border restaurant-button clearfix">
 			<%if(d.services && d.services.indexOf('school_lunch')>=0){%>
-			<a href="#childList/<%=d.rest_id%>" class="order-link">School Order</a>
-			<%}%>
-			<%if(d.services && d.services.indexOf('takeout')>=0){%>
-			<a href="#orderType/<%=d.rest_id%>/takeout" class="order-link">Takeout Order</a>
-			<%}%>
-			<%if(d.services && d.services.indexOf('dine_in')>=0){%>
-			<a href="#orderType/<%=d.rest_id%>/dinein" class="order-link">Dinein Order</a>
+				<a href="#childList/<%=d.rest_id%>">Kids</a>
+				<%}%>
+				<%if(d.services && d.services.indexOf('takeout')>=0){%>
+				<a href="#orderType/<%=d.rest_id%>/takeout">Takeout</a>
+				<%}%>
+				<%if(d.services && d.services.indexOf('dine_in')>=0){%>
+				<a href="#orderType/<%=d.rest_id%>/dinein">Dine-in</a>
 			<%}%>
 		</div>
+		<%}%>
 		<div class="wrap-border clearfix">
 			<ul class="rest-social clearfix">
 				<li class="rest-icon1"><div class="rest-status <%if(d.checkin_flg){%>done<%}%>"><img src="<%=staticSource.restIcon1%>"></div>
@@ -230,6 +234,35 @@
 </div>
 <div id='shareWrap' share="rest">
 	
+</div>
+<div class="rest-fix-bottom">
+    <ul class="clearfix">
+      <li>
+        <a href="#"><img src="imgs/bottom-h1.png">
+        <p><%=newChihuo.localize('home')%></p>
+        </a>
+      </li>
+      <li id="msgRemind" <%if(!$.isEmptyObject(newChihuo.msgList)){%>class="message-remind"<%}%>>
+         <a href="#chatAdd"><img src="imgs/sdx.png">
+        <p><%=newChihuo.localize('main_homebutton')%></p>
+        </a>
+      </li>
+      <li>
+         <a href="#mapSearch"><img src="imgs/map-button.png">
+         <p>Map</p>
+        </a>
+      </li>
+       <li id="msgFeeds" <%if(newChihuo.activityNum){%>class="message-remind"<%}%>>
+        <a href="#myMessage2"><img src="imgs/bottom-h3.png">
+        <p><%=newChihuo.localize('main_activitybutton')%></p>
+        </a>
+      </li>
+       <li id="msgIndex" <%if(!$.isEmptyObject(newChihuo.requestList)){%>class="message-remind"<%}%>>
+        <a href="#myIndex"><img src="imgs/bottom-h4.png">
+        <p><%=newChihuo.localize('main_profilebutton')%></p>
+        </a>
+      </li>
+    </ul>
 </div>		
 <script>
  	var width=window.innerWidth; 

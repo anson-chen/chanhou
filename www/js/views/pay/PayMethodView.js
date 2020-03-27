@@ -62,7 +62,11 @@ define([
         if(typeof cordova !== 'undefined' && null != cordova){
             window.open = cordova.InAppBrowser.open;
         }
-        history.go(-2);
+
+        app_router.navigate('restaurant/'+restid,{
+                  trigger: true
+        });// go to restaurant index
+
         setTimeout(function(){
             var win=window.open( url, "_blank");
             var timerloop = 0;
@@ -82,6 +86,7 @@ define([
                                 // alert(values[0]);
                                 win.close();
                                 window.clearInterval(timerloop);
+                               
                             }
                         }
                     );

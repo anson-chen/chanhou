@@ -1,20 +1,22 @@
 <div class="food-bg">
 	<nav class="common-title">
-		<%if(initData.phoneIndexData.data){%>
-			<%if(initData.phoneIndexData.data.cust_mobile_no){%>
-			<a href="#childDetail/add" class="add-new">+</a>
-			<%}else{%>
-			<a href="#phoneDetail/add" class="add-new">+</a>
-			<%}%>
-		<%}%>
+		<a href="#childDetail/add" class="add-new">+</a>
 		<a href="javascript:history.go(-1);" class="common-return"></a>
 		<h3>My child list</h3>
 	</nav>
 </div>
-<div class="school-wrap" style="min-height:80vh;">
-	<p class="edit-mobile-button" style="margin-top:10px;">
-	<a href="#phoneList" style="color:#fff;">Edit Mobile</a>
+<div class="school-wrap" style="min-height:80vh; position:relative;">
+	<%if(initData.phoneIndexData.data){%>
+	<p class="edit-mobile-button" style="margin-top:10px;">	
+		<%if(initData.phoneIndexData.data.cust_mobile_no){%>
+			<a href="#phoneDetail/edit" style="color:#fff;">Edit Mobile</a>
+			<span style="position:absolute; left: 20px; top: 12px; color: #333;">
+			Mobile No. : <%=initData.phoneIndexData.data.cust_mobile_no%></span>
+			<%}else{%>
+			<a href="#phoneDetail/add" style="color:#fff;">Add Mobile</a>
+		<%}%>
 	</p>
+	<%}%>
 	<div class="clear"></div>
 	<%if(data){%>
 	<%if(data.length){%>

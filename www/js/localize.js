@@ -101,7 +101,7 @@ var chihuoLocal = {
   "profile_settings_about_contactus": {"en-CA": "Contact Us", "zh-CN": "投诉"},
   "review_service": {"en-CA": "Service", "zh-CN": "服务"},
   "request_sent": {"en-CA": "Request Sent", "zh-CN": "已发送请求"},
-  "profile_login_copyright": {"en-CA": "©2018 FoodyMonkey. All rights reserved.", "zh-CN": "版权所有/馋猴"},
+  "profile_login_copyright": {"en-CA": "©2020 FoodyMonkey. All rights reserved.", "zh-CN": "版权所有/馋猴"},
   "tp_login_success": {"en-CA": "Login Successfully", "zh-CN": "登录成功"},
   "restaurant_restaurantlist": {"en-CA": "Restaurants", "zh-CN": "餐馆列表"},
   "post_points": {

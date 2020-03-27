@@ -639,7 +639,8 @@ var initData = {
   },
   myOrderData: {
     data: [],
-    filter:'bottom'
+    filter:'bottom',
+    payRefresh: null,
   },
   shareData:{
     data: null

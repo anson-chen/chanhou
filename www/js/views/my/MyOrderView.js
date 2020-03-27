@@ -17,9 +17,15 @@ define([
     render: function(info){
       newChihuo.setPage('myOrder');
       initData.myOrderData.data = [];
+      // if(this.fresh){
+      //   clearInterval(this.fresh);
+      // }
       this.$el.html(_.template(orderListTemplate,initData.myOrderData));
       this.initData();
       this.bindEvents();
+      // if(initData.myOrderData.payRefresh && info == 'pay'){   
+      //     this.fresh = setInterval(this.initData.bind(this),3000);        
+      // }
     },
 
     goPayIndex: function(e){
@@ -39,6 +45,10 @@ define([
 
     initData: function(id){
       var _this = this;
+      if(this.fresh && (!initData.myOrderData.payRefresh || !newChihuo.getPage('myOrder'))){
+          initData.myOrderData.payRefresh = null;
+          clearInterval(this.fresh);  
+      }
       chihuo.wkAjax({
           type: 'GET',
           url: chihuo.getApiUri3('getActReqByCID.json'),

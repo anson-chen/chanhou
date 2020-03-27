@@ -217,13 +217,13 @@ define([
   },
 
   tpl: function(){
-    return '<h3 class="menu-title"><%=title%></h3><ul class="order-new-list"><%_.each(data,function(d,i){%><li class="<%if(d.price=="'+'" || d.price =="$0" ){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><%=d.name%><%if(d.price && d.price !="$0"){%><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></li><%})%></ul>';
+    return '<h3 class="menu-title"><%=title%></h3><ul class="order-new-list"><%_.each(data,function(d,i){%><li class="<%if(d.price=="" || d.price =="$0" || d.price == "0"){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><%=d.name%><%if(d.price && d.price !="$0"){%><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></li><%})%></ul>';
   },
 
   detailTpl: function(){
     return '<div class="order-new-mask"><div class="new-title-bg"><p class="pay-rest-name"><%=initData.orderNewData.info.name%></p><span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span><div class="order-new-top" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><span><%=data.price || "$0"%></span><%=data.name%></div><div class="pay-nav clearfix"><p class="order-new-back">view menu</p></div></div>'+
     '<%if(data.children && data.children.length){%><div class="order-new-parent" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>">'+this.detailImg()+'<div class="order-new-detail"><%=data.name%> description:<br/><%=data.desc%></div>'+
-    '<%_.each(data.children,function(d,i){%><div class="order-new-floor"><h3 class="order-second-title"><%=d.name%><%if(d.price !="$0"){%><%=d.price%><%}%></h3><%if(d.children && d.children.length){%><%_.each(d.children,function(info,k){%><p class="order-new-last"><%if(info.price!="$0"){%><span><%=info.price%></span><%}%><%if(!info.children){%><input name="<%=d.name%>" value="<%=info.id%>" origin="<%=info.name%>" id="<%=info.id%>" <%if(d.name=="addons"){%>addon="<%=d.name%>" price="<%=info.price%>"<%}%> max="<%=d.max_selection%>" min="<%=d.min_selection%>" type="<%if(d.min_selection == 1 && d.min_selection == d.max_selection){%>radio<%}else{%>checkbox<%}%>" <%if(k==0 && d.min_selection == 1 && (d.min_selection == d.max_selection)){%>checked<%}%>/><%}%><%=info.name%></p><%if(info.children && info.children.length){%><%}%><%})}%></div><%})%></div><%}else{%><div class="order-new-detail" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><%=data.name%> description:<br/><%=data.desc%></div><%}%><textarea placeholder="Your name, contact number and expected pickup time; Your special request of order." class="order-comments"></textarea></div><div class="order-bottom-bg"><div class="clearfix order-new-operation"><span style="float:right;" class="order-new-add order-new-common">+</span><em class="menu-num-set">0</em><span class="order-new-minus order-new-common">—</span></div><div class="order-new-btn">Add To Order</div></div>';
+    '<%_.each(data.children,function(d,i){%><div class="order-new-floor"><h3 class="order-second-title"><%=d.name%><%if(d.price !="$0"){%><%=d.price%><%}%></h3><%if(d.children && d.children.length){%><%_.each(d.children,function(info,k){%><p class="order-new-last"><%if(info.price!="$0"){%><span><%=info.price%></span><%}%><%if(!info.children){%><input name="<%=d.name%>" value="<%=info.id%>" origin="<%=info.name%>" id="<%=info.id%>" <%if(d.name=="addons"){%>addon="<%=d.name%>" price="<%=info.price%>"<%}%> max="<%=d.max_selection%>" min="<%=d.min_selection%>" type="<%if(d.min_selection == 1 && d.min_selection == d.max_selection){%>radio<%}else{%>checkbox<%}%>" <%if(k==0 && d.min_selection == 1 && (d.min_selection == d.max_selection)){%>checked<%}%>/><%}%><%=info.name%></p><%if(info.children && info.children.length){%><%}%><%})}%></div><%})%></div><%}else{%>'+this.detailImg()+'<div class="order-new-detail" name="<%=data.name%>" menu="<%=data.id%>" price="<%=data.price%>"><%=data.name%> description:<br/><%=data.desc%></div><%}%><textarea placeholder="Your name, contact number and expected pickup time; Your special request of order." class="order-comments"></textarea></div><div class="order-bottom-bg"><div class="clearfix order-new-operation"><span style="float:right;" class="order-new-add order-new-common">+</span><em class="menu-num-set">0</em><span class="order-new-minus order-new-common">—</span></div><div class="order-new-btn">Add To Order</div></div>';
   },
 
    detailImg: function(){
@@ -351,6 +351,7 @@ define([
         }
       });
     }
+    console.log(dealData);
      return dealData;
   },
 
@@ -363,7 +364,7 @@ define([
     var index = $(e.currentTarget).attr('query');
     var data = this.currentData[index];
     var tpl = this.detailTpl(); 
-    console.log(data);
+    console.log(data,1234);
     $("#dishDetailWrap").html(_.template(tpl,{data:data,id:this.rest,tabId:this.tabId})).addClass('show-menu-dish');
     var swiper = new Swiper('#regular-dish', {
         slidesPerView: 'auto',

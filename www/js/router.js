@@ -194,6 +194,7 @@ define([
       'orderIndex/:id/:name':'showOrderIndex',
       'orderPay':'showOrderPay',
       'myOrder':'showMyOrder',
+      'myOrder/:type':'showMyOrder',
       'pay/:id':'showPay',
       'payMethod':'showPayMethod',
       'myPayment':'showMyPayment',
@@ -733,7 +734,7 @@ define([
 
      app_router.on('route:showMyOrder', function (actions,name) {
         myOrderView = myOrderView || new MyOrderView();
-        myOrderView.render();
+        myOrderView.render(actions);
     });
 
     app_router.on('route:showPay', function (actions,name) {
