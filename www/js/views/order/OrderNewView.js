@@ -364,7 +364,6 @@ define([
     var index = $(e.currentTarget).attr('query');
     var data = this.currentData[index];
     var tpl = this.detailTpl(); 
-    console.log(data,1234);
     $("#dishDetailWrap").html(_.template(tpl,{data:data,id:this.rest,tabId:this.tabId})).addClass('show-menu-dish');
     var swiper = new Swiper('#regular-dish', {
         slidesPerView: 'auto',
