@@ -9,6 +9,7 @@
 	<%}else{%>
 		<a href="#phoneList">Add Mobile</a>
 	<%}}%>
+	<%if(chihuo.getTotalNum(data)){%><div class="all-total">Total:<b><%=chihuo.getTotalNum(data)%></b></div><%}%>
 	<div class="order-bottom-right button-top" id="placeNewOrder">
 		place an order
 	</div>

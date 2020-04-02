@@ -37,6 +37,9 @@ define([
       var data = data;
       var _this = this;
       if(type == 1){
+        if(this.orderDetail[this.orderDetail.length-1]['dinein_flag']){
+          var dinein_flag = this.orderDetail.pop();
+        }
         var len = this.orderDetail.length-1;
         var tax = this.orderDetail.pop();
         data.forEach(function(item,index){
@@ -64,14 +67,14 @@ define([
             _this.orderDetail.push(dataTransform);
           }
         });
-
+        
         var total = this.getLastTotal(this.orderDetail,type);
-
         tax['pre_tax'] = total;
-
         this.orderDetail.push(tax);
+        dinein_flag && this.orderDetail.push(dinein_flag);
 
         initData.orderEditData.data[0]['order_details'] = JSON.stringify(this.orderDetail);
+        console.log(initData.orderEditData);
 
       }else{
         var len = this.orderDetail['Orders'].length;

@@ -59,6 +59,8 @@ define([
        this.commonDelete(index);
       }
     }
+    var total = chihuo.getTotalNum(this.orderData);
+    $('.all-total').find('b').text(total ? total : 0);
   }, 
 
   commonDelete: function(index){

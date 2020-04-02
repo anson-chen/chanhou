@@ -1729,6 +1729,18 @@ var chihuo = {
     }
       return data.price.replace('/$/g','');
   },
+  getTotalNum: function(data){
+    if(data && data.length){
+      var total = 0;
+      data.forEach(function(item,index){
+        if(item['price'] && item['num']){
+          total += item['price'] * item['num'];
+        }
+      });
+      return total ? total.toFixed(2) : total;
+    }
+    return null;
+  },
   orderNewComponents: function(data){
     var html='';
     function showInfo(info){

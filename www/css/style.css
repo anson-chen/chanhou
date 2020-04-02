@@ -4485,9 +4485,10 @@ img.lazy {
     font-size: 12px;
     padding: 3px 7px;
     border-radius: 50%;
-    top: 0;
-    right: -10px;
+    top: -2px;
+    right: -13px;
     display: none;
+    font-size: 15px;
 }
 .order-all-price {
     padding-left: 100px;
@@ -5539,7 +5540,7 @@ img.lazy {
     display: none;
 }
 #school-dish,#regular-dish {
-    height: 140px;
+    height: 150px;
     width: 100%;
     overflow: hidden;
     background: #fff;
@@ -5548,7 +5549,6 @@ img.lazy {
     background: none;
 }
 #school-dish img,#regular-dish img {
-    height: 100%;
     max-width: 100%;
 }
 .order-bottom-bg {
@@ -5586,4 +5586,14 @@ img.lazy {
     border: 1px solid #ccc;
     border-radius: 5px;
     display: block;
+}
+.all-total {
+    font-size: 20px;
+    line-height: 32px;
+    float: left;
+    padding-top: 3px;
+}
+.all-total b {
+    padding-left: 10px;
+    color: #ff9c59;
 }
