@@ -285,7 +285,7 @@ var newChihuo = {
                             '<h3 class="rest-name-title" style="margin-right:0px;">'+info.content.rest_name+'</h3>'+
                     '<p class="rest-info-show" style="padding-top:0; height: 48px; overflow: hidden;">'+
                     '<span class="reset-style reset-bg3" style="float:right; margin-top:1px;">'+info.content.total_likes_perc+'%</span>'+
-                    '<span style="color:#ff8b4c; padding-right:10px;">'+info.content.price_level +'</span>'+ info.content.cuisine_type+'<br>'+info.content.city_name+'</p>'+
+                    (info.content.price_level ? '<span style="color:#ff8b4c; padding-right:10px;">'+info.content.price_level +'</span>' : '')+ info.content.cuisine_type+'<br>'+info.content.city_name+'</p>'+
                        '</div>'+
                     '</div>'+
                     '</a>'+

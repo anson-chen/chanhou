@@ -3060,6 +3060,7 @@ input::-webkit-input-placeholder{
     font-size: 16px;
     display: inline-block;
     color: #888;
+    min-height: 44px;
 }
 .other-info {
     margin:0 50px;
@@ -3072,10 +3073,14 @@ input::-webkit-input-placeholder{
     text-align: right;
 }
 .myself-info .cont-img,.other-info .cont-img {
-    max-width: 70%;
+    max-width: 95%;
     padding: 10px;
     border-radius: 10px 0 10px 10px;
-    background: #fff;
+    background: #efefef;
+    height: 120px;
+}
+.other-info .cont-img {
+    border-radius: 0 10px 10px 10px;
 }
 .myself-say .chat-atavar {
     float: right;
@@ -5540,7 +5545,7 @@ img.lazy {
     display: none;
 }
 #school-dish,#regular-dish {
-    height: 150px;
+    height: 200px;
     width: 100%;
     overflow: hidden;
     background: #fff;
