@@ -5602,3 +5602,55 @@ img.lazy {
     padding-left: 10px;
     color: #ff9c59;
 }
+.menu-img-wrap {
+    margin: 0 auto;
+    height: 70px;
+    width: 70px;
+    border-radius: 8px;
+    background: #eee;
+    position: relative;
+}
+.menu-img-wrap img {
+    max-width: 70px;
+    max-height: 70px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.menu-img-show {
+    float: left;
+    width: 50%;
+    height: 130px;
+}
+.menu-img-show:nth-child(even) {
+    
+}
+.menu-img-show p {
+    padding: 0 10px;
+    height: 48px;
+    overflow: hidden;
+}
+.fresh-style {}
+.fresh-menu-img {
+    float: left;
+    width: 60px;
+    height: 60px;
+    background: #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+.fresh-menu-img img {
+    max-width: 60px;
+    max-height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.fresh-style p {
+    padding: 0 10px;
+    margin-left: 60px;
+}

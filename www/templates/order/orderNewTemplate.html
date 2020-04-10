@@ -14,10 +14,17 @@
 	<%if(tabId){%><p class="order-new-option" id="table" num='<%=tabId%>'>Table Number: <%=tabId%></p><%}%>
 </div>
 <div class="order-new-wrap">
-	<ul class="order-new-list">
+	<ul class="order-new-list clearfix">
+	<%if(initData.orderNewData.restId == 69173){%>
+	<%_.each(data,function(d,i){%>
+		<li class="menu-img-show <%if(d.children){%>next-level<%}%>" query="<%=i%>">
+		<div class="menu-img-wrap"><%if(d.photo_url){%><img src="<%=d.photo_url%>" /><%}%></div><p><%=d.name%><%if(d.price && d.price !='$0'){%><span><%=d.price%></span><%}%> <%if(d.children){%>(<%=d.children.length%>)<%}%></p></li>
+	<%})%>	
+	<%}else{%>
 	<%_.each(data,function(d,i){%>
 		<li class="<%if(d.children){%>next-level<%}%>" query="<%=i%>"><%=d.name%><%if(d.price && d.price !='$0'){%><span><%=d.price%></span><%}%> <%if(d.children){%>(<%=d.children.length%>)<%}%></li>
 	<%})%>	
+	<%}%>
 	</ul>
 </div>
 <div class="order-mask"></div>
