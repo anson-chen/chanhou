@@ -220,7 +220,7 @@ define([
 
   tpl: function(){
     if(initData.orderNewData.restId == 69173){
-      return '<h3 class="menu-title"><%=title%></h3><ul class="order-new-list fresh-style"><%_.each(data,function(d,i){%><li class="clearfix <%if(d.price=="" || d.price =="$0" || d.price == "0"){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><div class="fresh-menu-img"><%if(d.photo_url){%><img src="<%=d.photo_url%>" /><%}%></div><p><%=d.name%><%if(d.price && d.price !="$0"){%><br/><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></p></li><%})%></ul>';
+      return '<h3 class="menu-title"><%=title%></h3><ul class="order-new-list fresh-style"><%_.each(data,function(d,i){%><li class="clearfix <%if(d.price=="" || d.price =="$0" || d.price == "0"){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><div class="fresh-menu-img"><%if(d.photo_url){%><img src="<%=d.photo_url%>" /><%}%></div><p><%=d.name.replace("&nbsp;","<br/>")%><%if(d.price && d.price !="$0"){%><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></p></li><%})%></ul>';
 
     }else{
       return '<h3 class="menu-title"><%=title%></h3><ul class="order-new-list"><%_.each(data,function(d,i){%><li class="<%if(d.price=="" || d.price =="$0" || d.price == "0"){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><%=d.name%><%if(d.price && d.price !="$0"){%><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></li><%})%></ul>';
@@ -383,6 +383,7 @@ define([
       var tpl = this.tpl();
       var nextData = this.currentData[index];
       this.currentData = nextData.children;
+      $('.menu-index').removeClass('menu-hidden');
       $('.order-new-wrap').html(_.template(tpl,{data:nextData.children,title:nextData.name}));
   },
 

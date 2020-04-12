@@ -5074,6 +5074,9 @@ img.lazy {
     font-weight: bold;
     font-size: 20px;
 }
+.menu-index.menu-hidden {
+    display: none;
+}
 .menu-title {
     text-align: center;
     font-size: 20px;
@@ -5603,16 +5606,16 @@ img.lazy {
     color: #ff9c59;
 }
 .menu-img-wrap {
-    margin: 0 auto;
-    height: 70px;
-    width: 70px;
+    width: 100%;
+    padding: 50% 0;
     border-radius: 8px;
-    background: #eee;
+    background: #f9f9f9;
     position: relative;
+    overflow: hidden;
 }
 .menu-img-wrap img {
-    max-width: 70px;
-    max-height: 70px;
+    max-width: 100%;
+    object-fit: cover;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -5621,7 +5624,6 @@ img.lazy {
 .menu-img-show {
     float: left;
     width: 50%;
-    height: 130px;
 }
 .menu-img-show:nth-child(even) {
     
@@ -5634,17 +5636,17 @@ img.lazy {
 .fresh-style {}
 .fresh-menu-img {
     float: left;
-    width: 60px;
-    height: 60px;
-    background: #eee;
+    width: 90px;
+    height: 90px;
+    background: #f9f9f9;
     border-radius: 8px;
     overflow: hidden;
     text-align: center;
     position: relative;
 }
 .fresh-menu-img img {
-    max-width: 60px;
-    max-height: 60px;
+    max-width: 90px;
+    object-fit: cover;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -5652,5 +5654,15 @@ img.lazy {
 }
 .fresh-style p {
     padding: 0 10px;
-    margin-left: 60px;
+    margin-left: 90px;
+    position: relative;
+    margin-right: 40px;
+}
+.fresh-style p span {
+    position: absolute;
+    right: -40px;
+    top: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff9c59;
 }
