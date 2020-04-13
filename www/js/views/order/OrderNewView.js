@@ -265,6 +265,7 @@ define([
      
       if(initData.restaurantData.data[0] && initData.restaurantData.data[0].rest_id == id){
         initData.orderNewData.info = {
+           id: id,
            name: initData.restaurantData.data[0].rest_name,
            address: initData.restaurantData.data[0].addr,
         }
@@ -299,7 +300,7 @@ define([
 
   initData: function(id){
     var _this = this;
-    if(!(initData.restaurantData.data[0] && initData.restaurantData.data[0].rest_id == id)){
+    if(id != initData.orderNewData.info.id){
        chihuo.wkAjax({
                   type: 'GET',
                   url: chihuo.getApiUri('findRestDetailById.json'),
@@ -314,8 +315,9 @@ define([
                       initData.orderNewData.info = {
                          name: data.data[0].rest_name,
                          address: data.data[0].addr,
+                         id: data.data[0].rest_id,
                       };
-                      newChihuo.getPage('orderNew') && _this.$el.html(_.template(orderNewTemplate,{data:_this.currentData,id:_this.rest,tabId:_this.tabId}));
+                      newChihuo.getPage('orderNew') && _this.$el.html(_.template(orderNewTemplate,{data:_this.data,id:_this.rest,tabId:_this.tabId}));
                        if(_this.orderData.length){
                           $('#orderNewList').find('p').html(_this.orderData.length).show();
                         }else{
@@ -336,14 +338,16 @@ define([
           },
           success: function(data){
               if(data.status == 0){
-                _this.data = _this.dealData(data.data);
+                if(!_.isEqual(_this.data,_this.dealData(data.data))){
+                   _this.data = _this.dealData(data.data);
                 _this.currentData = _this.data;
-                newChihuo.getPage('orderNew') && _this.$el.html(_.template(orderNewTemplate,{data:_this.currentData,id:_this.rest,tabId:_this.tabId}));
+                newChihuo.getPage('orderNew') &&  _this.$el.html(_.template(orderNewTemplate,{data:_this.currentData,id:_this.rest,tabId:_this.tabId}));
+                }
                 if(_this.orderData.length){
                     $('#orderNewList').find('p').html(_this.orderData.length).show();
                   }else{
                     $('#orderNewList').find('p').hide();
-                  }
+                  }  
               }
           }
           });
@@ -358,7 +362,6 @@ define([
         }
       });
     }
-    console.log(dealData);
      return dealData;
   },
 
