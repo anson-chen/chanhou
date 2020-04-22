@@ -2060,11 +2060,13 @@ var chihuo = {
 
   },
 
-  imgLazyLoad: function(){
-   $("img.lazy").lazyload({
+  imgLazyLoad: function(className,obj){
+    var className = className || '.lazy';
+   $("img"+className).lazyload({
       placeholder : "imgs/grey.gif", //用图片提前占位
       effect: "fadeIn", // 载入使用何种效果
-      threshold: 100,
+      threshold: '100',
+      container: obj ? $(obj) : window,
     });
   },
 

@@ -283,7 +283,7 @@ input::-webkit-input-placeholder{
     display: block;
     width: 100%;
 }
-#index-dish .index-dish-img {
+#index-dish .index-dish-img{
     width: 30%;
     padding: 5px 0 0 8px;
 }
@@ -5665,4 +5665,55 @@ img.lazy {
     font-size: 18px;
     font-weight: bold;
     color: #ff9c59;
+}
+.top-info-container {
+
+}
+.top-info-wrap {
+    display: flex;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 0 10px;
+}
+.top-info-slide {
+    width: 30%;
+    padding: 0 10px 0 0;
+    flex-shrink: 0;
+}
+.top-info-slide .img-middle-wrap {
+    background: #f9f9f9;
+    border-radius: 8px;
+    width: 100%;
+    padding: 50%;
+}
+.top-info-slide .img-middle-wrap img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);  
+}
+.top-set-price {
+    color: #ff9c59;
+    font-size: 18px;
+}
+.top-set-price b {
+    padding-left: 10px;
+    text-decoration: line-through;
+    color: #ccc;
+    font-size: 14px;
+    font-weight: normal;
+}
+.last-level .show-new-icon b {
+    background: #fb6700;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 0 5px;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 5px;
 }

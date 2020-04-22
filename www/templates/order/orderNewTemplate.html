@@ -8,17 +8,66 @@
 	<%}%>
 	<h3><%=initData.orderNewData.info.name%></h3>
 </nav>
+<%if(topInfo.newFlag && topInfo.newFlag.length){%>
+<div class="wrap-border" style="margin: 0 0 8px 0;">
+  <div class="floor-title">
+    <h3 style="font-weight:bold;">Recently Added</h3>
+  </div>
+  <div class="floor-wrap">
+    <div class="top-info-container" id="topInfoNewFlag">
+        <div class="top-info-wrap">
+        <%_.each(topInfo.newFlag, function(d,i) {%>
+            <div class="top-info-slide">
+	            <div class="top-info-content" query="<%=i%>" type="newFlag">
+	            	<div class="img-middle-wrap">
+	            		<img class="new-flag-lazy" data-original="<%=d.photo_url%>">
+	            	</div>
+	            	<p><%=d.name%></p><span><%=d.price%></span>
+	            </div>
+            </div>
+        <%})%>
+        </div>
+    </div>
+  </div>
+</div> 
+<%}%>
+<%if(topInfo.promotions && topInfo.promotions.length){%>
+<div class="wrap-border" style="margin: 0 0 8px 0;">
+  <div class="floor-title">
+    <h3 style="font-weight:bold;">Hot Deals</h3>
+  </div>
+   <div class="floor-wrap">
+    <div class="top-info-container" id="topInfoPromotions">
+        <div class="top-info-wrap">
+        <%_.each(topInfo.promotions, function(d,i) {%>
+            <div class="top-info-slide">
+	            <div class="top-info-content" query="<%=i%>" type="promotions">
+	            	<div class="img-middle-wrap">
+	            		<img class="new-flag-lazy" data-original="<%=d.photo_url%>">
+	            	</div>
+	            	<strong class="top-set-price"><%=JSON.parse(d.promotions)['current_price']%><b><%=JSON.parse(d.promotions)['original_price']%></b></strong>
+	            	<p><%=d.name%></p>
+	            </div>
+            </div>
+        <%})%>
+        </div>
+    </div>
+  </div>
+</div> 
+<%}%>
+<%if(data && data.length){%>
 <div class="new-title-bg">
-	<span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span>
-	<p class="order-new-option"><span class="menu-index menu-hidden">Menu</span>Please select your options</p>
+	<!-- <span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span> -->
+	<p class="order-new-option" style="border:none;"><span class="menu-index menu-hidden">Menu</span>Please select your options</p>
 	<%if(tabId){%><p class="order-new-option" id="table" num='<%=tabId%>'>Table Number: <%=tabId%></p><%}%>
 </div>
+<%}%>
 <div class="order-new-wrap">
 	<ul class="order-new-list clearfix">
 	<%if(initData.orderNewData.restId == 69173){%>
 	<%_.each(data,function(d,i){%>
 		<li class="menu-img-show <%if(d.children){%>next-level<%}%>" query="<%=i%>">
-		<div class="menu-img-wrap"><%if(d.photo_url){%><img src="<%=d.photo_url%>" /><%}%></div><p><%=d.name%><%if(d.price && d.price !='$0'){%><span><%=d.price%></span><%}%> <%if(d.children){%>(<%=d.children.length%>)<%}%></p></li>
+		<div class="menu-img-wrap"><%if(d.photo_url){%><img class="lazy" data-original="<%=d.photo_url%>" /><%}%></div><p><%=d.name%><%if(d.price && d.price !='$0'){%><span><%=d.price%></span><%}%> <%if(d.children){%>(<%=d.children.length%>)<%}%></p></li>
 	<%})%>	
 	<%}else{%>
 	<%_.each(data,function(d,i){%>
@@ -51,3 +100,18 @@
 <div id="dishDetailWrap" style="background:#fff;">
 	
 </div>
+<%if(data && data.length){%>
+<script type="text/javascript">
+	chihuo.imgLazyLoad();
+</script>
+<%}%>
+<%if(topInfo.newFlag && topInfo.newFlag.length){%>
+<script type="text/javascript">
+ 	chihuo.imgLazyLoad('.new-flag-lazy','#topInfoNewFlag .top-info-wrap');
+</script>
+<%}%>
+<%if(topInfo.promotions && topInfo.promotions.length){%>
+<script type="text/javascript">
+	chihuo.imgLazyLoad('.new-flag-lazy','#topInfoPromotions .top-info-wrap');
+</script>
+<%}%>
