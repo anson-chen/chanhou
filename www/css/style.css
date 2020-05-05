@@ -1035,6 +1035,20 @@ input::-webkit-input-placeholder{
     width: 90px;
     padding: 10px 10px 10px 0;
 }
+.rest-photo-container {
+    height: 100px;
+    overflow: hidden;
+    padding-left: 10px;
+}
+.rest-photo-wrap {
+    white-space: nowrap;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.rest-photo-img {
+    display: inline-block;
+    background: none;
+}
 
 .index-dish-img .say-good {
     background:url(../imgs/detail-icon9.png) no-repeat 0 1px;

@@ -9,7 +9,7 @@
 <%if(photoUrl){%>
 	<ul class="clearfix">
 	<%_.each(photoUrl.split(','),function(d,i){%>
-		<li class="detail-img-show"><img src="<%=d%>"></li>
+		<li class="detail-img-show"><img data-original="<%=d%>" class="photo-detail-lazy"></li>
 	<%})%>
 	</ul>
 <%}%>	

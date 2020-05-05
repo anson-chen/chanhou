@@ -12,7 +12,8 @@
                 <div class="swiper-wrapper">
                     <%_.each(photoUrl.split(','),function(d,i){%>
                         <div class="swiper-slide index-dish-img">
-                            <img src="<%=d%>" style='height: auto;'>
+                            <img data-src="<%=d%>" class="swiper-lazy" style='height: auto;'>
+                            <div class="swiper-lazy-preloader"></div>
                             <%if(info){%>
                             <div class="comment-operation new-set-operation" style="position:fixed; bottom:10px;"><span class="good-icon <%if(info.compliment !== 'N'){%>good-done<%}%>"><i><%=info.total%></i></span></div>
                             <%}%>
@@ -39,6 +40,7 @@
         slidesPerView: 'auto',
         nextButton: '.photo-right-btn',
         prevButton: '.photo-left-btn',
+        lazyLoading : true,
     });
 </script>  
 <%}%>    

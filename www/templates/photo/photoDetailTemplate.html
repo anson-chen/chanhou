@@ -11,7 +11,9 @@
 		<div class="swiper-container" id="photoDetail">
 			    <div class="swiper-wrapper">
 			    	<%_.each(photoUrl.split(','),function(d,i){%>
-			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" style='height: auto;'></div>
+			            <div class="swiper-slide index-dish-img">
+                         <img data-src="<%=d%>" class="swiper-lazy" style='height: auto;'>
+                            <div class="swiper-lazy-preloader"></div></div>
 			        <%})%>
 			    </div>
     	</div>
@@ -34,6 +36,7 @@
         slidesPerView: 'auto',
         nextButton: '.photo-right-btn',
         prevButton: '.photo-left-btn',
+        lazyLoading : true,
     });
 </script>  
 <%}%>    

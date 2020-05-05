@@ -2026,9 +2026,9 @@ var chihuo = {
         newChihuo.hasStatusBar() && StatusBar.overlaysWebView(false);
 
         chihuo.getPosition(template);
-        newChihuo.hasCordova() && cordova.plugins.notification.badge.requestPermission(function(granted){});
+        newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.requestPermission(function(granted){});
 
-        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
             //cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true, silent: true });
             cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true});
             cordova.plugins.backgroundMode.enable();
@@ -2148,7 +2148,7 @@ var chihuo = {
     clearInterval(newChihuo.positionTime);
     clearInterval(newChihuo.msgTime);
     newChihuo.positionTime = setInterval(function(){
-        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
             cordova.plugins.backgroundMode.disableWebViewOptimizations();
         }
         navigator.geolocation.getCurrentPosition(onSuccess, onError, GEO_LOCATION_SETTINGS)
@@ -2160,14 +2160,14 @@ var chihuo = {
       var newLat = position.coords.latitude;
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
-        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
             cordova.plugins.backgroundMode.enableWebViewOptimizations();
         }
     }
     // onError Callback receives a PositionError object
     function onError(error) {
       console.log(error);
-        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
             cordova.plugins.backgroundMode.enableWebViewOptimizations();
         }
     }
@@ -2352,7 +2352,7 @@ var chihuo = {
     }
   },
   getMsgNum: function(){//非注册用户也可以接受信息
-      if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+      if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
           cordova.plugins.backgroundMode.disableWebViewOptimizations();
       }
              chihuo.wkAjax({
@@ -2464,21 +2464,21 @@ var chihuo = {
 
                               if(!$.isEmptyObject(newChihuo.requestList) || !$.isEmptyObject(newChihuo.msgList) || newChihuo.activityNum){
                                 var allNum = newChihuo.activityNum + Object.keys(newChihuo.requestList).length + Object.keys(newChihuo.msgList).length;
-                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function (granted) {
+                                  newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.hasPermission(function (granted) {
                                     cordova.plugins.notification.badge.set(allNum);
                                 });
                               }else{
-                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function(granted) {
+                                  newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.hasPermission(function(granted) {
                                     cordova.plugins.notification.badge.clear();
                                 });
                               }
-                                if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
                                     cordova.plugins.backgroundMode.enableWebViewOptimizations();
                                 }
                             },
                             error: function(xhr){
                                 // newChihuo.errorPopInfo();
-                                if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
                                     cordova.plugins.backgroundMode.enableWebViewOptimizations();
                                 }
                             }
@@ -3361,7 +3361,7 @@ var WKNotifier = {
         }
     },
     isPluginAvailable: function () {
-        return (typeof cordova !== 'undefined' && cordova.plugins.notification) ? true : false;
+        return (typeof cordova !== 'undefined' && cordova.plugins && cordova.plugins.notification) ? true : false;
     },
     setDefaultConf: function () {
         cordova.plugins.notification.local.setDefaults({

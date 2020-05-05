@@ -129,10 +129,10 @@
 				</div>
 			</div>
 			<%if(d.rest_photo_urls){%>	
-			<div class="swiper-container" id="rest-photo" photo='<%=d.rest_photo_urls%>'>
-			    <div class="swiper-wrapper">
+			<div class="rest-photo-container" id="rest-photo" photo='<%=d.rest_photo_urls%>'>
+			    <div class="rest-photo-wrap">
 			    	<%_.each(d.rest_photo_urls.split(','),function(d,i){%>
-			            <div class="swiper-slide index-dish-img"><img src="<%=d%>" class="photo-detail-show"><i style="display:none;"></i></div>
+			            <div class="rest-photo-img index-dish-img"><img data-original="<%=d%>" class="photo-detail-show"><i style="display:none;"></i></div>
 			        <%})%>
 			    </div>
     		</div>
@@ -276,12 +276,7 @@
         slidesOffsetBefore : 0.05*width,
     });
    
-    var swiperRest3 = new Swiper('#rest-photo', {
-      	initialSlide:2,
-        slidesPerView: 'auto',
-        slidesOffsetBefore : 0.1*width,
-        
-    });
+    chihuo.imgLazyLoad('.photo-detail-show','#rest-photo .rest-photo-wrap');
 
     var swiperRest4 = new Swiper('#rest-like', {
       	initialSlide:2,

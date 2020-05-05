@@ -18,6 +18,7 @@ define([
       newChihuo.setPage('photoList');
       newChihuo.windowInit();
       this.$el.html(_.template(photoListTemplate,initData.photoData));
+      $('.photo-detail-lazy').length && chihuo.imgLazyLoad('.photo-detail-lazy');
     },
 
     showPhotoMask: function(){
