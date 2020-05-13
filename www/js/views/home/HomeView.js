@@ -38,9 +38,9 @@ define([
        },
 
       render: function(){
-          // if (newChihuo.hasCordova() && cordova.plugins.notification && cordova.plugins.notification.badge) {
-          //     cordova.plugins.notification.badge.clear();
-          // }
+          if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification && cordova.plugins.notification.badge) {
+              cordova.plugins.notification.badge.clear();
+          }
             newChihuo.setPage('home');
             newChihuo.windowInit();
             initData.homeData.template = homeTemplate;
@@ -48,6 +48,7 @@ define([
             this.appStart(this.status.start);
             this.status.start && chihuo.getPosition(homeTemplate);
             !this.status.tips && newChihuo.showReloadInfo(this.status,'home');
+            chihuo.recCurLocation();
       },
       showBannerDetail: function(e){
         var index = $(e.currentTarget).attr('banner');

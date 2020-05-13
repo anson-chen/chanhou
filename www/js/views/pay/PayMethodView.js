@@ -49,7 +49,7 @@ define([
         var orderid = initData.payMethodData.orderid;
         var restid = initData.payMethodData.restid;
         var tableid = initData.payMethodData.tableid;
-        // var custid = newChihuo.customerId || newChihuo.getLocalStorage('customer_id');
+        var custid = newChihuo.customerId || newChihuo.getLocalStorage('customer_id');
         var deviceid = WKStorageManager.getSysDeviceId() || '';
         var lat = newChihuo.lat;
         var lon = newChihuo.lon;
@@ -57,7 +57,7 @@ define([
         console.log(initData.payMethodData);
         // window.location = newChihuo.address + '/pay#/order/o1?restid=123&tableid=2&local=en';
         // https://stackoverflow.com/questions/21085041/how-to-close-inappbrowser-itself-in-phonegap-application
-        var url = newChihuo.address + '/pay?' + ts + '#/order/'+orderid+'?deviceid='+deviceid+'&restid='+restid+'&tableid='+tableid+'&local=en'+'&lat='+lat+'&lon='+lon+'&ts='+ts;
+        var url = newChihuo.address + '/pay?' + ts + '#/order/'+orderid+'?deviceid='+deviceid+'&restid='+restid+'&tableid='+tableid+'&local=en'+'&lat='+lat+'&lon='+lon+'&ts='+ts+'&custid='+custid;
         // if(newChihuo.isMobileDevice() && cordova){
         if(typeof cordova !== 'undefined' && null != cordova){
             window.open = cordova.InAppBrowser.open;

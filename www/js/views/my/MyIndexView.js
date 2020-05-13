@@ -9,9 +9,12 @@ define([
   var MyIndexView = Backbone.View.extend({
     el: $("#page"),
     events: {
-        'click .resend-email': 'resendEmailVerify',     
+        'click .resend-email': 'resendEmailVerify', 
+        'click #myindex-return': 'gotoBack', 
     },
-
+    gotoBack: function() {
+      chihuo.gotoLastLocation();
+    },
     resendEmailVerify: function(e){
       var $obj = $(e.currentTarget);
       var now = new Date();
@@ -53,6 +56,12 @@ define([
       this.$el.html(_.template(myIndexTemplate,initData.myIndexData));
       this.initData(id);
       this.bindEvents();
+      setTimeout( function(){
+        if (!newChihuo.hasCordova()) {
+          $("#myscan-div").hide();
+        }
+       }, 500);
+
     },
 
     initData: function(id){

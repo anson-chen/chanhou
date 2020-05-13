@@ -10,8 +10,11 @@ define([
     el: ("#page"),
 
     events: {
+      'click #email-verify-return': 'gotoBack',
     },
-
+    gotoBack: function() {
+      chihuo.gotoLastLocation();
+    },
     render: function(){
       newChihuo.setPage('emailVerify');
       newChihuo.windowInit();

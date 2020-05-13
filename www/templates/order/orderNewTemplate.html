@@ -1,7 +1,7 @@
 <nav class="common-title">
 	<%if(initData.orderNewData.type == 'addNew'){%>
 		<a href="#restaurant/<%=id%>" style="float:right;"><img src="imgs/icon_popular_restaurant.png" style="margin-right:15px; width:25px;"></a>
-		<a href="javascript:history.go(-1);" class="common-return"></a>
+		<a href="#restaurant/<%=id%>" class="common-return"></a>
 	<%}else{%>
 		<a href="javascript:;" class="school-save" id="regularAddOrder">Save</a>
 		<a href="javascript:history.go(-1);" class="school-cancel">Cancel</a>
@@ -56,10 +56,12 @@
 </div> 
 <%}%>
 <%if(data && data.length){%>
-<div class="new-title-bg">
-	<!-- <span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span> -->
-	<p class="order-new-option" style="border:none;"><span class="menu-index menu-hidden">Menu</span>Please select your options</p>
-	<%if(tabId){%><p class="order-new-option" id="table" num='<%=tabId%>'>Table Number: <%=tabId%></p><%}%>
+<div style="min-height:50px;" id="menuSection">
+	<div class="new-title-bg">
+		<!-- <span class="pay-rest-addr"><%=initData.orderNewData.info.address%></span> -->
+		<p class="order-new-option" style="border:none;"><span class="menu-index menu-hidden">Menu</span>Please select your options</p>
+		<%if(tabId){%><p class="order-new-option" id="table" num='<%=tabId%>'>Table Number: <%=tabId%></p><%}%>
+	</div>
 </div>
 <%}%>
 <div class="order-new-wrap">

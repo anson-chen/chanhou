@@ -18,7 +18,7 @@
 		<li>
 		    <div class="gw-price"><%=chihuo.getLastPrice(d)%></div>		    
 			<i price='<%=d.price%>' index='<%=i%>' class="delete-dish">+</i>
-            <p class="new-special"><%=d.name%><br/><%if(d.Components){%><%=chihuo.orderNewComponents(d.Components)%><%}%><%if(d.addons){%><%=chihuo.orderNewAddon(d.addons)%><%}%><%if(d.comments){%>comments:<%=d.comments%><%}%></p>
+            <p class="new-special"><%=d.name%><br/><%if(d.components){%><%=chihuo.orderNewComponents(d.components)%><%}%><%if(d.addons){%><%=chihuo.orderNewAddon(d.addons)%><%}%><%if(d.comments){%>comments:<%=d.comments%><%}%></p>
             <div class="gw-order">
             	<div class="order-dish-num <%if(d.num){%>cur<%}%>">
 	                <span class="order-add gw-add order-new-add" price='<%=d.price%>' index='<%=i%>'>+</span>

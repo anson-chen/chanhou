@@ -24,6 +24,7 @@ define([
       this.$el.html(_.template(restaurantTemplate,initData.restaurantData));
       this.findRestDetailById(id);
       this.bindEvents(id);
+      chihuo.recCurLocation();
     },
 
     shareRest: function(){

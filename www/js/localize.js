@@ -203,7 +203,7 @@ var chihuoLocal = {
   "main_shakewheel": {"en-CA": "Shake", "zh-CN": "搖一搖"},
   "global_var_month": {"en-CA": "month", "zh-CN": "月"},
   "global_loading_nomore": {"en-CA": "No more records", "zh-CN": "没有更多"},
-  "please_login_first": {"en-CA": "please login in first ", "zh-CN": "请先登录"},
+  "please_login_first": {"en-CA": "Please login first ", "zh-CN": "请先登录"},
   "review_tooltips": {"en-CA": "How about the taste, service and overall surroundings?", "zh-CN": "菜品口味如何，服务周到吗，环境如何？"},
   "profile_following": {"en-CA": "Following", "zh-CN": "关注"},
   "review_service_good": {"en-CA": "Great Service", "zh-CN": "服务好"},

@@ -6,7 +6,7 @@ var GEO_LOCATION_SETTINGS = {
 var newChihuo = {
     address: "https://app.foodymonkey.com",//http://staging.wookongcorp.com:9099"
     appname: "wkfdmk",
-    geosrvUrl: "http://geosrv.foodymonkey.com/geosrv",
+    geosrvUrl: "https://nominatim.openstreetmap.org",   // "http://geosrv.foodymonkey.com/geosrv",
     textShowLength: 80,
     showMorePara: function(str, kind){
        if(str && str.length && str.length > this.textShowLength ){
@@ -137,8 +137,9 @@ var newChihuo = {
     checkPermission: function(){
       var customer = newChihuo.getLocalStorage('customer_id');
       if(!customer){
-        var check = confirm('please login in first');
+        var check = confirm('Please login first');
         if(check){
+          chihuo.recCurLocation();
           app_router.navigate('login',{
                   trigger: true
                 });
@@ -243,7 +244,7 @@ var newChihuo = {
     } else if (Android) {
         window.open('geo:0,0?q=' + geocoords + '(' + mlabel + ')', '_system');
     } else {
-        window.open('http://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
+        window.open('https://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
     }
     },
     setRestUrl: function(url){
@@ -427,8 +428,8 @@ var newChihuo = {
     nearbyPromo: null,
     refKey: null,//本人的推荐码
     refererKey: null,//推荐人的推荐码
-    wkAppVersion: '3.3.2',
-    wkAppBuild: '340',
+    wkAppVersion: '3.3.13',
+    wkAppBuild: '428',
     notifyTime: 11, //banner活动推送的时间，上午11点
     msgTime: null,
 };
@@ -1691,6 +1692,18 @@ var chihuo = {
     }
 
   },
+  recCurLocation: function() {
+    sessionStorage.setItem('sessionNextUrl', window.location.href);
+  },
+  gotoLastLocation: function() {
+    var url = sessionStorage.getItem('sessionNextUrl');
+    if (url) {
+      window.location.href = url;
+    } else {
+      history.go(-1);
+      // app_router.navigate('Index',{trigger: true});window.location.href = '#';
+    }
+  },
   getApiUri: function(api){
       return newChihuo.address+'/wkfdmk/v2/'+ api;
   },
@@ -1759,6 +1772,12 @@ var chihuo = {
         html+=i+':'+showInfo(data[i])+'<br/>';
       }
     }
+    if(data && typeof(data) == 'string'){
+      data.split(',').map(function(item,index){
+        html+=item+'<br/>';
+      })
+    }
+
     return html;
   },
 
@@ -1935,6 +1954,7 @@ var chihuo = {
        });
        $(".error-pop .refresh").on('click',function(){
            pop.removeClass('pop-info-show').html('');
+           chihuo.recCurLocation();
            app_router.navigate('login',{
                   trigger: true
                 });
@@ -2026,12 +2046,14 @@ var chihuo = {
         newChihuo.hasStatusBar() && StatusBar.overlaysWebView(false);
 
         chihuo.getPosition(template);
-        newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.requestPermission(function(granted){});
-
-        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
+        newChihuo.hasCordova() && cordova.plugins.notification.badge.requestPermission(function(granted){});
+        /*
+        if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
             //cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true, silent: true });
             cordova.plugins.backgroundMode.setDefaults({ title: 'Foodymonkey3', text: 'click to resume', resume: true, hidden: true});
-            cordova.plugins.backgroundMode.enable();
+            //cordova.plugins.backgroundMode.enable();
+            // disable the backgroundMode to save the power
+            cordova.plugins.backgroundMode.disable();
             //ToastUtils.showToast('try to enable background mode...');
             cordova.plugins.backgroundMode.on('activate', function() {
                 //ToastUtils.showToast('background mode on activate');
@@ -2047,7 +2069,7 @@ var chihuo = {
                 cordova.plugins.backgroundMode.disableWebViewOptimizations();
                 //ToastUtils.showToast('background mode disableWebViewOptimizations');
             });
-        }
+        } */
     }
 
     function resumeReady() {
@@ -2148,9 +2170,9 @@ var chihuo = {
     clearInterval(newChihuo.positionTime);
     clearInterval(newChihuo.msgTime);
     newChihuo.positionTime = setInterval(function(){
-        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-            cordova.plugins.backgroundMode.disableWebViewOptimizations();
-        }
+        //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        //    cordova.plugins.backgroundMode.disableWebViewOptimizations();
+        //}
         navigator.geolocation.getCurrentPosition(onSuccess, onError, GEO_LOCATION_SETTINGS)
     },newChihuo.positionSpeed*positionSet);//位置获取时间扩大30倍
 
@@ -2160,16 +2182,16 @@ var chihuo = {
       var newLat = position.coords.latitude;
       var newLon = position.coords.longitude;
       var change = chihuo.positionChange(newLat, newLon,newChihuo.lat,newChihuo.lon);
-        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-            cordova.plugins.backgroundMode.enableWebViewOptimizations();
-        }
+        //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        //    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+        //}
     }
     // onError Callback receives a PositionError object
     function onError(error) {
       console.log(error);
-        if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-            cordova.plugins.backgroundMode.enableWebViewOptimizations();
-        }
+        //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+        //    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+        //}
     }
 
   },
@@ -2212,7 +2234,7 @@ var chihuo = {
       if(lat && lon){
         $.ajax({
           type: 'GET',
-          url: newChihuo.geosrvUrl + '/reverse?format=json&_mtk=wk2018',  // 无法跨域传cookies
+          url: newChihuo.geosrvUrl + '/reverse?format=json', // &_mtk=wk2018',  // 无法跨域传cookies
           // 'https://nominatim.openstreetmap.org/reverse?format=xml&zoom=18&addressdetails=1&format=json',
           data:{
               lat: lat,
@@ -2221,7 +2243,7 @@ var chihuo = {
           beforeSend:function(){},
           complete: function (xhr, status) {},
           success: function (data) {
-              newLocation = data.address.city || data.address.state_district || 'Toronto';
+              newLocation = data.address.city || data.address.town || data.address.state_district || 'Toronto';
               newChihuo.localCity = newLocation;
                if(refresh || newChihuo.localCity){
                 if((newChihuo.city != newChihuo.localCity) && newChihuo.setCity && showCityInfo){
@@ -2352,9 +2374,9 @@ var chihuo = {
     }
   },
   getMsgNum: function(){//非注册用户也可以接受信息
-      if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-          cordova.plugins.backgroundMode.disableWebViewOptimizations();
-      }
+      //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+      //    cordova.plugins.backgroundMode.disableWebViewOptimizations();
+      //}
              chihuo.wkAjax({
                             type: 'GET',
                             url: chihuo.getApiUri2('msgver.json'),
@@ -2464,23 +2486,23 @@ var chihuo = {
 
                               if(!$.isEmptyObject(newChihuo.requestList) || !$.isEmptyObject(newChihuo.msgList) || newChihuo.activityNum){
                                 var allNum = newChihuo.activityNum + Object.keys(newChihuo.requestList).length + Object.keys(newChihuo.msgList).length;
-                                  newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.hasPermission(function (granted) {
+                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function (granted) {
                                     cordova.plugins.notification.badge.set(allNum);
                                 });
                               }else{
-                                  newChihuo.hasCordova() && cordova.plugins && cordova.plugins.notification.badge.hasPermission(function(granted) {
+                                  newChihuo.hasCordova() && cordova.plugins.notification.badge.hasPermission(function(granted) {
                                     cordova.plugins.notification.badge.clear();
                                 });
                               }
-                                if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-                                    cordova.plugins.backgroundMode.enableWebViewOptimizations();
-                                }
+                                //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                //    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                                //}
                             },
                             error: function(xhr){
                                 // newChihuo.errorPopInfo();
-                                if (newChihuo.hasCordova() && cordova.plugins && cordova.plugins.backgroundMode) {
-                                    cordova.plugins.backgroundMode.enableWebViewOptimizations();
-                                }
+                                //if (newChihuo.hasCordova() && cordova.plugins.backgroundMode) {
+                                //    cordova.plugins.backgroundMode.enableWebViewOptimizations();
+                                //}
                             }
 
                         });
@@ -2599,7 +2621,7 @@ var chihuo = {
         });
     },
     _getGoogleLayer: function() {
-        return L.tileLayer('http://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        return L.tileLayer('https://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
             maxZoom: 18,
             attribution: 'Google Maps',
             // retina: '@2x',
@@ -3255,7 +3277,7 @@ var WK_OPEN_MAP_APP = function (lat, lng, label) {
     } else if (Android) {
         window.open('geo:0,0?q=' + geocoords + '(' + mlabel + ')', '_system');
     } else {
-        window.open('http://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
+        window.open('https://maps.apple.com/maps?q=' + geocoords + '(' + mlabel + ')', '_system');
     }
 }
 
@@ -3361,7 +3383,7 @@ var WKNotifier = {
         }
     },
     isPluginAvailable: function () {
-        return (typeof cordova !== 'undefined' && cordova.plugins && cordova.plugins.notification) ? true : false;
+        return (typeof cordova !== 'undefined' && cordova.plugins.notification) ? true : false;
     },
     setDefaultConf: function () {
         cordova.plugins.notification.local.setDefaults({
@@ -3882,7 +3904,8 @@ var WKPPMsgHelper = {
                     }
                 });
                 newChihuo.msg = msgcount;
-                if (msgcount > 0 && ((newChihuo.hasCordova() && cordova.plugins.backgroundMode && cordova.plugins.backgroundMode.isActive()) || !newChihuo.getPage('chatContent'))) {
+                // if (msgcount > 0 && ((newChihuo.hasCordova() && cordova.plugins.backgroundMode && cordova.plugins.backgroundMode.isActive()) || !newChihuo.getPage('chatContent'))) {
+                if (msgcount > 0 && (!newChihuo.getPage('chatContent'))) {
                     WKPPMsgHelper.notify(WKPPMsgHelper.notifyconf.p2p.nid, WKPPMsgHelper.notifyconf.p2p.title, 'msg');
                 }
             }
@@ -4005,4 +4028,19 @@ var QRUtils = {  // ref: https://github.com/bitpay/cordova-plugin-qrscanner
             }
         });
     }
+}
+
+
+var PrinterUtils = {
+    hasPlugin: function() {
+        return newChihuo.hasCordova();
+    },
+    print: function(content, options, callback) {
+        if (! PrinterUtils.hasPlugin()) {
+            return
+        }
+        alert('try to print ' + content);
+        cordova.plugins.printer.print(content, options, callback);
+    }
+    
 }

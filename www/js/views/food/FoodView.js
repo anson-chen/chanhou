@@ -20,7 +20,8 @@ define([
       newChihuo.windowInit();
       this.$el.html(_.template(foodTemplate,initData.foodData)); 
       this.initData(restId,miId);
-      this.bindEvents(restId,miId);   
+      this.bindEvents(restId,miId);
+      chihuo.recCurLocation();
     },
 
     shareFood: function(){

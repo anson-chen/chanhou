@@ -654,6 +654,7 @@ input::-webkit-input-placeholder{
     height: auto;
     overflow: auto;
     white-space: normal;
+    width: 75%;
 }
 #dishDetailWrap.show-menu-dish {
     overflow-y: auto;
@@ -4781,6 +4782,13 @@ img.lazy {
     background: #fff;
     padding: 10px;
 }
+.new-title-bg.menu-fix-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+}
 .pay-rest-name {
     height: 24px;
     line-height: 24px;
@@ -5193,7 +5201,7 @@ img.lazy {
 .order-new-last {
     padding: 0 25px;
     line-height: 30px;
-    height: 30px;
+    min-height: 30px;
     background: #fff;
     font-size: 14px;
     color: #666;
@@ -5205,6 +5213,9 @@ img.lazy {
     float: left;
     margin-right: 20px;
     margin-top: 10px;
+}
+.order-new-last b {
+    float: left;
 }
 
 

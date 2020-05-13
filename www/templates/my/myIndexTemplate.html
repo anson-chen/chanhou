@@ -2,7 +2,7 @@
 <div class="food-bg">
 	<nav class="common-title">
 		<%if ((newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) && (newChihuo.customerId || newChihuo.getLocalStorage('customer_id')) == id){%><a href="#myRewards" class="my-rewards">Rewards</a><%}%>
-		<a href="#" class="common-return"></a>
+		<a class="common-return" id="myindex-return"></a>
 		<h3 id="test-qrscanner"><%if((newChihuo.customerId || newChihuo.getLocalStorage('customer_id'))!== id){%><%if(data[0]){%><%=data[0].display_name%><%}}else{%><%=newChihuo.localize('profile_me')%><%}%></h3>
 	</nav>
 </div>	
@@ -145,7 +145,7 @@
 		            <div class="clear"></div>
 	            </a>
 	        </div> 
-	        <div class="setting-li">
+	        <div class="setting-li" id="myscan-div">
 	        	<a href="#myScan">
 		            <img src="imgs/qrcode-scan.png"/><span class="set-floor-title" style="color:#333; width:auto;">Scan</span>
 		            <p class="set-floor-select" style="margin-right:0;">&nbsp;</p>

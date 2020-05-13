@@ -149,8 +149,12 @@ define([
       
 
     },
-
     showDetailInfo: function(e){
+      if (newChihuo.checkPermission()) {
+        this._showDetailInfo(e);
+        }
+    },
+    _showDetailInfo: function(e){
       var $obj = $(e.currentTarget);
       var index = $(e.currentTarget).attr('query');
       var num = $(e.currentTarget).attr('num');
@@ -176,7 +180,9 @@ define([
     var num = $('.menu-num-set').text();
         num = num ? num : 0;
         if($obj.hasClass('order-new-add')){
-          $('.menu-num-set').text(++num);
+          if (newChihuo.checkPermission()) {
+            $('.menu-num-set').text(++num);
+          }
         }else{
           if(num > 0){
             $('.menu-num-set').text(--num);

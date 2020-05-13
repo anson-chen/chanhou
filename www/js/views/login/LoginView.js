@@ -21,6 +21,10 @@ define([
       $("#login").on("click",function(){
         _this.loginInterface();
       });
+      if (!newChihuo.hasCordova()) {
+        $("#login-thirdparty-info").hide();
+        $("#login-thirdparty-icons").hide();
+      }
 
     },
 
@@ -32,9 +36,10 @@ define([
            pop.removeClass('pop-info-show').html('');
            newChihuo.showPopInfo(newChihuo.localize('okay_to_change_later'),1200);
                 setTimeout(function(){
-                 app_router.navigate('Index',{
-                  trigger: true
-                });
+                 chihuo.gotoLastLocation();
+                 //app_router.navigate('Index',{
+                 // trigger: true
+                //});
                 },1400);
        });
        $(".error-pop .refresh").on('click',function(){
@@ -85,9 +90,10 @@ define([
                 newChihuo.showPopInfo(newChihuo.localize('welcome_to_fm'),1200);
                 setTimeout(function(){
                    if(data.data[0].display_name){
-                    app_router.navigate('Index',{
-                      trigger: true
-                    });
+                    chihuo.gotoLastLocation();
+                    //app_router.navigate('Index',{
+                    //  trigger: true
+                    //});
                   }else{
                     _this.loginPopInfo();
                   }

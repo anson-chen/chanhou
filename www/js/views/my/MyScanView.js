@@ -81,6 +81,7 @@ define([
           } else {
             alert(status);
             alert(text);
+            location.reload(); 
           }
         },1000); 
       });
