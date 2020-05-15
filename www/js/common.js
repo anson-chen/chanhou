@@ -1915,7 +1915,6 @@ var chihuo = {
                 //完成请求后触发。即在success或error触发后触发
                 complete: function (xhr, status) {
                     var $mask = $("#maskScreen");
-                    chihuo.imgLazyLoad();
                     if($mask.length){
                         var index=parseInt($mask.attr("mask"));
                         $mask.attr("mask",--index);

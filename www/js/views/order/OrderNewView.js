@@ -368,12 +368,7 @@ define([
                          address: data.data[0].addr,
                          id: data.data[0].rest_id,
                       };
-                      newChihuo.getPage('orderNew') && _this.$el.html(_.template(orderNewTemplate,{data:_this.data, id:_this.rest, tabId:_this.tabId, topInfo:_this.topInfo}));
-                       if(_this.orderData.length){
-                          $('#orderNewList').find('p').html(_this.orderData.length).show();
-                        }else{
-                          $('#orderNewList').find('p').hide();
-                        }
+                      newChihuo.getPage('orderNew') &&  $('.common-title h3').text(initData.orderNewData.info.name);
                      }
                   } 
               });   
