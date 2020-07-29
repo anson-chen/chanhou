@@ -45,6 +45,9 @@
 				<%}%>
 				<%if(d.services && d.services.indexOf('dine_in')>=0){%>
 				<a href="#orderType/<%=d.rest_id%>/dinein">Dine-in</a>
+				<%}%>
+				<%if(d.services && d.services.indexOf('grocery delivery')>=0){%>
+				<a href="#orderType/<%=d.rest_id%>/delivery">Delivery</a>
 			<%}%>
 		</div>
 		<%}%>

@@ -102,7 +102,7 @@ define([
   addToNewOrder: function(){
     var restId = this.rest;
     var tabId = $('#table').attr('num') || 1;
-    if(initData.orderNewData.typeFrom == 'takeout' && initData.phoneIndexData.data !== null && (!initData.phoneIndexData.data.cust_mobile_no || !initData.phoneIndexData.data.verifyflg)){
+    if((initData.orderNewData.typeFrom == 'takeout' || initData.orderNewData.typeFrom == 'delivery') && initData.phoneIndexData.data !== null && (!initData.phoneIndexData.data.cust_mobile_no || !initData.phoneIndexData.data.verifyflg)){
       var tips = initData.phoneIndexData.data.cust_mobile_no ? 'Please verify your phone number' : 'Add mobile and verify';
       newChihuo.showPopInfo(tips,1500,function(){
          app_router.navigate('phoneList/'+restId,{
@@ -258,7 +258,7 @@ define([
   },
 
   tpl: function(){
-    if(initData.orderNewData.restId == 69173){
+    if(initData.orderNewData.typeFrom == 'delivery'){
       return '<h3 class="menu-title"><%=title.replace("&nbsp;","<br/>")%></h3><ul class="order-new-list fresh-style"><%_.each(data,function(d,i){%><li class="clearfix <%if(d.price=="" || d.price =="$0" || d.price == "0"){%>next-level<%}else{%>last-level<%}%>" menu="<%=d.id%>" query="<%=i%>" name="<%=d.name%>"><div class="fresh-menu-img"><%if(d.photo_url){%><img class="lazy" data-original="<%=d.photo_url%>" /><%}%></div><p <%if(d.new_flag == "Y"){%>class="show-new-icon"<%}%>><%if(d.new_flag == "Y"){%><b>new</b><%}%><%=d.name.replace("&nbsp;","<br/>")%><%if(d.price && d.price !="$0"){%><span class="order-new-price"><%=d.price%></span><%}%><%if(d.children){%>(<%=d.children.length%>)<%}%></p></li><%})%></ul>';
 
     }else{
@@ -327,8 +327,9 @@ define([
 
   orderTypeSet: function(id,type){
     initData.orderNewData.typeFrom = type;
+    console.log(initData.orderNewData.typeFrom);
     initData.orderNewData.restId = (id && id !== 'undefined')  ? id : initData.orderNewData.restId;
-    if(type == 'takeout'){
+    if(type == 'takeout' || type == 'delivery'){
        chihuo.wkAjax({
           type: 'GET',
           url: chihuo.getApiUri3('lstCustMobile.json'),
